@@ -1,0 +1,327 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Stereogranimator</title>
+
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+
+<!-- Import EaselJS Framework -->
+<script src="src/easeljs/utils/UID.js"></script>
+<script src="src/easeljs/geom/Matrix2D.js"></script>
+<script src="src/easeljs/events/MouseEvent.js"></script>
+<script src="src/easeljs/display/DisplayObject.js"></script>
+<script src="src/easeljs/display/Container.js"></script>
+<script src="src/easeljs/display/Bitmap.js"></script>
+<script src="src/easeljs/display/Graphics.js"></script>
+<script src="src/easeljs/display/Shape.js"></script>
+<script src="src/easeljs/display/Stage.js"></script>
+<script src="src/easeljs/utils/Ticker.js"></script>
+<script src="src/easeljs/geom/Point.js"></script>
+<script src="src/easeljs/ui/Touch.js"></script>
+<!-- End EaselJS Imports -->
+
+<script>
+var canvas;
+var stage;
+var bmp;
+
+// interface elements
+var ln;
+var c1;
+var c2;
+var sq1;
+var sq2;
+
+var offset = 50;
+var inset = 10;
+
+// handle positions
+var c1x = inset;
+var c1y = inset;
+var c2x = inset;
+var c2y = inset;
+
+var side = 320;
+var rad = 5;
+var thick = 2;
+var color = "#fff";
+var fill = "#000";
+var fillalpha = "rgba(0,0,0,0.5)";
+
+var img = new Image();
+var update = true;
+
+function init() {
+	//find canvas and load images, wait for last image to load
+	canvas = document.getElementById("testCanvas");
+	
+	stage = new Stage(canvas);
+	stage.enableMouseOver(10);
+
+	img.onload = run;
+	img.src = "img/demo2.jpg";
+	
+}
+
+function run() {
+	// place image in bitmap:
+	bmp = new Bitmap(img);
+	bmp.x = img.width/2+offset;
+	bmp.y = img.height/2+offset;
+	bmp.regX = img.width/2;
+	bmp.regY = img.height/2;
+	
+	stage.addChild(bmp);
+	
+	// starting points for handles
+	c1x = c2x = img.x + (img.width / 2) + offset;
+	c1y = img.y + inset + offset;
+	c2y = img.y + img.height - inset + offset;
+	
+	// joining line
+	ln = new Shape();
+	stage.addChild(ln);
+	
+	// top handle
+	c1 = new Shape();
+	c1.x = c1x;
+	c1.y = c1y;
+	c1.scale = 1;
+	stage.addChild(c1);
+	// handle movement
+	// wrapper function to provide scope for the event handlers:
+	(function(target) {
+		c1.onPress = function(evt) {
+			// drag
+			evt.onMouseMove = function(ev) {
+				target.x = stage.mouseX;
+				target.y = stage.mouseY;
+				c1x = target.x;
+				c1y = target.y;
+				console.log("x:"+c1x+" y:"+c1y);
+				// indicate that the stage should be updated on the next tick:
+				update = true;
+			};
+		};
+		// NOTE: scale is not working
+		c1.onMouseOver = function() {
+			console.log("scale:"+target.scaleX);
+			target.scaleX = target.scaleY = target.scale*1.5;
+			update = true;
+		};
+		c1.onMouseOut = function() {
+			target.scaleX = target.scaleY = target.scale;
+			update = true;
+		};
+	})(c1);
+	
+	// bottom handle
+	c2 = new Shape();
+	c2.x = c2x;
+	c2.y = c2y;
+	c2.scale = 1;
+	stage.addChild(c2);
+	// handle movement
+	// wrapper function to provide scope for the event handlers:
+	(function(target) {
+		c2.onPress = function(evt) {
+			// drag
+			evt.onMouseMove = function(ev) {
+				target.x = stage.mouseX;
+				target.y = stage.mouseY;
+				c2x = target.x;
+				c2y = target.y;
+				console.log("x:"+c2x+" y:"+c2y);
+				// indicate that the stage should be updated on the next tick:
+				update = true;
+			};
+		};
+		// NOTE: scale is not working
+		c2.onMouseOver = function() {
+			target.scaleX = target.scaleY = target.scale*1.5;
+			update = true;
+		};
+		c2.onMouseOut = function() {
+			target.scaleX = target.scaleY = target.scale;
+			update = true;
+		};
+	})(c2);
+	
+	// the squares
+	sq1 = new Shape();
+	sq1.over = false;
+	// to control for mouse position when dragging
+	sq1.mx = 0;
+	sq1.my = 0;
+	stage.addChildAt(sq1,1);
+	// handle movement
+	// wrapper function to provide scope for the event handlers:
+	(function(target) {
+		sq1.onPress = function(evt) {
+			// drag
+			// bump up but below line
+			stage.addChildAt(target,2);
+			sq1.mx = sq1.x-stage.mouseX;
+			sq1.my = sq1.y-stage.mouseY;
+			console.log("sx:"+sq1.x+" sy:"+sq1.y+" mx:"+sq1.mx+" my:"+sq1.my);
+			evt.onMouseMove = function(ev) {
+				target.x = stage.mouseX + target.mx;
+				target.y = stage.mouseY + target.my;
+				// indicate that the stage should be updated on the next tick:
+				update = true;
+			};
+		};
+		// NOTE: scale is not working
+		sq1.onMouseOver = function() {
+			target.over = true;
+			update = true;
+		};
+		sq1.onMouseOut = function() {
+			target.over = false;
+			update = true;
+		};
+	})(sq1);
+	
+	sq2 = new Shape();
+	sq2.over = false;
+	// to control for mouse position when dragging
+	sq2.mx = 0;
+	sq2.my = 0;
+	stage.addChildAt(sq2,1);
+	// handle movement
+	// wrapper function to provide scope for the event handlers:
+	(function(target) {
+		sq2.onPress = function(evt) {
+			// drag
+			// bump up but below line
+			stage.addChildAt(target,2);
+			sq2.mx = sq2.x-stage.mouseX;
+			sq2.my = sq2.y-stage.mouseY;
+			console.log("sx:"+sq2.x+" sy:"+sq2.y+" mx:"+sq2.mx+" my:"+sq2.my);
+			evt.onMouseMove = function(ev) {
+				target.x = stage.mouseX + target.mx;
+				target.y = stage.mouseY + target.my;
+				// indicate that the stage should be updated on the next tick:
+				update = true;
+			};
+		};
+		// NOTE: scale is not working
+		sq2.onMouseOver = function() {
+			target.over = true;
+			update = true;
+		};
+		sq2.onMouseOut = function() {
+			target.over = false;
+			update = true;
+		};
+	})(sq2);
+	
+	// we want to do some work before we update the canvas,
+	Ticker.addListener(window);
+}
+
+function draw() {
+	drawHandle(c1,c1x,c1y);
+	drawHandle(c2,c2x,c2y);
+	drawSquare(sq1, img.x + (img.width / 2) - side - inset + offset, (img.height / 2) - (side / 2) + offset);
+	drawSquare(sq2, img.x + (img.width / 2) + inset + offset, (img.height / 2) - (side / 2) + offset);
+	drawLine();
+}
+
+function drawHandle(handle,xp,yp) {
+	// create a new Graphics object. Note that Graphics can be used without any dependency on the rest of Easel.
+	var g = handle.graphics;
+	
+	g.clear();
+	// note that you can call graphics methods individually:
+	g.setStrokeStyle(thick, "round", "round");
+	g.beginStroke(color);
+	g.beginFill(fill);
+	// or you can chain them together:
+	g.drawCircle(0,0,rad);
+	g.endFill();
+}
+
+function drawLine() {
+	// create a new Graphics object. Note that Graphics can be used without any dependency on the rest of Easel.
+	var g = ln.graphics;
+	
+	g.clear();
+	// note that you can call graphics methods individually:
+	g.setStrokeStyle(thick, "round", "round");
+	g.beginStroke(color);
+	g.moveTo(c1x,c1y).lineTo(c2x,c2y);
+}
+
+function drawSquare(square,x,y) {
+	// create a new Graphics object. Note that Graphics can be used without any dependency on the rest of Easel.
+	var g = square.graphics;
+	var crosssize = inset;
+	if (square.over) {
+		crosssize = inset*2;
+	}
+	g.clear();
+	// note that you can call graphics methods individually:
+	g.setStrokeStyle(thick, "round", "round");
+	g.beginStroke(color);
+	g.beginFill(fillalpha);
+	g.drawRect(x,y,side,side);
+	g.moveTo(x-crosssize+side/2,y-crosssize+side/2).lineTo(x+crosssize+side/2,y+crosssize+side/2).moveTo(x+crosssize+side/2,y-crosssize+side/2).lineTo(x-crosssize+side/2,y+crosssize+side/2);
+}
+
+function tick() {
+	// this set makes it so the stage only re-renders when an event handler indicates a change has happened.
+	if (update) {
+		update = false; // only update once
+		draw();
+		stage.update();
+	}
+}
+
+function rotate() {
+	var deg;
+	deg = Math.atan((c2x-c1x)/(c2y-c1y)) * 180 / Math.PI;
+	console.log("rotate:"+deg);
+	bmp.rotation = deg;
+	update = true;
+}
+
+function loadPhoto(num) {
+	console.log("photo");
+	img.onload = (function () {
+		update = true;
+	});
+	img.src = "img/demo"+num+".jpg";
+}
+
+window.onload = init;
+
+</script>
+</head>
+	
+<body>
+	<div class="description">
+		<ol>
+			<li>Move the line so that it divides the stereograph in two.</li>
+			<li>Press CORRECT ROTATION.</li>
+			<li>Move the rectangles so that they cover each side of the photo.</li>
+			<li>Press ANIMATE.</li>
+		</ol>
+	</div>
+	<div id="nav">
+		<input type="button" value="ROTATE" id="btn-rotate" onclick="rotate();" />
+		<input type="button" value="photo 1" id="btn-ph1" onclick="loadPhoto(1);" />
+		<input type="button" value="photo 2" id="btn-ph2" onclick="loadPhoto(2);" />
+		<input type="button" value="photo 3" id="btn-ph3" onclick="loadPhoto(3);" />
+		<input type="button" value="photo 4" id="btn-ph4" onclick="loadPhoto(4);" />
+		<input type="button" value="photo 5" id="btn-ph5" onclick="loadPhoto(5);" />
+		<input type="button" value="photo 6" id="btn-ph6" onclick="loadPhoto(6);" />
+		<input type="button" value="photo 7" id="btn-ph7" onclick="loadPhoto(7);" />
+		<input type="button" value="photo 8" id="btn-ph8" onclick="loadPhoto(8);" />
+	</div>
+	<div class="canvasHolder">
+		<canvas id="testCanvas" width="900" height="600"></canvas>
+	</div>
+</body>
+</html>
