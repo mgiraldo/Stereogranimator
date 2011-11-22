@@ -32,6 +32,8 @@ var c1;
 var c2;
 var sq1;
 var sq2;
+// vertical
+var vert;
 
 var offset = 50;
 var inset = 10;
@@ -89,10 +91,46 @@ function run() {
 	c1.y = c1y;
 	c1.scale = 1;
 	stage.addChild(c1);
-	// handle movement
+	
+	// bottom handle
+	c2 = new Shape();
+	c2.x = c2x;
+	c2.y = c2y;
+	c2.scale = 1;
+	stage.addChild(c2);
+	
+	// the squares
+	sq1 = new Shape();
+	sq1.over = false;
+	// to control for mouse position when dragging
+	sq1.mx = 0;
+	sq1.my = 0;
+	stage.addChildAt(sq1,1);
+	
+	sq2 = new Shape();
+	sq2.over = false;
+	// to control for mouse position when dragging
+	sq2.mx = 0;
+	sq2.my = 0;
+	stage.addChildAt(sq2,1);
+	
+	// vertical handle
+	vert = new Shape();
+	vert.over = false;
+	stage.addChild(vert);
+	
+	// adding interaction
+	addBasicInteractivity();
+	
+	// we want to do some work before we update the canvas,
+	Ticker.addListener(window);
+}
+
+function addBasicInteractivity() {
+	// handle movement for VERTICAL handle
 	// wrapper function to provide scope for the event handlers:
 	(function(target) {
-		c1.onPress = function(evt) {
+		vert.onPress = function(evt) {
 			// drag
 			evt.onMouseMove = function(ev) {
 				target.x = stage.mouseX;
@@ -115,47 +153,8 @@ function run() {
 			update = true;
 		};
 	})(c1);
-	
-	// bottom handle
-	c2 = new Shape();
-	c2.x = c2x;
-	c2.y = c2y;
-	c2.scale = 1;
-	stage.addChild(c2);
-	// handle movement
-	// wrapper function to provide scope for the event handlers:
-	(function(target) {
-		c2.onPress = function(evt) {
-			// drag
-			evt.onMouseMove = function(ev) {
-				target.x = stage.mouseX;
-				target.y = stage.mouseY;
-				c2x = target.x;
-				c2y = target.y;
-				console.log("x:"+c2x+" y:"+c2y);
-				// indicate that the stage should be updated on the next tick:
-				update = true;
-			};
-		};
-		// NOTE: scale is not working
-		c2.onMouseOver = function() {
-			target.scaleX = target.scaleY = target.scale*1.5;
-			update = true;
-		};
-		c2.onMouseOut = function() {
-			target.scaleX = target.scaleY = target.scale;
-			update = true;
-		};
-	})(c2);
-	
-	// the squares
-	sq1 = new Shape();
-	sq1.over = false;
-	// to control for mouse position when dragging
-	sq1.mx = 0;
-	sq1.my = 0;
-	stage.addChildAt(sq1,1);
-	// handle movement
+
+	// handle movement for LEFT square
 	// wrapper function to provide scope for the event handlers:
 	(function(target) {
 		sq1.onPress = function(evt) {
@@ -182,14 +181,8 @@ function run() {
 			update = true;
 		};
 	})(sq1);
-	
-	sq2 = new Shape();
-	sq2.over = false;
-	// to control for mouse position when dragging
-	sq2.mx = 0;
-	sq2.my = 0;
-	stage.addChildAt(sq2,1);
-	// handle movement
+
+	// handle movement for RIGHT square
 	// wrapper function to provide scope for the event handlers:
 	(function(target) {
 		sq2.onPress = function(evt) {
@@ -216,17 +209,136 @@ function run() {
 			update = true;
 		};
 	})(sq2);
-	
-	// we want to do some work before we update the canvas,
-	Ticker.addListener(window);
+}
+
+function addFineInteractivity() {
+	// handle movement for TOP handle
+	// wrapper function to provide scope for the event handlers:
+	(function(target) {
+		c1.onPress = function(evt) {
+			// drag
+			evt.onMouseMove = function(ev) {
+				target.x = stage.mouseX;
+				target.y = stage.mouseY;
+				c1x = target.x;
+				c1y = target.y;
+				console.log("x:"+c1x+" y:"+c1y);
+				// indicate that the stage should be updated on the next tick:
+				update = true;
+			};
+		};
+		// NOTE: scale is not working
+		c1.onMouseOver = function() {
+			console.log("scale:"+target.scaleX);
+			target.scaleX = target.scaleY = target.scale*1.5;
+			update = true;
+		};
+		c1.onMouseOut = function() {
+			target.scaleX = target.scaleY = target.scale;
+			update = true;
+		};
+	})(c1);
+
+	// handle movement for BOTTOM handle
+	// wrapper function to provide scope for the event handlers:
+	(function(target) {
+		c2.onPress = function(evt) {
+			// drag
+			evt.onMouseMove = function(ev) {
+				target.x = stage.mouseX;
+				target.y = stage.mouseY;
+				c2x = target.x;
+				c2y = target.y;
+				console.log("x:"+c2x+" y:"+c2y);
+				// indicate that the stage should be updated on the next tick:
+				update = true;
+			};
+		};
+		// NOTE: scale is not working
+		c2.onMouseOver = function() {
+			target.scaleX = target.scaleY = target.scale*1.5;
+			update = true;
+		};
+		c2.onMouseOut = function() {
+			target.scaleX = target.scaleY = target.scale;
+			update = true;
+		};
+	})(c2);
+
+	// handle movement for LEFT square
+	// wrapper function to provide scope for the event handlers:
+	(function(target) {
+		sq1.onPress = function(evt) {
+			// drag
+			// bump up but below line
+			stage.addChildAt(target,2);
+			sq1.mx = sq1.x-stage.mouseX;
+			sq1.my = sq1.y-stage.mouseY;
+			console.log("sx:"+sq1.x+" sy:"+sq1.y+" mx:"+sq1.mx+" my:"+sq1.my);
+			evt.onMouseMove = function(ev) {
+				target.x = stage.mouseX + target.mx;
+				target.y = stage.mouseY + target.my;
+				// indicate that the stage should be updated on the next tick:
+				update = true;
+			};
+		};
+		// NOTE: scale is not working
+		sq1.onMouseOver = function() {
+			target.over = true;
+			update = true;
+		};
+		sq1.onMouseOut = function() {
+			target.over = false;
+			update = true;
+		};
+	})(sq1);
+
+	// handle movement for RIGHT square
+	// wrapper function to provide scope for the event handlers:
+	(function(target) {
+		sq2.onPress = function(evt) {
+			// drag
+			// bump up but below line
+			stage.addChildAt(target,2);
+			sq2.mx = sq2.x-stage.mouseX;
+			sq2.my = sq2.y-stage.mouseY;
+			console.log("sx:"+sq2.x+" sy:"+sq2.y+" mx:"+sq2.mx+" my:"+sq2.my);
+			evt.onMouseMove = function(ev) {
+				target.x = stage.mouseX + target.mx;
+				target.y = stage.mouseY + target.my;
+				// indicate that the stage should be updated on the next tick:
+				update = true;
+			};
+		};
+		// NOTE: scale is not working
+		sq2.onMouseOver = function() {
+			target.over = true;
+			update = true;
+		};
+		sq2.onMouseOut = function() {
+			target.over = false;
+			update = true;
+		};
+	})(sq2);
 }
 
 function draw() {
-	drawHandle(c1,c1x,c1y);
-	drawHandle(c2,c2x,c2y);
+	//drawHandle(c1,c1x,c1y);
+	//drawHandle(c2,c2x,c2y);
+	//drawLine();
+	//drawSquare(sq1, img.x + (img.width / 2) - side - inset + offset, (img.height / 2) - (side / 2) + offset);
+	//drawSquare(sq2, img.x + (img.width / 2) + inset + offset, (img.height / 2) - (side / 2) + offset);
+	drawStereoscope();
+}
+
+function drawStereoscope() {
+	drawVertical();
 	drawSquare(sq1, img.x + (img.width / 2) - side - inset + offset, (img.height / 2) - (side / 2) + offset);
 	drawSquare(sq2, img.x + (img.width / 2) + inset + offset, (img.height / 2) - (side / 2) + offset);
-	drawLine();
+}
+
+function drawVertical() {
+	
 }
 
 function drawHandle(handle,xp,yp) {
