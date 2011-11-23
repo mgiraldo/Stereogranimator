@@ -32,24 +32,36 @@ var c1;
 var c2;
 var sq1;
 var sq2;
+
+// square positions
+var sq1x = 0;
+var sq1y = 0;
+var sq2x = 0;
+var sq2y = 0;
+
 // vertical
 var vert;
+var vertx = 0;
+var verty = 0;
 
-var offset = 50;
-var inset = 10;
+var VERTWIDTH = 10;
+var VERTHEIGHT = 50;
+
+var OFFSET = 50;
+var INSET = 10;
 
 // handle positions
-var c1x = inset;
-var c1y = inset;
-var c2x = inset;
-var c2y = inset;
+var c1x = INSET;
+var c1y = INSET;
+var c2x = INSET;
+var c2y = INSET;
 
-var side = 320;
-var rad = 5;
-var thick = 2;
-var color = "#fff";
-var fill = "#000";
-var fillalpha = "rgba(0,0,0,0.5)";
+var SIDE = 320;
+var RAD = 5;
+var THICK = 2;
+var COLOR = "#fff";
+var FILL = "#000";
+var FILLALPHA = "rgba(0,0,0,0.5)";
 
 var img = new Image();
 var update = true;
@@ -69,17 +81,27 @@ function init() {
 function run() {
 	// place image in bitmap:
 	bmp = new Bitmap(img);
-	bmp.x = img.width/2+offset;
-	bmp.y = img.height/2+offset;
+	bmp.x = img.width/2+OFFSET;
+	bmp.y = img.height/2+OFFSET;
 	bmp.regX = img.width/2;
 	bmp.regY = img.height/2;
 	
 	stage.addChild(bmp);
 	
 	// starting points for handles
-	c1x = c2x = img.x + (img.width / 2) + offset;
-	c1y = img.y + inset + offset;
-	c2y = img.y + img.height - inset + offset;
+	c1x = c2x = img.x + (img.width / 2) + OFFSET;
+	c1y = img.y + INSET + OFFSET;
+	c2y = img.y + img.height - INSET + OFFSET;
+	
+	// starting points for squares
+	sq1x = img.x + (img.width / 2) - SIDE - INSET + OFFSET;
+	sq1y = (img.height / 2) - (SIDE / 2) + OFFSET;
+	sq2x = img.x + (img.width / 2) + INSET + OFFSET;
+	sq2y = (img.height / 2) - (SIDE / 2) + OFFSET;
+	
+	// starting point for vertical bar
+	vertx = img.x + (img.width / 2) + OFFSET;
+	verty = img.y + (img.height / 2) + OFFSET;
 	
 	// joining line
 	ln = new Shape();
@@ -117,6 +139,10 @@ function run() {
 	// vertical handle
 	vert = new Shape();
 	vert.over = false;
+	// to control for mouse position when dragging
+	vert.mx = 0;
+	vert.sq1x = 0;
+	vert.sq2x = 0;
 	stage.addChild(vert);
 	
 	// adding interaction
@@ -132,27 +158,29 @@ function addBasicInteractivity() {
 	(function(target) {
 		vert.onPress = function(evt) {
 			// drag
+			vert.mx = stage.mouseX - vertx;
+			vert.sq1x = vertx - sq1x;
+			vert.sq2x = vertx - sq2x;
+			console.log("vs1:"+vert.sq1x+" vs2:"+vert.sq2x+" s1:"+sq1x+" s2:"+sq2x+" vm:"+vert.mx+" vx:"+vertx);
 			evt.onMouseMove = function(ev) {
-				target.x = stage.mouseX;
-				target.y = stage.mouseY;
-				c1x = target.x;
-				c1y = target.y;
-				console.log("x:"+c1x+" y:"+c1y);
+				vertx = stage.mouseX + target.mx;
+				// move squares along with bar
+				sq1x = vertx - target.sq1x;
+				sq2x = vertx - target.sq2x;
+			console.log("vs1:"+vert.sq1x+" vs2:"+vert.sq2x+" s1:"+sq1x+" s2:"+sq2x+" vm:"+vert.mx+" vx:"+vertx);
 				// indicate that the stage should be updated on the next tick:
 				update = true;
 			};
 		};
-		// NOTE: scale is not working
-		c1.onMouseOver = function() {
-			console.log("scale:"+target.scaleX);
-			target.scaleX = target.scaleY = target.scale*1.5;
+		vert.onMouseOver = function() {
+			target.over = true;
 			update = true;
 		};
-		c1.onMouseOut = function() {
-			target.scaleX = target.scaleY = target.scale;
+		vert.onMouseOut = function() {
+			target.over = false;
 			update = true;
 		};
-	})(c1);
+	})(vert);
 
 	// handle movement for LEFT square
 	// wrapper function to provide scope for the event handlers:
@@ -161,17 +189,16 @@ function addBasicInteractivity() {
 			// drag
 			// bump up but below line
 			stage.addChildAt(target,2);
-			sq1.mx = sq1.x-stage.mouseX;
-			sq1.my = sq1.y-stage.mouseY;
-			console.log("sx:"+sq1.x+" sy:"+sq1.y+" mx:"+sq1.mx+" my:"+sq1.my);
+			sq1.mx = sq1x - stage.mouseX;
+			sq1.my = sq1y - stage.mouseY;
+			console.log(" mx:"+sq1.mx+" my:"+sq1.my);
 			evt.onMouseMove = function(ev) {
-				target.x = stage.mouseX + target.mx;
-				target.y = stage.mouseY + target.my;
+				sq1x = stage.mouseX + target.mx;
+				sq1y = stage.mouseY + target.my;
 				// indicate that the stage should be updated on the next tick:
 				update = true;
 			};
 		};
-		// NOTE: scale is not working
 		sq1.onMouseOver = function() {
 			target.over = true;
 			update = true;
@@ -189,17 +216,17 @@ function addBasicInteractivity() {
 			// drag
 			// bump up but below line
 			stage.addChildAt(target,2);
-			sq2.mx = sq2.x-stage.mouseX;
-			sq2.my = sq2.y-stage.mouseY;
-			console.log("sx:"+sq2.x+" sy:"+sq2.y+" mx:"+sq2.mx+" my:"+sq2.my);
+			// save mouse position for future reference
+			sq2.mx = sq2x - stage.mouseX;
+			sq2.my = sq2y - stage.mouseY;
+			console.log(" mx:"+sq2.mx+" my:"+sq2.my);
 			evt.onMouseMove = function(ev) {
-				target.x = stage.mouseX + target.mx;
-				target.y = stage.mouseY + target.my;
+				sq2x = stage.mouseX + target.mx;
+				sq2y = stage.mouseY + target.my;
 				// indicate that the stage should be updated on the next tick:
 				update = true;
 			};
 		};
-		// NOTE: scale is not working
 		sq2.onMouseOver = function() {
 			target.over = true;
 			update = true;
@@ -227,7 +254,6 @@ function addFineInteractivity() {
 				update = true;
 			};
 		};
-		// NOTE: scale is not working
 		c1.onMouseOver = function() {
 			console.log("scale:"+target.scaleX);
 			target.scaleX = target.scaleY = target.scale*1.5;
@@ -254,7 +280,6 @@ function addFineInteractivity() {
 				update = true;
 			};
 		};
-		// NOTE: scale is not working
 		c2.onMouseOver = function() {
 			target.scaleX = target.scaleY = target.scale*1.5;
 			update = true;
@@ -274,15 +299,14 @@ function addFineInteractivity() {
 			stage.addChildAt(target,2);
 			sq1.mx = sq1.x-stage.mouseX;
 			sq1.my = sq1.y-stage.mouseY;
-			console.log("sx:"+sq1.x+" sy:"+sq1.y+" mx:"+sq1.mx+" my:"+sq1.my);
+			console.log(" mx:"+sq1.mx+" my:"+sq1.my);
 			evt.onMouseMove = function(ev) {
-				target.x = stage.mouseX + target.mx;
-				target.y = stage.mouseY + target.my;
+				sq1x = stage.mouseX + target.mx;
+				sq1y = stage.mouseY + target.my;
 				// indicate that the stage should be updated on the next tick:
 				update = true;
 			};
 		};
-		// NOTE: scale is not working
 		sq1.onMouseOver = function() {
 			target.over = true;
 			update = true;
@@ -302,15 +326,14 @@ function addFineInteractivity() {
 			stage.addChildAt(target,2);
 			sq2.mx = sq2.x-stage.mouseX;
 			sq2.my = sq2.y-stage.mouseY;
-			console.log("sx:"+sq2.x+" sy:"+sq2.y+" mx:"+sq2.mx+" my:"+sq2.my);
+			console.log(" mx:"+sq2.mx+" my:"+sq2.my);
 			evt.onMouseMove = function(ev) {
-				target.x = stage.mouseX + target.mx;
-				target.y = stage.mouseY + target.my;
+				sq2x = stage.mouseX + target.mx;
+				sq2y = stage.mouseY + target.my;
 				// indicate that the stage should be updated on the next tick:
 				update = true;
 			};
 		};
-		// NOTE: scale is not working
 		sq2.onMouseOver = function() {
 			target.over = true;
 			update = true;
@@ -326,60 +349,59 @@ function draw() {
 	//drawHandle(c1,c1x,c1y);
 	//drawHandle(c2,c2x,c2y);
 	//drawLine();
-	//drawSquare(sq1, img.x + (img.width / 2) - side - inset + offset, (img.height / 2) - (side / 2) + offset);
-	//drawSquare(sq2, img.x + (img.width / 2) + inset + offset, (img.height / 2) - (side / 2) + offset);
+	//drawSquare(sq1, img.x + (img.width / 2) - SIDE - INSET + OFFSET, (img.height / 2) - (SIDE / 2) + OFFSET);
+	//drawSquare(sq2, img.x + (img.width / 2) + INSET + OFFSET, (img.height / 2) - (SIDE / 2) + OFFSET);
 	drawStereoscope();
 }
 
 function drawStereoscope() {
 	drawVertical();
-	drawSquare(sq1, img.x + (img.width / 2) - side - inset + offset, (img.height / 2) - (side / 2) + offset);
-	drawSquare(sq2, img.x + (img.width / 2) + inset + offset, (img.height / 2) - (side / 2) + offset);
+	drawSquare(sq1, sq1x, sq1y);
+	drawSquare(sq2, sq2x, sq2y);
 }
 
 function drawVertical() {
-	
+	var g = vert.graphics;
+	g.clear();
+	g.setStrokeStyle(THICK, "round", "round");
+	g.beginStroke(COLOR);
+	g.beginFill(FILLALPHA);
+	g.drawRect(vertx - (VERTWIDTH / 2), verty - (VERTHEIGHT / 2),VERTWIDTH,VERTHEIGHT);
+	g.moveTo(vertx, verty - (VERTHEIGHT / 2)).lineTo(vertx, verty - (VERTHEIGHT * 2)).moveTo(vertx, verty + (VERTHEIGHT / 2)).lineTo(vertx, verty + (OFFSET * 2));
 }
 
 function drawHandle(handle,xp,yp) {
-	// create a new Graphics object. Note that Graphics can be used without any dependency on the rest of Easel.
 	var g = handle.graphics;
 	
 	g.clear();
-	// note that you can call graphics methods individually:
-	g.setStrokeStyle(thick, "round", "round");
-	g.beginStroke(color);
-	g.beginFill(fill);
-	// or you can chain them together:
-	g.drawCircle(0,0,rad);
+	g.setStrokeStyle(THICK, "round", "round");
+	g.beginStroke(COLOR);
+	g.beginFill(FILL);
+	g.drawCircle(0,0,RAD);
 	g.endFill();
 }
 
 function drawLine() {
-	// create a new Graphics object. Note that Graphics can be used without any dependency on the rest of Easel.
 	var g = ln.graphics;
 	
 	g.clear();
-	// note that you can call graphics methods individually:
-	g.setStrokeStyle(thick, "round", "round");
-	g.beginStroke(color);
+	g.setStrokeStyle(THICK, "round", "round");
+	g.beginStroke(COLOR);
 	g.moveTo(c1x,c1y).lineTo(c2x,c2y);
 }
 
 function drawSquare(square,x,y) {
-	// create a new Graphics object. Note that Graphics can be used without any dependency on the rest of Easel.
 	var g = square.graphics;
-	var crosssize = inset;
+	var CROSSSIZE = INSET;
 	if (square.over) {
-		crosssize = inset*2;
+		CROSSSIZE = INSET*2;
 	}
 	g.clear();
-	// note that you can call graphics methods individually:
-	g.setStrokeStyle(thick, "round", "round");
-	g.beginStroke(color);
-	g.beginFill(fillalpha);
-	g.drawRect(x,y,side,side);
-	g.moveTo(x-crosssize+side/2,y-crosssize+side/2).lineTo(x+crosssize+side/2,y+crosssize+side/2).moveTo(x+crosssize+side/2,y-crosssize+side/2).lineTo(x-crosssize+side/2,y+crosssize+side/2);
+	g.setStrokeStyle(THICK, "round", "round");
+	g.beginStroke(COLOR);
+	g.beginFill(FILLALPHA);
+	g.drawRect(x,y,SIDE,SIDE);
+	g.moveTo(x-CROSSSIZE+SIDE/2,y-CROSSSIZE+SIDE/2).lineTo(x+CROSSSIZE+SIDE/2,y+CROSSSIZE+SIDE/2).moveTo(x+CROSSSIZE+SIDE/2,y-CROSSSIZE+SIDE/2).lineTo(x-CROSSSIZE+SIDE/2,y+CROSSSIZE+SIDE/2);
 }
 
 function tick() {
@@ -417,7 +439,7 @@ window.onload = init;
 		<ol>
 			<li>Move the line so that it divides the stereograph in two.</li>
 			<li>Press CORRECT ROTATION.</li>
-			<li>Move the rectangles so that they cover each side of the photo.</li>
+			<li>Move the rectangles so that they cover each SIDE of the photo.</li>
 			<li>Press ANIMATE.</li>
 		</ol>
 	</div>
