@@ -65,6 +65,7 @@ var FILLALPHA = "rgba(0,0,0,0.5)";
 
 var img = new Image();
 var update = true;
+var first = true;
 
 function init() {
 	//find canvas and load images, wait for last image to load
@@ -73,9 +74,7 @@ function init() {
 	stage = new Stage(canvas);
 	stage.enableMouseOver(10);
 
-	img.onload = run;
-	img.src = "img/demo2.jpg";
-	
+	loadPhoto('G92F111_027ZF');
 }
 
 function run() {
@@ -161,13 +160,12 @@ function addBasicInteractivity() {
 			vert.mx = stage.mouseX - vertx;
 			vert.sq1x = vertx - sq1x;
 			vert.sq2x = vertx - sq2x;
-			console.log("vs1:"+vert.sq1x+" vs2:"+vert.sq2x+" s1:"+sq1x+" s2:"+sq2x+" vm:"+vert.mx+" vx:"+vertx);
+			//console.log("vs1:"+vert.sq1x+" vs2:"+vert.sq2x+" s1:"+sq1x+" s2:"+sq2x+" vm:"+vert.mx+" vx:"+vertx);
 			evt.onMouseMove = function(ev) {
 				vertx = stage.mouseX + target.mx;
 				// move squares along with bar
 				sq1x = vertx - target.sq1x;
 				sq2x = vertx - target.sq2x;
-			console.log("vs1:"+vert.sq1x+" vs2:"+vert.sq2x+" s1:"+sq1x+" s2:"+sq2x+" vm:"+vert.mx+" vx:"+vertx);
 				// indicate that the stage should be updated on the next tick:
 				update = true;
 			};
@@ -187,14 +185,17 @@ function addBasicInteractivity() {
 	(function(target) {
 		sq1.onPress = function(evt) {
 			// drag
-			// bump up but below line
-			stage.addChildAt(target,2);
+			// save mouse position for future reference
 			sq1.mx = sq1x - stage.mouseX;
 			sq1.my = sq1y - stage.mouseY;
-			console.log(" mx:"+sq1.mx+" my:"+sq1.my);
+			var d = vertx - sq1x;
 			evt.onMouseMove = function(ev) {
 				sq1x = stage.mouseX + target.mx;
 				sq1y = stage.mouseY + target.my;
+				// move the other square in a mirror direction
+				d = vertx - sq1x;
+				sq2x = vertx + d - SIDE;
+				sq2y = sq1y;
 				// indicate that the stage should be updated on the next tick:
 				update = true;
 			};
@@ -214,15 +215,17 @@ function addBasicInteractivity() {
 	(function(target) {
 		sq2.onPress = function(evt) {
 			// drag
-			// bump up but below line
-			stage.addChildAt(target,2);
 			// save mouse position for future reference
 			sq2.mx = sq2x - stage.mouseX;
 			sq2.my = sq2y - stage.mouseY;
-			console.log(" mx:"+sq2.mx+" my:"+sq2.my);
+			var d = vertx - sq2x;
 			evt.onMouseMove = function(ev) {
 				sq2x = stage.mouseX + target.mx;
 				sq2y = stage.mouseY + target.my;
+				// move the other square in a mirror direction
+				d = vertx - sq2x;
+				sq1x = vertx + d - SIDE;
+				sq1y = sq2y;
 				// indicate that the stage should be updated on the next tick:
 				update = true;
 			};
@@ -421,12 +424,17 @@ function rotate() {
 	update = true;
 }
 
-function loadPhoto(num) {
+function loadPhoto(id) {
 	console.log("photo");
 	img.onload = (function () {
+		if (first) {
+			first = false;
+			run();
+		}
 		update = true;
 	});
-	img.src = "img/demo"+num+".jpg";
+	img.src = "http://images.nypl.org/index.php?id="+id+"&t=w";
+	//img.src = "img/demo"+num+".jpg";
 }
 
 window.onload = init;
@@ -437,22 +445,25 @@ window.onload = init;
 <body>
 	<div class="description">
 		<ol>
-			<li>Move the line so that it divides the stereograph in two.</li>
-			<li>Press CORRECT ROTATION.</li>
-			<li>Move the rectangles so that they cover each SIDE of the photo.</li>
+			<li>Move the divider line so that it coincides with the middle of the stereograph.</li>
+			<li>Move the rectangles so that they cover each side of the photo.</li>
 			<li>Press ANIMATE.</li>
 		</ol>
 	</div>
 	<div id="nav">
-		<input type="button" value="ROTATE" id="btn-rotate" onclick="rotate();" />
-		<input type="button" value="photo 1" id="btn-ph1" onclick="loadPhoto(1);" />
-		<input type="button" value="photo 2" id="btn-ph2" onclick="loadPhoto(2);" />
-		<input type="button" value="photo 3" id="btn-ph3" onclick="loadPhoto(3);" />
-		<input type="button" value="photo 4" id="btn-ph4" onclick="loadPhoto(4);" />
-		<input type="button" value="photo 5" id="btn-ph5" onclick="loadPhoto(5);" />
-		<input type="button" value="photo 6" id="btn-ph6" onclick="loadPhoto(6);" />
-		<input type="button" value="photo 7" id="btn-ph7" onclick="loadPhoto(7);" />
-		<input type="button" value="photo 8" id="btn-ph8" onclick="loadPhoto(8);" />
+		<!-- <input type="button" value="ROTATE" id="btn-rotate" onclick="rotate();" /> -->
+		<input type="button" value="photo 1" id="btn-ph1" onclick="loadPhoto('G92F111_027ZF');" />
+		<input type="button" value="photo 2" id="btn-ph2" onclick="loadPhoto('TH-04569');" />
+		<input type="button" value="photo 3" id="btn-ph3" onclick="loadPhoto('G92F111_044ZF');" />
+		<input type="button" value="photo 4" id="btn-ph4" onclick="loadPhoto('G92F111_051ZF');" />
+		<input type="button" value="photo 5" id="btn-ph5" onclick="loadPhoto('G92F148_003F');" />
+		<input type="button" value="photo 6" id="btn-ph6" onclick="loadPhoto('G90F151_006F');" />
+		<input type="button" value="photo 7" id="btn-ph7" onclick="loadPhoto('G90F151_009F');" />
+		<input type="button" value="photo 8" id="btn-ph8" onclick="loadPhoto('G89F192_023F');" />
+		<input type="button" value="photo 9" id="btn-ph9" onclick="loadPhoto('G92F111_009F');" />
+		<input type="button" value="photo 10" id="btn-ph10" onclick="loadPhoto('G92F111_008F');" />
+		<input type="button" value="photo 11" id="btn-ph11" onclick="loadPhoto('1531160');" />
+		<input type="button" value="photo 12" id="btn-ph12" onclick="loadPhoto('1531158');" />
 	</div>
 	<div class="canvasHolder">
 		<canvas id="testCanvas" width="900" height="600"></canvas>
