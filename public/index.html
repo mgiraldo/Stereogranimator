@@ -67,6 +67,8 @@ var img = new Image();
 var update = true;
 var first = true;
 
+var stereographs = ['G92F111_027ZF','TH-04569','G92F111_044ZF','G92F111_051ZF','G92F148_003F','G90F151_006F','G90F151_009F','G89F192_023F','G92F111_009F','G92F111_008F','1531160','1531158'];
+
 function init() {
 	//find canvas and load images, wait for last image to load
 	canvas = document.getElementById("testCanvas");
@@ -74,7 +76,7 @@ function init() {
 	stage = new Stage(canvas);
 	stage.enableMouseOver(10);
 
-	loadPhoto('G92F111_027ZF');
+	loadPhoto(0);
 }
 
 function run() {
@@ -424,7 +426,7 @@ function rotate() {
 	update = true;
 }
 
-function loadPhoto(id) {
+function loadPhoto(index) {
 	console.log("photo");
 	img.onload = (function () {
 		if (first) {
@@ -433,7 +435,7 @@ function loadPhoto(id) {
 		}
 		update = true;
 	});
-	img.src = "http://images.nypl.org/index.php?id="+id+"&t=w";
+	img.src = "http://images.nypl.org/index.php?id="+stereographs[index]+"&t=w";
 	//img.src = "img/demo"+num+".jpg";
 }
 
@@ -452,18 +454,18 @@ window.onload = init;
 	</div>
 	<div id="nav">
 		<!-- <input type="button" value="ROTATE" id="btn-rotate" onclick="rotate();" /> -->
-		<input type="button" value="photo 1" id="btn-ph1" onclick="loadPhoto('G92F111_027ZF');" />
-		<input type="button" value="photo 2" id="btn-ph2" onclick="loadPhoto('TH-04569');" />
-		<input type="button" value="photo 3" id="btn-ph3" onclick="loadPhoto('G92F111_044ZF');" />
-		<input type="button" value="photo 4" id="btn-ph4" onclick="loadPhoto('G92F111_051ZF');" />
-		<input type="button" value="photo 5" id="btn-ph5" onclick="loadPhoto('G92F148_003F');" />
-		<input type="button" value="photo 6" id="btn-ph6" onclick="loadPhoto('G90F151_006F');" />
-		<input type="button" value="photo 7" id="btn-ph7" onclick="loadPhoto('G90F151_009F');" />
-		<input type="button" value="photo 8" id="btn-ph8" onclick="loadPhoto('G89F192_023F');" />
-		<input type="button" value="photo 9" id="btn-ph9" onclick="loadPhoto('G92F111_009F');" />
-		<input type="button" value="photo 10" id="btn-ph10" onclick="loadPhoto('G92F111_008F');" />
-		<input type="button" value="photo 11" id="btn-ph11" onclick="loadPhoto('1531160');" />
-		<input type="button" value="photo 12" id="btn-ph12" onclick="loadPhoto('1531158');" />
+		<input type="button" value="photo 1" id="btn-ph1" onclick="loadPhoto(0);" />
+		<input type="button" value="photo 2" id="btn-ph2" onclick="loadPhoto(1);" />
+		<input type="button" value="photo 3" id="btn-ph3" onclick="loadPhoto(2);" />
+		<input type="button" value="photo 4" id="btn-ph4" onclick="loadPhoto(3);" />
+		<input type="button" value="photo 5" id="btn-ph5" onclick="loadPhoto(4);" />
+		<input type="button" value="photo 6" id="btn-ph6" onclick="loadPhoto(5);" />
+		<input type="button" value="photo 7" id="btn-ph7" onclick="loadPhoto(6);" />
+		<input type="button" value="photo 8" id="btn-ph8" onclick="loadPhoto(7);" />
+		<input type="button" value="photo 9" id="btn-ph9" onclick="loadPhoto(8);" />
+		<input type="button" value="photo 10" id="btn-ph10" onclick="loadPhoto(9);" />
+		<input type="button" value="photo 11" id="btn-ph11" onclick="loadPhoto(10);" />
+		<input type="button" value="photo 12" id="btn-ph12" onclick="loadPhoto(11);" />
 	</div>
 	<div class="canvasHolder">
 		<canvas id="testCanvas" width="900" height="600"></canvas>
