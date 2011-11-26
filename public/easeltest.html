@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>easel test</title>
+
+<link href="/css/style.css" rel="stylesheet" type="text/css" />
+
+<!-- Import EaselJS Framework -->
+<script src="/js/src/easeljs/utils/UID.js"></script>
+<script src="/js/src/easeljs/geom/Matrix2D.js"></script>
+<script src="/js/src/easeljs/events/MouseEvent.js"></script>
+<script src="/js/src/easeljs/display/DisplayObject.js"></script>
+<script src="/js/src/easeljs/display/Container.js"></script>
+<script src="/js/src/easeljs/display/Bitmap.js"></script>
+<script src="/js/src/easeljs/display/Graphics.js"></script>
+<script src="/js/src/easeljs/display/Shape.js"></script>
+<script src="/js/src/easeljs/display/Stage.js"></script>
+<script src="/js/src/easeljs/utils/Ticker.js"></script>
+<script src="/js/src/easeljs/geom/Point.js"></script>
+<script src="/js/src/easeljs/ui/Touch.js"></script>
+<!-- End EaselJS Imports -->
+
+<script>
+var canvas;
+var stage;
+var bmp;
+
+// interface elements
+var sq1;
+var sq2;
+
+// square positions
+var sq1x = 0;
+var sq1y = 0;
+var sq2x = 0;
+var sq2y = 0;
+
+var THICK = 2;
+var COLOR = "#fff";
+var FILL = "#000";
+var FILLALPHA = "rgba(0,0,0,0.5)";
+
+var img = new Image();
+var update = true;
+
+function init() {
+	//find canvas and load images, wait for last image to load
+	canvas = document.getElementById("testCanvas");
+	
+	stage = new Stage(canvas);
+	stage.enableMouseOver(10);
+
+	console.log("photo");
+	img.onload = (function () {
+		// place image in bitmap:
+		bmp = new Bitmap(img);
+		stage.addChild(bmp);
+
+		// starting points for squares
+		// using a number is not problematic
+		sq1x = 0;
+		sq1y = 0;
+		// ISSUE: accessing img.x makes the square invisible in Firefox 8 (undefined value crash?) 
+		sq2x = img.x + (img.width / 2);
+		sq2y = (img.height / 2) - (320 / 2);
+		
+		// the squares
+		sq1 = new Shape();
+		sq1.over = false;
+		// to control for mouse position when dragging
+		sq1.mx = 0;
+		sq1.my = 0;
+		stage.addChild(sq1);
+	
+		sq2 = new Shape();
+		sq2.over = false;
+		// to control for mouse position when dragging
+		sq2.mx = 0;
+		sq2.my = 0;
+		stage.addChild(sq2);
+				
+		// adding interaction
+		// handle movement for LEFT square
+		// wrapper function to provide scope for the event handlers:
+		(function(target) {
+			sq1.onPress = function(evt) {
+				// drag
+				// save mouse position for drag/drop not attached to reg point
+				sq1.mx = sq1x - stage.mouseX;
+				sq1.my = sq1y - stage.mouseY;
+				evt.onMouseMove = function(ev) {
+					sq1x = stage.mouseX + target.mx;
+					sq1y = stage.mouseY + target.my;
+					// indicate that the stage should be updated on the next tick:
+					update = true;
+				};
+			};
+			sq1.onMouseOver = function() {
+				target.over = true;
+				update = true;
+			};
+			sq1.onMouseOut = function() {
+				target.over = false;
+				update = true;
+			};
+		})(sq1);
+	
+		// handle movement for RIGHT square
+		// wrapper function to provide scope for the event handlers:
+		(function(target) {
+			sq2.onPress = function(evt) {
+				// drag
+				// save mouse position for drag/drop not attached to reg point
+				sq2.mx = sq2x - stage.mouseX;
+				sq2.my = sq2y - stage.mouseY;
+				evt.onMouseMove = function(ev) {
+					sq2x = stage.mouseX + target.mx;
+					sq2y = stage.mouseY + target.my;
+					// indicate that the stage should be updated on the next tick:
+					update = true;
+				};
+			};
+			sq2.onMouseOver = function() {
+				target.over = true;
+				update = true;
+			};
+			sq2.onMouseOut = function() {
+				target.over = false;
+				update = true;
+			};
+		})(sq2);
+	
+		
+		// we want to do some work before we update the canvas,
+		Ticker.addListener(window);
+
+		// end run
+		update = true;
+	});
+	img.src = "http://images.nypl.org/index.php?id=1531158&t=w";
+}
+
+function drawSquare(square,x,y) {
+	var g = square.graphics;
+	var CROSSSIZE = 20;
+	if (square.over) {
+		CROSSSIZE = 40;
+	}
+	g.clear();
+	g.setStrokeStyle(THICK, "round", "round");
+	g.beginStroke(COLOR);
+	g.beginFill(FILLALPHA);
+	g.drawRect(x,y,320,320);
+	g.moveTo(x-CROSSSIZE+320/2,y-CROSSSIZE+320/2).lineTo(x+CROSSSIZE+320/2,y+CROSSSIZE+320/2).moveTo(x+CROSSSIZE+320/2,y-CROSSSIZE+320/2).lineTo(x-CROSSSIZE+320/2,y+CROSSSIZE+320/2);
+}
+
+function tick() {
+	// this set makes it so the stage only re-renders when an event handler indicates a change has happened.
+	if (update) {
+		update = false; // only update once
+		drawSquare(sq1, sq1x, sq1y);
+		drawSquare(sq2, sq2x, sq2y);
+		stage.update();
+	}
+}
+
+window.onload = init;
+
+</script>
+</head>
+	
+<body>
+	<div class="description">
+		<p>
+			There should be a movable square on top of this bitmap.
+		</p>
+	</div>
+	<div class="canvasHolder">
+		<canvas id="testCanvas" width="900" height="600"></canvas>
+	</div>
+</body>
+</html>
