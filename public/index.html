@@ -159,6 +159,8 @@ function addBasicInteractivity() {
 			evt.onMouseMove = function(ev) {
 				if (stage.mouseX + target.mx + SIDE < vertx) {
 					sq1x = stage.mouseX + target.mx;
+				} else {
+					sq1x = vertx - SIDE - 1;
 				}
 				sq1y = stage.mouseY + target.my;
 				// move the other square in a mirror direction
@@ -191,6 +193,8 @@ function addBasicInteractivity() {
 			evt.onMouseMove = function(ev) {
 				if (stage.mouseX + target.mx > vertx) {
 					sq2x = stage.mouseX + target.mx;
+				} else {
+					sq2x = vertx + 1;
 				}
 				sq2y = stage.mouseY + target.my;
 				// move the other square in a mirror direction
