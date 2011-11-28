@@ -27,19 +27,31 @@ var stage;
 var bmp;
 
 // interface elements
+// squares
 var sq1;
 var sq2;
+// vertical separator
+var vert;
+// square handles
+var hn1;
+var hn2;
 
+// element vars
 // square positions
 var sq1x = 0;
 var sq1y = 0;
 var sq2x = 0;
 var sq2y = 0;
 
-// vertical separator
-var vert;
 var vertx = 0;
 var verty = 0;
+
+// square scaling
+var hsize = 300;
+var vsize = 360;
+var MINSIZE = 200;
+
+var HNSIZE = 10;
 
 var VERTWIDTH = 10;
 var VERTHEIGHT = 50;
@@ -47,7 +59,6 @@ var VERTHEIGHT = 50;
 var OFFSET = 50;
 var INSET = 10;
 
-var SIDE = 320;
 var THICK = 2;
 var COLOR = "#fff";
 var FILL = "#000";
@@ -78,10 +89,10 @@ function run() {
 	stage.addChild(bmp);
 	
 	// starting points for squares
-	sq1x = bmp.x + (img.width / 2) - SIDE - INSET;
-	sq1y = bmp.y + (img.height / 2) - (SIDE / 2);
+	sq1x = bmp.x + (img.width / 2) - hsize - INSET;
+	sq1y = bmp.y + (img.height / 2) - (vsize / 2);
 	sq2x = bmp.x + (img.width / 2) + INSET;
-	sq2y = bmp.y + (img.height / 2) - (SIDE / 2);
+	sq2y = bmp.y + (img.height / 2) - (vsize / 2);
 	
 	// starting point for vertical bar
 	vertx = bmp.x + (img.width / 2);
@@ -94,6 +105,15 @@ function run() {
 	sq1.mx = 0;
 	sq1.my = 0;
 	stage.addChildAt(sq1,1);
+	// handle
+	hn1 = new Shape();
+	hn1.over = false;
+	// to control for mouse position when dragging
+	hn1.mx = 0;
+	hn1.my = 0;
+	hn1.sx = 0;
+	hn1.sx = 0;
+	stage.addChild(hn1);
 	
 	sq2 = new Shape();
 	sq2.over = false;
@@ -101,6 +121,15 @@ function run() {
 	sq2.mx = 0;
 	sq2.my = 0;
 	stage.addChildAt(sq2,1);
+	// handle
+	hn2 = new Shape();
+	hn2.over = false;
+	// to control for mouse position when dragging
+	hn2.mx = 0;
+	hn2.my = 0;
+	hn2.sx = 0;
+	hn2.sy = 0;
+	stage.addChild(hn2);
 	
 	// vertical handle
 	vert = new Shape();
@@ -157,15 +186,15 @@ function addBasicInteractivity() {
 			sq1.my = sq1y - stage.mouseY;
 			var d = vertx - sq1x;
 			evt.onMouseMove = function(ev) {
-				if (stage.mouseX + target.mx + SIDE < vertx) {
+				if (stage.mouseX + target.mx + hsize < vertx) {
 					sq1x = stage.mouseX + target.mx;
 				} else {
-					sq1x = vertx - SIDE - 1;
+					sq1x = vertx - hsize - 1;
 				}
 				sq1y = stage.mouseY + target.my;
 				// move the other square in a mirror direction
 				d = vertx - sq1x;
-				sq2x = vertx + d - SIDE;
+				sq2x = vertx + d - hsize;
 				sq2y = sq1y;
 				// indicate that the stage should be updated on the next tick:
 				update = true;
@@ -199,7 +228,7 @@ function addBasicInteractivity() {
 				sq2y = stage.mouseY + target.my;
 				// move the other square in a mirror direction
 				d = vertx - sq2x;
-				sq1x = vertx + d - SIDE;
+				sq1x = vertx + d - hsize;
 				sq1y = sq2y;
 				// indicate that the stage should be updated on the next tick:
 				update = true;
@@ -214,6 +243,76 @@ function addBasicInteractivity() {
 			update = true;
 		};
 	})(sq2);
+
+	// handle resizing TOP LEFT
+	// wrapper function to provide scope for the event handlers:
+	(function(target) {
+		hn1.onPress = function(evt) {
+			// drag
+			// save mouse position for future reference
+			hn1.mx = stage.mouseX;
+			hn1.my = stage.mouseY;
+			hn1.sx = hsize;
+			hn1.sy = vsize;
+			evt.onMouseMove = function(ev) {
+				if (stage.mouseX + MINSIZE < vertx) {
+					hsize = target.sx + (hn1.mx - stage.mouseX);
+					sq1x = stage.mouseX;
+					sq2x = vertx + vertx - sq1x - hsize;
+				}
+				if (stage.mouseY + MINSIZE < bmp.y + img.height) {
+					vsize = target.sy + (hn1.my - stage.mouseY);
+					sq1y = stage.mouseY;
+					sq2y = sq1y;
+				}
+				// indicate that the stage should be updated on the next tick:
+				update = true;
+			};
+		};
+		hn1.onMouseOver = function() {
+			target.over = true;
+			update = true;
+		};
+		hn1.onMouseOut = function() {
+			target.over = false;
+			update = true;
+		};
+	})(hn1);
+
+	// handle resizing TOP RIGHT
+	// wrapper function to provide scope for the event handlers:
+	(function(target) {
+		hn2.onPress = function(evt) {
+			// drag
+			// save mouse position for future reference
+			hn2.mx = stage.mouseX;
+			hn2.my = stage.mouseY;
+			hn2.sx = hsize;
+			hn2.sy = vsize;
+			evt.onMouseMove = function(ev) {
+				if (stage.mouseX - MINSIZE > vertx) {
+					hsize = stage.mouseX - sq2x;
+					sq2x = stage.mouseX - hsize;
+					sq1x = vertx + vertx - sq2x - hsize;
+				}
+				if (stage.mouseY + MINSIZE < bmp.y + img.height) {
+					vsize = target.sy + (hn2.my - stage.mouseY);
+					sq2y = stage.mouseY;
+					sq1y = sq2y;
+				}
+				// indicate that the stage should be updated on the next tick:
+				update = true;
+			};
+		};
+		hn2.onMouseOver = function() {
+			target.over = true;
+			update = true;
+		};
+		hn2.onMouseOut = function() {
+			target.over = false;
+			update = true;
+		};
+	})(hn2);
 }
 
 function draw() {
@@ -238,6 +337,7 @@ function drawVertical() {
 
 function drawSquare(square,x,y) {
 	var g = square.graphics;
+	var g2;
 	var CROSSSIZE = INSET;
 	if (square.over) {
 		CROSSSIZE = INSET*2;
@@ -246,8 +346,33 @@ function drawSquare(square,x,y) {
 	g.setStrokeStyle(THICK, "round", "round");
 	g.beginStroke(COLOR);
 	g.beginFill(FILLALPHA);
-	g.drawRect(x,y,SIDE,SIDE);
-	g.moveTo(x-CROSSSIZE+SIDE/2,y-CROSSSIZE+SIDE/2).lineTo(x+CROSSSIZE+SIDE/2,y+CROSSSIZE+SIDE/2).moveTo(x+CROSSSIZE+SIDE/2,y-CROSSSIZE+SIDE/2).lineTo(x-CROSSSIZE+SIDE/2,y+CROSSSIZE+SIDE/2);
+	g.drawRect(x,y,hsize,vsize);
+	g.moveTo(x-CROSSSIZE+hsize/2,y-CROSSSIZE+vsize/2).lineTo(x+CROSSSIZE+hsize/2,y+CROSSSIZE+vsize/2).moveTo(x+CROSSSIZE+hsize/2,y-CROSSSIZE+vsize/2).lineTo(x-CROSSSIZE+hsize/2,y+CROSSSIZE+vsize/2);
+	if (square==sq1) {
+		// place top left
+		g2 = hn1.graphics;
+		g2.clear();
+		g2.setStrokeStyle(THICK, "round", "round");
+		g2.beginStroke(COLOR);
+		g2.beginFill(FILL);
+		if (hn1.over) {
+			// rollover for handle
+			g2.beginFill(COLOR);
+		}
+		g2.drawRect(x-(HNSIZE/2),y-(HNSIZE/2),HNSIZE,HNSIZE);
+	} else {
+		// place top right
+		g2 = hn2.graphics;
+		g2.clear();
+		g2.setStrokeStyle(THICK, "round", "round");
+		g2.beginStroke(COLOR);
+		g2.beginFill(FILL);
+		if (hn2.over) {
+			// rollover for handle
+			g2.beginFill(COLOR);
+		}
+		g2.drawRect(x+hsize-(HNSIZE/2),y-(HNSIZE/2),HNSIZE,HNSIZE);
+	}
 }
 
 function tick() {
