@@ -51,6 +51,12 @@ var hsize = 300;
 var vsize = 360;
 var MINSIZE = 200;
 
+// animation preview tick and speed
+var now = 0;
+var lasttick = 0;
+var speed = 75; // milliseconds
+var frame = 1;
+
 var HNSIZE = 10;
 
 var VERTWIDTH = 10;
@@ -81,6 +87,9 @@ function init() {
 }
 
 function run() {
+	// init animation timer
+	lasttick = new Date().getTime();
+	
 	// place image in bitmap:
 	bmp = new Bitmap(img);
 	bmp.x = OFFSET;
@@ -380,7 +389,33 @@ function tick() {
 	if (update) {
 		update = false; // only update once
 		draw();
+		updatePreview();
 		stage.update();
+	}
+	animatePreview();
+}
+
+function updatePreview() {
+	var p = document.getElementById("preview");
+	console.log("p:"+p+" w:"+hsize+" h:"+vsize);
+	p.style.width = hsize + "px";
+	p.style.height = vsize + "px";
+}
+
+function animatePreview() {
+	now = new Date().getTime();
+	if (now - lasttick >= speed) {
+		lasttick = now;
+		var p = document.getElementById("preview");
+		if (frame==1) {
+			// left
+			p.style.backgroundPosition = (-1*sq1x+OFFSET) + "px " + (-1*sq1y+OFFSET) + "px";
+			frame = 2;
+		} else {
+			// right
+			p.style.backgroundPosition = (-1*sq2x+OFFSET) + "px " + (-1*sq2y+OFFSET) + "px";
+			frame = 1;
+		}
 	}
 }
 
@@ -393,7 +428,10 @@ function loadPhoto(index) {
 		}
 		update = true;
 	});
-	img.src = "http://images.nypl.org/index.php?id="+stereographs[index]+"&t=w";
+	var url = "http://images.nypl.org/index.php?id="+stereographs[index]+"&t=w";
+	img.src = url;
+	var p = document.getElementById("preview");
+	p.style.background = "url('"+url+"') no-repeat -10000px -10000px";
 }
 
 window.onload = init;
@@ -427,5 +465,6 @@ window.onload = init;
 	<div class="canvasHolder">
 		<canvas id="testCanvas" width="900" height="600"></canvas>
 	</div>
+	<div id="preview"></div>
 </body>
 </html>

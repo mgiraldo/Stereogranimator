@@ -245,7 +245,14 @@ strong {
 	color: #FFF;
 }
 
-
+#preview {
+	position: absolute;
+	left: 930px;
+	top: 50px;
+	width: 20px;
+	height: 20px;
+	border: 1px solid #fff;
+}
 
 
 
