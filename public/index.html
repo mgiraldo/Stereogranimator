@@ -434,6 +434,10 @@ function loadPhoto(index) {
 	p.style.background = "url('"+url+"') no-repeat -10000px -10000px";
 }
 
+function changeSpeed() {
+	speed = document.getElementById("speed").value;
+}
+
 window.onload = init;
 
 </script>
@@ -448,6 +452,11 @@ window.onload = init;
 		</ol>
 	</div>
 	<div id="nav">
+		<select id="speed" onchange="changeSpeed();">
+			<option value="300">Slow</option>
+			<option value="150">Medium</option>
+			<option value="75" selected="selected">Fast</option>
+		</select><br />
 		<!-- <input type="button" value="ROTATE" id="btn-rotate" onclick="rotate();" /> -->
 		<input type="button" value="photo 1" id="btn-ph1" onclick="loadPhoto(0);" />
 		<input type="button" value="photo 2" id="btn-ph2" onclick="loadPhoto(1);" />
