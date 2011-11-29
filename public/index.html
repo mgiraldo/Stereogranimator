@@ -409,11 +409,11 @@ function animatePreview() {
 		var p = document.getElementById("preview");
 		if (frame==1) {
 			// left
-			p.style.backgroundPosition = (-1*sq1x+OFFSET) + "px " + (-1*sq1y+OFFSET) + "px";
+			p.style.backgroundPosition = ((-1*sq1x)+OFFSET) + "px " + ((-1*sq1y)+OFFSET) + "px";
 			frame = 2;
 		} else {
 			// right
-			p.style.backgroundPosition = (-1*sq2x+OFFSET) + "px " + (-1*sq2y+OFFSET) + "px";
+			p.style.backgroundPosition = ((-1*sq2x)+OFFSET) + "px " + ((-1*sq2y)+OFFSET) + "px";
 			frame = 1;
 		}
 	}
@@ -446,17 +446,12 @@ window.onload = init;
 <body>
 	<div class="description">
 		<ol>
-			<li>Move the divider line so that it coincides with the middle of the stereograph.</li>
-			<li>Move the rectangles so that they cover each side of the photo.</li>
-			<!-- <li>Press ANIMATE.</li> -->
+			<li>Move the DIVIDER line so that it coincides with the middle of the stereograph.</li>
+			<li>MOVE AND RESIZE the rectangles so that the resulting animation preview is pleasant for you.</li>
+			<li>Select the desired animation SPEED.</li>
 		</ol>
 	</div>
 	<div id="nav">
-		Animation speed: <select id="speed" onchange="changeSpeed();">
-			<option value="300">Slow</option>
-			<option value="150">Medium</option>
-			<option value="75" selected="selected">Fast</option>
-		</select><br />
 		<!-- <input type="button" value="ROTATE" id="btn-rotate" onclick="rotate();" /> -->
 		<input type="button" value="photo 1" id="btn-ph1" onclick="loadPhoto(0);" />
 		<input type="button" value="photo 2" id="btn-ph2" onclick="loadPhoto(1);" />
@@ -470,6 +465,11 @@ window.onload = init;
 		<input type="button" value="photo 10" id="btn-ph10" onclick="loadPhoto(9);" />
 		<input type="button" value="photo 11" id="btn-ph11" onclick="loadPhoto(10);" />
 		<input type="button" value="photo 12" id="btn-ph12" onclick="loadPhoto(11);" />
+		<br />Animation speed: <select id="speed" onchange="changeSpeed();">
+			<option value="300">Slow</option>
+			<option value="150">Medium</option>
+			<option value="75" selected="selected">Fast</option>
+		</select>
 	</div>
 	<div class="canvasHolder">
 		<canvas id="testCanvas" width="900" height="600"></canvas>
