@@ -84,20 +84,18 @@ class AnimationsController < ApplicationController
     @animation.filename = Digest::SHA1.hexdigest('nyplsalt' + Time.now.to_s) + '.gif'
     
     # do some image magick
-    fr1url = "#{Rails.public_path}/images/fr1.gif"
-    fr2url = "#{Rails.public_path}/images/fr2.gif"
-    
     im = Magick::Image.read(@animation.url).first
     
     fr1 = im.crop(@animation.x1,@animation.y1,@animation.width,@animation.height,true)
-    fr1.write(fr1url)
     
     fr2 = im.crop(@animation.x2,@animation.y2,@animation.width,@animation.height,true)
-    fr2.write(fr2url)
     
-    anim = Magick::ImageList.new(fr1url,fr2url)
+    anim = Magick::ImageList.new
+    anim.from_blob(fr1.to_blob)
+    anim.from_blob(fr2.to_blob)
     anim.delay = @animation.delay
     anim.iterations = 0
+    @animation.filedata = anim.to_blob 
     anim.write("#{Rails.public_path}/images/" + @animation.filename)
     
     respond_to do |format|

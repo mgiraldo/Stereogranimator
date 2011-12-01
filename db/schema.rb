@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111130232920) do
+ActiveRecord::Schema.define(:version => 20111201073746) do
 
   create_table "animations", :force => true do |t|
     t.string   "creator"
@@ -21,10 +21,11 @@ ActiveRecord::Schema.define(:version => 20111130232920) do
     t.integer  "y1"
     t.integer  "x2"
     t.integer  "y2"
+    t.integer  "delay"
     t.string   "filename"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "delay"
+    t.binary   "filedata"
   end
 
 end
