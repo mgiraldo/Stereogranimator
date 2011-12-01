@@ -87,16 +87,17 @@ class AnimationsController < ApplicationController
     im = Magick::Image.read(@animation.url).first
     
     fr1 = im.crop(@animation.x1,@animation.y1,@animation.width,@animation.height,true)
-    
+    str1 = fr1.to_blob
     fr2 = im.crop(@animation.x2,@animation.y2,@animation.width,@animation.height,true)
+    str2 = fr2.to_blob
     
     anim = Magick::ImageList.new
-    anim.from_blob(fr1.to_blob)
-    anim.from_blob(fr2.to_blob)
+    anim.from_blob(str1)
+    anim.from_blob(str2)
     anim.delay = @animation.delay
     anim.iterations = 0
-    #@animation.filedata = anim.to_blob 
-    anim.write("#{Rails.public_path}/images/" + @animation.filename)
+    #anim.write("#{Rails.public_path}/images/" + @animation.filename)
+    @animation.filedata = str1 
     
     respond_to do |format|
       if @animation.save
