@@ -1,0 +1,50 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Creator:</b>
+  <%= @animation.creator %>
+</p>
+
+<p>
+  <b>Digitalid:</b>
+  <%= @animation.digitalid %>
+</p>
+
+<p>
+  <b>Width:</b>
+  <%= @animation.width %>
+</p>
+
+<p>
+  <b>Height:</b>
+  <%= @animation.height %>
+</p>
+
+<p>
+  <b>X1:</b>
+  <%= @animation.x1 %>
+</p>
+
+<p>
+  <b>Y1:</b>
+  <%= @animation.y1 %>
+</p>
+
+<p>
+  <b>X2:</b>
+  <%= @animation.x2 %>
+</p>
+
+<p>
+  <b>Y2:</b>
+  <%= @animation.y2 %>
+</p>
+
+<p>
+  <b>Filename:</b>
+  <%= @animation.filename %>
+</p>
+
+
+<%= link_to 'Edit', edit_animation_path(@animation) %> |
+<%= link_to 'Back', animations_path %>

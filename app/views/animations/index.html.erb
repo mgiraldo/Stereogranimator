@@ -1,0 +1,39 @@
+<h1>Listing animations</h1>
+
+<table>
+  <tr>
+    <th>Creator</th>
+    <th>Digitalid</th>
+    <th>Width</th>
+    <th>Height</th>
+    <th>X1</th>
+    <th>Y1</th>
+    <th>X2</th>
+    <th>Y2</th>
+    <th>Filename</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @animations.each do |animation| %>
+  <tr>
+    <td><%= animation.creator %></td>
+    <td><%= animation.digitalid %></td>
+    <td><%= animation.width %></td>
+    <td><%= animation.height %></td>
+    <td><%= animation.x1 %></td>
+    <td><%= animation.y1 %></td>
+    <td><%= animation.x2 %></td>
+    <td><%= animation.y2 %></td>
+    <td><%= animation.filename %></td>
+    <td><%= link_to 'Show', animation %></td>
+    <td><%= link_to 'Edit', edit_animation_path(animation) %></td>
+    <td><%= link_to 'Destroy', animation, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Animation', new_animation_path %>

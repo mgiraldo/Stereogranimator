@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Stereogranimator</title>
+
+<%= stylesheet_link_tag "/css/style.css" %>
+
+<!-- Import EaselJS Framework -->
+<%= javascript_include_tag "/js/src/easeljs/utils/UID.js" %>
+<%= javascript_include_tag "/js/src/easeljs/geom/Matrix2D.js" %>
+<%= javascript_include_tag "/js/src/easeljs/events/MouseEvent.js" %>
+<%= javascript_include_tag "/js/src/easeljs/display/DisplayObject.js" %>
+<%= javascript_include_tag "/js/src/easeljs/display/Container.js" %>
+<%= javascript_include_tag "/js/src/easeljs/display/Bitmap.js" %>
+<%= javascript_include_tag "/js/src/easeljs/display/Graphics.js" %>
+<%= javascript_include_tag "/js/src/easeljs/display/Shape.js" %>
+<%= javascript_include_tag "/js/src/easeljs/display/Stage.js" %>
+<%= javascript_include_tag "/js/src/easeljs/utils/Ticker.js" %>
+<%= javascript_include_tag "/js/src/easeljs/geom/Point.js" %>
+<%= javascript_include_tag "/js/src/easeljs/ui/Touch.js" %>
+<!-- End EaselJS Imports -->
+
+<!-- NYPL JS -->
+<%= javascript_include_tag "/js/stereogranimator.js" %>
+
+<!-- APP JS -->
+<%= javascript_include_tag "application" %>
+<%= csrf_meta_tags %>
+
+<script>
+
+window.onload = init;
+
+</script>
+
+</head>
+	
+<body>
+<%= form_for(@animation, :remote => true) do |f| %>
+	<div class="description">
+		<ol>
+			<li>Move the DIVIDER line so that it coincides with the middle of the stereograph.</li>
+			<li>MOVE AND RESIZE the rectangles so that the resulting animation preview is pleasant for you.</li>
+			<li>Select the desired animation SPEED.</li>
+		</ol>
+	</div>
+	<div id="nav">
+		<input type="button" value="photo 1" id="btn-ph1" onclick="loadPhoto(0);" />
+		<input type="button" value="photo 2" id="btn-ph2" onclick="loadPhoto(1);" />
+		<input type="button" value="photo 3" id="btn-ph3" onclick="loadPhoto(2);" />
+		<input type="button" value="photo 4" id="btn-ph4" onclick="loadPhoto(3);" />
+		<input type="button" value="photo 5" id="btn-ph5" onclick="loadPhoto(4);" />
+		<input type="button" value="photo 6" id="btn-ph6" onclick="loadPhoto(5);" />
+		<input type="button" value="photo 7" id="btn-ph7" onclick="loadPhoto(6);" />
+		<input type="button" value="photo 8" id="btn-ph8" onclick="loadPhoto(7);" />
+		<input type="button" value="photo 9" id="btn-ph9" onclick="loadPhoto(8);" />
+		<input type="button" value="photo 10" id="btn-ph10" onclick="loadPhoto(9);" />
+		<input type="button" value="photo 11" id="btn-ph11" onclick="loadPhoto(10);" />
+		<input type="button" value="photo 12" id="btn-ph12" onclick="loadPhoto(11);" />
+		<br />
+		Animation speed: <select id="speed" onchange="changeSpeed();">
+			<option value="30">Slow</option>
+			<option value="15">Medium</option>
+			<option value="8" selected="selected">Fast</option>
+		</select>
+		<br />
+		<input type="button" value="GENERATE" id="btn-generate" />
+	</div>
+	<div class="canvasHolder">
+		<canvas id="testCanvas" width="900" height="600"></canvas>
+	</div>
+	<div id="preview"></div>
+	<div id="result">
+		This is the gif (only works when you press GENERATE): <br />
+		<img id="the_result" />
+	</div>
+<% end %>
+
+</body>
+</html>

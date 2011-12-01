@@ -1,0 +1,53 @@
+<%= form_for(@animation) do |f| %>
+  <% if @animation.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@animation.errors.count, "error") %> prohibited this animation from being saved:</h2>
+
+      <ul>
+      <% @animation.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :creator %><br />
+    <%= f.text_field :creator %>
+  </div>
+  <div class="field">
+    <%= f.label :digitalid %><br />
+    <%= f.text_field :digitalid %>
+  </div>
+  <div class="field">
+    <%= f.label :width %><br />
+    <%= f.number_field :width %>
+  </div>
+  <div class="field">
+    <%= f.label :height %><br />
+    <%= f.number_field :height %>
+  </div>
+  <div class="field">
+    <%= f.label :x1 %><br />
+    <%= f.number_field :x1 %>
+  </div>
+  <div class="field">
+    <%= f.label :y1 %><br />
+    <%= f.number_field :y1 %>
+  </div>
+  <div class="field">
+    <%= f.label :x2 %><br />
+    <%= f.number_field :x2 %>
+  </div>
+  <div class="field">
+    <%= f.label :y2 %><br />
+    <%= f.number_field :y2 %>
+  </div>
+  <div class="field">
+    <%= f.label :filename %><br />
+    <%= f.text_field :filename %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

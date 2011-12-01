@@ -254,7 +254,12 @@ strong {
 	border: 1px solid #fff;
 }
 
-
+#result {
+	position: absolute;
+	left: 930px;
+	top: 200px;
+	border: 1px solid #fff;
+}
 
 
 
