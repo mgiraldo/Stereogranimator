@@ -95,7 +95,7 @@ class AnimationsController < ApplicationController
     anim.from_blob(fr2.to_blob)
     anim.delay = @animation.delay
     anim.iterations = 0
-    @animation.filedata = anim.to_blob 
+    #@animation.filedata = anim.to_blob 
     anim.write("#{Rails.public_path}/images/" + @animation.filename)
     
     respond_to do |format|
