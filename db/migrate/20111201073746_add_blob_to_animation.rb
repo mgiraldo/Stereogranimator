@@ -1,6 +1,6 @@
 class AddBlobToAnimation < ActiveRecord::Migration
   def up
-    add_column :animations, :filedata, :binary, :limit => 10.megabyte
+    add_column :animations, :filedata, :binary
   end
   
   def down
