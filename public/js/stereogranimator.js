@@ -427,7 +427,7 @@ function generate() {
 		dataType: 'json',
 		data: null,
 		success: function(data) {
-			window.location.href = "http://s3.amazonaws.com/stereogranimator/"+data.filename;
+			window.location.href = data.aws_url;
 		},
 		statusCode: {
 		  404: function() {
