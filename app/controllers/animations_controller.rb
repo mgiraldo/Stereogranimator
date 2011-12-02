@@ -87,26 +87,24 @@ class AnimationsController < ApplicationController
     im = Magick::Image.read(@animation.url).first
     
     fr1 = im.crop(@animation.x1,@animation.y1,@animation.width,@animation.height,true)
-    str1 = fr1.to_blob
     fr2 = im.crop(@animation.x2,@animation.y2,@animation.width,@animation.height,true)
-    str2 = fr2.to_blob
     
     list = Magick::ImageList.new
-    list.from_blob(str1)
-    list.from_blob(str2)
+    list << fr1
+    list << fr2
     list.delay = @animation.delay
     list.iterations = 0
     
     # gotta packet the file
-    anim = Magick::Image.new(@animation.width, @animation.height)
-    anim.format = "GIF"
-    list.write(anim)
+    #anim = Magick::Image.new(@animation.width, @animation.height)
+    #anim.format = "GIF"
+    list.write("#{Rails.root}/tmp/#{@animation.filename}.gif")
     
     # upload to Amazon S3
     s3 = AWS::S3.new
     bucket = s3.buckets['stereogranimator']
     obj = bucket.objects[@animation.filename]
-    obj.write(:single_request => true, :content_type  => 'image/gif', :data => anim)
+    obj.write(:file => "#{Rails.root}/tmp/#{@animation.filename}.gif")#(:single_request => true, :content_type  => 'image/gif', :data => anim)
     #list.write("#{Rails.public_path}/images/" + @animation.filename)
     
     respond_to do |format|
