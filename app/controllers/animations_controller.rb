@@ -81,7 +81,7 @@ class AnimationsController < ApplicationController
     @animation.creator = arr[8]
     
     # future filename
-    @animation.filename = Digest::SHA1.hexdigest('nyplsalt' + Time.now.to_s)
+    @animation.filename = Digest::SHA1.hexdigest('nyplsalt' + Time.now.to_s) + ".gif"
     
     # do some image magick
     im = Magick::Image.read(@animation.url).first
@@ -96,16 +96,13 @@ class AnimationsController < ApplicationController
     list.iterations = 0
     
     # gotta packet the file
-    #anim = Magick::Image.new(@animation.width, @animation.height)
-    #anim.format = "GIF"
-    list.write("#{Rails.root}/tmp/#{@animation.filename}.gif")
+    list.write("#{Rails.root}/tmp/#{@animation.filename}")
     
     # upload to Amazon S3
     s3 = AWS::S3.new
     bucket = s3.buckets['stereogranimator']
     obj = bucket.objects[@animation.filename]
-    obj.write(:file => "#{Rails.root}/tmp/#{@animation.filename}.gif")#(:single_request => true, :content_type  => 'image/gif', :data => anim)
-    #list.write("#{Rails.public_path}/images/" + @animation.filename)
+    obj.write(:file => "#{Rails.root}/tmp/#{@animation.filename}")
     
     respond_to do |format|
       if @animation.save
@@ -138,6 +135,13 @@ class AnimationsController < ApplicationController
   # DELETE /animations/1.json
   def destroy
     @animation = Animation.find(params[:id])
+    
+    # delete from Amazon S3
+    s3 = AWS::S3.new
+    bucket = s3.buckets['stereogranimator']
+    obj = bucket.objects[@animation.filename]
+    obj.delete()
+    
     @animation.destroy
 
     respond_to do |format|
