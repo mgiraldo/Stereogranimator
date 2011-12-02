@@ -429,8 +429,7 @@ function generate() {
 		data: null,
 		success: function(data) {
 			var i = document.getElementById("the_result");
-			i.src = "https://s3.amazonaws.com/stereogranimator/"+data.filename+"?AWSAccessKeyId=AKIAJ6SJPYWMPRYLTK3Q&Expires=1322847747&Signature=XjWk/dTrB4w9M4WrCqiXdn71uug%3D&x-amz-security-token=AQYGQXBwVGtuA0KhtcIv8x%2Bk1OWCuglyZMRZ9kG5Wn3yLpfQj/g77lo42HTcHZ%2BRWNAtPam4X/1cPqQU6WRHM7XoWfkAdoHo8jY330nVaB7EV6/R7bQWvztjREGUnnGbW8Te4MuhdGdu0ug439PeD7rZpPAIDc7ON%2Bnv%2B7nzHjewcTmzS%2Btg%2B/qdEUHcmYgEdYSxC3uiCms7pSwgeFxIfmUL/GVs1Mz6PL6e1nTedOgkqwX8UEgy7rGJEnVQZRzxXp6Cz8lZm6XSUCYbIjtT3Q5lnix0wsKA/z0ORIu9GRP/3UbdgVX38/kn9iLYpjkHQ1fLQGwySEG%2BNHfYhUJmIBumFXDcKzRBHw%3D%3D";
-			i.src = "/images/" + data.filename;
+			i.src = "http://s3.amazonaws.com/stereogranimator/"+data.filename;
 		}
 	});
 }

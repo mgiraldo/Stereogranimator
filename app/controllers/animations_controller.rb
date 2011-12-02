@@ -102,7 +102,7 @@ class AnimationsController < ApplicationController
     s3 = AWS::S3.new
     bucket = s3.buckets['stereogranimator']
     obj = bucket.objects[@animation.filename]
-    obj.write(:file => "#{Rails.root}/tmp/#{@animation.filename}")
+    obj.write(:file => "#{Rails.root}/tmp/#{@animation.filename}", :acl => :public_read, :metadata => { 'photo_from' => 'New York Public Library' })
     
     respond_to do |format|
       if @animation.save
