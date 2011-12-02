@@ -380,8 +380,6 @@ function updatePreview() {
 	console.log("p:"+p+" w:"+hsize+" h:"+vsize);
 	p.style.width = hsize + "px";
 	p.style.height = vsize + "px";
-	var d = document.getElementById("result");
-	d.style.top = (50 + vsize + 10) + "px";
 }
 
 function animatePreview() {
