@@ -427,6 +427,7 @@ function generate() {
 		dataType: 'json',
 		data: null,
 		success: function(data) {
+			//console.log(data);
 			window.location.href = data.aws_url;
 		},
 		statusCode: {
