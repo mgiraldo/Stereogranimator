@@ -81,7 +81,7 @@ class AnimationsController < ApplicationController
     @animation.creator = arr[8]
     
     # future filename
-    @animation.filename = Digest::SHA1.hexdigest('nyplsalt' + Time.now.to_s) + '.gif'
+    @animation.filename = Digest::SHA1.hexdigest('nyplsalt' + Time.now.to_s)
     
     # do some image magick
     im = Magick::Image.read(@animation.url).first
@@ -91,13 +91,23 @@ class AnimationsController < ApplicationController
     fr2 = im.crop(@animation.x2,@animation.y2,@animation.width,@animation.height,true)
     str2 = fr2.to_blob
     
-    anim = Magick::ImageList.new
-    anim.from_blob(str1)
-    anim.from_blob(str2)
-    anim.delay = @animation.delay
-    anim.iterations = 0
-    #anim.write("#{Rails.public_path}/images/" + @animation.filename)
-    @animation.filedata = str1 
+    list = Magick::ImageList.new
+    list.from_blob(str1)
+    list.from_blob(str2)
+    list.delay = @animation.delay
+    list.iterations = 0
+    
+    # gotta packet the file
+    anim = Magick::Image.new(@animation.width, @animation.height)
+    anim.format = "GIF"
+    list.write(anim)
+    
+    # upload to Amazon S3
+    s3 = AWS::S3.new
+    bucket = s3.buckets['stereogranimator']
+    obj = bucket.objects[@animation.filename]
+    obj.write(:single_request => true, :content_type  => 'image/gif', :data => anim)
+    #list.write("#{Rails.public_path}/images/" + @animation.filename)
     
     respond_to do |format|
       if @animation.save
