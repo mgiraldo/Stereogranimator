@@ -423,13 +423,23 @@ function changeSpeed() {
 
 function generate() {
 	console.log("generating...");
+	document.getElementById("btn-generate").disabled = true;
 	$.ajax({
 		url: "/animations/createJson/"+(sq1x-OFFSET)+"/"+(sq1y-OFFSET)+"/"+(sq2x-OFFSET)+"/"+(sq2y-OFFSET)+"/"+hsize+"/"+vsize+"/"+speed+"/"+stereographs[currentindex]+"/mga.json",
 		dataType: 'json',
 		data: null,
 		success: function(data) {
-			var i = document.getElementById("the_result");
-			i.src = "http://s3.amazonaws.com/stereogranimator/"+data.filename;
+			window.location.href = "http://s3.amazonaws.com/stereogranimator/"+data.filename;
+		},
+		statusCode: {
+		  404: function() {
+			alert('Photo not found error (404)');
+			document.getElementById("btn-generate").disabled = false;
+		  },
+		  500: function() {
+				alert('Internal server error (500)');
+				document.getElementById("btn-generate").disabled = false;
+		  }
 		}
 	});
 }
