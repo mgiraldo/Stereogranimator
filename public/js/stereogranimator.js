@@ -62,6 +62,7 @@ function init() {
 	
 	stage = new Stage(canvas);
 	stage.enableMouseOver(10);
+	Touch.enable(stage);
 
 	loadPhoto(currentindex);
 }
