@@ -19,6 +19,10 @@
 
 <script>
 var canvas;
+var basecanvas;
+var ctx3D;
+var ctxbase;
+
 var stage;
 var leftbmp;
 var rightbmp;
@@ -28,10 +32,16 @@ var rightimg = new Image();
 
 var leftimgdata;
 var rightimgdata;
+var leftimgdata_array;
+var rightimgdata_array
+
+// left = 0,255,255
+// right = 255,0,0
 
 function init() {
 	//find canvas and load images, wait for last image to load
 	canvas = document.getElementById("testCanvas");
+	basecanvas = document.getElementById("anaglyphCanvas");
 	
 	stage = new Stage(canvas);
 	
@@ -42,33 +52,49 @@ function init() {
 	  success: function(image){
 	    // Do something with the now local version of the image
 		// Set up the canvas
-	    var ctx = canvas.getContext('2d');
+	    ctx3D = canvas.getContext('2d');
+	    ctxbase = basecanvas.getContext('2d');
 	 
-	    // Set the canvas width and heigh to the same as the image
-	    $(canvas).attr('width', image.width);
-	    $(canvas).attr('height', image.height);
-	 
-	    // Draw the image on to the canvas
-	    ctx.drawImage(image, 0, 0, image.width, image.height);
-	 
+	    // Draw the image on to the BASE canvas
+	    ctxbase.drawImage(image, 0, 0, image.width, image.height);
+
+		// *** RIGHT IMAGE
 	    // Get the image data
-	    var image_data = ctx.getImageData(0, 0,  image.width, image.height);
-	    var image_data_array = image_data.data;
+	    rightimgdata = ctxbase.getImageData(10, 0,  image.width-10, image.height);
+	    rightimgdata_array = rightimgdata.data;
 	 
-	    // Invert every pixel
-	    for (var i = 0, j = image_data_array.length; i < j; i+=4) {
-	      image_data_array[i] = 255 - image_data_array[i];
-	      image_data_array[i+1] = 255 - image_data_array[i+1];
-	      image_data_array[i+2] = 255 - image_data_array[i+2];
+	    // Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
+	    for (var i = 0, j = rightimgdata_array.length; i < j; i+=4) {
+	      rightimgdata_array[i] = 255;
+	      rightimgdata_array[i+1] = 255 - [((255)*(255 - rightimgdata_array[i+1]))/255];
+	      rightimgdata_array[i+2] = 255 - [((255)*(255 - rightimgdata_array[i+2]))/255];
 	    }
 	 
 	    // Write the image data to the canvas
-	    ctx.putImageData(image_data, 0, 0);
-
+	    //ctx3D.putImageData(rightimgdata, 0, 0);
+		// *** END RIGHT IMAGE
+		
+	    // *** LEFT IMAGE
+		// Get the image data
+	    leftimgdata = ctxbase.getImageData(0, 0,  image.width-10, image.height);
+	    leftimgdata_array = leftimgdata.data;
+	 
+	    // Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
+		// Multiply blend = (Top Color) * (Bottom Color) /255
+	    for (var i = 0, j = leftimgdata_array.length; i < j; i+=4) {
+	      leftimgdata_array[i] = (255 - [((255)*(255 - leftimgdata_array[i]))/255]) * rightimgdata_array[i] / 255;
+	      leftimgdata_array[i+1] = (255) * rightimgdata_array[i+1] / 255;
+	      leftimgdata_array[i+2] = (255) * rightimgdata_array[i+2] / 255;
+	    }
+	 
+	    // Write the MULTIPLIED image data to the canvas
+	    ctx3D.putImageData(leftimgdata, 0, 0);
+		// *** END ALL IMAGES
+	
 	  },
 	  error: function(xhr, text_status){
 	    // Handle your error here
-	    console.log("Could not load left image");
+	    console.log("Could not load image");
 	  }
 	});
 /*
@@ -109,6 +135,7 @@ window.onload = init;
 	</div>
 	<div class="canvasHolder">
 		<canvas id="testCanvas" width="900" height="600"></canvas>
+		<canvas id="anaglyphCanvas" width="900" height="600"></canvas>
 	</div>
 </body>
 </html>
