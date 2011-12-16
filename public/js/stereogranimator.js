@@ -72,7 +72,7 @@ var stereographs = ['G92F111_027ZF','TH-04569','G92F111_044ZF','G92F111_051ZF','
 
 //for ipad
 var ua = navigator.userAgent;
-var isiPad = /iPad/i.test(ua) || /iPhone OS 3_1_2/i.test(ua) || /iPhone OS 3_2_2/i.test(ua);
+var isiPad = /iPad/i.test(ua) || /iPod/i.test(ua) || /iPhone/i.test(ua);
 var isdown = false;
 
 function init() {
