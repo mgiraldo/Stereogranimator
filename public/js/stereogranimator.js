@@ -448,33 +448,33 @@ function drawAnaglyph () {
 		resultcanvas.height = vsize;
 		
 		// *** RIGHT IMAGE
-	    // Get the image data
-	    rightimgdata = ctxbase.getImageData(sq1x-OFFSET, sq1y-OFFSET, hsize, vsize);
-	    rightimgdata_array = rightimgdata.data;
+		// Get the image data
+		rightimgdata = ctxbase.getImageData(sq1x-OFFSET, sq1y-OFFSET, hsize, vsize);
+		rightimgdata_array = rightimgdata.data;
 	 
-	    // Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
-	    for (var i = 0, j = rightimgdata_array.length; i < j; i+=4) {
-	      rightimgdata_array[i] = 255;
-	      rightimgdata_array[i+1] = 255 - [((255)*(255 - rightimgdata_array[i+1]))/255];
-	      rightimgdata_array[i+2] = 255 - [((255)*(255 - rightimgdata_array[i+2]))/255];
-	    }
+		// Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
+		for (var i = 0, j = rightimgdata_array.length; i < j; i+=4) {
+		  rightimgdata_array[i] = 255;
+		  rightimgdata_array[i+1] = 255 - [((255)*(255 - rightimgdata_array[i+1]))/255];
+		  rightimgdata_array[i+2] = 255 - [((255)*(255 - rightimgdata_array[i+2]))/255];
+		}
 		// *** END RIGHT IMAGE
 		
-	    // *** LEFT IMAGE
+		// *** LEFT IMAGE
 		// Get the image data
-	    leftimgdata = ctxbase.getImageData(sq2x-OFFSET, sq2y-OFFSET, hsize, vsize);
-	    leftimgdata_array = leftimgdata.data;
+		leftimgdata = ctxbase.getImageData(sq2x-OFFSET, sq2y-OFFSET, hsize, vsize);
+		leftimgdata_array = leftimgdata.data;
 	 
-	    // Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
+		// Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
 		// Multiply blend = (Top Color) * (Bottom Color) /255
-	    for (var i = 0, j = leftimgdata_array.length; i < j; i+=4) {
-	      leftimgdata_array[i] = (255 - [((255)*(255 - leftimgdata_array[i]))/255]) * rightimgdata_array[i] / 255;
-	      leftimgdata_array[i+1] = (255) * rightimgdata_array[i+1] / 255;
-	      leftimgdata_array[i+2] = (255) * rightimgdata_array[i+2] / 255;
-	    }
+		for (var i = 0, j = leftimgdata_array.length; i < j; i+=4) {
+		  leftimgdata_array[i] = (255 - [((255)*(255 - leftimgdata_array[i]))/255]) * rightimgdata_array[i] / 255;
+		  leftimgdata_array[i+1] = (255) * rightimgdata_array[i+1] / 255;
+		  leftimgdata_array[i+2] = (255) * rightimgdata_array[i+2] / 255;
+		}
 	 
-	    // Write the MULTIPLIED image data to the canvas
-	    ctx3D.putImageData(leftimgdata, 0, 0);
+		// Write the MULTIPLIED image data to the canvas
+		ctx3D.putImageData(leftimgdata, 0, 0);
 		// *** END ALL IMAGES
 	}
 }
@@ -500,11 +500,11 @@ function loadPhoto(index) {
 		  url: url,
 		  success: function(image){
 			// Set up the canvas
-		    ctx3D = resultcanvas.getContext('2d');
-		    ctxbase = processcanvas.getContext('2d');
+			ctx3D = resultcanvas.getContext('2d');
+			ctxbase = processcanvas.getContext('2d');
 			 
-		    // Draw the image on to the BASE canvas
-		    ctxbase.drawImage(image, 0, 0, image.width, image.height);
+			// Draw the image on to the BASE canvas
+			ctxbase.drawImage(image, 0, 0, image.width, image.height);
 		  },
 		  error: function(xhr, text_status){
 		    // Handle your error here
