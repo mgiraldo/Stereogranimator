@@ -454,9 +454,9 @@ function drawAnaglyph () {
 	
 		// Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
 		for (var i = 0, j = rightimgdata_array.length; i < j; i+=4) {
-		 rightimgdata_array[i] = 255;
-		 rightimgdata_array[i+1] = 255 - [((255)*(255 - rightimgdata_array[i+1]))/255];
-		 rightimgdata_array[i+2] = 255 - [((255)*(255 - rightimgdata_array[i+2]))/255];
+			rightimgdata_array[i] = 255;
+			rightimgdata_array[i+1] = 255 - [((255)*(255 - rightimgdata_array[i+1]))/255];
+			rightimgdata_array[i+2] = 255 - [((255)*(255 - rightimgdata_array[i+2]))/255];
 		}
 		// *** END RIGHT IMAGE
 		
@@ -468,9 +468,9 @@ function drawAnaglyph () {
 		// Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
 		// Multiply blend = (Top Color) * (Bottom Color) /255
 		for (var i = 0, j = leftimgdata_array.length; i < j; i+=4) {
-		 leftimgdata_array[i] = (255 - [((255)*(255 - leftimgdata_array[i]))/255]) * rightimgdata_array[i] / 255;
-		 leftimgdata_array[i+1] = (255) * rightimgdata_array[i+1] / 255;
-		 leftimgdata_array[i+2] = (255) * rightimgdata_array[i+2] / 255;
+			leftimgdata_array[i] = (255 - [((255)*(255 - leftimgdata_array[i]))/255]) * rightimgdata_array[i] / 255;
+			leftimgdata_array[i+1] = (255) * rightimgdata_array[i+1] / 255;
+			leftimgdata_array[i+2] = (255) * rightimgdata_array[i+2] / 255;
 		}
 	
 		// Write the MULTIPLIED image data to the canvas
