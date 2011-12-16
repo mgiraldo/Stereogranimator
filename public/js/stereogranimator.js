@@ -75,7 +75,7 @@ var stereographs = ['G92F111_027ZF','TH-04569','G92F111_044ZF','G92F111_051ZF','
 //for ipad
 var ua = navigator.userAgent;
 var isiPad = /iPad/i.test(ua) || /iPhone OS 3_1_2/i.test(ua) || /iPhone OS 3_2_2/i.test(ua);
-var ipadrefresh = 100; // time to wait for refreshes
+var ipadrefresh = 2000; // time to wait for refreshes
 
 function init() {
 	//find canvas and load images, wait for last image to load
@@ -439,7 +439,7 @@ function drawAnaglyph () {
 	document.getElementById("previewGIF").style.display = "none";
 	document.getElementById("previewAnaglyph").style.display = "block";
 	now = new Date().getTime();
-	if (!isiPad || (isIpad && (now - lasttick >= ipadrefresh * 10))) {
+	if (!isiPad || (isiPad && (now - lasttick >= ipadrefresh))) {
 		lasttick = now;
 		// left = 0,255,255
 		// right = 255,0,0
