@@ -219,12 +219,12 @@ function addBasicInteractivity() {
 				sq2y = sq1y;
 				// indicate that the stage should be updated on the next tick:
 				update = true;
-				// optimize for iPad
-				isdown = true;
-				evt.onMouseUp = function (ev) {
-					isdown = false;
-				}
 			};
+			// optimize for iPad
+			isdown = true;
+			evt.onMouseUp = function (ev) {
+				isdown = false;
+			}
 		};
 		sq1.onMouseOver = function() {
 			target.over = true;
@@ -258,12 +258,12 @@ function addBasicInteractivity() {
 				sq1y = sq2y;
 				// indicate that the stage should be updated on the next tick:
 				update = true;
-				// optimize for iPad
-				isdown = true;
-				evt.onMouseUp = function (ev) {
-					isdown = false;
-				}
 			};
+			// optimize for iPad
+			isdown = true;
+			evt.onMouseUp = function (ev) {
+				isdown = false;
+			}
 		};
 		sq2.onMouseOver = function() {
 			target.over = true;
@@ -298,12 +298,12 @@ function addBasicInteractivity() {
 				}
 				// indicate that the stage should be updated on the next tick:
 				update = true;
-				// optimize for iPad
-				isdown = true;
-				evt.onMouseUp = function (ev) {
-					isdown = false;
-				}
 			};
+			// optimize for iPad
+			isdown = true;
+			evt.onMouseUp = function (ev) {
+				isdown = false;
+			}
 		};
 		hn1.onMouseOver = function() {
 			target.over = true;
@@ -338,12 +338,12 @@ function addBasicInteractivity() {
 				}
 				// indicate that the stage should be updated on the next tick:
 				update = true;
-				// optimize for iPad
-				isdown = true;
-				evt.onMouseUp = function (ev) {
-					isdown = false;
-				}
 			};
+			// optimize for iPad
+			isdown = true;
+			evt.onMouseUp = function (ev) {
+				isdown = false;
+			}
 		};
 		hn2.onMouseOver = function() {
 			target.over = true;
