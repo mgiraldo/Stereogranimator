@@ -15,7 +15,6 @@
 <script src="/js/src/easeljs/display/Bitmap.js"></script>
 <script src="/js/src/easeljs/display/Stage.js"></script>
 <script src="/js/jquery.getimagedata.min.js"></script>
-<script src="/js/pixastic.custom.js"></script>
 
 <script>
 var canvas;
@@ -69,9 +68,6 @@ function init() {
 	      rightimgdata_array[i+1] = 255 - [((255)*(255 - rightimgdata_array[i+1]))/255];
 	      rightimgdata_array[i+2] = 255 - [((255)*(255 - rightimgdata_array[i+2]))/255];
 	    }
-	 
-	    // Write the image data to the canvas
-	    //ctx3D.putImageData(rightimgdata, 0, 0);
 		// *** END RIGHT IMAGE
 		
 	    // *** LEFT IMAGE
@@ -97,29 +93,6 @@ function init() {
 	    console.log("Could not load image");
 	  }
 	});
-/*
-	leftimg.onload = (function () {
-		// place image
-		leftbmp = new Bitmap(leftimg);
-		stage.addChild(leftbmp);
-		leftimgdata = canvas.getContext("2d").getImageData(0, 0, leftbmp.width, leftbmp.height);
-		
-		rightimg.onload = (function () {
-			rightbmp = new Bitmap(rightimg);
-			stage.addChild(rightbmp);
-			rightimgdata = canvas.getContext("2d").getImageData(0, 0, rightbmp.width, rightbmp.height);
-			Pixastic.process(leftbmp,"blend", {
-				amount: 1,
-				mode: "multiply",
-				image: rightbmp
-			});
-		});
-		rightimg.src = "http://images.nypl.org/index.php?id=G92F111_051ZF&t=w";
-		
-		stage.update();
-	});
-	leftimg.src = "http://images.nypl.org/index.php?id=1531158&t=w";
-*/
 }
 
 window.onload = init;

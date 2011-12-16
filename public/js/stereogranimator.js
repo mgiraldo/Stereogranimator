@@ -2,6 +2,24 @@ var canvas;
 var stage;
 var bmp;
 
+// anaglyph mode vars
+var processcanvas;
+var resultcanvas;
+var ctx3D;
+var ctxbase;
+
+var leftbmp;
+var rightbmp;
+
+var processimage;
+var leftimg;
+var rightimg;
+
+var leftimgdata;
+var rightimgdata;
+var leftimgdata_array;
+var rightimgdata_array
+
 // interface elements
 // squares
 var sq1;
@@ -49,6 +67,7 @@ var FILLALPHA = "rgba(0,0,0,0.5)";
 var img = new Image();
 var update = true;
 var first = true;
+var mode = "GIF";
 
 var currentindex = 0;
 
@@ -59,6 +78,9 @@ function init() {
 	canvas = document.getElementById("testCanvas");
 	
 	document.getElementById("btn-generate").onclick = generate;
+	
+	document.getElementById("toggle-gif").onclick = function(){mode="GIF";};
+	document.getElementById("toggle-ana").onclick = function(){mode="ANAGLYPH";};
 	
 	stage = new Stage(canvas);
 	stage.enableMouseOver(10);
@@ -329,15 +351,15 @@ function drawSquare(square,x,y) {
 	var g = square.graphics;
 	var g2;
 	var CROSSSIZE = INSET;
-	if (square.over) {
-		CROSSSIZE = INSET*2;
-	}
 	g.clear();
 	g.setStrokeStyle(THICK, "round", "round");
 	g.beginStroke(COLOR);
 	g.beginFill(FILLALPHA);
 	g.drawRect(x,y,hsize,vsize);
-	g.moveTo(x-CROSSSIZE+hsize/2,y-CROSSSIZE+vsize/2).lineTo(x+CROSSSIZE+hsize/2,y+CROSSSIZE+vsize/2).moveTo(x+CROSSSIZE+hsize/2,y-CROSSSIZE+vsize/2).lineTo(x-CROSSSIZE+hsize/2,y+CROSSSIZE+vsize/2);
+	if (square.over) {
+		CROSSSIZE = INSET*2;
+		g.moveTo(x-CROSSSIZE+hsize/2,y-CROSSSIZE+vsize/2).lineTo(x+CROSSSIZE+hsize/2,y+CROSSSIZE+vsize/2).moveTo(x+CROSSSIZE+hsize/2,y-CROSSSIZE+vsize/2).lineTo(x-CROSSSIZE+hsize/2,y+CROSSSIZE+vsize/2);
+	}
 	if (square==sq1) {
 		// place top left
 		g2 = hn1.graphics;
@@ -373,21 +395,30 @@ function tick() {
 		updatePreview();
 		stage.update();
 	}
-	animatePreview();
+	if (mode=="GIF") {
+		drawGIF();
+	} else {
+		drawAnaglyph();
+	}
 }
 
 function updatePreview() {
-	var p = document.getElementById("preview");
+	var p = document.getElementById("previewGIF");
 	console.log("p:"+p+" w:"+hsize+" h:"+vsize);
 	p.style.width = hsize + "px";
 	p.style.height = vsize + "px";
 }
 
-function animatePreview() {
+function drawGIF () {
+	// get rid of anaglyph canvas in preview
+	document.getElementById("previewGIF").style.display = "block";
+	document.getElementById("previewAnaglyph").style.display = "none";
+	
 	now = new Date().getTime();
 	if (now - lasttick >= speed * 10) {
 		lasttick = now;
-		var p = document.getElementById("preview");
+		var p = document.getElementById("previewGIF");
+		p.style.display = "block";
 		if (frame==1) {
 			// left
 			p.style.backgroundPosition = ((-1*sq1x)+OFFSET) + "px " + ((-1*sq1y)+OFFSET) + "px";
@@ -398,6 +429,62 @@ function animatePreview() {
 			frame = 1;
 		}
 	}
+}
+
+function drawAnaglyph () {
+	// get rid of background in preview
+	document.getElementById("previewGIF").style.display = "none";
+	document.getElementById("previewAnaglyph").style.display = "block";
+
+	// left = 0,255,255
+	// right = 255,0,0
+	leftimg = new Image();
+	rightimg = new Image();
+
+	//find canvases
+	processcanvas = document.getElementById("processCanvas");
+	resultcanvas = document.getElementById("resultCanvas");
+	
+	resultcanvas.width = hsize;
+	resultcanvas.height = vsize;
+	
+	// Set up the canvas
+    ctx3D = resultcanvas.getContext('2d');
+    ctxbase = processcanvas.getContext('2d');
+ 
+    // Draw the image on to the BASE canvas
+    ctxbase.drawImage(processimage, 0, 0, processimage.width, processimage.height);
+
+	// *** RIGHT IMAGE
+    // Get the image data
+    rightimgdata = ctxbase.getImageData(sq1x-OFFSET, sq1y-OFFSET, hsize, vsize);
+    rightimgdata_array = rightimgdata.data;
+ 
+    // Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
+    for (var i = 0, j = rightimgdata_array.length; i < j; i+=4) {
+      rightimgdata_array[i] = 255;
+      rightimgdata_array[i+1] = 255 - [((255)*(255 - rightimgdata_array[i+1]))/255];
+      rightimgdata_array[i+2] = 255 - [((255)*(255 - rightimgdata_array[i+2]))/255];
+    }
+	// *** END RIGHT IMAGE
+	
+    // *** LEFT IMAGE
+	// Get the image data
+    leftimgdata = ctxbase.getImageData(sq2x-OFFSET, sq2y-OFFSET, hsize, vsize);
+    leftimgdata_array = leftimgdata.data;
+ 
+    // Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
+	// Multiply blend = (Top Color) * (Bottom Color) /255
+    for (var i = 0, j = leftimgdata_array.length; i < j; i+=4) {
+      leftimgdata_array[i] = (255 - [((255)*(255 - leftimgdata_array[i]))/255]) * rightimgdata_array[i] / 255;
+      leftimgdata_array[i+1] = (255) * rightimgdata_array[i+1] / 255;
+      leftimgdata_array[i+2] = (255) * rightimgdata_array[i+2] / 255;
+    }
+ 
+    // Write the MULTIPLIED image data to the canvas
+    ctx3D.putImageData(leftimgdata, 0, 0);
+	// *** END ALL IMAGES
+
 }
 
 function loadPhoto(index) {
@@ -412,8 +499,21 @@ function loadPhoto(index) {
 	});
 	var url = "http://images.nypl.org/index.php?id="+stereographs[index]+"&t=w";
 	img.src = url;
-	var p = document.getElementById("preview");
+	var p = document.getElementById("previewGIF");
 	p.style.background = "url('"+url+"') no-repeat -10000px -10000px";
+	
+	// get image data for future processing if anaglyph
+	$.getImageData({
+		  url: url,
+		  success: function(image){
+			  processimage = image;
+		  },
+		  error: function(xhr, text_status){
+		    // Handle your error here
+		    console.log("Could not load image");
+		  }
+		});
+
 }
 
 function changeSpeed() {

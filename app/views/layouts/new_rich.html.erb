@@ -26,6 +26,10 @@
 
 <!-- APP JS -->
 <%= javascript_include_tag "application" %>
+
+<!-- jQuery $.getImageData Plugin -->
+<%= javascript_include_tag "/js/jquery.getimagedata.min.js" %>
+
 <%= csrf_meta_tags %>
 
 <script>
@@ -39,12 +43,7 @@ window.onload = init;
 <body>
 <%= form_for(@animation, :remote => true) do |f| %>
 	<div class="description">
-		<ol>
-			<li>Move the DIVIDER line so that it coincides with the middle of the stereograph.</li>
-			<li>MOVE AND RESIZE the rectangles so that the resulting animation preview is pleasant for you.</li>
-			<li>Select the desired animation SPEED.</li>
-			<li>Click GENERATE and wait for the animation to appear.</li>
-		</ol>
+		<p><a id="toggle-gif" href="#">Animated GIF</a> <a id="toggle-ana" href="#">Anaglyph</a></p>
 	</div>
 	<div id="nav">
 		<input type="button" value="photo 1" id="btn-ph1" onclick="loadPhoto(0);" />
@@ -71,7 +70,16 @@ window.onload = init;
 	<div class="canvasHolder">
 		<canvas id="testCanvas" width="900" height="600"></canvas>
 	</div>
-	<div id="preview"></div>
+	<div id="preview">
+		<div id="previewGIF">
+		</div>
+		<div id="previewAnaglyph">
+			<canvas id="resultCanvas" width="350" height="350"></canvas>
+		</div>
+	</div>
+	<div id="process">
+		<canvas id="processCanvas" width="800" height="800"></canvas>
+	</div>
 <% end %>
 
 </body>
