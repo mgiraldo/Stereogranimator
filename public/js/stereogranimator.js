@@ -68,10 +68,14 @@ var img = new Image();
 var update = true;
 var first = true;
 var mode = "GIF";
-
 var currentindex = 0;
 
 var stereographs = ['G92F111_027ZF','TH-04569','G92F111_044ZF','G92F111_051ZF','G92F148_003F','G90F151_006F','G90F151_009F','G89F192_023F','G92F111_009F','G92F111_008F','1531160','1531158'];
+
+//for ipad
+var ua = navigator.userAgent;
+var isiPad = /iPad/i.test(ua) || /iPhone OS 3_1_2/i.test(ua) || /iPhone OS 3_2_2/i.test(ua);
+var ipadrefresh = 100; // time to wait for refreshes
 
 function init() {
 	//find canvas and load images, wait for last image to load
@@ -392,13 +396,12 @@ function tick() {
 		update = false; // only update once
 		draw();
 		updatePreview();
-		if (mode=="ANAGLYPH") {
-			drawAnaglyph();
-		}
 		stage.update();
 	}
 	if (mode=="GIF") {
 		drawGIF();
+	} else {
+		drawAnaglyph();
 	}
 }
 
@@ -435,56 +438,58 @@ function drawAnaglyph () {
 	// get rid of background in preview
 	document.getElementById("previewGIF").style.display = "none";
 	document.getElementById("previewAnaglyph").style.display = "block";
+	now = new Date().getTime();
+	if (!isiPad || (isIpad && (now - lasttick >= ipadrefresh * 10))) {
+		lasttick = now;
+		// left = 0,255,255
+		// right = 255,0,0
+		leftimg = new Image();
+		rightimg = new Image();
 
-	// left = 0,255,255
-	// right = 255,0,0
-	leftimg = new Image();
-	rightimg = new Image();
+		//find canvases
+		processcanvas = document.getElementById("processCanvas");
+		resultcanvas = document.getElementById("resultCanvas");
+		
+		resultcanvas.width = hsize;
+		resultcanvas.height = vsize;
+		
+		// Set up the canvas
+	    ctx3D = resultcanvas.getContext('2d');
+	    ctxbase = processcanvas.getContext('2d');
+	 
+	    // Draw the image on to the BASE canvas
+	    ctxbase.drawImage(processimage, 0, 0, processimage.width, processimage.height);
 
-	//find canvases
-	processcanvas = document.getElementById("processCanvas");
-	resultcanvas = document.getElementById("resultCanvas");
-	
-	resultcanvas.width = hsize;
-	resultcanvas.height = vsize;
-	
-	// Set up the canvas
-    ctx3D = resultcanvas.getContext('2d');
-    ctxbase = processcanvas.getContext('2d');
- 
-    // Draw the image on to the BASE canvas
-    ctxbase.drawImage(processimage, 0, 0, processimage.width, processimage.height);
-
-	// *** RIGHT IMAGE
-    // Get the image data
-    rightimgdata = ctxbase.getImageData(sq1x-OFFSET, sq1y-OFFSET, hsize, vsize);
-    rightimgdata_array = rightimgdata.data;
- 
-    // Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
-    for (var i = 0, j = rightimgdata_array.length; i < j; i+=4) {
-      rightimgdata_array[i] = 255;
-      rightimgdata_array[i+1] = 255 - [((255)*(255 - rightimgdata_array[i+1]))/255];
-      rightimgdata_array[i+2] = 255 - [((255)*(255 - rightimgdata_array[i+2]))/255];
-    }
-	// *** END RIGHT IMAGE
-	
-    // *** LEFT IMAGE
-	// Get the image data
-    leftimgdata = ctxbase.getImageData(sq2x-OFFSET, sq2y-OFFSET, hsize, vsize);
-    leftimgdata_array = leftimgdata.data;
- 
-    // Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
-	// Multiply blend = (Top Color) * (Bottom Color) /255
-    for (var i = 0, j = leftimgdata_array.length; i < j; i+=4) {
-      leftimgdata_array[i] = (255 - [((255)*(255 - leftimgdata_array[i]))/255]) * rightimgdata_array[i] / 255;
-      leftimgdata_array[i+1] = (255) * rightimgdata_array[i+1] / 255;
-      leftimgdata_array[i+2] = (255) * rightimgdata_array[i+2] / 255;
-    }
- 
-    // Write the MULTIPLIED image data to the canvas
-    ctx3D.putImageData(leftimgdata, 0, 0);
-	// *** END ALL IMAGES
-
+		// *** RIGHT IMAGE
+	    // Get the image data
+	    rightimgdata = ctxbase.getImageData(sq1x-OFFSET, sq1y-OFFSET, hsize, vsize);
+	    rightimgdata_array = rightimgdata.data;
+	 
+	    // Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
+	    for (var i = 0, j = rightimgdata_array.length; i < j; i+=4) {
+	      rightimgdata_array[i] = 255;
+	      rightimgdata_array[i+1] = 255 - [((255)*(255 - rightimgdata_array[i+1]))/255];
+	      rightimgdata_array[i+2] = 255 - [((255)*(255 - rightimgdata_array[i+2]))/255];
+	    }
+		// *** END RIGHT IMAGE
+		
+	    // *** LEFT IMAGE
+		// Get the image data
+	    leftimgdata = ctxbase.getImageData(sq2x-OFFSET, sq2y-OFFSET, hsize, vsize);
+	    leftimgdata_array = leftimgdata.data;
+	 
+	    // Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
+		// Multiply blend = (Top Color) * (Bottom Color) /255
+	    for (var i = 0, j = leftimgdata_array.length; i < j; i+=4) {
+	      leftimgdata_array[i] = (255 - [((255)*(255 - leftimgdata_array[i]))/255]) * rightimgdata_array[i] / 255;
+	      leftimgdata_array[i+1] = (255) * rightimgdata_array[i+1] / 255;
+	      leftimgdata_array[i+2] = (255) * rightimgdata_array[i+2] / 255;
+	    }
+	 
+	    // Write the MULTIPLIED image data to the canvas
+	    ctx3D.putImageData(leftimgdata, 0, 0);
+		// *** END ALL IMAGES
+	}
 }
 
 function loadPhoto(index) {
