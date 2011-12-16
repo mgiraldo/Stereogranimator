@@ -439,7 +439,7 @@ function drawAnaglyph () {
 	document.getElementById("previewGIF").style.display = "none";
 	document.getElementById("previewAnaglyph").style.display = "block";
 	now = new Date().getTime();
-	if (!isiPad || (isiPad && (now - lasttick >= ipadrefresh))) {
+	if (0){//!isiPad || (isiPad && (now - lasttick >= ipadrefresh))) {
 		lasttick = now;
 		// left = 0,255,255
 		// right = 255,0,0
