@@ -12,8 +12,6 @@ var leftbmp;
 var rightbmp;
 
 var processimage;
-var leftimg;
-var rightimg;
 
 var leftimgdata;
 var rightimgdata;
@@ -80,6 +78,8 @@ var ipadrefresh = 2000; // time to wait for refreshes
 function init() {
 	//find canvas and load images, wait for last image to load
 	canvas = document.getElementById("testCanvas");
+	processcanvas = document.getElementById("processCanvas");
+	resultcanvas = document.getElementById("resultCanvas");
 	
 	document.getElementById("btn-generate").onclick = generate;
 	
@@ -443,23 +443,10 @@ function drawAnaglyph () {
 		lasttick = now;
 		// left = 0,255,255
 		// right = 255,0,0
-		leftimg = new Image();
-		rightimg = new Image();
-
-		//find canvases
-		processcanvas = document.getElementById("processCanvas");
-		resultcanvas = document.getElementById("resultCanvas");
 		
 		resultcanvas.width = hsize;
 		resultcanvas.height = vsize;
 		
-		// Set up the canvas
-	    ctx3D = resultcanvas.getContext('2d');
-	    ctxbase = processcanvas.getContext('2d');
-	 
-	    // Draw the image on to the BASE canvas
-	    ctxbase.drawImage(processimage, 0, 0, processimage.width, processimage.height);
-
 		// *** RIGHT IMAGE
 	    // Get the image data
 	    rightimgdata = ctxbase.getImageData(sq1x-OFFSET, sq1y-OFFSET, hsize, vsize);
@@ -502,6 +489,7 @@ function loadPhoto(index) {
 		}
 		update = true;
 	});
+	// for animated GIF
 	var url = "http://images.nypl.org/index.php?id="+stereographs[index]+"&t=w";
 	img.src = url;
 	var p = document.getElementById("previewGIF");
@@ -511,13 +499,18 @@ function loadPhoto(index) {
 	$.getImageData({
 		  url: url,
 		  success: function(image){
-			  processimage = image;
+			// Set up the canvas
+		    ctx3D = resultcanvas.getContext('2d');
+		    ctxbase = processcanvas.getContext('2d');
+			 
+		    // Draw the image on to the BASE canvas
+		    ctxbase.drawImage(image, 0, 0, image.width, image.height);
 		  },
 		  error: function(xhr, text_status){
 		    // Handle your error here
 		    console.log("Could not load image");
 		  }
-		});
+	});
 
 }
 

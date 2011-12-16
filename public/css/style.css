@@ -259,7 +259,11 @@ strong {
 	border: 1px solid #fff;
 }
 
-
+#process {
+	position: absolute;
+	left: -1000px;
+	top: 0;
+}
 
 
 
