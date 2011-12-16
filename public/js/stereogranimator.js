@@ -74,6 +74,7 @@ var stereographs = ['G92F111_027ZF','TH-04569','G92F111_044ZF','G92F111_051ZF','
 var ua = navigator.userAgent;
 var isiPad = /iPad/i.test(ua) || /iPhone OS 3_1_2/i.test(ua) || /iPhone OS 3_2_2/i.test(ua);
 var ipadrefresh = 2000; // time to wait for refreshes
+var isdown = false;
 
 function init() {
 	//find canvas and load images, wait for last image to load
@@ -180,6 +181,11 @@ function addBasicInteractivity() {
 				// indicate that the stage should be updated on the next tick:
 				update = true;
 			};
+			// optimize for iPad
+			isdown = true;
+			evt.onMouseUp = function (ev) {
+				isdown = false;
+			}
 		};
 		vert.onMouseOver = function() {
 			target.over = true;
@@ -213,6 +219,11 @@ function addBasicInteractivity() {
 				sq2y = sq1y;
 				// indicate that the stage should be updated on the next tick:
 				update = true;
+				// optimize for iPad
+				isdown = true;
+				evt.onMouseUp = function (ev) {
+					isdown = false;
+				}
 			};
 		};
 		sq1.onMouseOver = function() {
@@ -247,6 +258,11 @@ function addBasicInteractivity() {
 				sq1y = sq2y;
 				// indicate that the stage should be updated on the next tick:
 				update = true;
+				// optimize for iPad
+				isdown = true;
+				evt.onMouseUp = function (ev) {
+					isdown = false;
+				}
 			};
 		};
 		sq2.onMouseOver = function() {
@@ -282,6 +298,11 @@ function addBasicInteractivity() {
 				}
 				// indicate that the stage should be updated on the next tick:
 				update = true;
+				// optimize for iPad
+				isdown = true;
+				evt.onMouseUp = function (ev) {
+					isdown = false;
+				}
 			};
 		};
 		hn1.onMouseOver = function() {
@@ -317,6 +338,11 @@ function addBasicInteractivity() {
 				}
 				// indicate that the stage should be updated on the next tick:
 				update = true;
+				// optimize for iPad
+				isdown = true;
+				evt.onMouseUp = function (ev) {
+					isdown = false;
+				}
 			};
 		};
 		hn2.onMouseOver = function() {
@@ -439,7 +465,8 @@ function drawAnaglyph () {
 	document.getElementById("previewGIF").style.display = "none";
 	document.getElementById("previewAnaglyph").style.display = "block";
 	now = new Date().getTime();
-	if (!isiPad || (isiPad && (now - lasttick >= ipadrefresh))) {
+	// TODO: optimize for iPad
+	if (!isiPad || (isiPad && !isdown && (now - lasttick >= ipadrefresh))) {
 		lasttick = now;
 		// left = 0,255,255
 		// right = 255,0,0
