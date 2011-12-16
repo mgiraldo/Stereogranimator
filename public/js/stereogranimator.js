@@ -155,7 +155,6 @@ function run() {
 	// adding interaction
 	addBasicInteractivity();
 	
-	// we want to do some work before we update the canvas,
 	Ticker.addListener(window);
 }
 
@@ -393,12 +392,13 @@ function tick() {
 		update = false; // only update once
 		draw();
 		updatePreview();
+		if (mode=="ANAGLYPH") {
+			drawAnaglyph();
+		}
 		stage.update();
 	}
 	if (mode=="GIF") {
 		drawGIF();
-	} else {
-		drawAnaglyph();
 	}
 }
 
