@@ -491,19 +491,23 @@ function drawAnaglyph () {
 		
 		var i; 
 		var j = rightimgdata_array.length/multiple;
+		var rR, rG, rB;
 		for (i = 0; i < j; i+=4) {
+			rR = rightimgdata_array[i];
+			rG = rightimgdata_array[i+1];
+			rB = rightimgdata_array[i+2];
 			// right operation
 			// Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
-			rightimgdata_array[i] = 255;
-			rightimgdata_array[i+1] = 255 - [((255)*(255 - rightimgdata_array[i*multiple+1]))/255];
-			rightimgdata_array[i+2] = 255 - [((255)*(255 - rightimgdata_array[i*multiple+2]))/255];
+			rR = 255;
+			rG = 255 - (255 - rightimgdata_array[i*multiple+1]);
+			rB = 255 - (255 - rightimgdata_array[i*multiple+2]);
 			
 			// left operation (using right also)
 			// Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
 			// Multiply blend = (Top Color) * (Bottom Color) /255
-			leftimgdata_array[i] = (255 - [((255)*(255 - leftimgdata_array[i*multiple]))/255]) * rightimgdata_array[i] / 255;
-			leftimgdata_array[i+1] = (255) * rightimgdata_array[i+1] / 255;
-			leftimgdata_array[i+2] = (255) * rightimgdata_array[i+2] / 255;
+			leftimgdata_array[i] = leftimgdata_array[i*multiple];
+			leftimgdata_array[i+1] = rG;
+			leftimgdata_array[i+2] = rB;
 		}
 	
 		// Write the MULTIPLIED image data to the canvas
