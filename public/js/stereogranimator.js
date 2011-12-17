@@ -464,55 +464,47 @@ function drawAnaglyph () {
 	document.getElementById("previewGIF").style.display = "none";
 	document.getElementById("previewAnaglyph").style.display = "block";
 	now = new Date().getTime();
-	// TODO: optimize for iPad
-	if (!isiPad || (isiPad && !isdown)) {
-		// left = 0,255,255
-		// right = 255,0,0
+	// left = 0,255,255
+	// right = 255,0,0
+	
+	// *** RIGHT IMAGE
+	// Get the image data
+	rightimgdata = ctxbase.getImageData(sq1x-OFFSET, sq1y-OFFSET, hsize, vsize);
+	rightimgdata_array = rightimgdata.data;
+
+	// *** LEFT IMAGE
+	// Get the image data
+	leftimgdata = ctxbase.getImageData(sq2x-OFFSET, sq2y-OFFSET, hsize, vsize);
+	leftimgdata_array = leftimgdata.data;
+
+	// if iPad, do a smaller preview (1/4 size)
+	var multiple = 1;
+	resultcanvas.width = hsize/multiple;
+	resultcanvas.height = vsize/multiple;
+	
+	var i; 
+	var j = rightimgdata_array.length/multiple;
+	var rR, rG, rB;
+	for (i = 0; i < j; i+=4) {
+		rR = rightimgdata_array[i];
+		rG = rightimgdata_array[i+1];
+		rB = rightimgdata_array[i+2];
+		// right operation
+		// Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
+		rR = 255;
+		rG = 255 - (255 - rightimgdata_array[i*multiple+1]);
+		rB = 255 - (255 - rightimgdata_array[i*multiple+2]);
 		
-		// *** RIGHT IMAGE
-		// Get the image data
-		rightimgdata = ctxbase.getImageData(sq1x-OFFSET, sq1y-OFFSET, hsize, vsize);
-		rightimgdata_array = rightimgdata.data;
-	
-		// *** LEFT IMAGE
-		// Get the image data
-		leftimgdata = ctxbase.getImageData(sq2x-OFFSET, sq2y-OFFSET, hsize, vsize);
-		leftimgdata_array = leftimgdata.data;
-	
-		// if iPad, do a smaller preview (1/4 size)
-		var multiple;
-		if (!isiPad) {
-			multiple = 1;
-		} else {
-			multiple = 2;
-		}
-		resultcanvas.width = hsize/multiple;
-		resultcanvas.height = vsize/multiple;
-		
-		var i; 
-		var j = rightimgdata_array.length/multiple;
-		var rR, rG, rB;
-		for (i = 0; i < j; i+=4) {
-			rR = rightimgdata_array[i];
-			rG = rightimgdata_array[i+1];
-			rB = rightimgdata_array[i+2];
-			// right operation
-			// Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
-			rR = 255;
-			rG = 255 - (255 - rightimgdata_array[i*multiple+1]);
-			rB = 255 - (255 - rightimgdata_array[i*multiple+2]);
-			
-			// left operation (using right also)
-			// Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
-			// Multiply blend = (Top Color) * (Bottom Color) /255
-			leftimgdata_array[i] = leftimgdata_array[i*multiple];
-			leftimgdata_array[i+1] = rG;
-			leftimgdata_array[i+2] = rB;
-		}
-	
-		// Write the MULTIPLIED image data to the canvas
-		ctx3D.putImageData(leftimgdata, 0, 0);
+		// left operation (using right also)
+		// Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
+		// Multiply blend = (Top Color) * (Bottom Color) /255
+		leftimgdata_array[i] = leftimgdata_array[i*multiple];
+		leftimgdata_array[i+1] = rG;
+		leftimgdata_array[i+2] = rB;
 	}
+
+	// Write the MULTIPLIED image data to the canvas
+	ctx3D.putImageData(leftimgdata, 0, 0);
 }
 
 function loadPhoto(index) {
