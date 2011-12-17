@@ -482,7 +482,7 @@ function drawAnaglyph () {
 	resultcanvas.height = vsize;
 	
 	var i; 
-	var j = rightimgdata_array.length/multiple;
+	var j = rightimgdata_array.length;
 	var rR, rG, rB;
 	for (i = 0; i < j; i+=4) {
 		rR = rightimgdata_array[i];
