@@ -469,38 +469,42 @@ function drawAnaglyph () {
 		// left = 0,255,255
 		// right = 255,0,0
 		
-		resultcanvas.width = hsize;
-		resultcanvas.height = vsize;
-		
 		// *** RIGHT IMAGE
 		// Get the image data
-		rightimgdata = ctxbase.getImageData(sq1x-OFFSET, sq1y-OFFSET, hsize/2, vsize/2);
+		rightimgdata = ctxbase.getImageData(sq1x-OFFSET, sq1y-OFFSET, hsize, vsize);
 		rightimgdata_array = rightimgdata.data;
 	
-		// Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
-		for (var i = 0, j = rightimgdata_array.length; i < j; i+=4) {
-			rightimgdata_array[i] = 255;
-			rightimgdata_array[i+1] = 255 - [((255)*(255 - rightimgdata_array[i+1]))/255];
-			rightimgdata_array[i+2] = 255 - [((255)*(255 - rightimgdata_array[i+2]))/255];
-		}
-		// *** END RIGHT IMAGE
-		
 		// *** LEFT IMAGE
 		// Get the image data
-		leftimgdata = ctxbase.getImageData(sq2x-OFFSET, sq2y-OFFSET, hsize/2, vsize/2);
+		leftimgdata = ctxbase.getImageData(sq2x-OFFSET, sq2y-OFFSET, hsize, vsize);
 		leftimgdata_array = leftimgdata.data;
 	
-		// Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
-		// Multiply blend = (Top Color) * (Bottom Color) /255
-		for (var i = 0, j = leftimgdata_array.length; i < j; i+=4) {
-			leftimgdata_array[i] = (255 - [((255)*(255 - leftimgdata_array[i]))/255]) * rightimgdata_array[i] / 255;
+		// if iPad, do a smaller preview (1/4 size)
+		var increment;
+		if (!isiPad) {
+			multiple = 1;
+		} else {
+			multiple = 2;
+		}
+		resultcanvas.width = hsize/multiple;
+		resultcanvas.height = vsize/multiple;
+		for (var i = 0, j = rightimgdata_array.length/multiple; i < j; i+=4) {
+			// right operation
+			// Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
+			rightimgdata_array[i] = 255;
+			rightimgdata_array[i+1] = 255 - [((255)*(255 - rightimgdata_array[i*multiple+1]))/255];
+			rightimgdata_array[i+2] = 255 - [((255)*(255 - rightimgdata_array[i*multiple+2]))/255];
+			
+			// left operation (using right also)
+			// Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
+			// Multiply blend = (Top Color) * (Bottom Color) /255
+			leftimgdata_array[i] = (255 - [((255)*(255 - leftimgdata_array[i*multiple]))/255]) * rightimgdata_array[i] / 255;
 			leftimgdata_array[i+1] = (255) * rightimgdata_array[i+1] / 255;
 			leftimgdata_array[i+2] = (255) * rightimgdata_array[i+2] / 255;
 		}
 	
 		// Write the MULTIPLIED image data to the canvas
 		ctx3D.putImageData(leftimgdata, 0, 0);
-		// *** END ALL IMAGES
 	}
 }
 
