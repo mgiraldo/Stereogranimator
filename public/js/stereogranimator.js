@@ -478,7 +478,6 @@ function drawAnaglyph () {
 	leftimgdata_array = leftimgdata.data;
 
 	// if iPad, do a smaller preview (1/4 size)
-	var multiple = 1;
 	resultcanvas.width = hsize/multiple;
 	resultcanvas.height = vsize/multiple;
 	
@@ -492,13 +491,13 @@ function drawAnaglyph () {
 		// right operation
 		// Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
 		rR = 255;
-		rG = 255 - (255 - rightimgdata_array[i*multiple+1]);
-		rB = 255 - (255 - rightimgdata_array[i*multiple+2]);
+		rG = 255 - (255 - rightimgdata_array[i+1]);
+		rB = 255 - (255 - rightimgdata_array[i+2]);
 		
 		// left operation (using right also)
 		// Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
 		// Multiply blend = (Top Color) * (Bottom Color) /255
-		leftimgdata_array[i] = leftimgdata_array[i*multiple];
+		leftimgdata_array[i] = leftimgdata_array[i];
 		leftimgdata_array[i+1] = rG;
 		leftimgdata_array[i+2] = rB;
 	}
