@@ -474,7 +474,7 @@ function drawAnaglyph () {
 		
 		// *** RIGHT IMAGE
 		// Get the image data
-		rightimgdata = ctxbase.getImageData(sq1x-OFFSET, sq1y-OFFSET, hsize, vsize);
+		rightimgdata = ctxbase.getImageData(sq1x-OFFSET, sq1y-OFFSET, hsize/2, vsize/2);
 		rightimgdata_array = rightimgdata.data;
 	
 		// Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
@@ -487,7 +487,7 @@ function drawAnaglyph () {
 		
 		// *** LEFT IMAGE
 		// Get the image data
-		leftimgdata = ctxbase.getImageData(sq2x-OFFSET, sq2y-OFFSET, hsize, vsize);
+		leftimgdata = ctxbase.getImageData(sq2x-OFFSET, sq2y-OFFSET, hsize/2, vsize/2);
 		leftimgdata_array = leftimgdata.data;
 	
 		// Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
