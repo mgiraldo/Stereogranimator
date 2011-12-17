@@ -478,8 +478,8 @@ function drawAnaglyph () {
 	leftimgdata_array = leftimgdata.data;
 
 	// if iPad, do a smaller preview (1/4 size)
-	resultcanvas.width = hsize/multiple;
-	resultcanvas.height = vsize/multiple;
+	resultcanvas.width = hsize;
+	resultcanvas.height = vsize;
 	
 	var i; 
 	var j = rightimgdata_array.length/multiple;
