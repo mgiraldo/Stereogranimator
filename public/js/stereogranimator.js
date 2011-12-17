@@ -480,7 +480,7 @@ function drawAnaglyph () {
 
 	// if iPad, do a smaller preview (1/4 size)
 	var increment;
-	if (isiPad) {
+	if (!isiPad) {
 		multiple = 1;
 	} else {
 		multiple = 2;
