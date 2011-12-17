@@ -56,7 +56,7 @@ class AnimationsController < ApplicationController
     end
   end
 
-  # GET /animations/createJson/:x1/:y1/:x2/:y2/:width/:height/:delay(cs)/:digitalid/:creator
+  # GET /animations/createJson/:x1/:y1/:x2/:y2/:width/:height/:delay(cs)/:digitalid/:mode/:creator
   def createJson
     ##
     ##
@@ -78,31 +78,63 @@ class AnimationsController < ApplicationController
     @animation.height = arr[5]
     @animation.delay = arr[6]
     @animation.digitalid = arr[7]
-    @animation.creator = arr[8]
-    
-    # future filename
-    @animation.filename = Digest::SHA1.hexdigest('nyplsalt' + Time.now.to_s) + ".gif"
+    @animation.mode = arr[8]
+    @animation.creator = arr[9]
     
     # do some image magick
+    # first get each frame
     im = Magick::Image.read(@animation.url).first
-    
+      
     fr1 = im.crop(@animation.x1,@animation.y1,@animation.width,@animation.height,true)
     fr2 = im.crop(@animation.x2,@animation.y2,@animation.width,@animation.height,true)
     
-    list = Magick::ImageList.new
-    list << fr1
-    list << fr2
-    list.delay = @animation.delay
-    list.iterations = 0
+    # future filename
+    unique = Digest::SHA1.hexdigest('nyplsalt' + Time.now.to_s)
+    
+    if @animation.mode == "GIF"
+      # ANIMATED GIF!
+      @animation.filename = unique + ".gif"
+      
+      final = Magick::ImageList.new
+      final << fr1
+      final << fr2
+      final.delay = @animation.delay
+      final.iterations = 0
+      
+      fr3 = fr1.thumbnail(140,140)
+      fr4 = fr2.thumbnail(140,140)
+      thumb = Magick::ImageList.new
+      thumb << fr3
+      thumb << fr4
+      thumb.delay = @animation.delay
+      thumb.iterations = 0
+    else
+      # ANAGLYPH!
+      @animation.filename = unique + ".jpg"
+      
+      redlayer = Magick::Image.new(@animation.width,@animation.height){self.background_color = "#f00"}
+      cyanlayer = Magick::Image.new(@animation.width,@animation.height){self.background_color = "#0ff"}
+      
+      fr1 = redlayer.composite(fr1, 0, 0, Magick::ScreenCompositeOp)
+      fr2 = cyanlayer.composite(fr2, 0, 0, Magick::ScreenCompositeOp)
+      final = fr1.composite(fr2, 0, 0, Magick::MultiplyCompositeOp)
+
+      thumb = final.thumbnail(140,140)
+    end
     
     # gotta packet the file
-    list.write("#{Rails.root}/tmp/#{@animation.filename}")
+    final.write("#{Rails.root}/tmp/#{@animation.filename}") { self.quality = 100 }
+    # and the thumb
+    thumbname = "t_" + @animation.filename
+    thumb.write("#{Rails.root}/tmp/#{thumbname}") { self.quality = 100 }
     
     # upload to Amazon S3
     s3 = AWS::S3.new
     bucket = s3.buckets['stereogranimator']
     obj = bucket.objects[@animation.filename]
     obj.write(:file => "#{Rails.root}/tmp/#{@animation.filename}", :acl => :public_read, :metadata => { 'photo_from' => 'New York Public Library' })
+    obj = bucket.objects[thumbname]
+    obj.write(:file => "#{Rails.root}/tmp/#{thumbname}", :acl => :public_read, :metadata => { 'photo_from' => 'New York Public Library' })
     
     respond_to do |format|
       if @animation.save
@@ -140,6 +172,8 @@ class AnimationsController < ApplicationController
     s3 = AWS::S3.new
     bucket = s3.buckets['stereogranimator']
     obj = bucket.objects[@animation.filename]
+    obj.delete()
+    obj = bucket.objects["t_" + @animation.filename]
     obj.delete()
     
     @animation.destroy

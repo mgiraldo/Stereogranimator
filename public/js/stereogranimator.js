@@ -554,7 +554,7 @@ function generate() {
 	console.log("generating...");
 	document.getElementById("btn-generate").disabled = true;
 	$.ajax({
-		url: "/animations/createJson/"+(sq1x-OFFSET)+"/"+(sq1y-OFFSET)+"/"+(sq2x-OFFSET)+"/"+(sq2y-OFFSET)+"/"+hsize+"/"+vsize+"/"+speed+"/"+stereographs[currentindex]+"/mga.json",
+		url: "/animations/createJson/"+(sq1x-OFFSET)+"/"+(sq1y-OFFSET)+"/"+(sq2x-OFFSET)+"/"+(sq2y-OFFSET)+"/"+hsize+"/"+vsize+"/"+speed+"/"+stereographs[currentindex]+"/"+mode+"/mga.json",
 		dataType: 'json',
 		data: null,
 		success: function(data) {
