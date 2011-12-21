@@ -54,13 +54,17 @@ var HNSIZE = 10;
 var VERTWIDTH = 10;
 var VERTHEIGHT = 50;
 
-var OFFSET = 50;
+var OFFSET = 0;
 var INSET = 10;
 
 var THICK = 2;
 var COLOR = "#fff";
 var FILL = "#000";
 var FILLALPHA = "rgba(0,0,0,0.5)";
+
+var SLOWSPEED = 30;
+var MEDSPEED = 15;
+var FASTSPEED = 8;
 
 var img = new Image();
 var update = true;
@@ -81,28 +85,41 @@ function init() {
 	processcanvas = document.getElementById("processCanvas");
 	resultcanvas = document.getElementById("resultCanvas");
 	
-	document.getElementById("btn-generate").onclick = generate;
+	document.getElementById("btnGenerate").onclick = generate;
 	
-	document.getElementById("toggle-gif").onclick = function(){mode="GIF";};
-	document.getElementById("toggle-ana").onclick = function(){mode="ANAGLYPH";};
+	document.getElementById("toggleGIF").onclick = function(){toggleMode("GIF");};
+	document.getElementById("toggleAna").onclick = function(){toggleMode("ANAGLYPH");};
+	
+	document.getElementById("slowSpeed").onclick = function(){changeSpeed(SLOWSPEED);};
+	document.getElementById("medSpeed").onclick = function(){changeSpeed(MEDSPEED);};
+	document.getElementById("fastSpeed").onclick = function(){changeSpeed(FASTSPEED);};
 	
 	stage = new Stage(canvas);
 	stage.enableMouseOver(10);
 	Touch.enable(stage);
+	
+	changeSpeed(speed);
+	toggleMode(mode);
 
 	loadPhoto(currentindex);
+}
+
+function centerPhoto() {
+	// center horizontally
+	OFFSET = Math.floor((canvas.width - img.width)/2);
+
+	// place image in bitmap:
+	bmp = new Bitmap(img);
+	bmp.x = OFFSET;
+	bmp.y = 0;
+	
+	
+	stage.addChild(bmp);
 }
 
 function run() {
 	// init animation timer
 	lasttick = new Date().getTime();
-	
-	// place image in bitmap:
-	bmp = new Bitmap(img);
-	bmp.x = OFFSET;
-	bmp.y = OFFSET;
-	
-	stage.addChild(bmp);
 	
 	// starting points for squares
 	sq1x = bmp.x + (img.width / 2) - hsize - INSET;
@@ -372,7 +389,7 @@ function drawVertical() {
 	g.beginStroke(COLOR);
 	g.beginFill(FILLALPHA);
 	g.drawRect(vertx - (VERTWIDTH / 2), verty - (VERTHEIGHT / 2),VERTWIDTH,VERTHEIGHT);
-	g.moveTo(vertx, verty - (VERTHEIGHT / 2)).lineTo(vertx, verty - (VERTHEIGHT * 2)).moveTo(vertx, verty + (VERTHEIGHT / 2)).lineTo(vertx, verty + (OFFSET * 2));
+	g.moveTo(vertx, verty - (VERTHEIGHT / 2)).lineTo(vertx, verty - (VERTHEIGHT * 2)).moveTo(vertx, verty + (VERTHEIGHT / 2)).lineTo(vertx, verty);
 }
 
 function drawSquare(square,x,y) {
@@ -435,6 +452,30 @@ function updatePreview() {
 	console.log("p:"+p+" w:"+hsize+" h:"+vsize);
 	p.style.width = hsize + "px";
 	p.style.height = vsize + "px";
+	// center the preview
+	document.getElementById("previewContainer").style.left = Math.floor((canvas.width - hsize)/2) + "px";
+	document.getElementById("preview").style.height = vsize + "px";
+}
+
+function toggleMode(m) {
+	mode = m;
+	var gifDiv = $("#toggleGIF");
+	var anaDiv = $("#toggleAna");
+	var linksDiv = $("#toggleLinks");
+	var extraDiv = $("#GIFExtraLinks");
+	if (m=="GIF") {
+		linksDiv.removeClass("anaglyphActive"); 
+		linksDiv.addClass("GIFActive"); 
+		anaDiv.removeClass("active"); 
+		gifDiv.addClass("active"); 
+		extraDiv.show(); 
+	} else {
+		linksDiv.addClass("anaglyphActive"); 
+		linksDiv.removeClass("GIFActive"); 
+		gifDiv.removeClass("active"); 
+		anaDiv.addClass("active"); 
+		extraDiv.hide(); 
+	}
 }
 
 function drawGIF () {
@@ -446,14 +487,13 @@ function drawGIF () {
 	if (now - lasttick >= speed * 10) {
 		lasttick = now;
 		var p = document.getElementById("previewGIF");
-		p.style.display = "block";
 		if (frame==1) {
 			// left
-			p.style.backgroundPosition = ((-1*sq1x)+OFFSET) + "px " + ((-1*sq1y)+OFFSET) + "px";
+			p.style.backgroundPosition = ((-1*sq1x)+OFFSET) + "px " + ((-1*sq1y)) + "px";
 			frame = 2;
 		} else {
 			// right
-			p.style.backgroundPosition = ((-1*sq2x)+OFFSET) + "px " + ((-1*sq2y)+OFFSET) + "px";
+			p.style.backgroundPosition = ((-1*sq2x)+OFFSET) + "px " + ((-1*sq2y)) + "px";
 			frame = 1;
 		}
 	}
@@ -469,12 +509,12 @@ function drawAnaglyph () {
 	
 	// *** RIGHT IMAGE
 	// Get the image data
-	rightimgdata = ctxbase.getImageData(sq1x-OFFSET, sq1y-OFFSET, hsize, vsize);
+	rightimgdata = ctxbase.getImageData(sq1x-OFFSET, sq1y, hsize, vsize);
 	rightimgdata_array = rightimgdata.data;
 
 	// *** LEFT IMAGE
 	// Get the image data
-	leftimgdata = ctxbase.getImageData(sq2x-OFFSET, sq2y-OFFSET, hsize, vsize);
+	leftimgdata = ctxbase.getImageData(sq2x-OFFSET, sq2y, hsize, vsize);
 	leftimgdata_array = leftimgdata.data;
 
 	// if iPad, do a smaller preview (1/4 size)
@@ -493,8 +533,7 @@ function drawAnaglyph () {
 		rR = 255;
 		rG = 255 - (255 - rightimgdata_array[i+1]);
 		rB = 255 - (255 - rightimgdata_array[i+2]);
-		
-		// left operation (using right also)
+	
 		// Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
 		// Multiply blend = (Top Color) * (Bottom Color) /255
 		leftimgdata_array[i] = leftimgdata_array[i];
@@ -510,6 +549,7 @@ function loadPhoto(index) {
 	currentindex = index;
 	console.log("photo");
 	img.onload = (function () {
+		centerPhoto();
 		if (first) {
 			first = false;
 			run();
@@ -541,15 +581,28 @@ function loadPhoto(index) {
 
 }
 
-function changeSpeed() {
-	speed = document.getElementById("speed").value;
+function changeSpeed(s) {
+	speed = s;
+	var sDiv = $("#slowSpeed");
+	var mDiv = $("#medSpeed");
+	var fDiv = $("#fastSpeed");
+	sDiv.removeClass("active");
+	mDiv.removeClass("active");
+	fDiv.removeClass("active");
+	if (s==SLOWSPEED) {
+		sDiv.toggleClass("active");
+	} else if (s==MEDSPEED) {
+		mDiv.toggleClass("active");
+	} else {
+		fDiv.toggleClass("active");
+	}
 }
 
 function generate() {
 	console.log("generating...");
-	document.getElementById("btn-generate").disabled = true;
+	document.getElementById("btnGenerate").disabled = true;
 	$.ajax({
-		url: "/animations/createJson/"+(sq1x-OFFSET)+"/"+(sq1y-OFFSET)+"/"+(sq2x-OFFSET)+"/"+(sq2y-OFFSET)+"/"+hsize+"/"+vsize+"/"+speed+"/"+stereographs[currentindex]+"/"+mode+"/mga.json",
+		url: "/animations/createJson/"+(sq1x-OFFSET)+"/"+(sq1y)+"/"+(sq2x-OFFSET)+"/"+(sq2y)+"/"+hsize+"/"+vsize+"/"+speed+"/"+stereographs[currentindex]+"/"+mode+"/mga.json",
 		dataType: 'json',
 		data: null,
 		success: function(data) {
@@ -559,11 +612,11 @@ function generate() {
 		statusCode: {
 		  404: function() {
 			alert('Photo not found error (404)');
-			document.getElementById("btn-generate").disabled = false;
+			document.getElementById("btnGenerate").disabled = false;
 		  },
 		  500: function() {
 				alert('Internal server error (500)');
-				document.getElementById("btn-generate").disabled = false;
+				document.getElementById("btnGenerate").disabled = false;
 		  }
 		}
 	});

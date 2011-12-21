@@ -4,8 +4,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Stereogranimator</title>
 
-<%= stylesheet_link_tag "/css/style.css" %>
+<%= stylesheet_link_tag "style" %>
 
+<!-- TODO: CONVERT JS PATHS TO PROPER ASSET PIPELINE -->
 <!-- Import EaselJS Framework -->
 <%= javascript_include_tag "/js/src/easeljs/utils/UID.js" %>
 <%= javascript_include_tag "/js/src/easeljs/geom/Matrix2D.js" %>
@@ -21,14 +22,14 @@
 <%= javascript_include_tag "/js/src/easeljs/ui/Touch.js" %>
 <!-- End EaselJS Imports -->
 
-<!-- NYPL JS -->
-<%= javascript_include_tag "/js/stereogranimator.js" %>
-
 <!-- APP JS -->
 <%= javascript_include_tag "application" %>
 
 <!-- jQuery $.getImageData Plugin -->
 <%= javascript_include_tag "/js/jquery.getimagedata.min.js" %>
+
+<!-- NYPL JS -->
+<%= javascript_include_tag "/js/stereogranimator.js" %>
 
 <%= csrf_meta_tags %>
 
@@ -42,9 +43,7 @@ window.onload = init;
 	
 <body>
 <%= form_for(@animation, :remote => true) do |f| %>
-	<div class="description">
-		<p><a id="toggle-gif" href="#">Animated GIF</a> <a id="toggle-ana" href="#">Anaglyph</a></p>
-	</div>
+<div id="stereogranimator">
 	<div id="nav">
 		<input type="button" value="photo 1" id="btn-ph1" onclick="loadPhoto(0);" />
 		<input type="button" value="photo 2" id="btn-ph2" onclick="loadPhoto(1);" />
@@ -65,21 +64,36 @@ window.onload = init;
 			<option value="8" selected="selected">Fast</option>
 		</select>
 		<br />
-		<input type="button" value="GENERATE" id="btn-generate" />
+		<input type="button" value="GENERATE" id="btnGenerate" />
 	</div>
 	<div class="canvasHolder">
-		<canvas id="testCanvas" width="900" height="600"></canvas>
+		<canvas id="testCanvas" width="1020" height="450"></canvas>
+	</div>
+	<div id="toggler">
+		<div class="previewTitle">PREVIEW BELOW</div>
+		<div id="toggleLinks">
+			<a href="#preview" id="toggleAna">AS 3D ANAGLYPH</a>
+			<a href="#preview" id="toggleGIF">AS ANIMATED GIF</a>
+			<div id="GIFExtraLinks">
+				<a href="#preview" id="slowSpeed">SLOW</a>
+				<a href="#preview" id="medSpeed">MEDIUM</a>
+				<a href="#preview" id="fastSpeed">FAST</a>
+			</div>
+		</div>
 	</div>
 	<div id="preview">
-		<div id="previewGIF">
-		</div>
-		<div id="previewAnaglyph">
-			<canvas id="resultCanvas" width="350" height="350"></canvas>
+		<div id="previewContainer">
+			<div id="previewGIF">
+			</div>
+			<div id="previewAnaglyph">
+				<canvas id="resultCanvas"></canvas>
+			</div>
 		</div>
 	</div>
 	<div id="process">
 		<canvas id="processCanvas" width="800" height="800"></canvas>
 	</div>
+</div>
 <% end %>
 
 </body>
