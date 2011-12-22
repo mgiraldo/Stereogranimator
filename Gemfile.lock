@@ -46,6 +46,7 @@ GEM
     erubis (2.7.0)
     execjs (1.2.9)
       multi_json (~> 1.0)
+    haml (3.1.4)
     hike (1.2.1)
     httparty (0.8.1)
       multi_json
@@ -121,11 +122,13 @@ PLATFORMS
 DEPENDENCIES
   aws-sdk
   coffee-rails (~> 3.1.1)
+  haml
   jquery-rails
   json
   pg
   rails (= 3.1.1)
   rmagick
+  sass
   sass-rails (~> 3.1.4)
   sqlite3
   uglifier (>= 1.0.3)
