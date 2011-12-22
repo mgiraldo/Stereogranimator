@@ -1,16 +1,19 @@
 // fonts
+$nyplfont: "Kievit", "Myriad Pro", "Lucida Grande", "Calibri", verdana, arial, helvetica, sans-serif;
 $bodyfont: share-regular, sans-serif;
 
 // sizes
-$fullwidth: 1020px;
+$fullwidth: 960px;
 
 // colors
 $maincolor: #fff;
 $backcolor: #000;
 $linkcolor: #f00;
+$nyplred: #D62828;
 
 // borders
 $basicborder: solid 1px $maincolor;
 
 // sprite url
-$sprites: asset-path('sprites.png', image);
+$backimage: asset-url('background.png', image);
+$sprites: asset-url('sprites.png', image);
