@@ -108,18 +108,19 @@ function centerPhoto() {
 	// center horizontally
 	OFFSET = Math.floor((canvas.width - img.width)/2);
 
-	// place image in bitmap:
-	bmp = new Bitmap(img);
 	bmp.x = OFFSET;
 	bmp.y = 0;
-	
-	
-	stage.addChild(bmp);
 }
 
 function run() {
 	// init animation timer
 	lasttick = new Date().getTime();
+
+	// place image in bitmap:
+	bmp = new Bitmap(img);
+	stage.addChild(bmp);
+	
+	centerPhoto();
 	
 	// starting points for squares
 	sq1x = bmp.x + (img.width / 2) - hsize - INSET;
@@ -549,11 +550,11 @@ function loadPhoto(index) {
 	currentindex = index;
 	console.log("photo");
 	img.onload = (function () {
-		centerPhoto();
 		if (first) {
 			first = false;
 			run();
 		}
+		centerPhoto();
 		update = true;
 	});
 	// for animated GIF
