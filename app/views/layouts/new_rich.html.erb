@@ -45,7 +45,7 @@ window.onload = init;
 </head>
 	
 <body>
-<div id="mainContent" class="container_12">
+<div id="page" class="container_12">
 	<div id="nypl_bar">
 		A <a href="http://www.nypl.org/">New York Public Library</a> website
 		<form>
@@ -63,68 +63,67 @@ window.onload = init;
 			</select>
 		</form>
 	</div>
-	<div id="header">
-		<h1><span class="replace">STEREOGRANIMATOR</span></h1>
+	<header>
+		<h1><span><a href="/" class="visuallyhidden focusable">STEREOGRANIMATOR</a></span></h1>
 		<ul id="mainNav">
 			<li class="active"><a href="#">CREATE</a></li>
 			<li><a href="#">GALLERY</a></li>
 			<li><a href="#">ABOUT</a></li>
 		</ul>
-	</div>
+	</header>
+	<div id="mainContent">
+		<div class="grid_12">
+			<h1><span class="visuallyhidden">CREATE</span></h1>
+			<div id="nav">
+				<p><span class="dim">Step 1: CHOOSE A STEREOGRAPH &lt;</span> Step 2: CONVERT TO GIF/ANAGLYPH &lt; <span class="dim">Step 3: SEND</span></p>
+			</div>
+		</div>
+		<div class="clear"></div>
 <%= form_for(@animation, :remote => true) do |f| %>
-	<div id="stereogranimator">
-		<div id="nav">
-			<input type="button" value="photo 1" id="btn-ph1" onclick="loadPhoto(0);" />
-			<input type="button" value="photo 2" id="btn-ph2" onclick="loadPhoto(1);" />
-			<input type="button" value="photo 3" id="btn-ph3" onclick="loadPhoto(2);" />
-			<input type="button" value="photo 4" id="btn-ph4" onclick="loadPhoto(3);" />
-			<input type="button" value="photo 5" id="btn-ph5" onclick="loadPhoto(4);" />
-			<input type="button" value="photo 6" id="btn-ph6" onclick="loadPhoto(5);" />
-			<input type="button" value="photo 7" id="btn-ph7" onclick="loadPhoto(6);" />
-			<input type="button" value="photo 8" id="btn-ph8" onclick="loadPhoto(7);" />
-			<input type="button" value="photo 9" id="btn-ph9" onclick="loadPhoto(8);" />
-			<input type="button" value="photo 10" id="btn-ph10" onclick="loadPhoto(9);" />
-			<input type="button" value="photo 11" id="btn-ph11" onclick="loadPhoto(10);" />
-			<input type="button" value="photo 12" id="btn-ph12" onclick="loadPhoto(11);" />
-			<br />
-			Animation speed: <select id="speed" onchange="changeSpeed();">
-				<option value="30">Slow</option>
-				<option value="15">Medium</option>
-				<option value="8" selected="selected">Fast</option>
-			</select>
-			<br />
-			<input type="button" value="GENERATE" id="btnGenerate" />
-		</div>
-		<div class="canvasHolder">
-			<canvas id="testCanvas" width="1020" height="450"></canvas>
-		</div>
-		<div id="toggler">
-			<div class="previewTitle">PREVIEW BELOW</div>
-			<div id="toggleLinks">
-				<a href="#preview" id="toggleAna">AS 3D ANAGLYPH</a>
-				<a href="#preview" id="toggleGIF">AS ANIMATED GIF</a>
-				<div id="GIFExtraLinks">
-					<a href="#preview" id="slowSpeed">SLOW</a>
-					<a href="#preview" id="medSpeed">MEDIUM</a>
-					<a href="#preview" id="fastSpeed">FAST</a>
+		<div id="stereogranimator">
+			<div class="canvasHolder">
+				<canvas id="testCanvas" width="960" height="450"></canvas>
+			</div>
+			<div id="toggler">
+				<div class="previewTitle">PREVIEW BELOW</div>
+				<div id="toggleLinks">
+					<a href="#preview" id="toggleAna">AS 3D ANAGLYPH</a>
+					<a href="#preview" id="toggleGIF">AS ANIMATED GIF</a>
+					<div id="GIFExtraLinks">
+						<a href="#preview" id="slowSpeed">SLOW</a>
+						<a href="#preview" id="medSpeed">MEDIUM</a>
+						<a href="#preview" id="fastSpeed">FAST</a>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div id="preview">
-			<div id="previewContainer">
-				<div id="previewGIF">
+			<div id="preview">
+				<div id="previousStep">
+					<p><a href="#">&lt; Start again</a></p>
 				</div>
-				<div id="previewAnaglyph">
-					<canvas id="resultCanvas"></canvas>
+				<div id="nextStep">
+					<p><a href="#" id="btnNext" class="genericButtonLink">CONTINUE TO STEP 3 &gt;</a></p>
+				</div>
+				<div id="previewContainer">
+					<div id="previewGIF">
+					</div>
+					<div id="previewAnaglyph">
+						<canvas id="resultCanvas"></canvas>
+					</div>
 				</div>
 			</div>
+			<div id="process">
+				<canvas id="processCanvas" width="800" height="800"></canvas>
+			</div>
 		</div>
-		<div id="process">
-			<canvas id="processCanvas" width="800" height="800"></canvas>
-		</div>
-	</div>
 <% end %>
+	</div>
 </div>
+<footer class="container_12">
+	<p class="grid_12"><a href="#">Privacy policy</a> • <a href="#">Rules and regulations</a> • <a href="#">Policy on patron-generated web content</a> • <a href="#">Terms and conditions</a></p>
+	<p class="grid_12">Another project of the <a href="#">NYPL Labs</a><br />
+	© 2011 The New York Public Library</p>
+	<p class="grid_12">Please help the library by sharing this site!</p>
+</footer>
 
 </body>
 </html>

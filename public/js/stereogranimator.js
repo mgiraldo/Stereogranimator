@@ -85,7 +85,7 @@ function init() {
 	processcanvas = document.getElementById("processCanvas");
 	resultcanvas = document.getElementById("resultCanvas");
 	
-	document.getElementById("btnGenerate").onclick = generate;
+	document.getElementById("btnNext").onclick = generate;
 	
 	document.getElementById("toggleGIF").onclick = function(){toggleMode("GIF");};
 	document.getElementById("toggleAna").onclick = function(){toggleMode("ANAGLYPH");};
@@ -601,7 +601,7 @@ function changeSpeed(s) {
 
 function generate() {
 	console.log("generating...");
-	document.getElementById("btnGenerate").disabled = true;
+	document.getElementById("btnNext").disabled = true;
 	$.ajax({
 		url: "/animations/createJson/"+(sq1x-OFFSET)+"/"+(sq1y)+"/"+(sq2x-OFFSET)+"/"+(sq2y)+"/"+hsize+"/"+vsize+"/"+speed+"/"+stereographs[currentindex]+"/"+mode+"/mga.json",
 		dataType: 'json',
@@ -613,11 +613,11 @@ function generate() {
 		statusCode: {
 		  404: function() {
 			alert('Photo not found error (404)');
-			document.getElementById("btnGenerate").disabled = false;
+			document.getElementById("btnNext").disabled = false;
 		  },
 		  500: function() {
 				alert('Internal server error (500)');
-				document.getElementById("btnGenerate").disabled = false;
+				document.getElementById("btnNext").disabled = false;
 		  }
 		}
 	});

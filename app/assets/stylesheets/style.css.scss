@@ -188,7 +188,7 @@ td { vertical-align: top; }
    ========================================================================== */
 
 body {
-	background: $backcolor;
+	background: $backcolor $bodyimage repeat-x;
 	color: $maincolor;
 	font-family: $bodyfont;
 }
@@ -198,6 +198,21 @@ a, a:link, a:visited {
 }
 a:hover {
 	text-decoration: none;
+}
+
+.dim {
+	color: $nyplgray;
+}
+
+.genericButtonLink, .genericButtonLink:link, .genericButtonLink:visited {
+	background-color: $linkcolor;
+	padding: 10px;
+	color: $maincolor;
+	text-decoration: none;
+	&:hover {
+		background-color: $maincolor;
+		color: $backcolor;
+	}
 }
 
 #nypl_bar {
@@ -215,21 +230,21 @@ a:hover {
 	}
 }
 
-#mainContent {
-	background: $backimage no-repeat;
+#page {
 	.replace {
 		/* image-replaced texts */
 		margin-left: -10000px;
 	  }
 }
 
-#header {
+header {
 	position: relative;
 	height: 100px;
+	border-top: $basicborder;
 	border-bottom: $basicborder;
 	h1 {
 		position: absolute;
-		left: 36px;
+		left: 6px;
 		top: 0;
 		width: 360px;
 		height: 100px;
@@ -250,7 +265,7 @@ a:hover {
 			text-align: center;
 			font-size: 16px;
 			border: $basicborder;
-			a {
+			a, a:link, a:visited {
 				display: block;
 				margin-top: 3px;
 				color: $backcolor;
@@ -268,8 +283,24 @@ a:hover {
 	}
 }
 
+#mainContent {
+	background: $backimage no-repeat;
+	h1 {
+		width: 126px;
+		height: 31px;
+		margin-top: 30px;
+		background: $sprites -255px -351px no-repeat;
+	}
+}
+
+footer {
+	background: $nyplgray;
+	padding-top: 10px;
+}
+
 #stereogranimator {
 	width: $fullwidth;
+	margin-bottom: 30px;
 	.canvasHolder {
 		border-top: $basicborder;
 		border-bottom: $basicborder;
@@ -288,16 +319,16 @@ a:hover {
 				top: 2px;
 			}
 			#toggleAna {
-				left: 335px;
+				left: 305px;
 				text-align: right;
 			}
 			#toggleGIF {
 				top: 2px;
-				left: 525px;
+				left: 495px;
 			}
 			#GIFExtraLinks {
 				top: 2px;
-				left: 695px;
+				left: 665px;
 				width: 200px;
 				a {
 					margin-right: 10px;
@@ -333,6 +364,16 @@ a:hover {
 			position: absolute;
 			top: 0;
 			left: 0;
+		}
+		#previousStep {
+			float: left;
+			margin-top: 30px;
+			margin-left: 70px;
+		}
+		#nextStep {
+			float: right;
+			margin-top: 30px;
+			margin-right: 70px;
 		}
 	}
 	#process {

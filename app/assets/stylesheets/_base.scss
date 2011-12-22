@@ -10,10 +10,12 @@ $maincolor: #fff;
 $backcolor: #000;
 $linkcolor: #f00;
 $nyplred: #D62828;
+$nyplgray: #62656C;
 
 // borders
 $basicborder: solid 1px $maincolor;
 
 // sprite url
+$bodyimage: asset-url('bodybackground.png', image);
 $backimage: asset-url('background.png', image);
 $sprites: asset-url('sprites.png', image);
