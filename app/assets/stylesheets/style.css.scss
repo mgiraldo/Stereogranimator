@@ -218,10 +218,12 @@ a:hover {
 #nypl_bar {
 	font-family: $nyplfont;
 	position: relative;
+	height: 30px;
 	background: $sprites -38px -295px no-repeat $nyplred;
-	padding: 4px 18px 4px 60px;
 	color: $maincolor;
 	font-size: 14px;
+	margin: 0;
+	padding: 0 0 0 60px;
 	form {
 		display: inline;
 	}
@@ -239,7 +241,7 @@ a:hover {
 
 header {
 	position: relative;
-	height: 100px;
+	height: 99px;
 	border-top: $basicborder;
 	border-bottom: $basicborder;
 	h1 {
