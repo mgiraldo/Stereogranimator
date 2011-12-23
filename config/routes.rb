@@ -1,57 +1,23 @@
 Stereo::Application.routes.draw do
+  get "gallery/index"
+
+  get "about/index"
+
   resources :animations
+  
+  match 'about', :to => 'about#index', :as => "about"
+  match 'what', :to => 'about#what', :as => "about_what"
+  match 'gallery', :to => 'gallery#index', :as => "gallery"
+  match 'choose', :to => 'animations#choose', :as => "choose"
+  match 'convert/:did', :to => 'animations#new', :as => "convert"
+  match 'share/:id', :to => 'animations#share', :as => "share"
+  # match 'menu_pages/:id/approve', :controller => 'menu_pages', :action => 'approve'
+  # match 'menu_pages/:id/reopen', :controller => 'menu_pages', :action => 'reopen'
+  # match 'menu_pages/:id/verify_complete', :controller => 'menu_pages', :action => 'verify_complete'
 
   match "/animations/createJson/*path" => "animations#createJson"
-  # The priority is based upon order of creation:
-  # first created -> highest priority.
 
-  # Sample of regular route:
-  #   match 'products/:id' => 'catalog#view'
-  # Keep in mind you can assign values other than :controller and :action
-
-  # Sample of named route:
-  #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
-  # This route can be invoked with purchase_url(:id => product.id)
-
-  # Sample resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
-
-  # Sample resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
-
-  # Sample resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Sample resource route with more complex sub-resources
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', :on => :collection
-  #     end
-  #   end
-
-  # Sample resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
-
-  # You can have the root of your site routed with "root"
-  # just remember to delete public/index.html.
-  root :to => 'animations#new'
+  root :to => 'about#index'
 
   # See how all your routes lay out with "rake routes"
 

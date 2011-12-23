@@ -70,9 +70,7 @@ var img = new Image();
 var update = true;
 var first = true;
 var mode = "GIF";
-var currentindex = 0;
-
-var stereographs = ['G92F111_027ZF','TH-04569','G92F111_044ZF','G92F111_051ZF','G92F148_003F','G90F151_006F','G90F151_009F','G89F192_023F','G92F111_009F','G92F111_008F','1531160','1531158'];
+var index = "";
 
 //for ipad
 var ua = navigator.userAgent;
@@ -101,7 +99,7 @@ function init() {
 	changeSpeed(speed);
 	toggleMode(mode);
 
-	loadPhoto(currentindex);
+	loadPhoto(index);
 }
 
 function centerPhoto() {
@@ -546,8 +544,8 @@ function drawAnaglyph () {
 	ctx3D.putImageData(leftimgdata, 0, 0);
 }
 
-function loadPhoto(index) {
-	currentindex = index;
+function loadPhoto(str) {
+	index = str;
 	console.log("photo");
 	img.onload = (function () {
 		if (first) {
@@ -558,7 +556,7 @@ function loadPhoto(index) {
 		update = true;
 	});
 	// for animated GIF
-	var url = "http://images.nypl.org/index.php?id="+stereographs[index]+"&t=w";
+	var url = "http://images.nypl.org/index.php?id="+index+"&t=w";
 	img.src = url;
 	var p = document.getElementById("previewGIF");
 	p.style.background = "url('"+url+"') no-repeat -10000px -10000px";
@@ -602,13 +600,17 @@ function changeSpeed(s) {
 function generate() {
 	console.log("generating...");
 	document.getElementById("btnNext").disabled = true;
+	document.getElementById("btnNext").onclick = {};
 	$.ajax({
-		url: "/animations/createJson/"+(sq1x-OFFSET)+"/"+(sq1y)+"/"+(sq2x-OFFSET)+"/"+(sq2y)+"/"+hsize+"/"+vsize+"/"+speed+"/"+stereographs[currentindex]+"/"+mode+"/mga.json",
+		url: "/animations/createJson/"+(sq1x-OFFSET)+"/"+(sq1y)+"/"+(sq2x-OFFSET)+"/"+(sq2y)+"/"+hsize+"/"+vsize+"/"+speed+"/"+index+"/"+mode+"/mga.json",
 		dataType: 'json',
 		data: null,
 		success: function(data) {
-			//console.log(data);
-			window.location.href = data.aws_url;
+			if (data.redirect) {
+				window.location.href = data.redirect;
+			} else {
+				console.log("cannot redirect: " + data);
+			}
 		},
 		statusCode: {
 		  404: function() {
@@ -622,4 +624,3 @@ function generate() {
 		}
 	});
 }
-

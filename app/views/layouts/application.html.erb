@@ -1,14 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Stereo</title>
-  <%= stylesheet_link_tag    "application" %>
-  <%= javascript_include_tag "application" %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Stereogranimator</title>
 
+<%= stylesheet_link_tag "application" %>
+
+<!-- APP JS -->
+<%= javascript_include_tag "application" %>
+
+<%= yield :dynamic_js %>
+
+<%= csrf_meta_tags %>
+
+<script type="text/javascript" src="http://use.typekit.com/cxc4lvb.js"></script>
+<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+</head>
+	
+<body>
+<div id="page" class="container_12">
+<%= render "shared/nypl_bar" %>
+<%= render "shared/global_nav" %>
+	<div id="mainContent">
 <%= yield %>
+	</div>
+</div>
+<%= render "shared/footer" %>
 
 </body>
 </html>

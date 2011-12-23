@@ -6,6 +6,27 @@ class AnimationsController < ApplicationController
     @animation = Animation.new
   end
   
+  def choose
+    # TODO: request random list
+    # TODO: consider error cases (feed not available)
+    @feed = Feedzirra::Feed.fetch_and_parse("http://digitalgallery.nypl.org/feeds/dev/atom/?word=stereog*&imgs=120")
+    all =Array.new
+    @feed.entries.each do |e|
+      # images are id'd as tag:digitalgallery.nypl.org,2006:/nypldigital/id?G89F339_010F
+      full_id = e.id
+      tag = full_id.split('?')[1]
+      all.push(tag)
+    end
+    images = all.sort_by{rand}[0..8]
+    @images = Array.new(9)
+    images.each_with_index do |image,i|
+      @images[i] = {'tag' => image, 'src' => "http://images.nypl.org/index.php?id=#{image}&t=r"}
+    end
+    respond_to do |format|
+      format.html
+    end
+  end
+  
   # GET /animations
   # GET /animations.json
   def index
@@ -15,6 +36,14 @@ class AnimationsController < ApplicationController
     end
   end
 
+  def share
+    @animation = Animation.find(params[:id])
+  
+    respond_to do |format|
+      format.html # show.html.erb
+    end
+  end
+  
   # GET /animations/1
   # GET /animations/1.json
   def show
@@ -30,7 +59,7 @@ class AnimationsController < ApplicationController
   # GET /animations/new.json
   def new
     respond_to do |format|
-      format.html { render :layout => "new_rich"} # new.html.erb
+      format.html #{ render :layout => "new_rich"} # new.html.erb
       format.json { render :json => @animation }
     end
   end

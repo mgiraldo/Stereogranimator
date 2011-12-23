@@ -1,66 +1,42 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Stereogranimator</title>
 
 <%= stylesheet_link_tag "application" %>
 
-<!-- TODO: CONVERT JS PATHS TO PROPER ASSET PIPELINE -->
-<!-- Import EaselJS Framework -->
-<%= javascript_include_tag "/js/src/easeljs/utils/UID.js" %>
-<%= javascript_include_tag "/js/src/easeljs/geom/Matrix2D.js" %>
-<%= javascript_include_tag "/js/src/easeljs/events/MouseEvent.js" %>
-<%= javascript_include_tag "/js/src/easeljs/display/DisplayObject.js" %>
-<%= javascript_include_tag "/js/src/easeljs/display/Container.js" %>
-<%= javascript_include_tag "/js/src/easeljs/display/Bitmap.js" %>
-<%= javascript_include_tag "/js/src/easeljs/display/Graphics.js" %>
-<%= javascript_include_tag "/js/src/easeljs/display/Shape.js" %>
-<%= javascript_include_tag "/js/src/easeljs/display/Stage.js" %>
-<%= javascript_include_tag "/js/src/easeljs/utils/Ticker.js" %>
-<%= javascript_include_tag "/js/src/easeljs/geom/Point.js" %>
-<%= javascript_include_tag "/js/src/easeljs/ui/Touch.js" %>
-<!-- End EaselJS Imports -->
-
 <!-- APP JS -->
 <%= javascript_include_tag "application" %>
 
-<!-- jQuery $.getImageData Plugin -->
-<%= javascript_include_tag "/js/jquery.getimagedata.min.js" %>
-
-<!-- NYPL JS -->
-<%= javascript_include_tag "/js/stereogranimator.js" %>
+<%= yield :dynamic_js %>
 
 <%= csrf_meta_tags %>
 
 <script type="text/javascript" src="http://use.typekit.com/cxc4lvb.js"></script>
 <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 
-<script>
-
-window.onload = init;
-
-</script>
-
 </head>
 	
 <body>
 <div id="page" class="container_12">
 	<div id="nypl_bar">
-		<form>A <a href="http://www.nypl.org/">New York Public Library</a> website
-			<select onchange="window.open(this.options[this.selectedIndex].value,'_top')">
-				<option value="">Explore others!</option>
-				<option value="http://www.nypl.org/">NYPL.org</option>
-				<option value="http://catalog.nypl.org/">Catalog</option>
-				<option value="http://www.nypl.org/">Research Tools</option>
-				<option value="http://digitalgallery.nypl.org/">Picture Collection</option>
-				<option value="http://exhibitions.nypl.org/">Exhibitions</option>
-				<option value="http://nypl.org/blog/all">Blogs</option>
-				<option value="http://m.nypl.org/">Mobile</option>
-				<option value="http://www.facebook.com/newyorkpubliclibrary">on Facebook</option>
-				<option value="http://twitter.com/nypl">on Twitter</option>
-			</select>
-		</form>
+		<div>
+			<form>A <a href="http://www.nypl.org/">New York Public Library</a> website
+				<select onchange="window.open(this.options[this.selectedIndex].value,'_top')">
+					<option value="">Explore others!</option>
+					<option value="http://www.nypl.org/">NYPL.org</option>
+					<option value="http://catalog.nypl.org/">Catalog</option>
+					<option value="http://www.nypl.org/">Research Tools</option>
+					<option value="http://digitalgallery.nypl.org/">Picture Collection</option>
+					<option value="http://exhibitions.nypl.org/">Exhibitions</option>
+					<option value="http://nypl.org/blog/all">Blogs</option>
+					<option value="http://m.nypl.org/">Mobile</option>
+					<option value="http://www.facebook.com/newyorkpubliclibrary">on Facebook</option>
+					<option value="http://twitter.com/nypl">on Twitter</option>
+				</select>
+			</form>
+		</div>
 	</div>
 	<header>
 		<h1><span><a href="/" class="visuallyhidden focusable">STEREOGRANIMATOR</a></span></h1>

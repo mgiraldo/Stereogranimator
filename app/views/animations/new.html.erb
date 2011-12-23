@@ -1,5 +1,73 @@
-<h1>New animation</h1>
+<% content_for :dynamic_js do %>
+<!-- Import EaselJS Framework -->
+<%= javascript_include_tag "easel.js" %>
+<%= javascript_include_tag "/assets/src/easeljs/utils/UID.js" %>
+<%= javascript_include_tag "/assets/src/easeljs/geom/Matrix2D.js" %>
+<%= javascript_include_tag "/assets/src/easeljs/events/MouseEvent.js" %>
+<%= javascript_include_tag "/assets/src/easeljs/display/DisplayObject.js" %>
+<%= javascript_include_tag "/assets/src/easeljs/display/Container.js" %>
+<%= javascript_include_tag "/assets/src/easeljs/display/Bitmap.js" %>
+<%= javascript_include_tag "/assets/src/easeljs/display/Graphics.js" %>
+<%= javascript_include_tag "/assets/src/easeljs/display/Shape.js" %>
+<%= javascript_include_tag "/assets/src/easeljs/display/Stage.js" %>
+<%= javascript_include_tag "/assets/src/easeljs/utils/Ticker.js" %>
+<%= javascript_include_tag "/assets/src/easeljs/geom/Point.js" %>
+<%= javascript_include_tag "/assets/src/easeljs/ui/Touch.js" %>
+<!-- End EaselJS Imports -->
 
-<%= render 'form' %>
+<!-- jQuery $.getImageData Plugin -->
+<%= javascript_include_tag "/assets/jquery.getimagedata.min.js" %>
 
-<%= link_to 'Back', animations_path %>
+<!-- NYPL JS -->
+<%= javascript_include_tag "/assets/stereogranimator.js" %>
+<script>
+// establish the photo to be used
+index = <%= "'#{params[:did]}'" %>;
+window.onload = init;
+</script>
+
+<% end %>
+		<div class="createTop container_12">
+			<h1 class="create grid_12"><span class="visuallyhidden">CREATE</span></h1>
+			<div id="nav" class="grid_12">
+				<p><span class="dim">Step 1: CHOOSE A STEREOGRAPH &gt;</span> Step 2: CONVERT TO GIF/ANAGLYPH &gt; <span class="dim">Step 3: SEND</span></p>
+			</div>
+		</div>
+		<div class="clear"></div>
+<%= form_for(@animation, :remote => true) do |f| %>
+		<div id="stereogranimator">
+			<div class="canvasHolder">
+				<canvas id="testCanvas" width="960" height="450"></canvas>
+			</div>
+			<div id="toggler">
+				<div class="previewTitle">PREVIEW BELOW</div>
+				<div id="toggleLinks">
+					<a href="javascript:;" id="toggleAna">AS 3D ANAGLYPH</a>
+					<a href="javascript:;" id="toggleGIF">AS ANIMATED GIF</a>
+					<div id="GIFExtraLinks">
+						<a href="javascript:;" id="slowSpeed">SLOW</a>
+						<a href="javascript:;" id="medSpeed">MEDIUM</a>
+						<a href="javascript:;" id="fastSpeed">FAST</a>
+					</div>
+				</div>
+			</div>
+			<div id="preview">
+				<div id="previousStep">
+					<p><a href="#">&lt; Start again</a></p>
+				</div>
+				<div id="nextStep">
+					<p><a href="javascript:;" id="btnNext" class="genericButtonLink">CONTINUE TO STEP 3 &gt;</a></p>
+				</div>
+				<div id="previewContainer">
+					<div id="previewGIF">
+					</div>
+					<div id="previewAnaglyph">
+						<canvas id="resultCanvas"></canvas>
+					</div>
+				</div>
+			</div>
+			<div id="process">
+				<canvas id="processCanvas" width="800" height="800"></canvas>
+			</div>
+		</div>
+<% end %>

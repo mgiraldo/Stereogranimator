@@ -13,6 +13,7 @@ class Animation < ActiveRecord::Base
       h[:url] = url
       h[:aws_url]   = aws_url
       h[:aws_thumb_url]   = aws_thumb_url
+      h[:redirect] = "/share/#{id}"
       h
   end
 end
