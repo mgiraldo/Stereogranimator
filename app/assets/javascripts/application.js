@@ -1,8 +1,17 @@
-// This is a manifest file that'll be compiled into including all the files listed below.
-// Add new JavaScript/Coffee code in separate files in this directory and they'll automatically
-// be included in the compiled file accessible from http://example.com/assets/application
-// It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
-// the compiled file.
-//
 //= require jquery
 //= require jquery_ujs
+//= require easel
+//= require ./src/easeljs/utils/UID
+//= require ./src/easeljs/geom/Matrix2D
+//= require ./src/easeljs/events/MouseEvent
+//= require ./src/easeljs/display/DisplayObject
+//= require ./src/easeljs/display/Container
+//= require ./src/easeljs/display/Bitmap
+//= require ./src/easeljs/display/Graphics
+//= require ./src/easeljs/display/Shape
+//= require ./src/easeljs/display/Stage
+//= require ./src/easeljs/utils/Ticker
+//= require ./src/easeljs/geom/Point
+//= require ./src/easeljs/ui/Touch
+//= require ./jquery.getimagedata.min
+//= require ./stereogranimator

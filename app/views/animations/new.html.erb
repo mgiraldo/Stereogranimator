@@ -1,25 +1,4 @@
 <% content_for :dynamic_js do %>
-<!-- Import EaselJS Framework -->
-<%= javascript_include_tag "easel.js" %>
-<%= javascript_include_tag "/assets/src/easeljs/utils/UID.js" %>
-<%= javascript_include_tag "/assets/src/easeljs/geom/Matrix2D.js" %>
-<%= javascript_include_tag "/assets/src/easeljs/events/MouseEvent.js" %>
-<%= javascript_include_tag "/assets/src/easeljs/display/DisplayObject.js" %>
-<%= javascript_include_tag "/assets/src/easeljs/display/Container.js" %>
-<%= javascript_include_tag "/assets/src/easeljs/display/Bitmap.js" %>
-<%= javascript_include_tag "/assets/src/easeljs/display/Graphics.js" %>
-<%= javascript_include_tag "/assets/src/easeljs/display/Shape.js" %>
-<%= javascript_include_tag "/assets/src/easeljs/display/Stage.js" %>
-<%= javascript_include_tag "/assets/src/easeljs/utils/Ticker.js" %>
-<%= javascript_include_tag "/assets/src/easeljs/geom/Point.js" %>
-<%= javascript_include_tag "/assets/src/easeljs/ui/Touch.js" %>
-<!-- End EaselJS Imports -->
-
-<!-- jQuery $.getImageData Plugin -->
-<%= javascript_include_tag "/assets/jquery.getimagedata.min.js" %>
-
-<!-- NYPL JS -->
-<%= javascript_include_tag "/assets/stereogranimator.js" %>
 <script>
 // establish the photo to be used
 index = <%= "'#{params[:did]}'" %>;
