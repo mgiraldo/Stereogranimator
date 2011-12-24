@@ -100,6 +100,8 @@ function init() {
 	toggleMode(mode);
 
 	loadPhoto(index);
+	
+	Ticker.setInterval(10);
 }
 
 function centerPhoto() {
@@ -483,7 +485,7 @@ function drawGIF () {
 	document.getElementById("previewAnaglyph").style.display = "none";
 	
 	now = new Date().getTime();
-	if (now - lasttick >= speed * 10) {
+	if (now - lasttick >= speed) {
 		lasttick = now;
 		var p = document.getElementById("previewGIF");
 		if (frame==1) {
