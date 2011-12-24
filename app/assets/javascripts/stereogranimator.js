@@ -43,9 +43,9 @@ var hsize = 300;
 var vsize = 360;
 var MINSIZE = 200;
 
-var SLOWSPEED = 30;
-var MEDSPEED = 15;
-var FASTSPEED = 8;
+var SLOWSPEED = 200;
+var MEDSPEED = 140;
+var FASTSPEED = 80;
 
 // animation preview tick and speed
 var now = 0;
@@ -584,6 +584,7 @@ function loadPhoto(str) {
 
 function changeSpeed(s) {
 	speed = s;
+	console.log(speed);
 	var sDiv = $("#slowSpeed");
 	var mDiv = $("#medSpeed");
 	var fDiv = $("#fastSpeed");
