@@ -127,7 +127,7 @@ class AnimationsController < ApplicationController
       final = Magick::ImageList.new
       final << fr1
       final << fr2
-      final.ticks_per_second = 100
+      final.ticks_per_second = 1000
       final.delay = @animation.delay
       final.iterations = 0
       
@@ -136,7 +136,7 @@ class AnimationsController < ApplicationController
       thumb = Magick::ImageList.new
       thumb << fr3
       thumb << fr4
-      thumb.ticks_per_second = 100
+      thumb.ticks_per_second = 1000
       thumb.delay = @animation.delay
       thumb.iterations = 0
     else
