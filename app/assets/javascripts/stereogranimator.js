@@ -43,10 +43,14 @@ var hsize = 300;
 var vsize = 360;
 var MINSIZE = 200;
 
+var SLOWSPEED = 30;
+var MEDSPEED = 15;
+var FASTSPEED = 8;
+
 // animation preview tick and speed
 var now = 0;
 var lasttick = 0;
-var speed = 8; // 1/10 seconds
+var speed = FASTSPEED;
 var frame = 1;
 
 var HNSIZE = 10;
@@ -61,10 +65,6 @@ var THICK = 2;
 var COLOR = "#fff";
 var FILL = "#000";
 var FILLALPHA = "rgba(0,0,0,0.5)";
-
-var SLOWSPEED = 30;
-var MEDSPEED = 15;
-var FASTSPEED = 8;
 
 var img = new Image();
 var update = true;
