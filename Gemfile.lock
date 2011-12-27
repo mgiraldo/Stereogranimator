@@ -76,6 +76,8 @@ GEM
       railties (~> 3.0)
       thor (~> 0.14)
     json (1.6.1)
+    kaminari (0.12.4)
+      rails (>= 3.0.0)
     loofah (1.2.0)
       nokogiri (>= 1.4.4)
     mail (2.3.0)
@@ -150,6 +152,7 @@ DEPENDENCIES
   feedzirra!
   jquery-rails
   json
+  kaminari
   pg
   rails (= 3.1.1)
   rmagick

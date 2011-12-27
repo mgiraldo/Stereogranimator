@@ -1,7 +1,7 @@
 		<div class="createTop container_12">
 			<h1 class="create grid_12"><span class="visuallyhidden">CREATE</span></h1>
 			<div id="nav" class="grid_12">
-				<p>Step 1: CHOOSE A STEREOGRAPH &gt; <span class="dim">Step 2: CONVERT TO GIF/ANAGLYPH &gt; Step 3: SEND</span></p>
+				Step 1: CHOOSE A STEREOGRAPH &gt; <span class="dim">Step 2: CONVERT TO GIF/ANAGLYPH &gt; Step 3: SEND</span>
 			</div>
 		</div>
 		<div id="stereoList" class="grid_12">
@@ -9,9 +9,12 @@
 			<div class="stereograph grid_4 <%= 'alpha' if i.modulo(3) == 0 %><%= 'omega' if i.modulo(3) == 2 %>">
 				<%= link_to image_tag(image['src']), "/convert/#{image['tag']}" %>
 			</div>
-<% end %>
+	<% if i.modulo(3) == 2 %>
 			<div class="clear"></div>
+	<% end %>
+<% end %>
 			<div class="centered">
 				<%= link_to "CHOOSE ANOTHER PHOTO", "/choose", :class => 'genericButtonLink' %>
 			</div>
 		</div>
+		<div class="clear"></div>

@@ -5,6 +5,7 @@ body {
 	color: $maincolor;
 	font-family: $bodyfont;
 	font-size: $fontsizepx;
+	line-height: $baselineheightem;
 }
 
 h3, .mainParagraph {
@@ -17,7 +18,6 @@ h3, .mainParagraph {
 p {
 	padding: 0 5px;
 	font-size: 1em;
-	line-height: $baselineheightem;
 	margin: 0 0 $lineheightem 0;
 }
 
@@ -41,7 +41,7 @@ a:hover {
 	text-align: center;
 }
 
-.genericButtonLink, .genericButtonLink:link, .genericButtonLink:visited {
+.pagination a, .genericButtonLink, .genericButtonLink:link, .genericButtonLink:visited {
 	background-color: $linkcolor;
 	padding: 10px;
 	color: $maincolor;
@@ -50,6 +50,14 @@ a:hover {
 		background-color: $maincolor;
 		color: $backcolor;
 	}
+}
+
+.pagination span {
+	margin: 0 5px;
+}
+
+.pagination .first, .pagination .last {
+	display: none;
 }
 
 #nypl_bar {
@@ -94,9 +102,12 @@ header {
 		background: $sprites -100px 0 no-repeat;
 	}
 	ul {
+		position: absolute;
 		list-style-type: none;
 		margin: 0;
-		margin-top: 70px;
+		top: 70px;
+		left: 240px;
+		width: 460px;
 		li {
 			float: left;
 			width: 138px!important;
@@ -126,12 +137,31 @@ header {
 
 #mainContent {
 	background: $backimage no-repeat;
+	.thumb {
+		float: left;
+		width: 150px;
+		height: 155px;
+		margin: 0 6px 15px 4px;
+		background: $sprites -308px -103px no-repeat;
+		.pad {
+			padding: 5px;
+		}
+	}
+	.createTop {
+		border-bottom: $basicborder;
+		height: 110px;
+	}
 	h1.create {
 		width: 126px;
 		height: 31px;
-		margin: 0;
-		margin-top: 30px;
+		margin: 30px 10px 15px 10px;
 		background: $sprites -255px -351px no-repeat;
+	}
+	h1.gallery {
+		width: 127px;
+		height: 31px;
+		margin: 30px 10px 15px 10px;
+		background: $sprites -498px -351px no-repeat;
 	}
 	h1.welcome {
 		width: 207px;
@@ -148,8 +178,16 @@ header {
 		margin-bottom: 20px;
 		background: $sprites -391px -351px no-repeat;
 	}
-	.createTop {
-		border-bottom: $basicborder;
+	.meta {
+		.create {
+			margin: 30px 0;
+		}
+	}
+	.startCreating {
+		width: 221px;
+		height: 32px;
+		background: $sprites -461px 0 no-repeat;
+		margin: 0 auto 20px auto;
 	}
 }
 
@@ -161,26 +199,10 @@ header {
 		margin-right: 10px;
 	}
 	.text {
-		.startCreating {
-			width: 221px;
-			height: 32px;
-			background: $sprites -461px 0 no-repeat;
-			margin: 0 auto 20px auto;
-		}
 	}
 	.latestImages {
 		float: left;
 		width: 320px;
-		.thumb {
-			float: left;
-			width: 150px;
-			height: 155px;
-			margin: 0 6px 15px 4px;
-			background: $sprites -308px -103px no-repeat;
-			.pad {
-				padding: 5px;
-			}
-		}
 		.more {
 			margin-top: 20px;
 		}
@@ -190,8 +212,7 @@ header {
 #stereoList {
 	padding: 20px 0;
 	.stereograph {
-		height: 150px;
-		margin-bottom: 50px;
+		margin-bottom: 30px;
 	}
 }
 

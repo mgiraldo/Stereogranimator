@@ -21,7 +21,11 @@ class AnimationsController < ApplicationController
   def choose
     # TODO: request random list
     # TODO: consider error cases (feed not available)
-    @feed = Feedzirra::Feed.fetch_and_parse("http://digitalgallery.nypl.org/feeds/dev/atom/?word=stereog*&imgs=120")
+    total_images = 43088 # as of 27/12/2011
+    count = 9 # images to retrieve
+    range = total_images - count
+    first = rand(range)
+    @feed = Feedzirra::Feed.fetch_and_parse("http://digitalgallery.nypl.org/feeds/dev/atom/?word=stereog*&imgs=120&num=#{first}")
     all =Array.new
     @feed.entries.each do |e|
       # images are id'd as tag:digitalgallery.nypl.org,2006:/nypldigital/id?G89F339_010F

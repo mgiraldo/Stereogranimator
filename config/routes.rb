@@ -8,13 +8,13 @@ Stereo::Application.routes.draw do
   match 'about', :to => 'about#index', :as => "about"
   match 'what', :to => 'about#what', :as => "about_what"
   match 'gallery', :to => 'gallery#index', :as => "gallery"
+  match 'gallery/:type', :to => 'gallery#index', :as => "gallery_type"
+  match 'gallery/:type/:page', :to => 'gallery#index', :as => "gallery_type_paged"
+  match 'gallery/:type/:page.:format', :to => 'gallery#index', :as => "gallery_type_paged_formatted"
   match 'choose', :to => 'animations#choose', :as => "choose"
   match 'convert/:did', :to => 'animations#new', :as => "convert"
   match 'share/:id', :to => 'animations#share', :as => "share"
   match 'view/:id', :to => 'animations#view', :as => "view"
-  # match 'menu_pages/:id/approve', :controller => 'menu_pages', :action => 'approve'
-  # match 'menu_pages/:id/reopen', :controller => 'menu_pages', :action => 'reopen'
-  # match 'menu_pages/:id/verify_complete', :controller => 'menu_pages', :action => 'verify_complete'
 
   match "/animations/createJson/*path" => "animations#createJson"
 

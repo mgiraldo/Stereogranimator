@@ -1,0 +1,20 @@
+		<h1 class="gallery"><span class="visuallyhidden">GALLERY</span></h1>
+		<div id="nav" class="grid_12">
+			<p>SHOW: <%= link_to_unless @type=="all", "ALL", "/gallery/all/1" %>  <%= link_to_unless @type=="anaglyph", "ANAGLYPHS", "/gallery/anaglyph/1" %>  <%= link_to_unless @type=="gif", "ANIMATED GIFS", "/gallery/gif/1" %></p>
+		</div>
+		<div id="galleryList" class="container_12">
+<% @images.each_with_index do |image,i| %>
+				<div class="thumb">
+					<div class="pad">
+						<%= link_to image_tag(image.aws_thumb_url), "/view/#{image['id']}" %>
+					</div>
+				</div>
+	<% if i.modulo(6) == 5 %>
+			<div class="clear"></div>
+	<% end %>
+<% end %>
+			<div class="clear"></div>
+			<div class="centered">
+				<p><%= paginate @images, :params => { :type => params['type'] } %></p>
+			</div>
+		</div>
