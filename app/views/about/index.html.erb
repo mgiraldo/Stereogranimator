@@ -1,2 +1,30 @@
-<h1>About#index</h1>
-<p>Find me in app/views/about/index.html.erb</p>
+		<div id="home" class="container_12">
+			<div class="diagram">
+				<%= image_tag 'diagram-eyes.png' %>
+			</div>
+			<div class="text grid_5 alpha">
+				<h1 class="welcome"><span class="visuallyhidden">WELCOME</span></h1>
+				<p class="mainParagraph">The New York Public Library is proud to present its new NYPL Labs project. Create and share animated GIFs and anaglyphs using more than 40,000 stereographs available in the NYPL Digital Library.</p>
+				<p class="mainParagraph">You can also browse the gallery to view what others have created and share them as well (no need to create your own).</p>
+				<div class="startCreating centered">
+					<%= link_to "START CREATING!", "/choose", :class => 'genericButtonLink' %>
+				</div>
+				<p>“We have now obtained the doubleeyed or twin pictures, or <em>Stereograph</em>, if we may coin a name. But the pictures are two, and we want to slide them into each other, so to speak, as in natural vision, that we may see them as one. How shall we make one picture out of two, the corresponding parts of which are separated by a distance of two or three inches?”
+—<%= link_to "Oliver Wendell Holmes", "http://www.theatlantic.com/magazine/archive/1859/06/the-stereoscope-and-the-stereograph/3361/" %>, 1859</p>
+			</div>
+			<div class="latestImages">
+				<h1 class="latest grid_4"><span class="visuallyhidden">LATEST</span></h1>
+				<div class="clear"></div>
+<% @images.entries.each_with_index do |image,i| %>
+				<div class="thumb">
+					<div class="pad">
+						<%= link_to image_tag(image.aws_thumb_url), "/view/#{image['id']}" %>
+					</div>
+				</div>
+<% end %>
+				<div class="clear"></div>
+				<div class="more centered">
+					<%= link_to "VIEW MORE >", "/gallery", :class => 'genericButtonLink' %>
+				</div>
+			</div>
+		</div>

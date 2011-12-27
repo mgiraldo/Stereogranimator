@@ -1,8 +1,8 @@
 	<header>
 		<h1><span><a href="/" class="visuallyhidden focusable">STEREOGRANIMATOR</a></span></h1>
-		<ul id="mainNav">
-			<li <%=  "class='active'" if controller_name ==  'animations' %>><%= link_to "CREATE", "/choose" %></li>
-			<li <%=  "class='active'" if controller_name ==  'gallery' %>><%= link_to "GALLERY", gallery_path %></li>
-			<li <%=  "class='active'" if controller_name ==  'about' %>><%= link_to "ABOUT", about_path %></li>
+		<ul id="mainNav" class="grid_6 push_3 alpha omega">
+			<li class="grid_2 alpha <%=  "active" if controller_name ==  'animations' %>"><%= link_to "CREATE", "/choose" %></li>
+			<li class="grid_2 <%=  "active" if controller_name ==  'gallery' %>"><%= link_to "GALLERY", gallery_path %></li>
+			<li class="grid_2 omega <%=  "active" if controller_name ==  'about' %>"><%= link_to "ABOUT", about_path %></li>
 		</ul>
 	</header>

@@ -11,6 +11,7 @@ Stereo::Application.routes.draw do
   match 'choose', :to => 'animations#choose', :as => "choose"
   match 'convert/:did', :to => 'animations#new', :as => "convert"
   match 'share/:id', :to => 'animations#share', :as => "share"
+  match 'view/:id', :to => 'animations#view', :as => "view"
   # match 'menu_pages/:id/approve', :controller => 'menu_pages', :action => 'approve'
   # match 'menu_pages/:id/reopen', :controller => 'menu_pages', :action => 'reopen'
   # match 'menu_pages/:id/verify_complete', :controller => 'menu_pages', :action => 'verify_complete'

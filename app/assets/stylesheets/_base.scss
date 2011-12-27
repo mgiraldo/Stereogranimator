@@ -1,6 +1,9 @@
 // fonts
 $nyplfont: "Kievit", "Myriad Pro", "Lucida Grande", "Calibri", verdana, arial, helvetica, sans-serif;
 $bodyfont: share-regular, sans-serif;
+$fontsizepx: 14px;
+$baselineheightem: 1.8em;
+$lineheightem: 1.4em;
 
 // sizes
 $fullwidth: 960px;
@@ -11,6 +14,7 @@ $backcolor: #000;
 $linkcolor: #f00;
 $nyplred: #D62828;
 $nyplgray: #62656C;
+$emgray: #999;
 
 // borders
 $basicborder: solid 1px $maincolor;

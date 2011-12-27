@@ -4,11 +4,31 @@ body {
 	background: $backcolor $bodyimage repeat-x;
 	color: $maincolor;
 	font-family: $bodyfont;
+	font-size: $fontsizepx;
+}
+
+h3, .mainParagraph {
+	font-size: 16px;
+	line-height: $lineheightem;
+	margin-top: 20px;
+	margin-bottom: 1em;
+}
+
+p {
+	padding: 0 5px;
+	font-size: 1em;
+	line-height: $baselineheightem;
+	margin: 0 0 $lineheightem 0;
+}
+
+em {
+	color: $emgray;
 }
 
 a, a:link, a:visited {
 	color: $linkcolor;
 }
+
 a:hover {
 	text-decoration: none;
 }
@@ -36,9 +56,9 @@ a:hover {
 	font-family: $nyplfont;
 	position: relative;
 	height: 30px;
-	background: $sprites -38px -295px no-repeat $nyplred;
+	background: $sprites -905px 0 no-repeat $nyplred;
 	color: $maincolor;
-	font-size: 14px;
+	font-size: $fontsizepx;
 	margin: 0;
 	padding: 0 0 0 60px;
 	div {
@@ -68,19 +88,18 @@ header {
 		position: absolute;
 		left: 6px;
 		top: 0;
+		margin: 0;
 		width: 360px;
 		height: 100px;
 		background: $sprites -100px 0 no-repeat;
 	}
 	ul {
 		list-style-type: none;
-		position: absolute;
-		left: 280px;
-		top: 70px;
+		margin: 0;
+		margin-top: 70px;
 		li {
 			float: left;
-			margin-right: 20px;
-			width: 138px;
+			width: 138px!important;
 			height: 28px;
 			background-color: $maincolor;
 			color: $backcolor;
@@ -110,20 +129,61 @@ header {
 	h1.create {
 		width: 126px;
 		height: 31px;
+		margin: 0;
 		margin-top: 30px;
 		background: $sprites -255px -351px no-repeat;
+	}
+	h1.welcome {
+		width: 207px;
+		height: 31px;
+		margin: 0;
+		margin-top: 30px;
+		margin-bottom: 20px;
+		background: $sprites -38px -351px no-repeat;
+	}
+	h1.latest {
+		width: 100px;
+		height: 31px;
+		margin-top: 30px;
+		margin-bottom: 20px;
+		background: $sprites -391px -351px no-repeat;
 	}
 	.createTop {
 		border-bottom: $basicborder;
 	}
 }
 
-footer {
-	background: $nyplgray;
-	padding-top: 10px;
-	margin-top: 30px;
-	a, a:link, a:visited {
-	  color: $maincolor;
+#home {
+	.diagram {
+		margin-top: 40px;
+		float: left;
+		width: 240px;
+		margin-right: 10px;
+	}
+	.text {
+		.startCreating {
+			width: 221px;
+			height: 32px;
+			background: $sprites -461px 0 no-repeat;
+			margin: 0 auto 20px auto;
+		}
+	}
+	.latestImages {
+		float: left;
+		width: 320px;
+		.thumb {
+			float: left;
+			width: 150px;
+			height: 155px;
+			margin: 0 6px 15px 4px;
+			background: $sprites -308px -103px no-repeat;
+			.pad {
+				padding: 5px;
+			}
+		}
+		.more {
+			margin-top: 20px;
+		}
 	}
 }
 
@@ -216,6 +276,15 @@ footer {
 		position: absolute;
 		left: -1000px;
 		top: 0;
+	}
+}
+
+footer {
+	background: $nyplgray;
+	padding-top: 10px;
+	margin-top: 30px;
+	a, a:link, a:visited {
+	  color: $maincolor;
 	}
 }
 
