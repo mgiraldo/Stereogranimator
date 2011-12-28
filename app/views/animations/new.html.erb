@@ -1,7 +1,8 @@
 <% content_for :dynamic_js do %>
 <script>
 // establish the photo to be used
-index = <%= "'#{params[:did]}'" %>;
+index = "<%= params[:did] %>";
+sheetsrc = "<%= image_path('sprites.png') %>"
 window.onload = init;
 </script>
 

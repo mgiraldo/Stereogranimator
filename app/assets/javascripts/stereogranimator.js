@@ -2,6 +2,18 @@ var canvas;
 var stage;
 var bmp;
 
+var stageWidth = 960;
+var stageHeight = 450;
+
+var NUM_ELEMENTS_TO_DOWNLOAD = 2;
+var numImagesLoaded = 0;
+
+var resize_sprite;
+var vert_sprite;
+var corner_sprite;
+var sheetpng;
+var sheetsrc;
+
 // anaglyph mode vars
 var processcanvas;
 var resultcanvas;
@@ -22,11 +34,6 @@ var rightimgdata_array
 // squares
 var sq1;
 var sq2;
-// vertical separator
-var vert;
-// square handles
-var hn1;
-var hn2;
 
 // element vars
 // square positions
@@ -41,11 +48,19 @@ var verty = 0;
 // square scaling
 var hsize = 300;
 var vsize = 360;
-var MINSIZE = 200;
+var MINSIZE = 100;
 
 var SLOWSPEED = 200;
 var MEDSPEED = 140;
 var FASTSPEED = 80;
+
+// corner values
+var CORNER_POSITION = 0;
+var CORNER_TOP_LEFT = 1;
+var CORNER_TOP_RIGHT = 2;
+var CORNER_BOTTOM_LEFT = 3;
+var CORNER_BOTTOM_RIGHT = 4;
+var CORNER_OFFSET = 10
 
 // animation preview tick and speed
 var now = 0;
@@ -63,6 +78,7 @@ var INSET = 10;
 
 var THICK = 2;
 var COLOR = "#fff";
+var OVERCOLOR = "#f00";
 var FILL = "#000";
 var FILLALPHA = "rgba(0,0,0,0.5)";
 
@@ -92,6 +108,12 @@ function init() {
 	document.getElementById("medSpeed").onclick = function(){changeSpeed(MEDSPEED);};
 	document.getElementById("fastSpeed").onclick = function(){changeSpeed(FASTSPEED);};
 	
+	canvas.ontouchend = function(){isdown = false;sq1.over=sq2.over=hn1.over=hn2.over=false;};
+	
+	sheetpng = new Image();
+	sheetpng.onload = handleImageLoad;
+	sheetpng.onerror = handleImageError;
+	
 	stage = new Stage(canvas);
 	stage.enableMouseOver(10);
 	Touch.enable(stage);
@@ -99,9 +121,39 @@ function init() {
 	changeSpeed(speed);
 	toggleMode(mode);
 
+	sheetpng.src = sheetsrc;
 	loadPhoto(index);
 	
 	Ticker.setInterval(10);
+}
+
+function prepareSheet() {
+	var data = {
+		images:[sheetpng],
+		frames:[
+		        [0,0,18,390,0,9,195],
+		        [19,0,18,390,0,9,195],
+		        [38,0,14,14,0,7,7],
+		        [38,15,14,14,0,7,7]
+		        //[x,y,w,h,0,rx,ry],
+		    ],
+		animations: {
+			corner:2,
+			cornerover:3,
+			vertical:0,
+			verticalover:1
+		}
+	};
+	vert_sprite = new BitmapAnimation(new SpriteSheet(data));
+	vert_sprite.gotoAndStop("vertical");
+	vert_sprite.x = vertx;
+	vert_sprite.y = verty;
+	corner_sprite = new BitmapAnimation(new SpriteSheet(data));
+	corner_sprite.gotoAndStop("corner");
+	corner_sprite.mysquare = undefined;
+	stage.addChild(vert_sprite);
+	stage.addChild(corner_sprite);
+	console.log("prepared sprite");
 }
 
 function centerPhoto() {
@@ -123,10 +175,10 @@ function run() {
 	centerPhoto();
 	
 	// starting points for squares
-	sq1x = bmp.x + (img.width / 2) - hsize - INSET;
-	sq1y = bmp.y + (img.height / 2) - (vsize / 2);
-	sq2x = bmp.x + (img.width / 2) + INSET;
-	sq2y = bmp.y + (img.height / 2) - (vsize / 2);
+	sq1x = bmp.x + Math.round(img.width / 2) - hsize - INSET;
+	sq1y = bmp.y + Math.round(img.height / 2) - (vsize / 2);
+	sq2x = bmp.x + Math.round(img.width / 2) + INSET;
+	sq2y = bmp.y + Math.round(img.height / 2) - (vsize / 2);
 	
 	// starting point for vertical bar
 	vertx = bmp.x + (img.width / 2);
@@ -139,15 +191,6 @@ function run() {
 	sq1.mx = 0;
 	sq1.my = 0;
 	stage.addChildAt(sq1,1);
-	// handle
-	hn1 = new Shape();
-	hn1.over = false;
-	// to control for mouse position when dragging
-	hn1.mx = 0;
-	hn1.my = 0;
-	hn1.sx = 0;
-	hn1.sx = 0;
-	stage.addChild(hn1);
 	
 	sq2 = new Shape();
 	sq2.over = false;
@@ -155,27 +198,6 @@ function run() {
 	sq2.mx = 0;
 	sq2.my = 0;
 	stage.addChildAt(sq2,1);
-	// handle
-	hn2 = new Shape();
-	hn2.over = false;
-	// to control for mouse position when dragging
-	hn2.mx = 0;
-	hn2.my = 0;
-	hn2.sx = 0;
-	hn2.sy = 0;
-	stage.addChild(hn2);
-	
-	// vertical handle
-	vert = new Shape();
-	vert.over = false;
-	// to control for mouse position when dragging
-	vert.mx = 0;
-	vert.sq1x = 0;
-	vert.sq2x = 0;
-	stage.addChild(vert);
-	
-	// adding interaction
-	addBasicInteractivity();
 	
 	Ticker.addListener(window);
 }
@@ -184,11 +206,11 @@ function addBasicInteractivity() {
 	// handle movement for VERTICAL handle
 	// wrapper function to provide scope for the event handlers:
 	(function(target) {
-		vert.onPress = function(evt) {
+		vert_sprite.onPress = function(evt) {
 			// drag
-			vert.mx = vertx - stage.mouseX;
-			vert.sq1x = vertx - sq1x;
-			vert.sq2x = vertx - sq2x;
+			vert_sprite.mx = vertx - stage.mouseX;
+			vert_sprite.sq1x = vertx - sq1x;
+			vert_sprite.sq2x = vertx - sq2x;
 			//console.log("vs1:"+vert.sq1x+" vs2:"+vert.sq2x+" s1:"+sq1x+" s2:"+sq2x+" vm:"+vert.mx+" vx:"+vertx);
 			evt.onMouseMove = function(ev) {
 				vertx = stage.mouseX + target.mx;
@@ -198,22 +220,17 @@ function addBasicInteractivity() {
 				// indicate that the stage should be updated on the next tick:
 				update = true;
 			};
-			// optimize for iPad
-			isdown = true;
-			evt.onMouseUp = function (ev) {
-				isdown = false;
-			}
 		};
-		vert.onMouseOver = function() {
+		vert_sprite.onMouseOver = function() {
 			target.over = true;
 			update = true;
 		};
-		vert.onMouseOut = function() {
+		vert_sprite.onMouseOut = function() {
 			target.over = false;
 			update = true;
 		};
-	})(vert);
-
+	})(vert_sprite);
+	
 	// handle movement for LEFT square
 	// wrapper function to provide scope for the event handlers:
 	(function(target) {
@@ -245,6 +262,7 @@ function addBasicInteractivity() {
 		};
 		sq1.onMouseOver = function() {
 			target.over = true;
+			corner_sprite.mysquare = target;
 			update = true;
 		};
 		sq1.onMouseOut = function() {
@@ -284,6 +302,7 @@ function addBasicInteractivity() {
 		};
 		sq2.onMouseOver = function() {
 			target.over = true;
+			corner_sprite.mysquare = target;
 			update = true;
 		};
 		sq2.onMouseOut = function() {
@@ -292,26 +311,53 @@ function addBasicInteractivity() {
 		};
 	})(sq2);
 
-	// handle resizing TOP LEFT
+	// handle RESIZING
 	// wrapper function to provide scope for the event handlers:
 	(function(target) {
-		hn1.onPress = function(evt) {
+		corner_sprite.onPress = function(evt) {
 			// drag
 			// save mouse position for future reference
-			hn1.mx = stage.mouseX;
-			hn1.my = stage.mouseY;
-			hn1.sx = hsize;
-			hn1.sy = vsize;
+			corner_sprite.mx = stage.mouseX - target.x;
+			corner_sprite.my = stage.mouseY - target.y;
+			corner_sprite.sh = hsize;
+			corner_sprite.sv = vsize;
+			corner_sprite.x1 = (corner_sprite.mysquare==sq1) ? sq1x : sq2x;
+			corner_sprite.y1 = (corner_sprite.mysquare==sq1) ? sq1y : sq2y;
+			corner_sprite.x2 = corner_sprite.x1 + hsize;
+			corner_sprite.y2 = corner_sprite.y1 + vsize;
+			corner_sprite.mode = (corner_sprite.mysquare==sq1) ? "left" : "right";
 			evt.onMouseMove = function(ev) {
-				if (stage.mouseX + MINSIZE < vertx) {
-					hsize = target.sx + (hn1.mx - stage.mouseX);
-					sq1x = stage.mouseX;
-					sq2x = vertx + vertx - sq1x - hsize;
-				}
-				if (stage.mouseY + MINSIZE < bmp.y + img.height) {
-					vsize = target.sy + (hn1.my - stage.mouseY);
-					sq1y = stage.mouseY;
+				if (CORNER_POSITION==CORNER_TOP_LEFT) {
+					target.x = stage.mouseX - target.mx;
+					if (target.x > target.x2-MINSIZE) {
+						target.x = target.x2-MINSIZE;
+					}
+					hsize = target.x2 - (target.x - CORNER_OFFSET);
+					if (hsize < MINSIZE) {
+						hsize = MINSIZE;
+					}
+					target.y = stage.mouseY - target.my;
+					if (target.y > target.y2-MINSIZE) {
+						target.y = target.y2-MINSIZE;
+					}
+					vsize = target.y2 - (target.y - CORNER_OFFSET);
+					if (vsize < MINSIZE) {
+						vsize = MINSIZE;
+					}
+					if (target.mode=="left") {
+						sq1x = target.x - CORNER_OFFSET;
+						sq2x = vertx + vertx - sq1x - hsize;
+					} else {
+						sq2x = target.x - CORNER_OFFSET;
+						sq1x = vertx - (target.x2 - vertx);
+					}
+					// .y is common to both
+					sq1y = target.y - CORNER_OFFSET;
 					sq2y = sq1y;
+				} else if (CORNER_POSITION==CORNER_TOP_RIGHT) {
+				} else if (CORNER_POSITION==CORNER_BOTTOM_LEFT) {
+				} else if (CORNER_POSITION==CORNER_BOTTOM_RIGHT) {
+					
 				}
 				// indicate that the stage should be updated on the next tick:
 				update = true;
@@ -322,55 +368,15 @@ function addBasicInteractivity() {
 				isdown = false;
 			}
 		};
-		hn1.onMouseOver = function() {
+		corner_sprite.onMouseOver = function() {
 			target.over = true;
 			update = true;
 		};
-		hn1.onMouseOut = function() {
+		corner_sprite.onMouseOut = function() {
 			target.over = false;
 			update = true;
 		};
-	})(hn1);
-
-	// handle resizing TOP RIGHT
-	// wrapper function to provide scope for the event handlers:
-	(function(target) {
-		hn2.onPress = function(evt) {
-			// drag
-			// save mouse position for future reference
-			hn2.mx = stage.mouseX;
-			hn2.my = stage.mouseY;
-			hn2.sx = hsize;
-			hn2.sy = vsize;
-			evt.onMouseMove = function(ev) {
-				if (stage.mouseX - MINSIZE > vertx) {
-					hsize = stage.mouseX - sq2x;
-					sq2x = stage.mouseX - hsize;
-					sq1x = vertx + vertx - sq2x - hsize;
-				}
-				if (stage.mouseY + MINSIZE < bmp.y + img.height) {
-					vsize = target.sy + (hn2.my - stage.mouseY);
-					sq2y = stage.mouseY;
-					sq1y = sq2y;
-				}
-				// indicate that the stage should be updated on the next tick:
-				update = true;
-			};
-			// optimize for iPad
-			isdown = true;
-			evt.onMouseUp = function (ev) {
-				isdown = false;
-			}
-		};
-		hn2.onMouseOver = function() {
-			target.over = true;
-			update = true;
-		};
-		hn2.onMouseOut = function() {
-			target.over = false;
-			update = true;
-		};
-	})(hn2);
+	})(corner_sprite);
 }
 
 function draw() {
@@ -381,66 +387,83 @@ function drawStereoscope() {
 	drawVertical();
 	drawSquare(sq1, sq1x, sq1y);
 	drawSquare(sq2, sq2x, sq2y);
+	drawCorner();
 }
 
 function drawVertical() {
-	var g = vert.graphics;
-	g.clear();
-	g.setStrokeStyle(THICK, "round", "round");
-	g.beginStroke(COLOR);
-	g.beginFill(FILLALPHA);
-	g.drawRect(vertx - (VERTWIDTH / 2), verty - (VERTHEIGHT / 2),VERTWIDTH,VERTHEIGHT);
-	g.moveTo(vertx, verty - (VERTHEIGHT / 2)).lineTo(vertx, verty - (VERTHEIGHT * 2)).moveTo(vertx, verty + (VERTHEIGHT / 2)).lineTo(vertx, verty);
+	vert_sprite.x = vertx;
+	if (vert_sprite.over) {
+		vert_sprite.gotoAndStop("verticalover");
+	} else {
+		vert_sprite.gotoAndStop("vertical");
+	}
+}
+
+function drawCorner() {
+	var x = -1000
+	var y = -1000;
+	if (corner_sprite.over) {
+		corner_sprite.mysquare.over = true;
+		corner_sprite.gotoAndStop("cornerover");
+	} else {
+		corner_sprite.gotoAndStop("corner");
+	}
+	if (sq1.over) {
+		x = sq1x;
+		y = sq1y;
+	} else if (sq2.over) {
+		x = sq2x;
+		y = sq2y;
+	}
+	if (stage.mouseX < x + (hsize/2) && stage.mouseY < y + (vsize/2)) {
+		// top left
+		CORNER_POSITION = CORNER_TOP_LEFT;
+		corner_sprite.x = x+CORNER_OFFSET;
+		corner_sprite.y = y+CORNER_OFFSET;
+	} else if (stage.mouseX > x + (hsize/2) && stage.mouseY < y + (vsize/2)) {
+		// top right
+		CORNER_POSITION = CORNER_TOP_RIGHT;
+		corner_sprite.x = x+hsize-CORNER_OFFSET;
+		corner_sprite.y = y+CORNER_OFFSET;
+	} else if (stage.mouseX < x + (hsize/2) && stage.mouseY > y + (vsize/2)) {
+		// bottom left
+		CORNER_POSITION = CORNER_BOTTOM_LEFT;
+		corner_sprite.x = x+CORNER_OFFSET;
+		corner_sprite.y = y+vsize-CORNER_OFFSET;
+	} else if (stage.mouseX > x + (hsize/2) && stage.mouseY > y + (vsize/2)) {
+		// bottom right
+		CORNER_POSITION = CORNER_BOTTOM_RIGHT;
+		corner_sprite.x = x+hsize-CORNER_OFFSET;
+		corner_sprite.y = y+vsize-CORNER_OFFSET;
+	}
 }
 
 function drawSquare(square,x,y) {
 	var g = square.graphics;
-	var g2;
 	var CROSSSIZE = INSET;
 	g.clear();
 	g.setStrokeStyle(THICK, "round", "round");
-	g.beginStroke(COLOR);
+	if (square.over) {
+		g.beginStroke(OVERCOLOR);
+	} else {
+		g.beginStroke(COLOR);
+	}
 	g.beginFill(FILLALPHA);
 	g.drawRect(x,y,hsize,vsize);
 	if (square.over) {
 		CROSSSIZE = INSET*2;
 		g.moveTo(x-CROSSSIZE+hsize/2,y-CROSSSIZE+vsize/2).lineTo(x+CROSSSIZE+hsize/2,y+CROSSSIZE+vsize/2).moveTo(x+CROSSSIZE+hsize/2,y-CROSSSIZE+vsize/2).lineTo(x-CROSSSIZE+hsize/2,y+CROSSSIZE+vsize/2);
 	}
-	if (square==sq1) {
-		// place top left
-		g2 = hn1.graphics;
-		g2.clear();
-		g2.setStrokeStyle(THICK, "round", "round");
-		g2.beginStroke(COLOR);
-		g2.beginFill(FILL);
-		if (hn1.over) {
-			// rollover for handle
-			g2.beginFill(COLOR);
-		}
-		g2.drawRect(x-(HNSIZE/2),y-(HNSIZE/2),HNSIZE,HNSIZE);
-	} else {
-		// place top right
-		g2 = hn2.graphics;
-		g2.clear();
-		g2.setStrokeStyle(THICK, "round", "round");
-		g2.beginStroke(COLOR);
-		g2.beginFill(FILL);
-		if (hn2.over) {
-			// rollover for handle
-			g2.beginFill(COLOR);
-		}
-		g2.drawRect(x+hsize-(HNSIZE/2),y-(HNSIZE/2),HNSIZE,HNSIZE);
-	}
 }
 
 function tick() {
 	// this set makes it so the stage only re-renders when an event handler indicates a change has happened.
+	draw();
 	if (update) {
 		update = false; // only update once
-		draw();
 		updatePreview();
-		stage.update();
 	}
+	stage.update();
 	if (mode=="GIF") {
 		drawGIF();
 	} else {
@@ -450,7 +473,6 @@ function tick() {
 
 function updatePreview() {
 	var p = document.getElementById("previewGIF");
-	console.log("p:"+p+" w:"+hsize+" h:"+vsize);
 	p.style.width = hsize + "px";
 	p.style.height = vsize + "px";
 	// center the preview
@@ -549,14 +571,8 @@ function drawAnaglyph () {
 function loadPhoto(str) {
 	index = str;
 	console.log("photo");
-	img.onload = (function () {
-		if (first) {
-			first = false;
-			run();
-		}
-		centerPhoto();
-		update = true;
-	});
+	img.onload = handleImageLoad;
+	img.onerror = handleImageError;
 	// for animated GIF
 	var url = "http://images.nypl.org/index.php?id="+index+"&t=w";
 	img.src = url;
@@ -626,4 +642,26 @@ function generate() {
 		  }
 		}
 	});
+}
+
+function handleImageLoad(e) {
+    numImagesLoaded++;
+
+    // If all elements have been downloaded
+    if (numImagesLoaded == 2) {
+        numImagesLoaded = 0;
+		if (first) {
+			first = false;
+		}
+		run();
+		prepareSheet();
+		// adding interaction
+		addBasicInteractivity();
+		update = true;
+    }
+}
+
+//called if there is an error loading the image (usually due to a 404)
+function handleImageError(e) {
+    console.log("Error Loading Image : " + e.target.src);
 }

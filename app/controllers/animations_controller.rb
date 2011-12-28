@@ -119,6 +119,7 @@ class AnimationsController < ApplicationController
     # first get each frame
     im = Magick::Image.read(@animation.url).first
       
+    # TODO: proper crop of thumbnails (?)
     fr1 = im.crop(@animation.x1,@animation.y1,@animation.width,@animation.height,true)
     fr2 = im.crop(@animation.x2,@animation.y2,@animation.width,@animation.height,true)
     
