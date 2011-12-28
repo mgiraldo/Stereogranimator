@@ -11,10 +11,10 @@ Stereo::Application.routes.draw do
   match 'gallery/:type', :to => 'gallery#index', :as => "gallery_type"
   match 'gallery/:type/:page', :to => 'gallery#index', :as => "gallery_type_paged"
   match 'gallery/:type/:page.:format', :to => 'gallery#index', :as => "gallery_type_paged_formatted"
+  match 'view/:id', :to => 'gallery#view', :as => "gallery_view"
   match 'choose', :to => 'animations#choose', :as => "choose"
   match 'convert/:did', :to => 'animations#new', :as => "convert"
   match 'share/:id', :to => 'animations#share', :as => "share"
-  match 'view/:id', :to => 'animations#view', :as => "view"
 
   match "/animations/createJson/*path" => "animations#createJson"
 

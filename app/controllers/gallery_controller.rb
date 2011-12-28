@@ -1,4 +1,5 @@
 class GalleryController < ApplicationController
+  
   def index
     page = params[:page] == nil ? 1 : params[:page]
     @type = params[:type] == nil ? "all" : params[:type]
@@ -14,4 +15,16 @@ class GalleryController < ApplicationController
       format.json { render :json => @images }
     end
   end
+  
+  # GET /view/1
+  # GET /view/1.json
+  def view
+    @animation = Animation.find(params[:id])
+
+    respond_to do |format|
+      format.html # view.html.erb
+      format.json { render :json => @animation }
+    end
+  end
+  
 end

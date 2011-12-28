@@ -1,0 +1,13 @@
+		<div class="container_12">
+			<h1 class="gallery"><span class="visuallyhidden">GALLERY</span></h1>
+			<div class="clear"></div>
+			<div class="meta grid_3 omega">
+				<%= link_to "view original item", @animation.nypl_url %><br />
+				[sharing stuff here]
+				<div class="create"><%= link_to "CREATE YOUR OWN!", "/choose", :class => 'genericButtonLink' %></div>
+			</div>
+			<div class="detail grid_5 alpha">
+				<%= image_tag(@animation.aws_url) %>
+			</div>
+			<div class="clear"></div>
+		</div>

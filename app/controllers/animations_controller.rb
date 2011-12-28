@@ -6,17 +6,6 @@ class AnimationsController < ApplicationController
     @animation = Animation.new
   end
   
-  # GET /view/1
-  # GET /view/1.json
-  def view
-    @animation = Animation.find(params[:id])
-
-    respond_to do |format|
-      format.html # view.html.erb
-      format.json { render :json => @animation }
-    end
-  end
-  
   # GET /choose/nyplid
   def choose
     # TODO: request random list
