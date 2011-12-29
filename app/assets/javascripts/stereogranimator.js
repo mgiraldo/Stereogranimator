@@ -48,7 +48,7 @@ var verty = 0;
 // square scaling
 var hsize = 300;
 var vsize = 360;
-var MINSIZE = 100;
+var MINSIZE = 50;
 
 var SLOWSPEED = 200;
 var MEDSPEED = 140;
@@ -67,11 +67,6 @@ var now = 0;
 var lasttick = 0;
 var speed = FASTSPEED;
 var frame = 1;
-
-var HNSIZE = 10;
-
-var VERTWIDTH = 10;
-var VERTHEIGHT = 50;
 
 var OFFSET = 0;
 var INSET = 10;
@@ -190,14 +185,14 @@ function run() {
 	// to control for mouse position when dragging
 	sq1.mx = 0;
 	sq1.my = 0;
-	stage.addChildAt(sq1,1);
+	stage.addChild(sq1);
 	
 	sq2 = new Shape();
 	sq2.over = false;
 	// to control for mouse position when dragging
 	sq2.mx = 0;
 	sq2.my = 0;
-	stage.addChildAt(sq2,1);
+	stage.addChild(sq2);
 	
 	Ticker.addListener(window);
 }
@@ -264,10 +259,12 @@ function addBasicInteractivity() {
 			target.over = true;
 			corner_sprite.mysquare = target;
 			update = true;
+			canvas.onmousemove = function () {drawCorner();};
 		};
 		sq1.onMouseOut = function() {
 			target.over = false;
 			update = true;
+			canvas.onmousemove = null;
 		};
 	})(sq1);
 
@@ -304,10 +301,12 @@ function addBasicInteractivity() {
 			target.over = true;
 			corner_sprite.mysquare = target;
 			update = true;
+			document.onmousemove = function () {drawCorner();};
 		};
 		sq2.onMouseOut = function() {
 			target.over = false;
 			update = true;
+			document.onmousemove = null;
 		};
 	})(sq2);
 
@@ -329,6 +328,10 @@ function addBasicInteractivity() {
 			evt.onMouseMove = function(ev) {
 				if (CORNER_POSITION==CORNER_TOP_LEFT) {
 					target.x = stage.mouseX - target.mx;
+					if (target.mode=="right" && target.x-CORNER_OFFSET < vertx) {
+						// prevent from moving to left side
+						target.x = vertx + CORNER_OFFSET + 1;
+					}
 					if (target.x > target.x2-MINSIZE) {
 						target.x = target.x2-MINSIZE;
 					}
@@ -349,15 +352,104 @@ function addBasicInteractivity() {
 						sq2x = vertx + vertx - sq1x - hsize;
 					} else {
 						sq2x = target.x - CORNER_OFFSET;
-						sq1x = vertx - (target.x2 - vertx);
+						sq1x = vertx - (sq2x - vertx) - hsize;
 					}
 					// .y is common to both
 					sq1y = target.y - CORNER_OFFSET;
 					sq2y = sq1y;
 				} else if (CORNER_POSITION==CORNER_TOP_RIGHT) {
+					target.x = stage.mouseX - target.mx;
+					if (target.mode=="left" && target.x+CORNER_OFFSET > vertx) {
+						// prevent from moving to right side
+						target.x = vertx - CORNER_OFFSET - 1;
+					}
+					if (target.x < target.x1+MINSIZE) {
+						target.x = target.x1+MINSIZE;
+					}
+					hsize = (target.x + CORNER_OFFSET) - target.x1;
+					if (hsize < MINSIZE) {
+						hsize = MINSIZE;
+					}
+					target.y = stage.mouseY - target.my;
+					if (target.y > target.y2-MINSIZE) {
+						target.y = target.y2-MINSIZE;
+					}
+					vsize = target.y2 - (target.y - CORNER_OFFSET);
+					if (vsize < MINSIZE) {
+						vsize = MINSIZE;
+					}
+					if (target.mode=="left") {
+						sq1x = (target.x + CORNER_OFFSET) - hsize;
+						sq2x = vertx + vertx - sq1x - hsize;
+					} else {
+						sq2x = (target.x + CORNER_OFFSET) - hsize;
+						sq1x = vertx - (sq2x - vertx) - hsize;
+					}
+					// .y is common to both
+					sq1y = target.y - CORNER_OFFSET;
+					sq2y = sq1y;
 				} else if (CORNER_POSITION==CORNER_BOTTOM_LEFT) {
+					target.x = stage.mouseX - target.mx;
+					if (target.mode=="right" && target.x-CORNER_OFFSET <= vertx) {
+						// prevent from moving to left side
+						target.x = vertx + CORNER_OFFSET + 1;
+					}
+					if (target.x > target.x2-MINSIZE) {
+						target.x = target.x2-MINSIZE;
+					}
+					hsize = target.x2 - (target.x - CORNER_OFFSET);
+					if (hsize < MINSIZE) {
+						hsize = MINSIZE;
+					}
+					target.y = stage.mouseY - target.my;
+					if (target.y < target.y1+MINSIZE) {
+						target.y = target.y1+MINSIZE;
+					}
+					vsize = (target.y + CORNER_OFFSET) - target.y1;
+					if (vsize < MINSIZE) {
+						vsize = MINSIZE;
+					}
+					if (target.mode=="left") {
+						sq1x = target.x - CORNER_OFFSET;
+						sq2x = vertx + vertx - sq1x - hsize;
+					} else {
+						sq2x = target.x - CORNER_OFFSET;
+						sq1x = vertx - (sq2x - vertx) - hsize;
+					}
+					// .y is common to both
+					sq1y = target.y + CORNER_OFFSET - vsize;
+					sq2y = sq1y;
 				} else if (CORNER_POSITION==CORNER_BOTTOM_RIGHT) {
-					
+					target.x = stage.mouseX - target.mx;
+					if (target.mode=="left" && target.x+CORNER_OFFSET > vertx) {
+						// prevent from moving to right side
+						target.x = vertx - CORNER_OFFSET - 1;
+					}
+					if (target.x < target.x1+MINSIZE) {
+						target.x = target.x1+MINSIZE;
+					}
+					hsize = (target.x + CORNER_OFFSET) - target.x1;
+					if (hsize < MINSIZE) {
+						hsize = MINSIZE;
+					}
+					target.y = stage.mouseY - target.my;
+					if (target.y < target.y1+MINSIZE) {
+						target.y = target.y1+MINSIZE;
+					}
+					vsize = (target.y + CORNER_OFFSET) - target.y1;
+					if (vsize < MINSIZE) {
+						vsize = MINSIZE;
+					}
+					if (target.mode=="left") {
+						sq1x = (target.x + CORNER_OFFSET) - hsize;
+						sq2x = vertx + vertx - sq1x - hsize;
+					} else {
+						sq2x = (target.x + CORNER_OFFSET) - hsize;
+						sq1x = vertx - (sq2x - vertx) - hsize;
+					}
+					// .y is common to both
+					sq1y = target.y + CORNER_OFFSET - vsize;
+					sq2y = sq1y;
 				}
 				// indicate that the stage should be updated on the next tick:
 				update = true;
@@ -387,7 +479,6 @@ function drawStereoscope() {
 	drawVertical();
 	drawSquare(sq1, sq1x, sq1y);
 	drawSquare(sq2, sq2x, sq2y);
-	drawCorner();
 }
 
 function drawVertical() {
@@ -400,18 +491,18 @@ function drawVertical() {
 }
 
 function drawCorner() {
+	console.log("corner");
 	var x = -1000
 	var y = -1000;
 	if (corner_sprite.over) {
-		corner_sprite.mysquare.over = true;
 		corner_sprite.gotoAndStop("cornerover");
 	} else {
 		corner_sprite.gotoAndStop("corner");
 	}
-	if (sq1.over) {
+	if (corner_sprite.mysquare==sq1) {
 		x = sq1x;
 		y = sq1y;
-	} else if (sq2.over) {
+	} else if (corner_sprite.mysquare==sq2) {
 		x = sq2x;
 		y = sq2y;
 	}
@@ -458,12 +549,12 @@ function drawSquare(square,x,y) {
 
 function tick() {
 	// this set makes it so the stage only re-renders when an event handler indicates a change has happened.
-	draw();
 	if (update) {
+		draw();
 		update = false; // only update once
 		updatePreview();
+		stage.update();
 	}
-	stage.update();
 	if (mode=="GIF") {
 		drawGIF();
 	} else {
