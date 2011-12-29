@@ -10,8 +10,7 @@ var numImagesLoaded = 0;
 
 var resize_sprite;
 var vert_sprite;
-var corner_sprite;
-var lastcorner;
+var corner_sprites;
 var sheetpng;
 var sheetsrc;
 
@@ -61,7 +60,11 @@ var CORNER_TOP_LEFT = 1;
 var CORNER_TOP_RIGHT = 2;
 var CORNER_BOTTOM_LEFT = 3;
 var CORNER_BOTTOM_RIGHT = 4;
-var CORNER_OFFSET = 10
+var CORNER_OFFSET = 10;
+
+// vertical bar values
+var VERTWIDTH = 10;
+var VERTHEIGHT = 60;
 
 // animation preview tick and speed
 var now = 0;
@@ -123,32 +126,35 @@ function init() {
 	Ticker.setInterval(10);
 }
 
-function prepareSheet() {
-	var data = {
-		images:[sheetpng],
-		frames:[
-		        [0,0,18,390,0,9,195],
-		        [19,0,18,390,0,9,195],
-		        [38,0,14,14,0,7,7],
-		        [38,15,14,14,0,7,7]
-		        //[x,y,w,h,0,rx,ry],
-		    ],
-		animations: {
-			corner:2,
-			cornerover:3,
-			vertical:0,
-			verticalover:1
-		}
-	};
-	vert_sprite = new BitmapAnimation(new SpriteSheet(data));
-	vert_sprite.gotoAndStop("vertical");
+function prepareInterface() {
+	vert_sprite = new Shape();
+	vert_sprite.over = false;
 	vert_sprite.x = vertx;
 	vert_sprite.y = verty;
-	corner_sprite = new BitmapAnimation(new SpriteSheet(data));
-	corner_sprite.gotoAndStop("corner");
-	corner_sprite.mysquare = undefined;
 	stage.addChild(vert_sprite);
-	stage.addChild(corner_sprite);
+	// eight corners
+	var i, crnr;
+	corner_sprites = [];
+	for (i=0;i<8;++i) {
+		crnr = new Shape();
+		crnr.mysquare = (i<4) ? sq1 : sq2;
+		// multiplier for corner position
+		if (i%4==0) {
+			crnr.xfactor = 0;
+			crnr.yfactor = 0;
+		} else if (i%4==1) {
+			crnr.xfactor = 1;
+			crnr.yfactor = 0;
+		} else if (i%4==2) {
+			crnr.xfactor = 0;
+			crnr.yfactor = 1;
+		} else if (i%4==3) {
+			crnr.xfactor = 1;
+			crnr.yfactor = 1;
+		}
+		stage.addChild(crnr);
+		corner_sprites[i] = crnr;
+	}
 	console.log("prepared sprite");
 }
 
@@ -198,7 +204,7 @@ function run() {
 	Ticker.addListener(window);
 }
 
-function addBasicInteractivity() {
+function addInteractivity() {
 	// handle movement for VERTICAL handle
 	// wrapper function to provide scope for the event handlers:
 	(function(target) {
@@ -258,7 +264,7 @@ function addBasicInteractivity() {
 		};
 		sq1.onMouseOver = function() {
 			target.over = true;
-			corner_sprite.mysquare = target;
+			corner_sprites.mysquare = target;
 			update = true;
 		};
 		sq1.onMouseOut = function() {
@@ -298,7 +304,7 @@ function addBasicInteractivity() {
 		};
 		sq2.onMouseOver = function() {
 			target.over = true;
-			corner_sprite.mysquare = target;
+			corner_sprites.mysquare = target;
 			update = true;
 		};
 		sq2.onMouseOut = function() {
@@ -310,144 +316,49 @@ function addBasicInteractivity() {
 	// handle RESIZING
 	// wrapper function to provide scope for the event handlers:
 	(function(target) {
-		corner_sprite.onPress = function(evt) {
+		target.onPress = function(evt) {
 			// drag
 			// save mouse position for future reference
-			corner_sprite.mx = stage.mouseX - target.x;
-			corner_sprite.my = stage.mouseY - target.y;
-			corner_sprite.sh = hsize;
-			corner_sprite.sv = vsize;
-			corner_sprite.x1 = (corner_sprite.mysquare==sq1) ? sq1x : sq2x;
-			corner_sprite.y1 = (corner_sprite.mysquare==sq1) ? sq1y : sq2y;
-			corner_sprite.x2 = corner_sprite.x1 + hsize;
-			corner_sprite.y2 = corner_sprite.y1 + vsize;
-			corner_sprite.mode = (corner_sprite.mysquare==sq1) ? "left" : "right";
+			target.mx = stage.mouseX - target.x;
+			target.my = stage.mouseY - target.y;
+			target.sh = hsize;
+			target.sv = vsize;
+			target.x1 = (target.mysquare==sq1) ? sq1x : sq2x;
+			target.y1 = (target.mysquare==sq1) ? sq1y : sq2y;
+			target.x2 = target.x1 + hsize;
+			target.y2 = target.y1 + vsize;
+			target.mode = (target.mysquare==sq1) ? "left" : "right";
 			evt.onMouseMove = function(ev) {
-				if (CORNER_POSITION==CORNER_TOP_LEFT) {
-					target.x = stage.mouseX - target.mx;
-					if (target.mode=="right" && target.x-CORNER_OFFSET < vertx) {
-						// prevent from moving to left side
-						target.x = vertx + CORNER_OFFSET + 1;
-					}
-					if (target.x > target.x2-MINSIZE) {
-						target.x = target.x2-MINSIZE;
-					}
-					hsize = target.x2 - (target.x - CORNER_OFFSET);
-					if (hsize < MINSIZE) {
-						hsize = MINSIZE;
-					}
-					target.y = stage.mouseY - target.my;
-					if (target.y > target.y2-MINSIZE) {
-						target.y = target.y2-MINSIZE;
-					}
-					vsize = target.y2 - (target.y - CORNER_OFFSET);
-					if (vsize < MINSIZE) {
-						vsize = MINSIZE;
-					}
-					if (target.mode=="left") {
-						sq1x = target.x - CORNER_OFFSET;
-						sq2x = vertx + vertx - sq1x - hsize;
-					} else {
-						sq2x = target.x - CORNER_OFFSET;
-						sq1x = vertx - (sq2x - vertx) - hsize;
-					}
-					// .y is common to both
-					sq1y = target.y - CORNER_OFFSET;
-					sq2y = sq1y;
-				} else if (CORNER_POSITION==CORNER_TOP_RIGHT) {
-					target.x = stage.mouseX - target.mx;
-					if (target.mode=="left" && target.x+CORNER_OFFSET > vertx) {
-						// prevent from moving to right side
-						target.x = vertx - CORNER_OFFSET - 1;
-					}
-					if (target.x < target.x1+MINSIZE) {
-						target.x = target.x1+MINSIZE;
-					}
-					hsize = (target.x + CORNER_OFFSET) - target.x1;
-					if (hsize < MINSIZE) {
-						hsize = MINSIZE;
-					}
-					target.y = stage.mouseY - target.my;
-					if (target.y > target.y2-MINSIZE) {
-						target.y = target.y2-MINSIZE;
-					}
-					vsize = target.y2 - (target.y - CORNER_OFFSET);
-					if (vsize < MINSIZE) {
-						vsize = MINSIZE;
-					}
-					if (target.mode=="left") {
-						sq1x = (target.x + CORNER_OFFSET) - hsize;
-						sq2x = vertx + vertx - sq1x - hsize;
-					} else {
-						sq2x = (target.x + CORNER_OFFSET) - hsize;
-						sq1x = vertx - (sq2x - vertx) - hsize;
-					}
-					// .y is common to both
-					sq1y = target.y - CORNER_OFFSET;
-					sq2y = sq1y;
-				} else if (CORNER_POSITION==CORNER_BOTTOM_LEFT) {
-					target.x = stage.mouseX - target.mx;
-					if (target.mode=="right" && target.x-CORNER_OFFSET <= vertx) {
-						// prevent from moving to left side
-						target.x = vertx + CORNER_OFFSET + 1;
-					}
-					if (target.x > target.x2-MINSIZE) {
-						target.x = target.x2-MINSIZE;
-					}
-					hsize = target.x2 - (target.x - CORNER_OFFSET);
-					if (hsize < MINSIZE) {
-						hsize = MINSIZE;
-					}
-					target.y = stage.mouseY - target.my;
-					if (target.y < target.y1+MINSIZE) {
-						target.y = target.y1+MINSIZE;
-					}
-					vsize = (target.y + CORNER_OFFSET) - target.y1;
-					if (vsize < MINSIZE) {
-						vsize = MINSIZE;
-					}
-					if (target.mode=="left") {
-						sq1x = target.x - CORNER_OFFSET;
-						sq2x = vertx + vertx - sq1x - hsize;
-					} else {
-						sq2x = target.x - CORNER_OFFSET;
-						sq1x = vertx - (sq2x - vertx) - hsize;
-					}
-					// .y is common to both
-					sq1y = target.y + CORNER_OFFSET - vsize;
-					sq2y = sq1y;
-				} else if (CORNER_POSITION==CORNER_BOTTOM_RIGHT) {
-					target.x = stage.mouseX - target.mx;
-					if (target.mode=="left" && target.x+CORNER_OFFSET > vertx) {
-						// prevent from moving to right side
-						target.x = vertx - CORNER_OFFSET - 1;
-					}
-					if (target.x < target.x1+MINSIZE) {
-						target.x = target.x1+MINSIZE;
-					}
-					hsize = (target.x + CORNER_OFFSET) - target.x1;
-					if (hsize < MINSIZE) {
-						hsize = MINSIZE;
-					}
-					target.y = stage.mouseY - target.my;
-					if (target.y < target.y1+MINSIZE) {
-						target.y = target.y1+MINSIZE;
-					}
-					vsize = (target.y + CORNER_OFFSET) - target.y1;
-					if (vsize < MINSIZE) {
-						vsize = MINSIZE;
-					}
-					if (target.mode=="left") {
-						sq1x = (target.x + CORNER_OFFSET) - hsize;
-						sq2x = vertx + vertx - sq1x - hsize;
-					} else {
-						sq2x = (target.x + CORNER_OFFSET) - hsize;
-						sq1x = vertx - (sq2x - vertx) - hsize;
-					}
-					// .y is common to both
-					sq1y = target.y + CORNER_OFFSET - vsize;
-					sq2y = sq1y;
+				target.x = stage.mouseX - target.mx;
+				if (target.mode=="right" && target.x-CORNER_OFFSET < vertx) {
+					// prevent from moving to left side
+					target.x = vertx + CORNER_OFFSET + 1;
 				}
+				if (target.x > target.x2-MINSIZE) {
+					target.x = target.x2-MINSIZE;
+				}
+				hsize = target.x2 - (target.x - CORNER_OFFSET);
+				if (hsize < MINSIZE) {
+					hsize = MINSIZE;
+				}
+				target.y = stage.mouseY - target.my;
+				if (target.y > target.y2-MINSIZE) {
+					target.y = target.y2-MINSIZE;
+				}
+				vsize = target.y2 - (target.y - CORNER_OFFSET);
+				if (vsize < MINSIZE) {
+					vsize = MINSIZE;
+				}
+				if (target.mode=="left") {
+					sq1x = target.x - CORNER_OFFSET;
+					sq2x = vertx + vertx - sq1x - hsize;
+				} else {
+					sq2x = target.x - CORNER_OFFSET;
+					sq1x = vertx - (sq2x - vertx) - hsize;
+				}
+				// .y is common to both
+				sq1y = target.y - CORNER_OFFSET;
+				sq2y = sq1y;
 				// indicate that the stage should be updated on the next tick:
 				update = true;
 			};
@@ -457,15 +368,449 @@ function addBasicInteractivity() {
 				isdown = false;
 			}
 		};
-		corner_sprite.onMouseOver = function() {
+		target.onMouseOver = function() {
 			target.over = true;
 			update = true;
 		};
-		corner_sprite.onMouseOut = function() {
+		target.onMouseOut = function() {
 			target.over = false;
 			update = true;
 		};
-	})(corner_sprite);
+	})(corner_sprites[0]);
+	(function(target) {
+		target.onPress = function(evt) {
+			// drag
+			// save mouse position for future reference
+			target.mx = stage.mouseX - target.x;
+			target.my = stage.mouseY - target.y;
+			target.sh = hsize;
+			target.sv = vsize;
+			target.x1 = (target.mysquare==sq1) ? sq1x : sq2x;
+			target.y1 = (target.mysquare==sq1) ? sq1y : sq2y;
+			target.x2 = target.x1 + hsize;
+			target.y2 = target.y1 + vsize;
+			target.mode = (target.mysquare==sq1) ? "left" : "right";
+			evt.onMouseMove = function(ev) {
+				target.x = stage.mouseX - target.mx;
+				if (target.mode=="left" && target.x+CORNER_OFFSET > vertx) {
+					// prevent from moving to right side
+					target.x = vertx - CORNER_OFFSET - 1;
+				}
+				if (target.x < target.x1+MINSIZE) {
+					target.x = target.x1+MINSIZE;
+				}
+				hsize = (target.x + CORNER_OFFSET) - target.x1;
+				if (hsize < MINSIZE) {
+					hsize = MINSIZE;
+				}
+				target.y = stage.mouseY - target.my;
+				if (target.y > target.y2-MINSIZE) {
+					target.y = target.y2-MINSIZE;
+				}
+				vsize = target.y2 - (target.y - CORNER_OFFSET);
+				if (vsize < MINSIZE) {
+					vsize = MINSIZE;
+				}
+				if (target.mode=="left") {
+					sq1x = (target.x + CORNER_OFFSET) - hsize;
+					sq2x = vertx + vertx - sq1x - hsize;
+				} else {
+					sq2x = (target.x + CORNER_OFFSET) - hsize;
+					sq1x = vertx - (sq2x - vertx) - hsize;
+				}
+				// .y is common to both
+				sq1y = target.y - CORNER_OFFSET;
+				sq2y = sq1y;
+				// indicate that the stage should be updated on the next tick:
+				update = true;
+			};
+			// optimize for iPad
+			isdown = true;
+			evt.onMouseUp = function (ev) {
+				isdown = false;
+			}
+		};
+		target.onMouseOver = function() {
+			target.over = true;
+			update = true;
+		};
+		target.onMouseOut = function() {
+			target.over = false;
+			update = true;
+		};
+	})(corner_sprites[1]);
+	(function(target) {
+		target.onPress = function(evt) {
+			// drag
+			// save mouse position for future reference
+			target.mx = stage.mouseX - target.x;
+			target.my = stage.mouseY - target.y;
+			target.sh = hsize;
+			target.sv = vsize;
+			target.x1 = (target.mysquare==sq1) ? sq1x : sq2x;
+			target.y1 = (target.mysquare==sq1) ? sq1y : sq2y;
+			target.x2 = target.x1 + hsize;
+			target.y2 = target.y1 + vsize;
+			target.mode = (target.mysquare==sq1) ? "left" : "right";
+			evt.onMouseMove = function(ev) {
+				target.x = stage.mouseX - target.mx;
+				if (target.mode=="right" && target.x-CORNER_OFFSET <= vertx) {
+					// prevent from moving to left side
+					target.x = vertx + CORNER_OFFSET + 1;
+				}
+				if (target.x > target.x2-MINSIZE) {
+					target.x = target.x2-MINSIZE;
+				}
+				hsize = target.x2 - (target.x - CORNER_OFFSET);
+				if (hsize < MINSIZE) {
+					hsize = MINSIZE;
+				}
+				target.y = stage.mouseY - target.my;
+				if (target.y < target.y1+MINSIZE) {
+					target.y = target.y1+MINSIZE;
+				}
+				vsize = (target.y + CORNER_OFFSET) - target.y1;
+				if (vsize < MINSIZE) {
+					vsize = MINSIZE;
+				}
+				if (target.mode=="left") {
+					sq1x = target.x - CORNER_OFFSET;
+					sq2x = vertx + vertx - sq1x - hsize;
+				} else {
+					sq2x = target.x - CORNER_OFFSET;
+					sq1x = vertx - (sq2x - vertx) - hsize;
+				}
+				// .y is common to both
+				sq1y = target.y + CORNER_OFFSET - vsize;
+				sq2y = sq1y;
+				// indicate that the stage should be updated on the next tick:
+				update = true;
+			};
+			// optimize for iPad
+			isdown = true;
+			evt.onMouseUp = function (ev) {
+				isdown = false;
+			}
+		};
+		target.onMouseOver = function() {
+			target.over = true;
+			update = true;
+		};
+		target.onMouseOut = function() {
+			target.over = false;
+			update = true;
+		};
+	})(corner_sprites[2]);
+	(function(target) {
+		target.onPress = function(evt) {
+			// drag
+			// save mouse position for future reference
+			target.mx = stage.mouseX - target.x;
+			target.my = stage.mouseY - target.y;
+			target.sh = hsize;
+			target.sv = vsize;
+			target.x1 = (target.mysquare==sq1) ? sq1x : sq2x;
+			target.y1 = (target.mysquare==sq1) ? sq1y : sq2y;
+			target.x2 = target.x1 + hsize;
+			target.y2 = target.y1 + vsize;
+			target.mode = (target.mysquare==sq1) ? "left" : "right";
+			evt.onMouseMove = function(ev) {
+				target.x = stage.mouseX - target.mx;
+				if (target.mode=="left" && target.x+CORNER_OFFSET > vertx) {
+					// prevent from moving to right side
+					target.x = vertx - CORNER_OFFSET - 1;
+				}
+				if (target.x < target.x1+MINSIZE) {
+					target.x = target.x1+MINSIZE;
+				}
+				hsize = (target.x + CORNER_OFFSET) - target.x1;
+				if (hsize < MINSIZE) {
+					hsize = MINSIZE;
+				}
+				target.y = stage.mouseY - target.my;
+				if (target.y < target.y1+MINSIZE) {
+					target.y = target.y1+MINSIZE;
+				}
+				vsize = (target.y + CORNER_OFFSET) - target.y1;
+				if (vsize < MINSIZE) {
+					vsize = MINSIZE;
+				}
+				if (target.mode=="left") {
+					sq1x = (target.x + CORNER_OFFSET) - hsize;
+					sq2x = vertx + vertx - sq1x - hsize;
+				} else {
+					sq2x = (target.x + CORNER_OFFSET) - hsize;
+					sq1x = vertx - (sq2x - vertx) - hsize;
+				}
+				// .y is common to both
+				sq1y = target.y + CORNER_OFFSET - vsize;
+				sq2y = sq1y;
+				// indicate that the stage should be updated on the next tick:
+				update = true;
+			};
+			// optimize for iPad
+			isdown = true;
+			evt.onMouseUp = function (ev) {
+				isdown = false;
+			}
+		};
+		target.onMouseOver = function() {
+			target.over = true;
+			update = true;
+		};
+		target.onMouseOut = function() {
+			target.over = false;
+			update = true;
+		};
+	})(corner_sprites[3]);
+	(function(target) {
+		target.onPress = function(evt) {
+			// drag
+			// save mouse position for future reference
+			target.mx = stage.mouseX - target.x;
+			target.my = stage.mouseY - target.y;
+			target.sh = hsize;
+			target.sv = vsize;
+			target.x1 = (target.mysquare==sq1) ? sq1x : sq2x;
+			target.y1 = (target.mysquare==sq1) ? sq1y : sq2y;
+			target.x2 = target.x1 + hsize;
+			target.y2 = target.y1 + vsize;
+			target.mode = (target.mysquare==sq1) ? "left" : "right";
+			evt.onMouseMove = function(ev) {
+				target.x = stage.mouseX - target.mx;
+				if (target.mode=="right" && target.x-CORNER_OFFSET < vertx) {
+					// prevent from moving to left side
+					target.x = vertx + CORNER_OFFSET + 1;
+				}
+				if (target.x > target.x2-MINSIZE) {
+					target.x = target.x2-MINSIZE;
+				}
+				hsize = target.x2 - (target.x - CORNER_OFFSET);
+				if (hsize < MINSIZE) {
+					hsize = MINSIZE;
+				}
+				target.y = stage.mouseY - target.my;
+				if (target.y > target.y2-MINSIZE) {
+					target.y = target.y2-MINSIZE;
+				}
+				vsize = target.y2 - (target.y - CORNER_OFFSET);
+				if (vsize < MINSIZE) {
+					vsize = MINSIZE;
+				}
+				if (target.mode=="left") {
+					sq1x = target.x - CORNER_OFFSET;
+					sq2x = vertx + vertx - sq1x - hsize;
+				} else {
+					sq2x = target.x - CORNER_OFFSET;
+					sq1x = vertx - (sq2x - vertx) - hsize;
+				}
+				// .y is common to both
+				sq1y = target.y - CORNER_OFFSET;
+				sq2y = sq1y;
+				// indicate that the stage should be updated on the next tick:
+				update = true;
+			};
+			// optimize for iPad
+			isdown = true;
+			evt.onMouseUp = function (ev) {
+				isdown = false;
+			}
+		};
+		target.onMouseOver = function() {
+			target.over = true;
+			update = true;
+		};
+		target.onMouseOut = function() {
+			target.over = false;
+			update = true;
+		};
+	})(corner_sprites[4]);
+	(function(target) {
+		target.onPress = function(evt) {
+			// drag
+			// save mouse position for future reference
+			target.mx = stage.mouseX - target.x;
+			target.my = stage.mouseY - target.y;
+			target.sh = hsize;
+			target.sv = vsize;
+			target.x1 = (target.mysquare==sq1) ? sq1x : sq2x;
+			target.y1 = (target.mysquare==sq1) ? sq1y : sq2y;
+			target.x2 = target.x1 + hsize;
+			target.y2 = target.y1 + vsize;
+			target.mode = (target.mysquare==sq1) ? "left" : "right";
+			evt.onMouseMove = function(ev) {
+				target.x = stage.mouseX - target.mx;
+				if (target.mode=="left" && target.x+CORNER_OFFSET > vertx) {
+					// prevent from moving to right side
+					target.x = vertx - CORNER_OFFSET - 1;
+				}
+				if (target.x < target.x1+MINSIZE) {
+					target.x = target.x1+MINSIZE;
+				}
+				hsize = (target.x + CORNER_OFFSET) - target.x1;
+				if (hsize < MINSIZE) {
+					hsize = MINSIZE;
+				}
+				target.y = stage.mouseY - target.my;
+				if (target.y > target.y2-MINSIZE) {
+					target.y = target.y2-MINSIZE;
+				}
+				vsize = target.y2 - (target.y - CORNER_OFFSET);
+				if (vsize < MINSIZE) {
+					vsize = MINSIZE;
+				}
+				if (target.mode=="left") {
+					sq1x = (target.x + CORNER_OFFSET) - hsize;
+					sq2x = vertx + vertx - sq1x - hsize;
+				} else {
+					sq2x = (target.x + CORNER_OFFSET) - hsize;
+					sq1x = vertx - (sq2x - vertx) - hsize;
+				}
+				// .y is common to both
+				sq1y = target.y - CORNER_OFFSET;
+				sq2y = sq1y;
+				// indicate that the stage should be updated on the next tick:
+				update = true;
+			};
+			// optimize for iPad
+			isdown = true;
+			evt.onMouseUp = function (ev) {
+				isdown = false;
+			}
+		};
+		target.onMouseOver = function() {
+			target.over = true;
+			update = true;
+		};
+		target.onMouseOut = function() {
+			target.over = false;
+			update = true;
+		};
+	})(corner_sprites[5]);
+	(function(target) {
+		target.onPress = function(evt) {
+			// drag
+			// save mouse position for future reference
+			target.mx = stage.mouseX - target.x;
+			target.my = stage.mouseY - target.y;
+			target.sh = hsize;
+			target.sv = vsize;
+			target.x1 = (target.mysquare==sq1) ? sq1x : sq2x;
+			target.y1 = (target.mysquare==sq1) ? sq1y : sq2y;
+			target.x2 = target.x1 + hsize;
+			target.y2 = target.y1 + vsize;
+			target.mode = (target.mysquare==sq1) ? "left" : "right";
+			evt.onMouseMove = function(ev) {
+				target.x = stage.mouseX - target.mx;
+				if (target.mode=="right" && target.x-CORNER_OFFSET <= vertx) {
+					// prevent from moving to left side
+					target.x = vertx + CORNER_OFFSET + 1;
+				}
+				if (target.x > target.x2-MINSIZE) {
+					target.x = target.x2-MINSIZE;
+				}
+				hsize = target.x2 - (target.x - CORNER_OFFSET);
+				if (hsize < MINSIZE) {
+					hsize = MINSIZE;
+				}
+				target.y = stage.mouseY - target.my;
+				if (target.y < target.y1+MINSIZE) {
+					target.y = target.y1+MINSIZE;
+				}
+				vsize = (target.y + CORNER_OFFSET) - target.y1;
+				if (vsize < MINSIZE) {
+					vsize = MINSIZE;
+				}
+				if (target.mode=="left") {
+					sq1x = target.x - CORNER_OFFSET;
+					sq2x = vertx + vertx - sq1x - hsize;
+				} else {
+					sq2x = target.x - CORNER_OFFSET;
+					sq1x = vertx - (sq2x - vertx) - hsize;
+				}
+				// .y is common to both
+				sq1y = target.y + CORNER_OFFSET - vsize;
+				sq2y = sq1y;
+				// indicate that the stage should be updated on the next tick:
+				update = true;
+			};
+			// optimize for iPad
+			isdown = true;
+			evt.onMouseUp = function (ev) {
+				isdown = false;
+			}
+		};
+		target.onMouseOver = function() {
+			target.over = true;
+			update = true;
+		};
+		target.onMouseOut = function() {
+			target.over = false;
+			update = true;
+		};
+	})(corner_sprites[6]);
+	(function(target) {
+		target.onPress = function(evt) {
+			// drag
+			// save mouse position for future reference
+			target.mx = stage.mouseX - target.x;
+			target.my = stage.mouseY - target.y;
+			target.sh = hsize;
+			target.sv = vsize;
+			target.x1 = (target.mysquare==sq1) ? sq1x : sq2x;
+			target.y1 = (target.mysquare==sq1) ? sq1y : sq2y;
+			target.x2 = target.x1 + hsize;
+			target.y2 = target.y1 + vsize;
+			target.mode = (target.mysquare==sq1) ? "left" : "right";
+			evt.onMouseMove = function(ev) {
+				target.x = stage.mouseX - target.mx;
+				if (target.mode=="left" && target.x+CORNER_OFFSET > vertx) {
+					// prevent from moving to right side
+					target.x = vertx - CORNER_OFFSET - 1;
+				}
+				if (target.x < target.x1+MINSIZE) {
+					target.x = target.x1+MINSIZE;
+				}
+				hsize = (target.x + CORNER_OFFSET) - target.x1;
+				if (hsize < MINSIZE) {
+					hsize = MINSIZE;
+				}
+				target.y = stage.mouseY - target.my;
+				if (target.y < target.y1+MINSIZE) {
+					target.y = target.y1+MINSIZE;
+				}
+				vsize = (target.y + CORNER_OFFSET) - target.y1;
+				if (vsize < MINSIZE) {
+					vsize = MINSIZE;
+				}
+				if (target.mode=="left") {
+					sq1x = (target.x + CORNER_OFFSET) - hsize;
+					sq2x = vertx + vertx - sq1x - hsize;
+				} else {
+					sq2x = (target.x + CORNER_OFFSET) - hsize;
+					sq1x = vertx - (sq2x - vertx) - hsize;
+				}
+				// .y is common to both
+				sq1y = target.y + CORNER_OFFSET - vsize;
+				sq2y = sq1y;
+				// indicate that the stage should be updated on the next tick:
+				update = true;
+			};
+			// optimize for iPad
+			isdown = true;
+			evt.onMouseUp = function (ev) {
+				isdown = false;
+			}
+		};
+		target.onMouseOver = function() {
+			target.over = true;
+			update = true;
+		};
+		target.onMouseOut = function() {
+			target.over = false;
+			update = true;
+		};
+	})(corner_sprites[7]);
 }
 
 function draw() {
@@ -476,56 +821,49 @@ function drawStereoscope() {
 	drawVertical();
 	drawSquare(sq1, sq1x, sq1y);
 	drawSquare(sq2, sq2x, sq2y);
+	drawCorners();
 }
 
 function drawVertical() {
 	vert_sprite.x = vertx;
-	if (vert_sprite.over) {
-		vert_sprite.gotoAndStop("verticalover");
+	var g = vert_sprite.graphics;
+	g.clear();
+	g.setStrokeStyle(THICK, "round", "round");
+	if (!vert_sprite.over) {
+		vert_sprite.graphics.beginStroke(COLOR);
 	} else {
-		vert_sprite.gotoAndStop("vertical");
+		vert_sprite.graphics.beginStroke(OVERCOLOR);
 	}
+	g.beginFill(FILLALPHA);
+	g.drawRect(-(VERTWIDTH*.5),-(VERTHEIGHT*.5),VERTWIDTH,VERTHEIGHT);
+	g.moveTo(0,-(VERTHEIGHT*.5)).lineTo(0, -stageHeight).moveTo(0,(VERTHEIGHT*.5)).lineTo(0, stageHeight);
+	g.moveTo(-(VERTWIDTH*.5),0).lineTo(-(VERTWIDTH*.5),VERTWIDTH*.5).lineTo(-VERTWIDTH,0).lineTo(-(VERTWIDTH*.5),-(VERTWIDTH*.5)).lineTo(-(VERTWIDTH*.5),0);
+	g.moveTo((VERTWIDTH*.5),0).lineTo((VERTWIDTH*.5),VERTWIDTH*.5).lineTo(VERTWIDTH,0).lineTo((VERTWIDTH*.5),-(VERTWIDTH*.5)).lineTo((VERTWIDTH*.5),0);
 }
 
-function drawCorner() {
+function drawCorners() {
 	var x = -1000
 	var y = -1000;
-	if (corner_sprite.over) {
-		corner_sprite.gotoAndStop("cornerover");
-	} else {
-		corner_sprite.gotoAndStop("corner");
-	}
-	if (corner_sprite.mysquare==sq1) {
-		x = sq1x;
-		y = sq1y;
-	} else if (corner_sprite.mysquare==sq2) {
-		x = sq2x;
-		y = sq2y;
-	}
-	if (stage.mouseX < x + (hsize/2) && stage.mouseY < y + (vsize/2)) {
-		// top left
-		CORNER_POSITION = CORNER_TOP_LEFT;
-		corner_sprite.x = x+CORNER_OFFSET;
-		corner_sprite.y = y+CORNER_OFFSET;
-	} else if (stage.mouseX > x + (hsize/2) && stage.mouseY < y + (vsize/2)) {
-		// top right
-		CORNER_POSITION = CORNER_TOP_RIGHT;
-		corner_sprite.x = x+hsize-CORNER_OFFSET;
-		corner_sprite.y = y+CORNER_OFFSET;
-	} else if (stage.mouseX < x + (hsize/2) && stage.mouseY > y + (vsize/2)) {
-		// bottom left
-		CORNER_POSITION = CORNER_BOTTOM_LEFT;
-		corner_sprite.x = x+CORNER_OFFSET;
-		corner_sprite.y = y+vsize-CORNER_OFFSET;
-	} else if (stage.mouseX > x + (hsize/2) && stage.mouseY > y + (vsize/2)) {
-		// bottom right
-		CORNER_POSITION = CORNER_BOTTOM_RIGHT;
-		corner_sprite.x = x+hsize-CORNER_OFFSET;
-		corner_sprite.y = y+vsize-CORNER_OFFSET;
-	}
-	if (CORNER_POSITION!=lastcorner) {
-		lastcorner=CORNER_POSITION;
-		update = true;
+	var i, crnr;
+	for (i=0;i<8;++i) {
+		crnr = corner_sprites[i];
+		if (!crnr.over) {
+			crnr.graphics.beginStroke(COLOR);
+		} else {
+			crnr.graphics.beginStroke(OVERCOLOR);
+		}
+		crnr.graphics.beginFill(FILLALPHA);
+		crnr.graphics.setStrokeStyle(THICK, "round", "round");
+		crnr.graphics.drawRect(-CORNER_OFFSET,-CORNER_OFFSET,CORNER_OFFSET+CORNER_OFFSET,CORNER_OFFSET+CORNER_OFFSET);
+		if (crnr.mysquare==sq1) {
+			x = sq1x;
+			y = sq1y;
+		} else if (crnr.mysquare==sq2) {
+			x = sq2x;
+			y = sq2y;
+		}
+		crnr.x = x+CORNER_OFFSET+((hsize-CORNER_OFFSET-CORNER_OFFSET)*crnr.xfactor);
+		crnr.y = y+CORNER_OFFSET+((vsize-CORNER_OFFSET-CORNER_OFFSET)*crnr.yfactor);
 	}
 }
 
@@ -554,7 +892,6 @@ function drawSquare(square,x,y) {
 
 function tick() {
 	// this set makes it so the stage only re-renders when an event handler indicates a change has happened.
-	drawCorner();
 	if (update) {
 		draw();
 		update = false; // only update once
@@ -751,9 +1088,9 @@ function handleImageLoad(e) {
 			first = false;
 		}
 		run();
-		prepareSheet();
+		prepareInterface();
 		// adding interaction
-		addBasicInteractivity();
+		addInteractivity();
 		update = true;
     }
 }
