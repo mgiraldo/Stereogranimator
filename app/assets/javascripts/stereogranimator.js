@@ -11,6 +11,7 @@ var numImagesLoaded = 0;
 var resize_sprite;
 var vert_sprite;
 var corner_sprite;
+var lastcorner;
 var sheetpng;
 var sheetsrc;
 
@@ -48,7 +49,7 @@ var verty = 0;
 // square scaling
 var hsize = 300;
 var vsize = 360;
-var MINSIZE = 50;
+var MINSIZE = 80;
 
 var SLOWSPEED = 200;
 var MEDSPEED = 140;
@@ -475,7 +476,6 @@ function drawStereoscope() {
 	drawVertical();
 	drawSquare(sq1, sq1x, sq1y);
 	drawSquare(sq2, sq2x, sq2y);
-	drawCorner();
 }
 
 function drawVertical() {
@@ -523,6 +523,10 @@ function drawCorner() {
 		corner_sprite.x = x+hsize-CORNER_OFFSET;
 		corner_sprite.y = y+vsize-CORNER_OFFSET;
 	}
+	if (CORNER_POSITION!=lastcorner) {
+		lastcorner=CORNER_POSITION;
+		update = true;
+	}
 }
 
 function drawSquare(square,x,y) {
@@ -540,17 +544,23 @@ function drawSquare(square,x,y) {
 	if (square.over) {
 		CROSSSIZE = INSET*2;
 		g.moveTo(x-CROSSSIZE+hsize/2,y-CROSSSIZE+vsize/2).lineTo(x+CROSSSIZE+hsize/2,y+CROSSSIZE+vsize/2).moveTo(x+CROSSSIZE+hsize/2,y-CROSSSIZE+vsize/2).lineTo(x-CROSSSIZE+hsize/2,y+CROSSSIZE+vsize/2);
+		// draw arrows
+		g.moveTo(x-CROSSSIZE+hsize/2,(y-CROSSSIZE+vsize/2)+(CROSSSIZE/2)).lineTo(x-CROSSSIZE+hsize/2,y-CROSSSIZE+vsize/2).lineTo(x-CROSSSIZE+hsize/2+(CROSSSIZE/2),y-CROSSSIZE+vsize/2);
+		g.moveTo(x+CROSSSIZE+hsize/2,y+CROSSSIZE+vsize/2-(CROSSSIZE/2)).lineTo(x+CROSSSIZE+hsize/2,y+CROSSSIZE+vsize/2).lineTo(x+CROSSSIZE+hsize/2-(CROSSSIZE/2),y+CROSSSIZE+vsize/2);
+		g.moveTo(x+CROSSSIZE+hsize/2,y-CROSSSIZE+vsize/2+(CROSSSIZE/2)).lineTo(x+CROSSSIZE+hsize/2,y-CROSSSIZE+vsize/2).lineTo(x+CROSSSIZE+hsize/2-(CROSSSIZE/2),y-CROSSSIZE+vsize/2);
+		g.moveTo(x-CROSSSIZE+hsize/2,y+CROSSSIZE+vsize/2-(CROSSSIZE/2)).lineTo(x-CROSSSIZE+hsize/2,y+CROSSSIZE+vsize/2).lineTo(x-CROSSSIZE+hsize/2+(CROSSSIZE/2),y+CROSSSIZE+vsize/2);
 	}
 }
 
 function tick() {
 	// this set makes it so the stage only re-renders when an event handler indicates a change has happened.
-	draw();
+	drawCorner();
 	if (update) {
+		draw();
 		update = false; // only update once
 		updatePreview();
+		stage.update();
 	}
-	stage.update();
 	if (mode=="GIF") {
 		drawGIF();
 	} else {
