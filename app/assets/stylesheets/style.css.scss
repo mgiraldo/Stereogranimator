@@ -123,20 +123,20 @@ header {
 				color: $backcolor;
 				text-decoration: none;
 			}
-			&:hover {
-				background-color: $backcolor;
-				a {color: $maincolor;}
-			}
-			&.active {
-				background-color: $linkcolor;
-				a {color: $maincolor;}
-			}
 		}
+    li:hover {
+      background-color: $backcolor;
+      a {color: $maincolor;}
+    }
+    li.active {
+        background-color: $linkcolor;
+        a {color: $maincolor;}
+    }
 	}
 }
 
 #mainContent {
-	background: $backimage no-repeat;
+	background: $backimage repeat-x;
 	.thumb {
 		float: left;
 		width: 150px;
@@ -148,8 +148,10 @@ header {
 		}
 	}
 	.createTop {
-		border-bottom: $basicborder;
 		height: 110px;
+	}
+	#nav p {
+	  margin: 0;
 	}
 	h1.create {
 		width: 126px;
@@ -217,10 +219,39 @@ header {
 }
 
 #stereogranimator {
-	width: $fullwidth;
-	margin-bottom: 30px;
-	.canvasHolder {
+  width: 1200px;
+	margin: 0 auto 30px auto;
+  border-top: $basicborder;
+	.canvasHolder, .sideshow {
+	  height: $stereoheight;
+    float: left;
 		border-bottom: $basicborder;
+	}
+	.canvasHolder {
+	  width: $canvaswidth;
+	}
+	.sideshow {
+	  width: $previewwidth;
+    border-left: $basicborder;
+    position: relative;
+    #preview {
+      position: absolute;
+      top: 50px;
+      left: 0;
+      width: $previewwidth;
+      height: $previewheight;
+      #previewAnaglyph {
+        text-align: center;
+      }
+      #previewGIF {
+        margin: 0 auto;
+      }
+    }
+    #process {
+      position: absolute;
+      left: 0;
+      top: -2000px;
+    }
 	}
 	#toggler {
 		.previewTitle {
@@ -228,76 +259,58 @@ header {
 		}
 		#toggleLinks {
 			position: relative;
-			height: 24px;
-			#toggleAna, #toggleGIF, #GIFExtraLinks {
-				position: absolute;
-				display: block;
-				width: 160px;
-				top: 2px;
+			height: 23px;
+			#toggleAna, #toggleGIF {
+			  display: block;
+			  position: absolute;
+				width: 190px;
+        height: 24px;
+        top: 2;
+        text-align: center;
 			}
-			#toggleAna {
-				left: 305px;
-				text-align: right;
-			}
-			#toggleGIF {
-				top: 2px;
-				left: 495px;
-			}
-			#GIFExtraLinks {
-				top: 2px;
-				left: 665px;
-				width: 200px;
-				a {
-					margin-right: 10px;
-				}
-				a.active {
-					color: $maincolor;
-					text-decoration: none;
-					&:hover {
-						background-color: $backcolor;
-					}
-				}
-			}
+      #toggleGIF {
+        left: 195px;
+      }
 			.active {
 				color: $backcolor;
 				text-decoration: none;
-				&:hover {
-					background-color: $maincolor;
-				}
 			}
 		}
+    #GIFExtraLinks {
+      height: 24px;
+      margin-left: 200px;
+      background-color: $maincolor;
+      div {
+        padding-left: 30px;
+      }
+      a {
+        margin-right: 10px;
+      }
+      a.active {
+        color: $backcolor;
+        text-decoration: none;
+      }
+    }
 		.anaglyphActive {
-			background: $sprites 0 -391px;
+			background: $sprites -280px -392px;
 		}
 		.GIFActive {
-			background: $sprites 0 -416px;
+			background: $sprites -280px -417px;
 		}
 	}
-	#preview {
-		position: relative;
-		border-top: $basicborder;
-		border-bottom: $basicborder;
-		#previewContainer {
-			position: absolute;
-			top: 0;
-			left: 0;
-		}
-		#previousStep {
-			float: left;
-			margin-top: 30px;
-			margin-left: 70px;
-		}
-		#nextStep {
-			float: right;
-			margin-top: 30px;
-			margin-right: 70px;
-		}
-	}
-	#process {
-		position: absolute;
-		left: -1000px;
-		top: 0;
-	}
+}
+
+#stereoLinks {
+    .previousStep {
+      float: left;
+      margin-top: 0;
+      margin-left: 70px;
+    }
+    .nextStep {
+      float: right;
+      margin-top: 0;
+      margin-right: 70px;
+    }
 }
 
 footer {

@@ -2,8 +2,8 @@ var canvas;
 var stage;
 var bmp;
 
-var stageWidth = 960;
-var stageHeight = 450;
+var stageWidth = 800;
+var stageHeight = 550;
 
 var NUM_ELEMENTS_TO_DOWNLOAD = 2;
 var numImagesLoaded = 0;
@@ -31,6 +31,10 @@ var leftimgdata_array;
 var rightimgdata_array
 
 // interface elements
+
+// background
+var bg;
+
 // squares
 var sq1;
 var sq2;
@@ -49,6 +53,8 @@ var verty = 0;
 var hsize = 300;
 var vsize = 360;
 var MINSIZE = 80;
+var MAXW = 399;
+var MAXH = 490;
 
 var SLOWSPEED = 200;
 var MEDSPEED = 140;
@@ -76,10 +82,11 @@ var OFFSET = 0;
 var INSET = 10;
 
 var THICK = 2;
-var COLOR = "#fff";
+var COLOR = "#ddd";
 var OVERCOLOR = "#f00";
 var FILL = "#000";
-var FILLALPHA = "rgba(0,0,0,0.5)";
+var FILLALPHA = "rgba(0,0,0,0.1)";
+var BACKALPHA = "rgba(0,0,0,0.75)";
 
 var img = new Image();
 var update = true;
@@ -175,6 +182,10 @@ function run() {
 	stage.addChild(bmp);
 	
 	centerPhoto();
+	
+	// background black
+	bg = new Shape();
+	stage.addChild(bg);
 	
 	// starting points for squares
 	sq1x = bmp.x + Math.round(img.width / 2) - hsize - INSET;
@@ -818,10 +829,23 @@ function draw() {
 }
 
 function drawStereoscope() {
+	drawBackground();
 	drawVertical();
 	drawSquare(sq1, sq1x, sq1y);
 	drawSquare(sq2, sq2x, sq2y);
 	drawCorners();
+}
+
+function drawBackground() {
+	var g = bg.graphics;
+	g.clear();
+	g.beginStroke(null);
+	g.beginFill(BACKALPHA);
+	g.drawRect(0,0,stageWidth,sq1y);
+	g.drawRect(0,sq1y,sq1x,vsize);
+	g.drawRect(sq1x+hsize,sq1y,(vertx-sq1x-hsize)*2,vsize);
+	g.drawRect(sq2x+hsize,sq1y,stageWidth-(sq2x+hsize),vsize);
+	g.drawRect(0,sq1y+vsize,stageWidth,stageHeight-vsize-sq1y);
 }
 
 function drawVertical() {
@@ -847,6 +871,7 @@ function drawCorners() {
 	var i, crnr;
 	for (i=0;i<8;++i) {
 		crnr = corner_sprites[i];
+		crnr.graphics.clear();
 		if (!crnr.over) {
 			crnr.graphics.beginStroke(COLOR);
 		} else {
@@ -909,9 +934,6 @@ function updatePreview() {
 	var p = document.getElementById("previewGIF");
 	p.style.width = hsize + "px";
 	p.style.height = vsize + "px";
-	// center the preview
-	document.getElementById("previewContainer").style.left = Math.floor((canvas.width - hsize)/2) + "px";
-	document.getElementById("preview").style.height = vsize + "px";
 }
 
 function toggleMode(m) {

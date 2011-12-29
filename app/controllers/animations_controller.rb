@@ -64,7 +64,7 @@ class AnimationsController < ApplicationController
   # GET /animations/new.json
   def new
     respond_to do |format|
-      format.html #{ render :layout => "new_rich"} # new.html.erb
+      format.html { render :layout => "new_rich"} # new.html.erb
       format.json { render :json => @animation }
     end
   end

@@ -20,85 +20,15 @@
 	
 <body>
 <div id="page" class="container_12">
-	<div id="nypl_bar">
-		<div>
-			<form>A <a href="http://www.nypl.org/">New York Public Library</a> website
-				<select onchange="window.open(this.options[this.selectedIndex].value,'_top')">
-					<option value="">Explore others!</option>
-					<option value="http://www.nypl.org/">NYPL.org</option>
-					<option value="http://catalog.nypl.org/">Catalog</option>
-					<option value="http://www.nypl.org/">Research Tools</option>
-					<option value="http://digitalgallery.nypl.org/">Picture Collection</option>
-					<option value="http://exhibitions.nypl.org/">Exhibitions</option>
-					<option value="http://nypl.org/blog/all">Blogs</option>
-					<option value="http://m.nypl.org/">Mobile</option>
-					<option value="http://www.facebook.com/newyorkpubliclibrary">on Facebook</option>
-					<option value="http://twitter.com/nypl">on Twitter</option>
-				</select>
-			</form>
-		</div>
-	</div>
-	<header>
-		<h1><span><a href="/" class="visuallyhidden focusable">STEREOGRANIMATOR</a></span></h1>
-		<ul id="mainNav">
-			<li class="active"><a href="#">CREATE</a></li>
-			<li><a href="#">GALLERY</a></li>
-			<li><a href="#">ABOUT</a></li>
-		</ul>
-	</header>
-	<div id="mainContent">
-		<div class="grid_12">
-			<h1><span class="visuallyhidden">CREATE</span></h1>
-			<div id="nav">
-				<p><span class="dim">Step 1: CHOOSE A STEREOGRAPH &gt;</span> Step 2: CONVERT TO GIF/ANAGLYPH &gt; <span class="dim">Step 3: SEND</span></p>
-			</div>
-		</div>
-		<div class="clear"></div>
-<%= form_for(@animation, :remote => true) do |f| %>
-		<div id="stereogranimator">
-			<div class="canvasHolder">
-				<canvas id="testCanvas" width="960" height="450"></canvas>
-			</div>
-			<div id="toggler">
-				<div class="previewTitle">PREVIEW BELOW</div>
-				<div id="toggleLinks">
-					<a href="#preview" id="toggleAna">AS 3D ANAGLYPH</a>
-					<a href="#preview" id="toggleGIF">AS ANIMATED GIF</a>
-					<div id="GIFExtraLinks">
-						<a href="#preview" id="slowSpeed">SLOW</a>
-						<a href="#preview" id="medSpeed">MEDIUM</a>
-						<a href="#preview" id="fastSpeed">FAST</a>
-					</div>
-				</div>
-			</div>
-			<div id="preview">
-				<div id="previousStep">
-					<p><a href="#">&lt; Start again</a></p>
-				</div>
-				<div id="nextStep">
-					<p><a href="#" id="btnNext" class="genericButtonLink">CONTINUE TO STEP 3 &gt;</a></p>
-				</div>
-				<div id="previewContainer">
-					<div id="previewGIF">
-					</div>
-					<div id="previewAnaglyph">
-						<canvas id="resultCanvas"></canvas>
-					</div>
-				</div>
-			</div>
-			<div id="process">
-				<canvas id="processCanvas" width="800" height="800"></canvas>
-			</div>
-		</div>
-<% end %>
-	</div>
+<%= render "shared/nypl_bar" %>
+<%= render "shared/global_nav" %>
 </div>
-<footer class="container_12">
-	<p class="grid_12"><a href="#">Privacy policy</a> • <a href="#">Rules and regulations</a> • <a href="#">Policy on patron-generated web content</a> • <a href="#">Terms and conditions</a></p>
-	<p class="grid_12">Another project of the <a href="#">NYPL Labs</a><br />
-	© 2011 The New York Public Library</p>
-	<p class="grid_12">Please help the library by sharing this site!</p>
-</footer>
+	<div id="mainContent">
+<%= yield %>
+	</div>
+<div class="container_12">
+<%= render "shared/footer" %>
+</div>
 
 </body>
 </html>

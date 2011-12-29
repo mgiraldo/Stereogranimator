@@ -13,41 +13,44 @@ window.onload = init;
 				<p><span class="dim">Step 1: CHOOSE A STEREOGRAPH &gt;</span> Step 2: CONVERT TO GIF/ANAGLYPH &gt; <span class="dim">Step 3: SEND</span></p>
 			</div>
 		</div>
-		<div class="clear"></div>
-<%= form_for(@animation, :remote => true) do |f| %>
 		<div id="stereogranimator">
 			<div class="canvasHolder">
-				<canvas id="testCanvas" width="960" height="450"></canvas>
+				<canvas id="testCanvas" width="800" height="550"></canvas>
 			</div>
-			<div id="toggler">
-				<div class="previewTitle">PREVIEW BELOW</div>
-				<div id="toggleLinks">
-					<a href="javascript:;" id="toggleAna">AS 3D ANAGLYPH</a>
-					<a href="javascript:;" id="toggleGIF">AS ANIMATED GIF</a>
+			<div class="sideshow">
+				<div id="toggler">
+					<div id="toggleLinks">
+						<a href="javascript:;" id="toggleAna">VIEW AS 3D ANAGLYPH</a>
+						<a href="javascript:;" id="toggleGIF">VIEW AS ANIMATED GIF</a>
+					</div>
 					<div id="GIFExtraLinks">
-						<a href="javascript:;" id="slowSpeed">SLOW</a>
-						<a href="javascript:;" id="medSpeed">MEDIUM</a>
-						<a href="javascript:;" id="fastSpeed">FAST</a>
+						<div>
+							<a href="javascript:;" id="slowSpeed">SLOW</a>
+							<a href="javascript:;" id="medSpeed">MEDIUM</a>
+							<a href="javascript:;" id="fastSpeed">FAST</a>
+						</div>
 					</div>
+				</div>
+				<div id="preview">
+					<div id="previewContainer">
+						<div id="previewGIF">
+						</div>
+						<div id="previewAnaglyph">
+							<canvas id="resultCanvas"></canvas>
+						</div>
+					</div>
+				</div>
+				<div id="process">
+					<canvas id="processCanvas" width="1000" height="1000"></canvas>
 				</div>
 			</div>
-			<div id="preview">
-				<div id="previousStep">
-					<p><%= link_to "< Start again", "/choose" %></p>
-				</div>
-				<div id="nextStep">
-					<p><a href="javascript:;" id="btnNext" class="genericButtonLink">CONTINUE TO STEP 3 &gt;</a></p>
-				</div>
-				<div id="previewContainer">
-					<div id="previewGIF">
-					</div>
-					<div id="previewAnaglyph">
-						<canvas id="resultCanvas"></canvas>
-					</div>
-				</div>
+			<div class="clear"></div>
+		</div>
+		<div id="stereoLinks" class="container_12">
+			<div class="previousStep">
+				<p><%= link_to "< Start again", "/choose" %></p>
 			</div>
-			<div id="process">
-				<canvas id="processCanvas" width="800" height="800"></canvas>
+			<div class="nextStep">
+				<p><a href="javascript:;" id="btnNext" class="genericButtonLink">CONTINUE TO STEP 3 &gt;</a></p>
 			</div>
 		</div>
-<% end %>
