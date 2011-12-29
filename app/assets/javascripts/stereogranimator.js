@@ -259,12 +259,10 @@ function addBasicInteractivity() {
 			target.over = true;
 			corner_sprite.mysquare = target;
 			update = true;
-			canvas.onmousemove = function () {drawCorner();};
 		};
 		sq1.onMouseOut = function() {
 			target.over = false;
 			update = true;
-			canvas.onmousemove = null;
 		};
 	})(sq1);
 
@@ -301,12 +299,10 @@ function addBasicInteractivity() {
 			target.over = true;
 			corner_sprite.mysquare = target;
 			update = true;
-			document.onmousemove = function () {drawCorner();};
 		};
 		sq2.onMouseOut = function() {
 			target.over = false;
 			update = true;
-			document.onmousemove = null;
 		};
 	})(sq2);
 
@@ -479,6 +475,7 @@ function drawStereoscope() {
 	drawVertical();
 	drawSquare(sq1, sq1x, sq1y);
 	drawSquare(sq2, sq2x, sq2y);
+	drawCorner();
 }
 
 function drawVertical() {
@@ -491,7 +488,6 @@ function drawVertical() {
 }
 
 function drawCorner() {
-	console.log("corner");
 	var x = -1000
 	var y = -1000;
 	if (corner_sprite.over) {
@@ -549,12 +545,12 @@ function drawSquare(square,x,y) {
 
 function tick() {
 	// this set makes it so the stage only re-renders when an event handler indicates a change has happened.
+	draw();
 	if (update) {
-		draw();
 		update = false; // only update once
 		updatePreview();
-		stage.update();
 	}
+	stage.update();
 	if (mode=="GIF") {
 		drawGIF();
 	} else {
