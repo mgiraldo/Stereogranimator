@@ -951,6 +951,7 @@ function toggleMode(m) {
 		gifDiv.addClass("active"); 
 		extraDiv.show(); 
 	} else {
+		update = true;
 		togglerDiv.addClass("anaglyphActive"); 
 		togglerDiv.removeClass("GIFActive"); 
 		gifDiv.removeClass("active"); 
