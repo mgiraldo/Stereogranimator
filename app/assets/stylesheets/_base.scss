@@ -1,6 +1,6 @@
 // fonts
 $nyplfont: "Kievit", "Myriad Pro", "Lucida Grande", "Calibri", verdana, arial, helvetica, sans-serif;
-$bodyfont: share-regular, sans-serif;
+$bodyfont: share-regular, "Arial Narrow", sans-serif;
 $fontsizepx: 14px;
 $baselineheightem: 1.8em;
 $lineheightem: 1.4em;
@@ -10,7 +10,7 @@ $fullwidth: 960px;
 $canvaswidth: 800px;
 $stereoheight: 550px;
 $previewwidth: 399px;
-$previewheight: 500px;
+$previewheight: $stereoheight;
 
 // colors
 $maincolor: #fff;

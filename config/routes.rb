@@ -16,6 +16,8 @@ Stereo::Application.routes.draw do
   match 'create', :to => 'animations#choose', :as => "create"
   match 'convert/:did', :to => 'animations#new', :as => "convert"
   match 'share/:id', :to => 'animations#share', :as => "share"
+  match 'getimagedata/:digitalid', :to => 'animations#getimagedata', :as => "getimagedata"
+  match 'getimagedata/', :to => 'animations#getimagedata', :as => "getimagedata_plain"
 
   match "/animations/createJson/*path" => "animations#createJson"
 

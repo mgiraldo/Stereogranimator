@@ -10,7 +10,7 @@ window.onload = init;
 		<div class="createTop container_12">
 			<h1 class="create grid_12"><span class="visuallyhidden">CREATE</span></h1>
 			<div id="nav" class="grid_12">
-				<p><span class="dim">Step 1: CHOOSE A STEREOGRAPH &gt;</span> Step 2: CONVERT TO GIF/ANAGLYPH &gt; <span class="dim">Step 3: SEND</span></p>
+				<p><span class="dim"><%= link_to "Step 1: CHOOSE A STEREOGRAPH", "/create" %> &gt;</span> Step 2: CONVERT TO GIF/ANAGLYPH &gt; <span class="dim">Step 3: SEND</span></p>
 			</div>
 		</div>
 		<div id="stereogranimator">
@@ -44,13 +44,8 @@ window.onload = init;
 					<canvas id="processCanvas" width="1000" height="1000"></canvas>
 				</div>
 			</div>
-			<div class="clear"></div>
-		</div>
-		<div id="stereoLinks" class="container_12">
-			<div class="previousStep">
-				<p><%= link_to "< Start again", "/choose" %></p>
-			</div>
 			<div class="nextStep">
 				<p><a href="javascript:;" id="btnNext" class="genericButtonLink">CONTINUE TO STEP 3 &gt;</a></p>
 			</div>
+			<div class="clear"></div>
 		</div>

@@ -922,11 +922,12 @@ function tick() {
 		update = false; // only update once
 		updatePreview();
 		stage.update();
+		if (mode=="ANAGLYPH") {
+			drawAnaglyph();
+		}
 	}
 	if (mode=="GIF") {
 		drawGIF();
-	} else {
-		drawAnaglyph();
 	}
 }
 
@@ -938,19 +939,20 @@ function updatePreview() {
 
 function toggleMode(m) {
 	mode = m;
+	var togglerDiv = $("#toggler");
 	var gifDiv = $("#toggleGIF");
 	var anaDiv = $("#toggleAna");
 	var linksDiv = $("#toggleLinks");
 	var extraDiv = $("#GIFExtraLinks");
 	if (m=="GIF") {
-		linksDiv.removeClass("anaglyphActive"); 
-		linksDiv.addClass("GIFActive"); 
+		togglerDiv.removeClass("anaglyphActive"); 
+		togglerDiv.addClass("GIFActive"); 
 		anaDiv.removeClass("active"); 
 		gifDiv.addClass("active"); 
 		extraDiv.show(); 
 	} else {
-		linksDiv.addClass("anaglyphActive"); 
-		linksDiv.removeClass("GIFActive"); 
+		togglerDiv.addClass("anaglyphActive"); 
+		togglerDiv.removeClass("GIFActive"); 
 		gifDiv.removeClass("active"); 
 		anaDiv.addClass("active"); 
 		extraDiv.hide(); 
@@ -1037,7 +1039,8 @@ function loadPhoto(str) {
 	
 	// get image data for future processing if anaglyph
 	$.getImageData({
-		  url: url,
+		  url: index,
+		  server: "/getimagedata/?callback=?",
 		  success: function(image){
 			// Set up the canvas
 			ctx3D = resultcanvas.getContext('2d');

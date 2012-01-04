@@ -1,129 +1,141 @@
 @import "base";
 
 body {
-	background: $backcolor $bodyimage repeat-x;
-	color: $maincolor;
-	font-family: $bodyfont;
-	font-size: $fontsizepx;
-	line-height: $baselineheightem;
+  background: $backcolor $bodyimage repeat-x;
+  color: $maincolor;
+  font-family: $bodyfont;
+  font-size: $fontsizepx;
+  line-height: $baselineheightem;
+}
+
+#mainContent {
+  h1, h2, h3, p {
+    padding: 0 5px;
+  }
 }
 
 h3, .mainParagraph {
-	font-size: 16px;
-	line-height: $lineheightem;
-	margin-top: 20px;
-	margin-bottom: 1em;
+  font-size: 16px;
+  line-height: $lineheightem;
+  margin-top: 20px;
+  margin-bottom: 1em;
 }
 
 p {
-	padding: 0 5px;
-	font-size: 1em;
-	margin: 0 0 $lineheightem 0;
+  font-size: 1em;
+  margin: 0 0 $lineheightem 0;
 }
 
 em {
-	color: $emgray;
+  color: $emgray;
 }
 
 a, a:link, a:visited {
-	color: $linkcolor;
+  color: $linkcolor;
 }
 
 a:hover {
-	text-decoration: none;
+  text-decoration: none;
 }
 
 .dim {
-	color: $nyplgray;
+  color: $nyplgray;
 }
 
 .centered {
-	text-align: center;
+  text-align: center;
 }
 
 .pagination a, .genericButtonLink, .genericButtonLink:link, .genericButtonLink:visited {
-	background-color: $linkcolor;
-	padding: 10px;
-	color: $maincolor;
-	text-decoration: none;
-	&:hover {
-		background-color: $maincolor;
-		color: $backcolor;
-	}
+  background-color: $linkcolor;
+  padding: 10px;
+  color: $maincolor;
+  text-decoration: none;
+  &:hover {
+    background-color: $maincolor;
+    color: $backcolor;
+  }
 }
 
 .pagination span {
-	margin: 0 5px;
+  margin: 0 5px;
 }
 
 .pagination .first, .pagination .last {
-	display: none;
+  display: none;
 }
 
 #nypl_bar {
-	font-family: $nyplfont;
-	position: relative;
-	height: 30px;
-	background: $sprites -905px 0 no-repeat $nyplred;
-	color: $maincolor;
-	font-size: $fontsizepx;
-	margin: 0;
-	padding: 0 0 0 60px;
-	div {
-		padding-top: 6px;
-	}
-	form {
-		display: inline;
-	}
-	a, a:link, a:visited {
-		color: $maincolor;
-	}
+  font-family: $nyplfont;
+  position: relative;
+  height: 30px;
+  background: $sprites -905px 0 no-repeat $nyplred;
+  color: $maincolor;
+  font-size: $fontsizepx;
+  margin: 0;
+  padding: 0 0 0 60px;
+  div {
+    padding-top: 6px;
+  }
+  form {
+    display: inline;
+  }
+  a, a:link, a:visited {
+    color: $maincolor;
+  }
 }
 
 #page {
-	.replace {
-		/* image-replaced texts */
-		margin-left: -10000px;
-	  }
+  .replace {
+    /* image-replaced texts */
+    margin-left: -10000px;
+  }
 }
 
 header {
-	position: relative;
-	height: 99px;
-	border-top: $basicborder;
-	border-bottom: $basicborder;
-	h1 {
-		position: absolute;
-		left: 6px;
-		top: 0;
-		margin: 0;
-		width: 360px;
-		height: 100px;
-		background: $sprites -100px 0 no-repeat;
-	}
-	ul {
-		position: absolute;
-		list-style-type: none;
-		margin: 0;
-		top: 70px;
-		left: 240px;
-		width: 460px;
-		li {
-			float: left;
-			width: 138px!important;
-			height: 28px;
-			background-color: $maincolor;
-			color: $backcolor;
-			text-align: center;
-			font-size: 16px;
-			border: $basicborder;
-			a, a:link, a:visited {
-				display: block;
-				margin-top: 3px;
-				color: $backcolor;
-				text-decoration: none;
-			}
-		}
+  position: relative;
+  height: 99px;
+  margin: 0 10px;
+  border-top: $basicborder;
+  border-bottom: $basicborder;
+  h1 {
+    position: absolute;
+    left: 6px;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    width: 360px;
+    height: 100px;
+    background: $sprites -100px 0 no-repeat;
+    a {
+      display: block;
+      width: 360px;
+      height: 50px;
+    }
+  }
+  ul {
+    position: absolute;
+    list-style-type: none;
+    margin: 0;
+    top: 70px;
+    left: 240px;
+    width: 460px;
+    li {
+      float: left;
+      width: 138px!important;
+      height: 28px;
+      background-color: $maincolor;
+      color: $backcolor;
+      text-align: center;
+      font-size: 16px;
+      border: $basicborder;
+      a, a:link, a:visited {
+        display: block;
+        margin-top: 3px;
+        color: $backcolor;
+        text-decoration: none;
+      }
+    }
     li:hover {
       background-color: $backcolor;
       a {color: $maincolor;}
@@ -132,112 +144,114 @@ header {
         background-color: $linkcolor;
         a {color: $maincolor;}
     }
-	}
+  }
 }
 
 #mainContent {
-	background: $backimage repeat-x;
-	.thumb {
-		float: left;
-		width: 150px;
-		height: 155px;
-		margin: 0 6px 15px 4px;
-		background: $sprites -308px -103px no-repeat;
-		.pad {
-			padding: 5px;
-		}
-	}
-	.createTop {
-		height: 110px;
-	}
-	#nav p {
-	  margin: 0;
-	}
-	h1.create {
-		width: 126px;
-		height: 31px;
-		margin: 30px 10px 15px 10px;
-		background: $sprites -255px -351px no-repeat;
-	}
-	h1.gallery {
-		width: 127px;
-		height: 31px;
-		margin: 30px 10px 15px 10px;
-		background: $sprites -498px -351px no-repeat;
-	}
-	h1.welcome {
-		width: 207px;
-		height: 31px;
-		margin: 0;
-		margin-top: 30px;
-		margin-bottom: 20px;
-		background: $sprites -38px -351px no-repeat;
-	}
-	h1.latest {
-		width: 100px;
-		height: 31px;
-		margin-top: 30px;
-		margin-bottom: 20px;
-		background: $sprites -391px -351px no-repeat;
-	}
-	.meta {
-		.create {
-			margin: 30px 0;
-		}
-	}
-	.startCreating {
-		width: 221px;
-		height: 32px;
-		background: $sprites -461px 0 no-repeat;
-		margin: 0 auto 20px auto;
-	}
+  background: $backimage;
+  .thumb {
+    float: left;
+    width: 150px;
+    height: 155px;
+    margin: 0 6px 15px 4px;
+    background: $sprites -308px -103px no-repeat;
+    .pad {
+      padding: 5px;
+    }
+  }
+  .createTop {
+    height: 110px;
+  }
+  #nav p {
+    margin: 0;
+  }
+  h1.create {
+    width: 126px;
+    height: 31px;
+    margin: 30px 10px 15px 10px;
+    padding: 0;
+    background: $sprites -255px -351px no-repeat;
+  }
+  h1.gallery {
+    width: 127px;
+    height: 31px;
+    margin: 30px 10px 15px 10px;
+    padding: 0;
+    background: $sprites -498px -351px no-repeat;
+  }
+  h1.welcome {
+    width: 207px;
+    height: 31px;
+    margin: 0;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    padding: 0;
+    background: $sprites -38px -351px no-repeat;
+  }
+  h1.latest {
+    width: 100px;
+    height: 31px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    padding: 0;
+    background: $sprites -391px -351px no-repeat;
+  }
+  .meta {
+    .create {
+      margin: 30px 0;
+    }
+  }
+  .startCreating {
+    width: 221px;
+    height: 32px;
+    background: $sprites -461px 0 no-repeat;
+    margin: 0 auto 20px auto;
+  }
 }
 
 #home {
-	.diagram {
-		margin-top: 40px;
-		float: left;
-		width: 240px;
-		margin-right: 10px;
-	}
-	.text {
-	}
-	.latestImages {
-		float: left;
-		width: 320px;
-		.more {
-			margin-top: 20px;
-		}
-	}
+  .diagram {
+    margin-top: 40px;
+    float: left;
+    width: 240px;
+    margin-right: 10px;
+  }
+  .text {
+  }
+  .latestImages {
+    float: left;
+    width: 320px;
+    .more {
+      margin-top: 20px;
+    }
+  }
 }
 
 #stereoList {
-	padding: 20px 0;
-	.stereograph {
-		margin-bottom: 30px;
-	}
+  padding: 20px 0;
+  .stereograph {
+    margin-bottom: 30px;
+  }
 }
 
 #stereogranimator {
+  position: relative;
   width: 1200px;
-	margin: 0 auto 30px auto;
+  margin: 0 auto 30px auto;
   border-top: $basicborder;
-	.canvasHolder, .sideshow {
-	  height: $stereoheight;
+  .canvasHolder, .sideshow {
+    height: $stereoheight;
     float: left;
-		border-bottom: $basicborder;
-	}
-	.canvasHolder {
-	  width: $canvaswidth;
-	}
-	.sideshow {
-	  width: $previewwidth;
-    border-left: $basicborder;
+    border-bottom: $basicborder;
+  }
+  .canvasHolder {
+    width: $canvaswidth;
+  }
+  .sideshow {
     position: relative;
+    width: $previewwidth;
+    border-left: $basicborder;
     #preview {
-      position: absolute;
-      top: 50px;
-      left: 0;
       width: $previewwidth;
       height: $previewheight;
       #previewAnaglyph {
@@ -248,97 +262,70 @@ header {
       }
     }
     #process {
-      position: absolute;
-      left: 0;
-      top: -2000px;
+     display: none;
     }
-	}
-	#toggler {
-		.previewTitle {
-			text-align: center;
-		}
-		#toggleLinks {
-			position: relative;
-			height: 23px;
-			#toggleAna, #toggleGIF {
-			  display: block;
-			  position: absolute;
-				width: 190px;
-        height: 24px;
-        top: 2;
+  }
+  #toggler {
+    position: absolute;
+    width: 400px;
+    height: 50px;
+    top: -51px;
+    left: 0;
+    border-bottom: $basicborder;
+    .previewTitle {
+      text-align: center;
+    }
+    #toggleLinks {
+      #toggleAna, #toggleGIF {
+        display: block;
+        float: left;
+        width: 200px;
+        height: 25px;
         text-align: center;
-			}
-      #toggleGIF {
-        left: 195px;
       }
-			.active {
-				color: $backcolor;
-				text-decoration: none;
-			}
-		}
+      #toggleGIF {
+      }
+      .active {
+        color: $backcolor;
+        text-decoration: none;
+      }
+    }
     #GIFExtraLinks {
-      height: 24px;
+      height: 25px;
       margin-left: 200px;
-      background-color: $maincolor;
       div {
         padding-left: 30px;
       }
       a {
-        margin-right: 10px;
+        margin-right: 6px;
       }
       a.active {
         color: $backcolor;
         text-decoration: none;
       }
     }
-		.anaglyphActive {
-			background: $sprites -280px -392px;
-		}
-		.GIFActive {
-			background: $sprites -280px -417px;
-		}
-	}
-}
-
-#stereoLinks {
-    .previousStep {
-      float: left;
-      margin-top: 0;
-      margin-left: 70px;
+    &.anaglyphActive {
+      background: $sprites 0 -390px;
     }
-    .nextStep {
-      float: right;
-      margin-top: 0;
-      margin-right: 70px;
+    &.GIFActive {
+      background: $sprites -401px -390px;
     }
+  }
+  .nextStep {
+    position: absolute;
+    top: 200px;
+    right: -50px;
+  }
 }
 
 footer {
-	background: $nyplgray;
-	padding-top: 10px;
-	margin-top: 30px;
-	a, a:link, a:visited {
-	  color: $maincolor;
-	}
+  background: $nyplgray;
+  padding-top: 10px;
+  margin-top: 30px;
+  a, a:link, a:visited {
+    color: $maincolor;
+  }
 }
-
-
-/* ==|== media queries ======================================================
-   PLACEHOLDER Media Queries for Responsive Design.
-   These override the primary ('mobile first') styles
-   Modify as content requires.
-   ========================================================================== */
-
-@media only screen and (min-width: 480px) {
-  /* Style adjustments for viewports 480px and over go here */
-
-}
-
-@media only screen and (min-width: 768px) {
-  /* Style adjustments for viewports 768px and over go here */
-
-}
-
 
 /* ==|== non-semantic helper classes ========================================
    Please define your styles before this section.

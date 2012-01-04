@@ -1,0 +1,9 @@
+				<p>You can share it using the direct link:<br />
+				<span class="dim"><%= url_for(:controller=>"gallery",:action=>"view",:id=>@animation.id,:only_path => false) %></span><br />
+				You can also use this embed code for your blog or website:<br />
+				<%= text_area_tag ("embed_code",image_tag(@animation.aws_url,:alt=>"" + @animation.mode + " made with the NYPL Labs Stereogranimator - view more at " + url_for(:controller=>"gallery",:only_path => false)), {"class"=>"embed"}) %>
+				</p>
+				
+				<p><%= link_to "View original item", @animation.nypl_url %> or <%= link_to "create another version", "/convert/#{@animation.digitalid}" %> of the original.</p>
+
+[share stuff here]
