@@ -5,13 +5,13 @@
 				<%= image_tag(@animation.aws_url) %>
 			</div>
 			<div class="meta grid_5">
-				<p>Created 5 hours ago</p>
-					
 				<p>This is an <%= @animation.mode == "GIF" ? "Animated GIF" : "Anaglyph" %> (<%= link_to "what is that?", :controller=>"about", :action=>"what" %>)</p>
 				
-				<div class="create"><%= link_to "CREATE YOUR OWN!", "/choose", :class => 'genericButtonLink' %></div>
+				<p>Created <%= time_ago_in_words(@animation.created_at) %> ago</p>
+				
+<%= render "shared/share", :locals => {:animation => @animation, :type => "viewed"} %>
 
-<%= render "shared/share", :locals => {:animation => @animation} %>
+				<div class="create"><%= link_to "CREATE YOUR OWN!", "/choose", :class => 'genericButtonLink' %></div>
 
 			</div>
 			<div class="clear"></div>

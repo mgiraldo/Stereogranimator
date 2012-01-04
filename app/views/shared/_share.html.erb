@@ -1,9 +1,40 @@
 				<p>You can share it using the direct link:<br />
-				<span class="dim"><%= url_for(:controller=>"gallery",:action=>"view",:id=>@animation.id,:only_path => false) %></span><br />
-				You can also use this embed code for your blog or website:<br />
-				<%= text_area_tag "embed_code",image_tag(@animation.aws_url,:alt=>"" + @animation.mode + " made with the NYPL Labs Stereogranimator - view more at " + url_for(:controller=>"gallery",:only_path => false)), {"class"=>"embed"} %>
+				<span class="dim"><%= url_for(:controller=>"gallery",:action=>"view",:id=>@animation.id,:only_path => false) %></span>
 				</p>
 				
 				<p><%= link_to "View original item", @animation.nypl_url %> or <%= link_to "create another version", "/convert/#{@animation.digitalid}" %> of the original.</p>
+				
+<%
 
-[share stuff here]
+# encoded stuff to use in the share buttons
+
+url = url_for(:controller=>"gallery",:action=>"view",:id=>@animation.id,:only_path => false)
+tweet = @type == "created" ? "I just created this #{@animation.mode} using the Stereogranimator by @nypl_labs" : "Check out this #{@animation.mode} I found in the Stereogranimator by @nypl_labs"
+twitterurl = "https://twitter.com/share?url=#{url}&text=#{tweet}"
+facebookurl = "http://www.facebook.com/sharer.php?u={url}&t={tweet}"
+tumblrurl = "http://www.tumblr.com/share/photo?source=#{@animation.aws_url}&caption=#{tweet}&clickthru=#{url}"
+googleurl = "https://m.google.com/app/plus/x/?v=compose&content=#{tweet}%20#{url}"
+redditurl = "http://www.reddit.com/submit?url=#{url}"
+
+%>
+				
+				<p>Share on:
+					<%= link_to "Twitter", twitterurl, {:class => "shTwitter", :title => "Share on Twitter"} %>
+					<%= link_to "Facebook", facebookurl, {:class => "shFacebook", :title => "Share on Facebook"} %>
+					<%= link_to "Tumblr", tumblrurl, {:class => "shTumblr", :title => "Share on Tumblr"} %>
+					<%= link_to "Google+", googleurl, {:class => "shPlus", :title => "Share on Google+"} %>
+					<%= link_to "Reddit", redditurl, {:class => "shReddit", :title => "Share on Reddit"} %>
+				</p>
+				
+				<p>
+					You can also use this embed code for your blog or website:<br />
+					<%= text_area_tag "embed_code",image_tag(@animation.aws_url,:alt=>"" + @animation.mode + " made with the NYPL Labs Stereogranimator - view more at " + url_for(:controller=>"gallery",:only_path => false)), {:class => "embedCode", :onClick => "javascript:this.select();"} %>
+				</p>
+
+				<%= form_tag("/send", {:method => "post",:class => "emailShare"}) do %>
+				
+					<%= label_tag :from, "From:" %><br />
+					<%= text_field_tag :from %><br />
+					<%= submit_tag("SEND") %>
+				
+				<% end %>

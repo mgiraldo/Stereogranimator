@@ -32,6 +32,7 @@ em {
 
 a, a:link, a:visited {
   color: $linkcolor;
+  text-decoration: underline;
 }
 
 a:hover {
@@ -168,14 +169,14 @@ header {
   h1.create {
     width: 126px;
     height: 31px;
-    margin: 30px 10px 15px 10px;
+    margin: 29px 10px 15px 10px;
     padding: 0;
     background: $sprites -255px -351px no-repeat;
   }
   h1.gallery {
     width: 127px;
     height: 31px;
-    margin: 30px 10px 15px 10px;
+    margin: 29px 10px 15px 10px;
     padding: 0;
     background: $sprites -498px -351px no-repeat;
   }
@@ -183,7 +184,7 @@ header {
     width: 207px;
     height: 31px;
     margin: 0;
-    margin-top: 30px;
+    margin-top: 29px;
     margin-bottom: 20px;
     padding: 0;
     background: $sprites -38px -351px no-repeat;
@@ -191,7 +192,7 @@ header {
   h1.latest {
     width: 100px;
     height: 31px;
-    margin-top: 30px;
+    margin-top: 29px;
     margin-bottom: 20px;
     padding: 0;
     background: $sprites -391px -351px no-repeat;
@@ -199,6 +200,38 @@ header {
   .meta {
     .create {
       margin: 30px 0;
+    }
+    .emailShare {
+      display: none;
+    }
+    .embedCode {
+      width: 380px;
+      height: 90px;
+      font: 16px $prefont;
+      color: $nyplgray;
+    }
+    .shTwitter, .shFacebook, .shTumblr, .shPlus, .shReddit {
+      display: inline-block;
+      text-indent: -9999px;
+      margin-right: 5px;
+      width: 16px;
+      height: 16px;
+      background: $sprites no-repeat;
+    }
+    .shTwitter {
+      background-position: -38px -278px;
+    }
+    .shFacebook {
+      background-position: -55px -278px;
+    }
+    .shTumblr {
+      background-position: -72px -278px;
+    }
+    .shPlus {
+      background-position: -89px -278px;
+    }
+    .shReddit {
+      background-position: -106px -278px;
     }
   }
   .startCreating {

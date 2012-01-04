@@ -14,7 +14,7 @@
 			
 			<div class="create"><%= link_to "CREATE ANOTHER ONE!", "/choose", :class => 'genericButtonLink' %></div>
 
-<%= render "shared/share", :locals => {:animation => @animation} %>
+<%= render "shared/share", :locals => {:animation => @animation, :type => "created"} %>
 			
 		</div>
 		<div class="clear"></div>
