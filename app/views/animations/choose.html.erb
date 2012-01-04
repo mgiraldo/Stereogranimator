@@ -1,3 +1,11 @@
+<% content_for :dynamic_js do %>
+<script>
+// remote image array
+<% @all.entries.each_with_index do |image,i| %>image_array[<%=i%>] = "<%= image %>";<% end %>
+
+</script>
+
+<% end %>
 		<div class="createTop container_12">
 			<h1 class="create grid_12"><span class="visuallyhidden">CREATE</span></h1>
 			<div id="nav" class="grid_12">
@@ -7,14 +15,14 @@
 		<div id="stereoList" class="grid_12">
 <% @images.entries.each_with_index do |image,i| %>
 			<div class="stereograph grid_4 <%= 'alpha' if i.modulo(3) == 0 %><%= 'omega' if i.modulo(3) == 2 %>">
-				<%= link_to image_tag(image['src']), "/convert/#{image['tag']}" %>
+				<%= link_to image_tag(image['src'], {:id => "img_#{i}"}), "/convert/#{image['tag']}", {:id => "link_#{i}"} %>
 			</div>
 	<% if i.modulo(3) == 2 %>
 			<div class="clear"></div>
 	<% end %>
 <% end %>
 			<div class="centered">
-				<%= link_to "CHOOSE ANOTHER PHOTO", "/choose", :class => 'genericButtonLink' %>
+				<%= link_to "CHOOSE ANOTHER PHOTO", "javascript:;", {:class => 'genericButtonLink', :onclick => "javascript:refreshImages();" } %>
 			</div>
 		</div>
 		<div class="clear"></div>

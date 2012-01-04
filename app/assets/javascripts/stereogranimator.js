@@ -1,3 +1,5 @@
+var image_array = [];
+
 var canvas;
 var stage;
 var bmp;
@@ -1102,6 +1104,22 @@ function generate() {
 		  }
 		}
 	});
+}
+
+function refreshImages() {
+	if (image_array.length>0) {
+		var r = image_array.sort(function(){ 
+			return Math.round(Math.random())-0.5
+		}).slice(0,9)
+		var i, l = r.length;
+		var url, href;
+		for (i=0;i<l;++i) {
+			url = "http://images.nypl.org/index.php?id="+r[i]+"&t=r";
+			href = "/convert/" + r[i];
+			$("#link_" + i).attr("href",href);
+			$("#img_" + i).attr("src",url);
+		}
+	}
 }
 
 function handleImageLoad(e) {

@@ -5,7 +5,7 @@ Stereo::Application.routes.draw do
 
   resources :animations
   
-  match 'about', :to => 'about#index', :as => "about"
+  match 'about', :to => 'about#what', :as => "about"
   match 'what', :to => 'about#what', :as => "about_what"
   match 'gallery', :to => 'gallery#index', :as => "gallery"
   match 'gallery/:type', :to => 'gallery#index', :as => "gallery_type"
