@@ -8,11 +8,12 @@
 
 # encoded stuff to use in the share buttons
 
-url = url_for(:controller=>"gallery",:action=>"view",:id=>@animation.id,:only_path => false)
-tweet = @type == "created" ? "I just created this #{@animation.mode} using the Stereogranimator by @nypl_labs" : "Check out this #{@animation.mode} I found in the Stereogranimator by @nypl_labs"
+aws = CGI.escape(@animation.aws_url)
+url = CGI.escape(url_for(:controller=>"gallery",:action=>"view",:id=>@animation.id,:only_path => false))
+tweet = @type == "created" ? CGI.escape("I just created this #{@animation.mode} using the Stereogranimator by @nypl_labs") : CGI.escape("Check out this #{@animation.mode} I found in the Stereogranimator by @nypl_labs")
 twitterurl = "https://twitter.com/share?url=#{url}&text=#{tweet}"
 facebookurl = "http://www.facebook.com/sharer.php?u=#{url}&t=#{tweet}"
-tumblrurl = "http://www.tumblr.com/share/photo?source=#{@animation.aws_url}&caption=#{tweet}&clickthru=#{url}"
+tumblrurl = "http://www.tumblr.com/share/photo?source=#{aws}&caption=#{tweet}&clickthru=#{url}"
 googleurl = "https://m.google.com/app/plus/x/?v=compose&content=#{tweet}%20#{url}"
 redditurl = "http://www.reddit.com/submit?url=#{url}"
 
