@@ -1,7 +1,7 @@
 <% content_for :dynamic_js do %>
 <script>
 // remote image array
-<% @all.entries.each_with_index do |image,i| %>image_array[<%=i%>] = "<%= image %>";<% end %>
+image_array.push('<%=@images["all"].join("','")%>');
 
 </script>
 
@@ -13,7 +13,7 @@
 			</div>
 		</div>
 		<div id="stereoList" class="grid_12">
-<% @images.entries.each_with_index do |image,i| %>
+<% @images["subset"].entries.each_with_index do |image,i| %>
 			<div class="stereograph grid_4 <%= 'alpha' if i.modulo(3) == 0 %><%= 'omega' if i.modulo(3) == 2 %>">
 				<%= link_to image_tag(image['src'], {:id => "img_#{i}"}), "/convert/#{image['tag']}", {:id => "link_#{i}"} %>
 			</div>
@@ -22,7 +22,7 @@
 	<% end %>
 <% end %>
 			<div class="centered">
-				<%= link_to "CHOOSE ANOTHER PHOTO", "javascript:;", {:class => 'genericButtonLink', :onclick => "javascript:refreshImages();" } %>
+				<%= link_to "REFRESH PHOTO LIST", "javascript:;", {:class => 'genericButtonLink', :onclick => "javascript:refreshImages();" } %>
 			</div>
 		</div>
 		<div class="clear"></div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111217074302) do
+ActiveRecord::Schema.define(:version => 20120105223811) do
 
   create_table "animations", :force => true do |t|
     t.string   "creator"
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(:version => 20111217074302) do
     t.datetime "updated_at"
     t.integer  "delay"
     t.string   "mode"
+    t.integer  "views",      :default => 0
   end
 
 end

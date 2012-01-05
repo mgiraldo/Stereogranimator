@@ -19,6 +19,8 @@ Stereo::Application.routes.draw do
   match 'getimagedata/:digitalid', :to => 'animations#getimagedata', :as => "getimagedata"
   match 'getimagedata/', :to => 'animations#getimagedata', :as => "getimagedata_plain"
 
+  match "/animations/createJson/:x1/:y1/:x2/:y2/:width/:height/:delay/:digitalid/:mode/:creator", :to => 'animations#createJson', :as => "animation_creator"
+  
   match "/animations/createJson/*path" => "animations#createJson"
 
   root :to => 'about#index'

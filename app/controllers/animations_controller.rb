@@ -25,25 +25,7 @@ class AnimationsController < ApplicationController
   
   # GET /choose/nyplid
   def choose
-    # TODO: request random list
-    # TODO: consider error cases (feed not available)
-    total_images = 43088 # as of 27/12/2011
-    count = 120 # images to retrieve
-    range = total_images - count
-    first = rand(range)
-    @feed = Feedzirra::Feed.fetch_and_parse("http://digitalgallery.nypl.org/feeds/dev/atom/?word=stereog*&imgs=#{count}&num=#{first}")
-    @all = Array.new
-    @feed.entries.each do |e|
-      # images are id'd as tag:digitalgallery.nypl.org,2006:/nypldigital/id?G89F339_010F
-      full_id = e.id
-      tag = full_id.split('?')[1]
-      @all.push(tag)
-    end
-    randomsubset = @all.sort_by{rand}[0..8]
-    @images = Array.new(9)
-    randomsubset.each_with_index do |image,i|
-      @images[i] = {'tag' => image, 'src' => "http://images.nypl.org/index.php?id=#{image}&t=r"}
-    end
+    @images = Animation.randomSet()
     respond_to do |format|
       format.html
     end
@@ -119,76 +101,20 @@ class AnimationsController < ApplicationController
     
     # get parameters from url
     
-    arr = params[:path].split('/')
     @animation = Animation.new()
-    @animation.x1 = arr[0]
-    @animation.y1 = arr[1]
-    @animation.x2 = arr[2]
-    @animation.y2 = arr[3]
-    @animation.width = arr[4]
-    @animation.height = arr[5]
-    @animation.delay = arr[6].to_i
-    @animation.digitalid = arr[7]
-    @animation.mode = arr[8]
-    @animation.creator = arr[9]
     
-    # do some image magick
-    # first get each frame
-    im = Magick::Image.read(@animation.url).first
+    @animation.x1 = params[:x1]
+    @animation.y1 = params[:y1]
+    @animation.x2 = params[:x2]
+    @animation.y2 = params[:y2]
+    @animation.width = params[:width]
+    @animation.height = params[:height]
+    @animation.delay = params[:delay].to_i
+    @animation.digitalid = params[:digitalid]
+    @animation.mode = params[:mode]
+    @animation.creator = params[:creator]
       
-    # TODO: proper crop of thumbnails (?)
-    fr1 = im.crop(@animation.x1,@animation.y1,@animation.width,@animation.height,true)
-    fr2 = im.crop(@animation.x2,@animation.y2,@animation.width,@animation.height,true)
-    
-    # future filename
-    unique = Digest::SHA1.hexdigest('nyplsalt' + Time.now.to_s)
-    
-    if @animation.mode == "GIF"
-      # ANIMATED GIF!
-      @animation.filename = unique + ".gif"
-      
-      final = Magick::ImageList.new
-      final << fr1
-      final << fr2
-      final.ticks_per_second = 1000
-      final.delay = @animation.delay
-      final.iterations = 0
-      
-      fr3 = fr1.thumbnail(140,140)
-      fr4 = fr2.thumbnail(140,140)
-      thumb = Magick::ImageList.new
-      thumb << fr3
-      thumb << fr4
-      thumb.ticks_per_second = 1000
-      thumb.delay = @animation.delay
-      thumb.iterations = 0
-    else
-      # ANAGLYPH!
-      @animation.filename = unique + ".jpg"
-      
-      redlayer = Magick::Image.new(@animation.width,@animation.height){self.background_color = "#f00"}
-      cyanlayer = Magick::Image.new(@animation.width,@animation.height){self.background_color = "#0ff"}
-      
-      fr1 = redlayer.composite(fr1, 0, 0, Magick::ScreenCompositeOp)
-      fr2 = cyanlayer.composite(fr2, 0, 0, Magick::ScreenCompositeOp)
-      final = fr1.composite(fr2, 0, 0, Magick::MultiplyCompositeOp)
-
-      thumb = final.thumbnail(140,140)
-    end
-    
-    # gotta packet the file
-    final.write("#{Rails.root}/tmp/#{@animation.filename}") { self.quality = 100 }
-    # and the thumb
-    thumbname = "t_" + @animation.filename
-    thumb.write("#{Rails.root}/tmp/#{thumbname}") { self.quality = 100 }
-    
-    # upload to Amazon S3
-    s3 = AWS::S3.new
-    bucket = s3.buckets['stereogranimator']
-    obj = bucket.objects[@animation.filename]
-    obj.write(:file => "#{Rails.root}/tmp/#{@animation.filename}", :acl => :public_read, :metadata => { 'photo_from' => 'New York Public Library' })
-    obj = bucket.objects[thumbname]
-    obj.write(:file => "#{Rails.root}/tmp/#{thumbname}", :acl => :public_read, :metadata => { 'photo_from' => 'New York Public Library' })
+    @animation.createImage()
     
     respond_to do |format|
       if @animation.save
@@ -223,12 +149,14 @@ class AnimationsController < ApplicationController
     @animation = Animation.find(params[:id])
     
     # delete from Amazon S3
-    s3 = AWS::S3.new
-    bucket = s3.buckets['stereogranimator']
-    obj = bucket.objects[@animation.filename]
-    obj.delete()
-    obj = bucket.objects["t_" + @animation.filename]
-    obj.delete()
+    if @animation.filename != nil && @animation.filename != ""
+      s3 = AWS::S3.new
+      bucket = s3.buckets['stereogranimator']
+      obj = bucket.objects[@animation.filename]
+      obj.delete()
+      obj = bucket.objects["t_" + @animation.filename]
+      obj.delete()
+    end
     
     @animation.destroy
 

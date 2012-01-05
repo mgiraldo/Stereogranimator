@@ -20,6 +20,7 @@ class GalleryController < ApplicationController
   # GET /view/1.json
   def view
     @animation = Animation.find(params[:id])
+    @animation.increaseViews
 
     respond_to do |format|
       format.html # view.html.erb

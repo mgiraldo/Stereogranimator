@@ -4,7 +4,10 @@ require File.expand_path('../application', __FILE__)
 # Initialize the rails application
 Stereo::Application.initialize!
 
+Rails.logger = Logger.new(STDOUT)
+Rails.logger.level = 0
 =begin
+# when I grow up I want to be able to send email from this app
 config.action_mailer.delivery_method = :smtp
 config.action_mailer.raise_delivery_errors = true
 

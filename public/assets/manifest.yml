@@ -1,9 +1,13 @@
 --- 
 sprites.png: sprites-50133f19c2b3ec92e5e9aacaa5245a18.png
+diagram-home.png: diagram-home-93166f0c7beede4d8d6035b0550bcd0f.png
+sample-gif.gif: sample-gif-b8944a758103106bdcc5250985c58cc5.gif
 bodybackground.png: bodybackground-7f8d4b645b0ee610b5197d63ebe6eb10.png
 background.png: background-44b997dcb8969b003f7ce4fccd1b37cd.png
 12_col.gif: 12_col-3c19e65b065c30d5476d694c62013d18.gif
 diagram-eyes.png: diagram-eyes-d148da4af49f03031a78e8b4772780a7.png
 rails.png: rails-e4b51606cd77fda2615e7439907bfc92.png
-application.css: application-4a94ce5fc7ef683778b5b44ad9cdcfec.css
+application.css: application-0c81bf004f3c2ed9b7c22f497adcfbe1.css
+sample-stereo.jpeg: sample-stereo-ea66af94e8b9931e7c24e62fc10a2be2.jpeg
 application.js: application-008dd32e75d50134865ae02c7893515e.js
+sample-anaglyph.jpeg: sample-anaglyph-ab2a4969a3c1f4db1e7f1d21e5e32196.jpeg
