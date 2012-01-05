@@ -1,6 +1,6 @@
 class Animation < ActiveRecord::Base
   def increaseViews
-    self.views = self.views + 1
+    self.views = self.views.to_i + 1
     self.save
   end
   def self.randomSet
