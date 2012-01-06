@@ -3,11 +3,13 @@
 			<div class="clear"></div>
 			<div class="detail grid_5">
 				<%= image_tag(@animation.aws_url) %>
+				<div class="stats">
+					This is an <%= @animation.mode == "GIF" ? "Animated GIF" : "Anaglyph" %> (<%= link_to "what is that?", :controller=>"about", :action=>"what" %>)<br />
+					Created <%= time_ago_in_words(@animation.created_at) %> ago<br />
+					<%= pluralize(@animation.views, "view") %>
+				</div>
 			</div>
 			<div class="meta grid_5">
-				<p>This is an <%= @animation.mode == "GIF" ? "Animated GIF" : "Anaglyph" %> (<%= link_to "what is that?", :controller=>"about", :action=>"what" %>)</p>
-				
-				<p>Created <%= time_ago_in_words(@animation.created_at) %> ago</p>
 				
 <%= render "shared/share", :locals => {:animation => @animation, :type => "viewed"} %>
 

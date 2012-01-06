@@ -21,10 +21,10 @@ ActiveRecord::Schema.define(:version => 20120105223811) do
     t.integer  "y1"
     t.integer  "x2"
     t.integer  "y2"
+    t.integer  "delay"
     t.string   "filename"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "delay"
     t.string   "mode"
     t.integer  "views",      :default => 0
   end
