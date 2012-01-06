@@ -13,9 +13,11 @@ image_array.push('<%=@images["all"].join("','")%>');
 			</div>
 		</div>
 		<div id="stereoList" class="grid_12">
+<% if @images.length > 0 %>
 <% @images["subset"].entries.each_with_index do |image,i| %>
 			<div class="stereograph grid_4 <%= 'alpha' if i.modulo(3) == 0 %><%= 'omega' if i.modulo(3) == 2 %>">
 				<%= link_to image_tag(image['src'], {:id => "img_#{i}"}), "/convert/#{image['tag']}", {:id => "link_#{i}"} %>
+				<div class="over" onclick="window.location.href='<%="/convert/#{image['tag']}"%>'"><span>CHOOSE THIS ONE</span></div>
 			</div>
 	<% if i.modulo(3) == 2 %>
 			<div class="clear"></div>
@@ -24,5 +26,11 @@ image_array.push('<%=@images["all"].join("','")%>');
 			<div class="centered">
 				<%= link_to "REFRESH PHOTO LIST", "javascript:;", {:class => 'genericButtonLink', :onclick => "javascript:refreshImages();" } %>
 			</div>
+<% else %>
+			<p class="centered">There was a problem connecting to the Digital Gallery. Please try again.</p>
+			<div class="centered">
+				<%= link_to "RETRY", "/choose", {:class => 'genericButtonLink'} %>
+			</div>
+<% end %>
 		</div>
 		<div class="clear"></div>

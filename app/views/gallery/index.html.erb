@@ -5,11 +5,7 @@
 			</div>
 			<div id="galleryList" class="container_12">
 <% @images.each_with_index do |image,i| %>
-				<div class="thumb">
-					<div class="pad">
-						<%= link_to image_tag(image.aws_thumb_url), "/view/#{image['id']}" %>
-					</div>
-				</div>
+<%= render :partial => "shared/thumb", :locals => {:image => image} %>
 	<% if i.modulo(6) == 5 %>
 				<div class="clear"></div>
 	<% end %>

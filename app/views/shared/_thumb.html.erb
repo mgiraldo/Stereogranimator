@@ -1,0 +1,6 @@
+				<div class="thumb">
+					<div class="pad">
+						<%= link_to image_tag(image.aws_thumb_url), "/view/#{image.id}" %>
+						<div class="over" onclick="window.location.href='<%=url_for(:controller => 'gallery', :action => 'view', :id => image.id)%>'"><span>VIEW FULL SIZE</span></div>
+					</div>
+				</div>

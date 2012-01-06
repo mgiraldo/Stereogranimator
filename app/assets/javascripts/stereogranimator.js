@@ -845,7 +845,7 @@ function drawBackground() {
 	g.beginFill(BACKALPHA);
 	g.drawRect(0,0,stageWidth,sq1y);
 	g.drawRect(0,sq1y,sq1x,vsize);
-	g.drawRect(sq1x+hsize,sq1y,(vertx-sq1x-hsize)*2,vsize);
+	//g.drawRect(sq1x+hsize,sq1y,(vertx-sq1x-hsize)*2,vsize);
 	g.drawRect(sq2x+hsize,sq1y,stageWidth-(sq2x+hsize),vsize);
 	g.drawRect(0,sq1y+vsize,stageWidth,stageHeight-vsize-sq1y);
 }
@@ -914,6 +914,9 @@ function drawSquare(square,x,y) {
 		g.moveTo(x+CROSSSIZE+hsize/2,y+CROSSSIZE+vsize/2-(CROSSSIZE/2)).lineTo(x+CROSSSIZE+hsize/2,y+CROSSSIZE+vsize/2).lineTo(x+CROSSSIZE+hsize/2-(CROSSSIZE/2),y+CROSSSIZE+vsize/2);
 		g.moveTo(x+CROSSSIZE+hsize/2,y-CROSSSIZE+vsize/2+(CROSSSIZE/2)).lineTo(x+CROSSSIZE+hsize/2,y-CROSSSIZE+vsize/2).lineTo(x+CROSSSIZE+hsize/2-(CROSSSIZE/2),y-CROSSSIZE+vsize/2);
 		g.moveTo(x-CROSSSIZE+hsize/2,y+CROSSSIZE+vsize/2-(CROSSSIZE/2)).lineTo(x-CROSSSIZE+hsize/2,y+CROSSSIZE+vsize/2).lineTo(x-CROSSSIZE+hsize/2+(CROSSSIZE/2),y+CROSSSIZE+vsize/2);
+	} else {
+		g.beginStroke(COLOR);
+		g.moveTo(x-CROSSSIZE+hsize/2,y-CROSSSIZE+vsize/2).lineTo(x+CROSSSIZE+hsize/2,y+CROSSSIZE+vsize/2).moveTo(x+CROSSSIZE+hsize/2,y-CROSSSIZE+vsize/2).lineTo(x-CROSSSIZE+hsize/2,y+CROSSSIZE+vsize/2);
 	}
 }
 

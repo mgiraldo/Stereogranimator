@@ -24,11 +24,7 @@
 				<h1 class="latest grid_3"><span class="visuallyhidden">LATEST</span></h1>
 				<div class="clear"></div>
 <% @images.each_with_index do |image,i| %>
-				<div class="thumb">
-					<div class="pad">
-						<%= link_to image_tag(image.aws_thumb_url), "/view/#{image['id']}" %>
-					</div>
-				</div>
+<%= render :partial => "shared/thumb", :locals => {:image => image} %>
 <% end %>
 				<div class="clear"></div>
 				<div class="more centered">
