@@ -1,12 +1,18 @@
 <% content_for :dynamic_js do %>
 <script>
-// remote image array
+
 image_array.push('<%=@images["all"].join("','")%>');
+
+if (!Modernizr.canvas) {
+	console.log("<canvas> support NOT present");
+	window.onload = disableCanvas;
+}
 
 </script>
 
 <% end %>
-		<div class="createTop container_12">
+	<div id="yescanvas" class="container_12">
+		<div class="createTop">
 			<h1 class="create grid_12"><span class="visuallyhidden">CREATE</span></h1>
 			<div id="nav" class="grid_12">
 				Step 1: CHOOSE A STEREOGRAPH &gt; <span class="dim">Step 2: CONVERT TO GIF/ANAGLYPH &gt; Step 3: SEND</span>
@@ -34,3 +40,5 @@ image_array.push('<%=@images["all"].join("','")%>');
 <% end %>
 		</div>
 		<div class="clear"></div>
+	</div>
+<%= render :partial => "shared/nocanvas" %>

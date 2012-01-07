@@ -1146,3 +1146,9 @@ function handleImageLoad(e) {
 function handleImageError(e) {
     console.log("Error Loading Image : " + e.target.src);
 }
+
+function disableCanvas() {
+	console.log("hide chooser");
+	$("#yescanvas").hide();
+	$("#nocanvas").show();
+}

@@ -93,7 +93,7 @@ a:hover {
   }
 }
 
-header {
+#header {
   position: relative;
   height: 99px;
   margin: 0 10px;
@@ -149,7 +149,7 @@ header {
 }
 
 #mainContent {
-  background: $backimage no-repeat;
+  background: $backimage repeat-x;
   .thumb {
     float: left;
     width: 150px;
@@ -342,6 +342,7 @@ header {
     #preview {
       width: $previewwidth;
       height: $previewheight;
+      margin-top: 10px;
       #previewAnaglyph {
         text-align: center;
       }
@@ -372,7 +373,8 @@ header {
         text-align: center;
       }
       #toggleAna {
-        height: 45px;
+        height: 35px;
+        padding-top: 10px;
       }
       .active {
         color: $backcolor;
@@ -407,10 +409,30 @@ header {
   }
 }
 
-footer {
-  background: $nyplgray;
+#nocanvas {
+  display: none;
+  .message {
+    margin: 20px;
+    h2 {
+      font-size: 30px;
+      margin-bottom: 30px;
+    }
+    p {
+      font-size: 18px;
+    }
+  }
+  .buttons {
+    margin: 20px;
+    a {
+      margin: 0 10px;
+    }
+  }
+}
+
+#footer {
+  background: $footcolor;
   padding-top: 10px;
-  margin-top: 30px;
+  margin-top: 100px;
   a, a:link, a:visited {
     color: $maincolor;
   }

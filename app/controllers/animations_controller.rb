@@ -27,7 +27,7 @@ class AnimationsController < ApplicationController
   def choose
     @images = Animation.randomSet()
     respond_to do |format|
-      format.html
+      format.html { render :layout => "new_rich"}
     end
   end
   
