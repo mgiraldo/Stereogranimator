@@ -2,3 +2,11 @@
 //= require jquery_ujs
 //= require modernizr.custom.51936
 //= require stereogranimator
+//= require ./src/easeljs/display/Bitmap
+//= require ./src/easeljs/display/Graphics
+//= require ./src/easeljs/display/Shape
+//= require ./src/easeljs/display/Stage
+//= require ./src/easeljs/utils/Ticker
+//= require ./src/easeljs/geom/Point
+//= require ./src/easeljs/ui/Touch
+//= require ./jquery.getimagedata.min
