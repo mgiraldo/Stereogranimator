@@ -1,11 +1,5 @@
 <% content_for :dynamic_js do %>
 
-<%= javascript_include_tag "easel" %>
-<%= javascript_include_tag "./src/easeljs/utils/UID" %>
-<%= javascript_include_tag "./src/easeljs/geom/Matrix2D" %>
-<%= javascript_include_tag "./src/easeljs/events/MouseEvent" %>
-<%= javascript_include_tag "./src/easeljs/display/DisplayObject" %>
-<%= javascript_include_tag "./src/easeljs/display/Container" %>
 <script>
 // establish the photo to be used
 index = "<%= params[:did] %>";
