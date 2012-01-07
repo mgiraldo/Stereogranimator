@@ -2,6 +2,12 @@
 //= require jquery_ujs
 //= require modernizr.custom.51936
 //= require stereogranimator
+//= require easel
+//= require ./src/easeljs/utils/UID
+//= require ./src/easeljs/geom/Matrix2D
+//= require ./src/easeljs/events/MouseEvent
+//= require ./src/easeljs/display/DisplayObject
+//= require ./src/easeljs/display/Container
 //= require ./src/easeljs/display/Bitmap
 //= require ./src/easeljs/display/Graphics
 //= require ./src/easeljs/display/Shape
