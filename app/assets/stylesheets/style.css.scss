@@ -161,6 +161,7 @@ a:hover {
       position: relative;
       .over {
         position: absolute;
+        display: block;
         background: $sprites -459px -103px no-repeat;
         width: 140px;
         height: 140px;
@@ -169,12 +170,16 @@ a:hover {
         left: 5px;
         cursor: pointer;
         color: $backcolor;
-        display: none;
         line-height: 140px;
+        opacity: 0;
       }
       &:hover {
         .over {
-          display: block;
+          transition: all 0.4s ease 0s;
+          -moz-transition: all 0.4s ease 0s; /* Firefox 4 */
+          -webkit-transition: all 0.4s ease 0s; /* Safari and Chrome */
+          -o-transition: all 0.4s ease 0s; /* Opera */
+          opacity: 1;
         }
       }
     }
@@ -303,6 +308,7 @@ a:hover {
     margin-bottom: 30px;
     .over {
       position: absolute;
+      display: block;
       background: $choosebackground;
       text-align: center;
       top: 0;
@@ -311,12 +317,16 @@ a:hover {
       bottom: 0;
       cursor: pointer;
       color: $maincolor;
-      display: none;
       line-height: 150px;
+      opacity: 0;
     }
     &:hover {
       .over {
-        display: block;
+        transition: all 0.4s ease 0s;
+        -moz-transition: all 0.4s ease 0s; /* Firefox 4 */
+        -webkit-transition: all 0.4s ease 0s; /* Safari and Chrome */
+        -o-transition: all 0.4s ease 0s; /* Opera */
+        opacity: 1;
       }
     }
   }
