@@ -1,5 +1,21 @@
 <% content_for :dynamic_js do %>
+<!-- non compiled JS (heroku limitation) -->
+<script src="/assets/easel.js?body=1" type="text/javascript"></script>
+<script src="/assets/src/easeljs/utils/UID.js?body=1" type="text/javascript"></script>
+<script src="/assets/src/easeljs/geom/Matrix2D.js?body=1" type="text/javascript"></script>
+<script src="/assets/src/easeljs/events/MouseEvent.js?body=1" type="text/javascript"></script>
+<script src="/assets/src/easeljs/display/DisplayObject.js?body=1" type="text/javascript"></script>
+<script src="/assets/src/easeljs/display/Container.js?body=1" type="text/javascript"></script>
 
+<script src="/assets/src/easeljs/display/Bitmap.js?body=1" type="text/javascript"></script>
+<script src="/assets/src/easeljs/display/Graphics.js?body=1" type="text/javascript"></script>
+<script src="/assets/src/easeljs/display/Shape.js?body=1" type="text/javascript"></script>
+<script src="/assets/src/easeljs/display/Stage.js?body=1" type="text/javascript"></script>
+<script src="/assets/src/easeljs/utils/Ticker.js?body=1" type="text/javascript"></script>
+<script src="/assets/src/easeljs/geom/Point.js?body=1" type="text/javascript"></script>
+<script src="/assets/src/easeljs/ui/Touch.js?body=1" type="text/javascript"></script>
+<script src="/assets/jquery.getimagedata.min.js?body=1" type="text/javascript"></script>
+<!-- end non-compiled -->
 <script>
 // establish the photo to be used
 index = "<%= params[:did] %>";
