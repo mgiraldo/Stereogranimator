@@ -23,7 +23,7 @@ if (!Modernizr.canvas) {
 <% @images["subset"].entries.each_with_index do |image,i| %>
 			<div class="stereograph grid_4 <%= 'alpha' if i.modulo(3) == 0 %><%= 'omega' if i.modulo(3) == 2 %>">
 <!--[if !IE]> -->
-				<%= link_to "CHOOSE THIS ONE", "/convert/#{image['tag']}", {:class=>'over'} %>
+				<%= link_to "CHOOSE THIS ONE", "/convert/#{image['tag']}", {:id => "linko_#{i}"}), :class=>'over'} %>
 <!-- <![endif]-->
 				<%= link_to image_tag(image['src'], {:id => "img_#{i}"}), "/convert/#{image['tag']}", {:class=>'base',:id => "link_#{i}"} %>
 			</div>

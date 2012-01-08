@@ -1120,6 +1120,7 @@ function refreshImages() {
 			url = "http://images.nypl.org/index.php?id="+r[i]+"&t=r";
 			href = "/convert/" + r[i];
 			$("#link_" + i).attr("href",href);
+			$("#linko_" + i).attr("href",href);
 			$("#img_" + i).attr("src",url);
 		}
 	}
