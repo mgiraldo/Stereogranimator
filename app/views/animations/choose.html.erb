@@ -3,11 +3,6 @@
 
 image_array.push('<%=@images["all"].join("','")%>');
 
-if (!Modernizr.canvas) {
-	console.log("<canvas> support NOT present");
-	window.onload = disableCanvas;
-}
-
 </script>
 
 <% end %>
