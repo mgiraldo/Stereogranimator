@@ -415,12 +415,19 @@ a:hover {
   .nextStep {
     position: absolute;
     top: 200px;
-    right: -50px;
+    right: -5px;
   }
+}
+
+#yescanvas {
+  display: none;
 }
 
 #nocanvas {
   display: none;
+  width: 1200px;
+  margin: 0 auto;
+  border-bottom: $basicborder;
   .message {
     margin: 20px;
     h2 {

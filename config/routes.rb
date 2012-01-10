@@ -16,8 +16,9 @@ Stereo::Application.routes.draw do
   match 'create', :to => 'animations#choose', :as => "create"
   match 'convert/:did', :to => 'animations#new', :as => "convert"
   match 'share/:id', :to => 'animations#share', :as => "share"
-  match 'getimagedata/:digitalid', :to => 'animations#getimagedata', :as => "getimagedata"
-  match 'getimagedata/', :to => 'animations#getimagedata', :as => "getimagedata_plain"
+  match 'getimagedata/:digitalid', :to => 'images#getimagedata', :as => "getimagedata"
+  match 'getimagedata/', :to => 'images#getimagedata', :as => "getimagedata_plain"
+  match 'getpixels/:digitalid', :to => 'images#getpixels', :as => "getpixels"
 
   match "/animations/createJson/:x1/:y1/:x2/:y2/:width/:height/:delay/:digitalid/:mode/:creator", :to => 'animations#createJson', :as => "animation_creator"
   

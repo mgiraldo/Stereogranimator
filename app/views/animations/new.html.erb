@@ -14,8 +14,9 @@
 <%= javascript_include_tag "/assets/src/easeljs/utils/Ticker.js" %>
 <%= javascript_include_tag "/assets/src/easeljs/geom/Point.js" %>
 <%= javascript_include_tag "/assets/src/easeljs/ui/Touch.js" %>
+<%= javascript_include_tag "/assets/swfobject.js" %>
 <!-- end non-compiled -->
-<script>
+<script type="text/javascript">
 // establish the photo to be used
 index = "<%= params[:did] %>";
 sheetsrc = "<%= image_path('sprites.png') %>"
@@ -23,8 +24,11 @@ if (Modernizr.canvas) {
 	console.log("<canvas> support present");
 	window.onload = init;
 } else {
-	console.log("<canvas> support NOT present");
-	window.onload = disableCanvas;
+	console.log("<canvas> support NOT present. fall back to flash");
+	window.onload = function () {
+		disableCanvas();
+		swfobject.embedSWF("<%= asset_path("main.swf") %>", "fallback", "1200", "582", "10", "<%= asset_path("expressInstall.swf") %>", {index:"<%= params[:did] %>",host:"<%= request.protocol + request.host_with_port %>"});
+	}
 }
 </script>
 

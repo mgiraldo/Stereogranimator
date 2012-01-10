@@ -84,7 +84,7 @@ var OFFSET = 0;
 var INSET = 10;
 
 var THICK = 2;
-var COLOR = "#ddd";
+var COLOR = "#ffffff";
 var OVERCOLOR = "#f00";
 var FILL = "#000";
 var FILLALPHA = "rgba(0,0,0,0.1)";
@@ -102,6 +102,8 @@ var isiPad = /iPad/i.test(ua) || /iPod/i.test(ua) || /iPhone/i.test(ua);
 var isdown = false;
 
 function init() {
+	$("#yescanvas").show();
+	$("#nocanvas").hide();
 	//find canvas and load images, wait for last image to load
 	canvas = document.getElementById("testCanvas");
 	processcanvas = document.getElementById("processCanvas");
@@ -277,7 +279,6 @@ function addInteractivity() {
 		};
 		sq1.onMouseOver = function() {
 			target.over = true;
-			corner_sprites.mysquare = target;
 			update = true;
 		};
 		sq1.onMouseOut = function() {
@@ -317,7 +318,6 @@ function addInteractivity() {
 		};
 		sq2.onMouseOver = function() {
 			target.over = true;
-			corner_sprites.mysquare = target;
 			update = true;
 		};
 		sq2.onMouseOut = function() {
@@ -1087,6 +1087,32 @@ function generate() {
 	document.getElementById("btnNext").onclick = {};
 	$.ajax({
 		url: "/animations/createJson/"+(sq1x-OFFSET)+"/"+(sq1y)+"/"+(sq2x-OFFSET)+"/"+(sq2y)+"/"+hsize+"/"+vsize+"/"+speed+"/"+index+"/"+mode+"/mga.json",
+		dataType: 'json',
+		data: null,
+		success: function(data) {
+			if (data.redirect) {
+				window.location.href = data.redirect;
+			} else {
+				console.log("cannot redirect: " + data);
+			}
+		},
+		statusCode: {
+		  404: function() {
+			alert('Photo not found error (404)');
+			document.getElementById("btnNext").disabled = false;
+		  },
+		  500: function() {
+				alert('Internal server error (500)');
+				document.getElementById("btnNext").disabled = false;
+		  }
+		}
+	});
+}
+
+function generateFromFlash(_sq1x,_sq1y,_sq2x,_sq2y,_hsize,_vsize,_speed,_index,_mode) {
+	console.log("generating...");
+	$.ajax({
+		url: "/animations/createJson/"+(_sq1x)+"/"+(_sq1y)+"/"+(_sq2x)+"/"+(_sq2y)+"/"+_hsize+"/"+_vsize+"/"+_speed+"/"+_index+"/"+_mode+"/mga.json",
 		dataType: 'json',
 		data: null,
 		success: function(data) {
