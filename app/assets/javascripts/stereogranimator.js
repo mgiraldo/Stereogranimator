@@ -1175,7 +1175,6 @@ function handleImageError(e) {
 }
 
 function disableCanvas() {
-	console.log("hide chooser");
 	$("#yescanvas").hide();
 	$("#nocanvas").show();
 }
