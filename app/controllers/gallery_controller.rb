@@ -20,21 +20,22 @@ class GalleryController < ApplicationController
   # GET /view/1.json
   def view
     @animation = Animation.find(params[:id])
-    @animation.increaseViews
-
-    bigurl = @animation.aws_url
-    if @animation.mode == "JPEG"
-      im = Magick::Image.read(bigurl).first
-    else
-      im = Magick::ImageList.new
-      im.read(bigurl)
+    count = true
+    redirect = @animation.aws_url
+    if params[:n]
+      count = false
     end
-
+    if count
+      @animation.increaseViews
+    end
+    if params[:m]=="t"
+      redirect = @animation.aws_thumb_url
+    end
     respond_to do |format|
       format.html # view.html.erb
       format.json { render :json => @animation }
-      format.jpeg { render :text => im.to_blob{self.format = "JPEG"}, :status => 200, :type => 'image/jpeg' }
-      format.gif { render :text => im.to_blob{self.format = "GIF"}, :status => 200, :type => 'image/gif' }
+      format.jpeg { redirect_to redirect }
+      format.gif { redirect_to redirect }
     end
   end
   
