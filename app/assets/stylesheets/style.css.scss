@@ -144,6 +144,9 @@ a:hover {
     li.active {
         background-color: $linkcolor;
         a {color: $maincolor;}
+        &:hover {
+          a {color: $backcolor;}
+        }
     }
   }
 }
@@ -185,10 +188,9 @@ a:hover {
     }
   }
   .createTop {
-    height: 110px;
-  }
-  #nav p {
-    margin: 0;
+    #nav p {
+      margin: 0 0 9px 0;
+    }
   }
   h1.create {
     width: 126px;
