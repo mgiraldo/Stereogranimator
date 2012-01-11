@@ -79,3 +79,6 @@ if (Modernizr.canvas) {
 		</div>
 	</div>
 <%= render :partial => "shared/nocanvas" %>
+	<div class="metadata container_12">
+		<p class="grid_12">Image caption: <%= @metadata["title"] %> <%= link_to "View in Digital Gallery", @metadata["link"] %></p>
+	</div>

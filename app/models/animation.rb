@@ -1,7 +1,23 @@
 class Animation < ActiveRecord::Base
+  after_initialize :updateMetadata
+  before_save :imageAndMetadata
+  def imageAndMetadata
+    updateMetadata()
+    createImage()
+  end
   def increaseViews
     self.views = self.views.to_i + 1
     self.save
+  end
+  def updateMetadata
+    if self.metadata==nil && self.digitalid!=nil
+      start = Time.now
+      logger.debug "Started getting feed #{start}"
+      feed = Feedzirra::Feed.fetch_and_parse("http://digitalgallery.nypl.org/feeds/dev/atom/?word=#{self.digitalid}")
+      logger.debug "Finished parsing feed in #{(Time.now-start)*1000} milliseconds"
+      self.metadata = feed.entries[0].title
+      self.save
+    end
   end
   def self.randomSet
     # TODO: request random list

@@ -1,14 +1,7 @@
 		<div class="container_12">
 			<h1 class="gallery"><span class="visuallyhidden">GALLERY</span></h1>
 			<div class="clear"></div>
-			<div class="detail grid_5">
-				<%= image_tag(@animation.full) %>
-				<div class="stats">
-					This is an <%= @animation.mode == "GIF" ? "Animated GIF" : "Anaglyph" %> (<%= link_to "what is that?", :controller=>"about", :action=>"what" %>)<br />
-					Created <%= time_ago_in_words(@animation.created_at) %> ago<br />
-					<%= pluralize(@animation.views, "view") %>
-				</div>
-			</div>
+<%= render "shared/detail", :locals => {:animation => @animation} %>
 			<div class="meta grid_5">
 				
 <%= render "shared/share", :locals => {:animation => @animation, :type => "viewed"} %>
