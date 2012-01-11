@@ -30,8 +30,9 @@ redditurl = "http://www.reddit.com/submit?url=#{url}"
 				<p>
 <%
 
+embed_img_src = request.protocol + request.host_with_port + "/view/#{@animation.id}" + (@animation.mode=="GIF"?".gif":".jpeg")
 embed_string = @animation.mode + " made with the NYPL Labs Stereogranimator"
-embed_code = image_tag(@animation.aws_url,:alt=>embed_string + " - view more at " + url_for(:controller=>"gallery",:only_path => false))
+embed_code = image_tag(embed_img_src,:alt=>embed_string + " - view more at " + url_for(:controller=>"gallery",:only_path => false))
 embed_code = link_to(embed_code + "<br />" + embed_string,url_for(:controller=>"gallery",:action=>"view",:id=>@animation.id,:only_path => false)) 
 
 %>

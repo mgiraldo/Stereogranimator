@@ -20,12 +20,7 @@ class ImagesController < ApplicationController
   def getpixels
     url = "http://images.nypl.org/index.php?id=#{params[:digitalid]}&t=w"
     im = Magick::Image.read(url).first
-    str = ActiveSupport::Base64.encode64(im.to_blob{self.format = "JPEG"})
-    output = {
-      "width" => im.columns,
-      "height" => im.rows,
-      "data" => "data:image\/jpeg;base64," + str
-    }
+
     respond_to do |format|
       format.jpeg { render :text => im.to_blob{self.format = "JPEG"}, :status => 200, :type => 'image/jpg' }
     end

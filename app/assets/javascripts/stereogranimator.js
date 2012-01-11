@@ -1110,7 +1110,6 @@ function generate() {
 }
 
 function generateFromFlash(_sq1x,_sq1y,_sq2x,_sq2y,_hsize,_vsize,_speed,_index,_mode) {
-	console.log("generating...");
 	$.ajax({
 		url: "/animations/createJson/"+(_sq1x)+"/"+(_sq1y)+"/"+(_sq2x)+"/"+(_sq2y)+"/"+_hsize+"/"+_vsize+"/"+_speed+"/"+_index+"/"+_mode+"/mga.json",
 		dataType: 'json',
