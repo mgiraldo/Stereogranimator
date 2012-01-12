@@ -14,6 +14,7 @@ image_array.push('<%=@images["all"].join("','")%>');
 			</div>
 		</div>
 		<div id="stereoList" class="grid_12">
+			<p>Select an image from these nine or click "REFRESH PHOTO LIST" to get another batch of photos.</p>
 <% if @images.length > 0 %>
 <% @images["subset"].entries.each_with_index do |image,i| %>
 			<div class="stereograph grid_4 <%= 'alpha' if i.modulo(3) == 0 %><%= 'omega' if i.modulo(3) == 2 %>">
