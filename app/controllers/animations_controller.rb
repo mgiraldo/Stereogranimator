@@ -2,7 +2,6 @@ class AnimationsController < ApplicationController
   before_filter :load
   
   def load
-    @animation = Animation.new
   end
   
   # GET /choose/nyplid
@@ -47,14 +46,9 @@ class AnimationsController < ApplicationController
   # GET /animations/new
   # GET /animations/new.json
   def new
-    # want to know how long it takes to load the feed
-    start = Time.now
-    logger.debug "Started getting feed #{start}"
-    @feed = Feedzirra::Feed.fetch_and_parse("http://digitalgallery.nypl.org/feeds/dev/atom/?word=#{params[:did]}")
-    logger.debug "Finished parsing feed in #{(Time.now-start)*1000} milliseconds"
-    # assuming only ONE image returns
-    # image link could be generated better
-    @metadata = {"title" => @feed.entries[0].title, "link" => "http://digitalgallery.nypl.org/nypldigital/id?#{@feed.entries[0].id.split('?')[1]}" }
+    @animation = Animation.new
+    @animation.digitalid = params[:did]
+    @metadata = @animation.getMetadata()
     respond_to do |format|
       format.html { render :layout => "new_rich"} # new.html.erb
       format.json { render :json => @animation }

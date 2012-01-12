@@ -11,13 +11,21 @@ class Animation < ActiveRecord::Base
   end
   def updateMetadata
     if self.metadata==nil && self.digitalid!=nil
-      start = Time.now
-      logger.debug "Started getting feed #{start}"
-      feed = Feedzirra::Feed.fetch_and_parse("http://digitalgallery.nypl.org/feeds/dev/atom/?word=#{self.digitalid}")
-      logger.debug "Finished parsing feed in #{(Time.now-start)*1000} milliseconds"
-      self.metadata = feed.entries[0].title
+      @meta = getMetadata()
+      self.metadata = @meta["title"]
       self.save
     end
+  end
+  def getMetadata
+    start = Time.now
+    logger.debug "Started getting feed #{start}"
+    Feedzirra::Feed.add_common_feed_entry_element("dc:coverage", :as => :date)
+    @feed = Feedzirra::Feed.fetch_and_parse("http://digitalgallery.nypl.org/feeds/dev/atom/?word=#{self.digitalid}&metadata=dc")
+    logger.debug "Finished parsing feed in #{(Time.now-start)*1000} milliseconds"
+    @meta = {"title" => "#{@feed.entries[0].title} (#{@feed.entries[0].date})", "link" => "http://digitalgallery.nypl.org/nypldigital/id?#{@feed.entries[0].id.split('?')[1]}" }
+    # assuming only ONE image returns
+    # image link could be generated better
+    return @meta
   end
   def self.randomSet
     # TODO: request random list

@@ -15,8 +15,9 @@
 					<%= link_to "Get Apple Safari", "http://www.apple.com/safari/download", :class => "genericButtonLink" %>
 				</div>
 			</div>
-			<div class="instructions container_12">
-				<%= link_to image_tag("instructions.png"), "javascript:hideInstructions();", {:onclick=>'hideInstructions();'} %>
+			<div class="instructions">
+				<%= link_to image_tag("instructions.png"), "javascript:toggleInstructions();" %>
 			</div>
+			<%= link_to "SHOW INSTRUCTIONS", "javascript:toggleInstructions();", {:class => "showInstructions"} %>
 		</div>
 	</div>

@@ -101,6 +101,8 @@ var ua = navigator.userAgent;
 var isiPad = /iPad/i.test(ua) || /iPod/i.test(ua) || /iPhone/i.test(ua);
 var isdown = false;
 
+var helpVisible = true;
+
 function init() {
 	$("#yescanvas").show();
 	$("#nocanvas").hide();
@@ -149,6 +151,7 @@ function prepareInterface() {
 	for (i=0;i<8;++i) {
 		crnr = new Shape();
 		crnr.mysquare = (i<4) ? sq1 : sq2;
+		crnr.mode = (i<4) ? "left" : "right";
 		// multiplier for corner position
 		if (i%4==0) {
 			crnr.xfactor = 0;
@@ -258,12 +261,20 @@ function addInteractivity() {
 			sq1.my = sq1y - stage.mouseY;
 			var d = vertx - sq1x;
 			evt.onMouseMove = function(ev) {
-				if (stage.mouseX + target.mx + hsize < vertx) {
-					sq1x = stage.mouseX + target.mx;
-				} else {
-					sq1x = vertx - hsize - 1;
+				sq1x = stage.mouseX + target.mx;
+				if (stage.mouseX + target.mx + hsize > vertx) {
+					sq1x = vertx - hsize;
+				}
+				if (sq1x < 0) {
+					sq1x = 0;
 				}
 				sq1y = stage.mouseY + target.my;
+				if (sq1y < 0) {
+					sq1y = 0;
+				}
+				if (sq1y + vsize > stageHeight) {
+					sq1y = stageHeight - vsize;
+				}
 				// move the other square in a mirror direction
 				d = vertx - sq1x;
 				sq2x = vertx + d - hsize;
@@ -297,12 +308,20 @@ function addInteractivity() {
 			sq2.my = sq2y - stage.mouseY;
 			var d = vertx - sq2x;
 			evt.onMouseMove = function(ev) {
-				if (stage.mouseX + target.mx > vertx) {
-					sq2x = stage.mouseX + target.mx;
-				} else {
-					sq2x = vertx + 1;
+				sq2x = stage.mouseX + target.mx;
+				if (stage.mouseX + target.mx < vertx) {
+					sq2x = vertx;
+				}
+				if (sq2x + hsize > stageWidth) {
+					sq2x = stageWidth - hsize;
 				}
 				sq2y = stage.mouseY + target.my;
+				if (sq2y < 0) {
+					sq2y = 0;
+				}
+				if (sq2y + vsize > stageHeight) {
+					sq2y = stageHeight - vsize;
+				}
 				// move the other square in a mirror direction
 				d = vertx - sq2x;
 				sq1x = vertx + d - hsize;
@@ -340,7 +359,6 @@ function addInteractivity() {
 			target.y1 = (target.mysquare==sq1) ? sq1y : sq2y;
 			target.x2 = target.x1 + hsize;
 			target.y2 = target.y1 + vsize;
-			target.mode = (target.mysquare==sq1) ? "left" : "right";
 			evt.onMouseMove = function(ev) {
 				target.x = stage.mouseX - target.mx;
 				if (target.mode=="right" && target.x-CORNER_OFFSET < vertx) {
@@ -402,7 +420,6 @@ function addInteractivity() {
 			target.y1 = (target.mysquare==sq1) ? sq1y : sq2y;
 			target.x2 = target.x1 + hsize;
 			target.y2 = target.y1 + vsize;
-			target.mode = (target.mysquare==sq1) ? "left" : "right";
 			evt.onMouseMove = function(ev) {
 				target.x = stage.mouseX - target.mx;
 				if (target.mode=="left" && target.x+CORNER_OFFSET > vertx) {
@@ -464,7 +481,6 @@ function addInteractivity() {
 			target.y1 = (target.mysquare==sq1) ? sq1y : sq2y;
 			target.x2 = target.x1 + hsize;
 			target.y2 = target.y1 + vsize;
-			target.mode = (target.mysquare==sq1) ? "left" : "right";
 			evt.onMouseMove = function(ev) {
 				target.x = stage.mouseX - target.mx;
 				if (target.mode=="right" && target.x-CORNER_OFFSET <= vertx) {
@@ -526,7 +542,6 @@ function addInteractivity() {
 			target.y1 = (target.mysquare==sq1) ? sq1y : sq2y;
 			target.x2 = target.x1 + hsize;
 			target.y2 = target.y1 + vsize;
-			target.mode = (target.mysquare==sq1) ? "left" : "right";
 			evt.onMouseMove = function(ev) {
 				target.x = stage.mouseX - target.mx;
 				if (target.mode=="left" && target.x+CORNER_OFFSET > vertx) {
@@ -588,7 +603,6 @@ function addInteractivity() {
 			target.y1 = (target.mysquare==sq1) ? sq1y : sq2y;
 			target.x2 = target.x1 + hsize;
 			target.y2 = target.y1 + vsize;
-			target.mode = (target.mysquare==sq1) ? "left" : "right";
 			evt.onMouseMove = function(ev) {
 				target.x = stage.mouseX - target.mx;
 				if (target.mode=="right" && target.x-CORNER_OFFSET < vertx) {
@@ -650,7 +664,6 @@ function addInteractivity() {
 			target.y1 = (target.mysquare==sq1) ? sq1y : sq2y;
 			target.x2 = target.x1 + hsize;
 			target.y2 = target.y1 + vsize;
-			target.mode = (target.mysquare==sq1) ? "left" : "right";
 			evt.onMouseMove = function(ev) {
 				target.x = stage.mouseX - target.mx;
 				if (target.mode=="left" && target.x+CORNER_OFFSET > vertx) {
@@ -712,7 +725,6 @@ function addInteractivity() {
 			target.y1 = (target.mysquare==sq1) ? sq1y : sq2y;
 			target.x2 = target.x1 + hsize;
 			target.y2 = target.y1 + vsize;
-			target.mode = (target.mysquare==sq1) ? "left" : "right";
 			evt.onMouseMove = function(ev) {
 				target.x = stage.mouseX - target.mx;
 				if (target.mode=="right" && target.x-CORNER_OFFSET <= vertx) {
@@ -774,7 +786,6 @@ function addInteractivity() {
 			target.y1 = (target.mysquare==sq1) ? sq1y : sq2y;
 			target.x2 = target.x1 + hsize;
 			target.y2 = target.y1 + vsize;
-			target.mode = (target.mysquare==sq1) ? "left" : "right";
 			evt.onMouseMove = function(ev) {
 				target.x = stage.mouseX - target.mx;
 				if (target.mode=="left" && target.x+CORNER_OFFSET > vertx) {
@@ -827,10 +838,6 @@ function addInteractivity() {
 }
 
 function draw() {
-	drawStereoscope();
-}
-
-function drawStereoscope() {
 	drawBackground();
 	drawVertical();
 	drawSquare(sq1, sq1x, sq1y);
@@ -1173,8 +1180,16 @@ function handleImageError(e) {
     console.log("Error Loading Image : " + e.target.src);
 }
 
-function hideInstructions() {
-	$(".instructions").hide();
+function toggleInstructions() {
+	if (helpVisible) {
+		helpVisible = false;
+		$(".instructions").hide();
+		$(".showInstructions").show();
+	} else {
+		helpVisible = true;
+		$(".instructions").show();
+		$(".showInstructions").hide();
+	}
 }
 
 function disableCanvas() {

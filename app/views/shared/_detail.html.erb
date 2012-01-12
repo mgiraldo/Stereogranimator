@@ -1,9 +1,11 @@
 			<div class="detail grid_5">
 				<%= image_tag(@animation.full) %>
 				<div class="stats">
-					<em><%= @animation.metadata %></em><br />
-					This is an <%= @animation.mode == "GIF" ? "Animated GIF" : "Anaglyph" %> (<%= link_to "what is that?", :controller=>"about", :action=>"what" %>)<br />
-					Created <%= time_ago_in_words(@animation.created_at) %> ago<br />
-					<%= pluralize(@animation.views, "view") %>
+					<p>
+						<em><%= @animation.metadata %></em><br /><%= link_to "View original item in the NYPL Digital Gallery", @animation.nypl_url %><br />
+						This is an <%= @animation.mode == "GIF" ? "Animated GIF" : "Anaglyph" %> (<%= link_to "what is that?", :controller=>"about", :action=>"what" %>)<br />
+						Created <%= time_ago_in_words(@animation.created_at) %> ago<br />
+						<%= pluralize(@animation.views, "view") %>
+					</p>
 				</div>
 			</div>

@@ -266,6 +266,9 @@ a:hover {
     background: $sprites -461px 0 no-repeat;
     margin: 0 auto 20px auto;
   }
+  .metadata {
+    margin-top: -20px;
+  }
 }
 
 #home {
@@ -457,9 +460,26 @@ a:hover {
     left: 0;
     z-index: 1;
   }
+  .showInstructions {
+    position: absolute;
+    top: -12px;
+    left: -122px;
+    z-index: 2;
+    display: block;
+    display: none;
+    width: 131px;
+    height: 22px;
+    background: $sprites -804px -412px no-repeat;
+    &:hover {
+      background-position: -804px -387px;
+    }
+  }
   #nocanvas {
     .instructions {
       top: 110px;
+    }
+    .showInstructions {
+      top: 98px;
     }
   }
 }
