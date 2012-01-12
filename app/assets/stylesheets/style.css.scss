@@ -267,7 +267,7 @@ a:hover {
     margin: 0 auto 20px auto;
   }
   .metadata {
-    margin-top: -20px;
+    margin-top: 0;
   }
 }
 
@@ -460,18 +460,18 @@ a:hover {
     left: 0;
     z-index: 1;
   }
-  .showInstructions {
+  .showInstructions, .showInstructions:link {
     position: absolute;
-    top: -12px;
-    left: -122px;
+    top: -10px;
+    left: -10px;
     z-index: 2;
     display: block;
     display: none;
-    width: 131px;
+    width: 22px;
     height: 22px;
-    background: $sprites -804px -412px no-repeat;
+    background: $sprites -917px -415px no-repeat;
     &:hover {
-      background-position: -804px -387px;
+      background-position: -917px -390px;
     }
   }
   #nocanvas {

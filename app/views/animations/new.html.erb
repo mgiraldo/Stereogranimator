@@ -79,7 +79,7 @@ if (Modernizr.canvas) {
 			<div class="instructions">
 				<%= link_to image_tag("instructions.png"), "javascript:toggleInstructions();" %>
 			</div>
-			<%= link_to "SHOW INSTRUCTIONS", "javascript:toggleInstructions();", {:class => "showInstructions"} %>
+			<%= link_to " ", "javascript:toggleInstructions();", {:class => "showInstructions", :title => "SHOW INSTRUCTIONS"} %>
 		</div>
 	</div>
 <%= render :partial => "shared/nocanvas" %>
