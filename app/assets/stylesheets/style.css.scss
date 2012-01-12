@@ -423,10 +423,12 @@ a:hover {
 
 #yescanvas {
   display: none;
+  position: relative;
 }
 
 #nocanvas {
   display: none;
+  position: relative;
   width: 1200px;
   margin: 0 auto;
   border-bottom: $basicborder;
@@ -445,6 +447,15 @@ a:hover {
     a {
       margin: 0 10px;
     }
+  }
+}
+
+#mainContent {
+  .instructions {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
   }
 }
 

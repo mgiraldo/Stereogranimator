@@ -2,6 +2,7 @@
 sprites.png: sprites-067f86a1fab49a471f5627134b3c57f4.png
 diagram-home.png: diagram-home-93166f0c7beede4d8d6035b0550bcd0f.png
 sample-gif.gif: sample-gif-1af1b28c28c608038e89fd5d4d61ea69.gif
+instructions.png: instructions-bcac71357eb06357c6e63411ce0b5b70.png
 expressInstall.swf: expressInstall-f368c2db904e1261b5e3befb4adc8467.swf
 bodybackground.png: bodybackground-7f8d4b645b0ee610b5197d63ebe6eb10.png
 background.png: background-44b997dcb8969b003f7ce4fccd1b37cd.png
@@ -9,7 +10,7 @@ main.swf: main-984d5775f21ffd8a62bddbe5fa1ae855.swf
 12_col.gif: 12_col-3c19e65b065c30d5476d694c62013d18.gif
 diagram-eyes.png: diagram-eyes-d148da4af49f03031a78e8b4772780a7.png
 rails.png: rails-e4b51606cd77fda2615e7439907bfc92.png
-application.css: application-0592f8cd57fb6186f1f13a05fb514b44.css
+application.css: application-de1646e8f1830999a5b322cb89178a4e.css
 sample-stereo.jpeg: sample-stereo-ea66af94e8b9931e7c24e62fc10a2be2.jpeg
-application.js: application-1248b582c4a0f41c7e11820d0320c2c5.js
+application.js: application-78f7a6137ff425e82d21af97ac608ee7.js
 sample-anaglyph.jpeg: sample-anaglyph-64c01ed6c7b2a9031887688dd11225c9.jpeg

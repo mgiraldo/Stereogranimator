@@ -76,6 +76,9 @@ if (Modernizr.canvas) {
 				<p><a href="javascript:;" id="btnNext" class="genericButtonLink">CONTINUE TO STEP 3 &gt;</a></p>
 			</div>
 			<div class="clear"></div>
+			<div class="instructions">
+				<%= link_to image_tag("instructions.png"), "javascript:hideInstructions();", {:onclick=>'hideInstructions();'} %>
+			</div>
 		</div>
 	</div>
 <%= render :partial => "shared/nocanvas" %>

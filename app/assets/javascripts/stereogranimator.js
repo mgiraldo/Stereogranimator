@@ -1173,6 +1173,10 @@ function handleImageError(e) {
     console.log("Error Loading Image : " + e.target.src);
 }
 
+function hideInstructions() {
+	$(".instructions").hide();
+}
+
 function disableCanvas() {
 	$("#yescanvas").hide();
 	$("#nocanvas").show();
