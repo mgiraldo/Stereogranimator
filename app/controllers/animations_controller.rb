@@ -133,7 +133,7 @@ class AnimationsController < ApplicationController
       end
     end
   end
-
+  
   # DELETE /animations/1
   # DELETE /animations/1.json
   def destroy
