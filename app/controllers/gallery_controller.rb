@@ -1,17 +1,18 @@
 class GalleryController < ApplicationController
   
   def index
+    per = 24
     page = params[:page] == nil ? 1 : params[:page]
     @type = params[:type] == nil ? "all" : params[:type]
     if @type == "all"
-      @images = Animation.order('created_at DESC').page(page).per(18)
+      @images = Animation.order('created_at DESC').page(page).per(per)
     elsif @type == "gif" || @type == "anaglyph"
-      @images = Animation.where("mode = ?", @type.upcase).order('created_at DESC').page(page).per(18)
+      @images = Animation.where("mode = ?", @type.upcase).order('created_at DESC').page(page).per(per)
     else
-      @images = Animation.order('created_at DESC').page(page).per(18)
+      @images = Animation.order('created_at DESC').page(page).per(per)
     end
     respond_to do |format|
-      format.html # view.html.erb
+      format.html # index.html.erb
       format.json { render :json => @images }
     end
   end
