@@ -1183,12 +1183,19 @@ function handleImageError(e) {
 function toggleInstructions() {
 	if (helpVisible) {
 		helpVisible = false;
-		$(".instructions").hide();
-		$(".showInstructions").show();
+		$(".instructions").animate({
+			width: 0,
+			height: 0
+		}, 500, 'swing', function () {
+			$(".showInstructions").show();
+		});
 	} else {
 		helpVisible = true;
-		$(".instructions").show();
 		$(".showInstructions").hide();
+		$(".instructions").animate({
+			width: 1200,
+			height: 540
+		}, 500, 'swing');
 	}
 }
 

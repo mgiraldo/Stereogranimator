@@ -178,10 +178,10 @@ a:hover {
       }
       &:hover {
         .over {
-          transition: all 0.4s ease 0s;
-          -moz-transition: all 0.4s ease 0s; /* Firefox 4 */
-          -webkit-transition: all 0.4s ease 0s; /* Safari and Chrome */
-          -o-transition: all 0.4s ease 0s; /* Opera */
+          transition: all 0.4s ease;
+          -moz-transition: all 0.4s ease; /* Firefox 4 */
+          -webkit-transition: all 0.4s ease; /* Safari and Chrome */
+          -o-transition: all 0.4s ease; /* Opera */
           opacity: 1;
         }
       }
@@ -327,10 +327,10 @@ a:hover {
     }
     &:hover {
       .over {
-        transition: all 0.4s ease 0s;
-        -moz-transition: all 0.4s ease 0s; /* Firefox 4 */
-        -webkit-transition: all 0.4s ease 0s; /* Safari and Chrome */
-        -o-transition: all 0.4s ease 0s; /* Opera */
+        transition: all 0.4s ease;
+        -moz-transition: all 0.4s ease; /* Firefox 4 */
+        -webkit-transition: all 0.4s ease; /* Safari and Chrome */
+        -o-transition: all 0.4s ease; /* Opera */
         opacity: 1;
       }
     }
@@ -456,9 +456,13 @@ a:hover {
 #mainContent {
   .instructions {
     position: absolute;
+    display: block;
     top: 0;
     left: 0;
     z-index: 1;
+    width: 1200px;
+    height: 540px;
+    background: asset-url('instructions.png', image) no-repeat;
   }
   .showInstructions, .showInstructions:link {
     position: absolute;
