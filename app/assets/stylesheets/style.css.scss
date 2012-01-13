@@ -420,7 +420,13 @@ a:hover {
   .nextStep {
     position: absolute;
     top: 200px;
-    right: -5px;
+    right: 0;
+    .generator {
+      margin-top: -5px;
+      padding: 6px 10px;
+      background-color: $maincolor;
+      color: $backcolor;
+    }
   }
 }
 

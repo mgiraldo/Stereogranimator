@@ -1092,6 +1092,7 @@ function generate() {
 	console.log("generating...");
 	document.getElementById("btnNext").disabled = true;
 	document.getElementById("btnNext").onclick = {};
+	$("#btnNext").replaceWith("<div class=\"generator\">GENERATING...</div>");
 	$.ajax({
 		url: "/animations/createJson/"+(sq1x-OFFSET)+"/"+(sq1y)+"/"+(sq2x-OFFSET)+"/"+(sq2y)+"/"+hsize+"/"+vsize+"/"+speed+"/"+index+"/"+mode+"/mga.json",
 		dataType: 'json',
