@@ -1,8 +1,8 @@
 namespace :stereo do
   task :push => :environment do
-    puts "Starting pushing images to DB - " + Date.now
+    puts "Starting pushing images to DB"
     Image.destroy_all
     Image.pushToDB
-    puts "Finished! - " + Date.now
+    puts "Finished!"
   end
 end
