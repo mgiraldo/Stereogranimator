@@ -1,4 +1,4 @@
-namespace :stereo
+namespace :stereo do
   task :push => :environment do
     puts "Starting pushing images to DB - " + Date.now
     Image.destroy_all
