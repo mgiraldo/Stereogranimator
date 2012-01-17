@@ -12,8 +12,8 @@ class Image < ActiveRecord::Base
     dbimages = Image.where(:converted => 0).order('random()').limit(100)
     if dbimages.length > 0
       # check in case all images have been converted
-      if dbimages.length == 0
-        dbimages = Image.order('random()').limit(100)
+      if dbimages.length < 9
+        dbimages = Image.order('converted ASC, random()').limit(100)
       end
       dbimages.each do |e|
         @images['all'].push(e.digitalid)

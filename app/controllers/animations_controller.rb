@@ -97,7 +97,7 @@ class AnimationsController < ApplicationController
     @animation.digitalid = params[:digitalid]
     @animation.mode = params[:mode]
     @animation.creator = params[:creator]
-      
+          
     respond_to do |format|
       if @animation.save
         format.html { render :nothing => true }
