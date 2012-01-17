@@ -14,14 +14,14 @@ image_array.push('<%=@images["all"].join("','")%>');
 			</div>
 		</div>
 		<div id="stereoList" class="grid_12">
+<% if @images["subset"].length > 0 %>
 			<p>Select an image from these nine or click "REFRESH PHOTO LIST" to get another batch of photos.</p>
-<% if @images.length > 0 %>
 <% @images["subset"].entries.each_with_index do |image,i| %>
 			<div class="stereograph grid_4 <%= 'alpha' if i.modulo(3) == 0 %><%= 'omega' if i.modulo(3) == 2 %>">
 <!--[if (!IE)|(IE 9)]> -->
-				<%= link_to "CHOOSE THIS ONE", "/convert/#{image['tag']}", {:id => "linko_#{i}", :class=>'over'} %>
+				<%= link_to "CHOOSE THIS ONE", "/convert/#{image.digitalid}", {:id => "linko_#{i}", :class=>'over'} %>
 <!-- <![endif]-->
-				<%= link_to image_tag(image['src'], {:id => "img_#{i}"}), "/convert/#{image['tag']}", {:class=>'base',:id => "link_#{i}"} %>
+				<%= link_to image_tag(image.thumb_url, {:id => "img_#{i}"}), "/convert/#{image.digitalid}", {:class=>'base',:id => "link_#{i}"} %>
 			</div>
 	<% if i.modulo(3) == 2 %>
 			<div class="clear"></div>

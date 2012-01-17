@@ -46,12 +46,9 @@ class AnimationsController < ApplicationController
   # GET /animations/new
   # GET /animations/new.json
   def new
-    @animation = Animation.new
-    @animation.digitalid = params[:did]
-    @metadata = @animation.getMetadata()
+    @metadata = Image.getMetadata(params[:did])
     respond_to do |format|
       format.html { render :layout => "new_rich"} # new.html.erb
-      format.json { render :json => @animation }
     end
   end
 

@@ -11,46 +11,13 @@ class Animation < ActiveRecord::Base
   end
   def updateMetadata
     if self.metadata==nil && self.digitalid!=nil
-      @meta = getMetadata()
+      @meta = Image.getMetadata(self.digitalid)
       self.metadata = @meta["title"]
       self.save
     end
   end
-  def getMetadata
-    start = Time.now
-    logger.debug "Started getting feed #{start}"
-    Feedzirra::Feed.add_common_feed_entry_element("dc:coverage", :as => :date)
-    @feed = Feedzirra::Feed.fetch_and_parse("http://digitalgallery.nypl.org/feeds/dev/atom/?word=#{self.digitalid}&metadata=dc")
-    logger.debug "Finished parsing feed in #{(Time.now-start)*1000} milliseconds"
-    @meta = {"title" => "#{@feed.entries[0].title} (#{@feed.entries[0].date})", "link" => "http://digitalgallery.nypl.org/nypldigital/id?#{@feed.entries[0].id.split('?')[1]}" }
-    # assuming only ONE image returns
-    # image link could be generated better
-    return @meta
-  end
   def self.randomSet
-    # TODO: request random list
-    # TODO: consider error cases (feed not available)
-    total_images = 43088 # as of 27/12/2011
-    count = 120 # images to retrieve
-    range = total_images - count
-    first = rand(range)
-    start = Time.now
-    logger.debug "Started getting feed #{start}"
-    @feed = Feedzirra::Feed.fetch_and_parse("http://digitalgallery.nypl.org/feeds/dev/atom/?word=stereog*&imgs=#{count}&num=#{first}")
-    logger.debug "Finished parsing feed in #{(Time.now-start)*1000} milliseconds"
-    @images = {}
-    @images['all'] = Array.new
-    @feed.entries.each do |e|
-      # images are id'd as tag:digitalgallery.nypl.org,2006:/nypldigital/id?G89F339_010F
-      full_id = e.id
-      tag = full_id.split('?')[1]
-      @images['all'].push(tag)
-    end
-    randomsubset = @images['all'].sort_by{rand}[0..8]
-    @images['subset'] = Array.new(9)
-    randomsubset.each_with_index do |image,i|
-      @images['subset'][i] = {'tag' => image, 'src' => "http://images.nypl.org/index.php?id=#{image}&t=r"}
-    end
+    @images = Image.randomSet
     return @images
   end
   def createImage
