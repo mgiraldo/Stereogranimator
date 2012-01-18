@@ -15,7 +15,7 @@ class AnimationsController < ApplicationController
   # GET /animations
   # GET /animations.json
   def index
-    @animations = Animation.all
+    @animations = Animation.order("id DESC")
     respond_to do |format|
       format.html # index.html.erb
       format.json { render :json => @animations }
