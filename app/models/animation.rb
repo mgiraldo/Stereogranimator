@@ -3,8 +3,10 @@ class Animation < ActiveRecord::Base
   before_save :imageAndMetadata
   def imageAndMetadata
     @im = Image.where(:digitalid => self.digitalid).first
-    @im.converted = 1
-    @im.save
+    if @im != nil
+      @im.converted = 1
+      @im.save
+    end
     updateMetadata()
     createImage()
   end
