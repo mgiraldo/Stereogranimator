@@ -4,14 +4,14 @@
 			</div>
 			<div id="explainer" class="grid_12">
 				<p class="mainParagraph">Create and share <%= link_to "animated GIFs and anaglyphs", "/about" %> using more than 40,000 stereographs available in the <%= link_to "NYPL Digital Gallery", "http://digitalgallery.nypl.org"%>.</p>
-				<%= image_tag "sample-stereo.jpeg", {:class=>"stereo"} %>
-				<%= image_tag "diagram-home.png", {:class=>"diagram"} %>
+				<%= link_to image_tag ("sample-stereo.jpeg", {:class=>"stereo"}), "/create" %>
+				<%= link_to image_tag ("diagram-home.png", {:class=>"diagram"}), "/create" %>
 				<div class="samples">
 					<div class="GIF">
-						<%= image_tag "sample-gif.gif" %>
+						<%= link_to image_tag ("sample-gif.gif"), "/create" %>
 					</div>
 					<div class="anaglyph">
-						<%= image_tag "sample-anaglyph.jpeg" %>
+						<%= link_to image_tag ("sample-anaglyph.jpeg"), "/create" %>
 					</div>
 				</div>
 			</div>

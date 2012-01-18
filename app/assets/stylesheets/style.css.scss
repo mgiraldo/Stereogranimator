@@ -12,6 +12,12 @@ body {
   h1, h2, h3, p {
     padding: 0 5px;
   }
+  h2 {
+    font-size: 24px;
+  }
+  .sideNav {
+    list-style-type: none;
+  }
 }
 
 h3 {
@@ -268,6 +274,9 @@ a:hover {
     height: 32px;
     background: $sprites -461px 0 no-repeat;
     margin: 0 auto 20px auto;
+    position: relative;
+    top: -66px;
+    left: -230px;
   }
   .metadata {
     margin-top: 0;
