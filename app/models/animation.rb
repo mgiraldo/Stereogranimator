@@ -14,10 +14,6 @@ class Animation < ActiveRecord::Base
   end
   def updateMetadata
     update = false
-    if self.converted == nil
-      self.converted = 0
-      update = true
-    end
     if self.views == nil
       self.views = 0
       update = true
