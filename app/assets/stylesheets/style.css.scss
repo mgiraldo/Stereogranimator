@@ -14,7 +14,7 @@ body {
   }
 }
 
-h3, .mainParagraph {
+h3 {
   font-size: 16px;
   line-height: $lineheightem;
   margin-top: 20px;
@@ -273,6 +273,16 @@ a:hover {
 
 #home {
   #explainer {
+    position: relative;
+    .mainParagraph {
+      position: absolute;
+      top: 30px;
+      left: 0;
+      width: 450px;
+      font-size: 18px;
+      line-height: $lineheightem;
+      margin-top: 0;
+    }
     .stereo, .diagram, .samples {
       display: block;
       float: left;
