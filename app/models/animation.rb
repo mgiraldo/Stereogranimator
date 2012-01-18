@@ -16,13 +16,16 @@ class Animation < ActiveRecord::Base
     update = false
     if self.converted == nil
       self.converted = 0
+      update = true
     end
     if self.views == nil
       self.views = 0
+      update = true
     end
     if self.metadata==nil && self.digitalid!=nil
       @im = Image.where(:digitalid => self.digitalid).first
       self.metadata = "#{@im.title} #{@im.date}"
+      update = true
     end
     if update
       self.save
