@@ -1,9 +1,17 @@
 Stereo::Application.routes.draw do
+  resources :users
+
+  namespace :admin do resources :users end
+
   get "gallery/index"
 
   get "about/index"
 
   resources :animations
+
+  resources :users, :user_sessions
+  match 'login' => 'user_sessions#new', :as => :login
+  match 'logout' => 'user_sessions#destroy', :as => :logout
   
   match 'about', :to => 'about#what', :as => "about"
   match 'about/gif', :to => 'about#gif', :as => "about_gif"
@@ -26,6 +34,8 @@ Stereo::Application.routes.draw do
   match "/animations/createJson/:x1/:y1/:x2/:y2/:width/:height/:delay/:digitalid/:mode/:creator", :to => 'animations#createJson', :as => "animation_creator"
   
   match "/animations/createJson/*path" => "animations#createJson"
+
+  match "/animations/:id/kill" => "animations#destroy"
 
   root :to => 'about#index'
 

@@ -1,8 +1,5 @@
 class AnimationsController < ApplicationController
-  before_filter :load
-  
-  def load
-  end
+  before_filter :require_user, :only => [:index, :edit, :destroy]
   
   # GET /choose/nyplid
   def choose
@@ -36,7 +33,7 @@ class AnimationsController < ApplicationController
     @animation = Animation.find(params[:id])
 
     respond_to do |format|
-      format.html # show.html.erb
+      format.html { redirect_to "/view/#{@animation.id}" }
       format.json { render :json => @animation }
       format.jpeg { redirect_to @animation.aws_url }
       format.gif { redirect_to @animation.aws_url }
@@ -143,7 +140,7 @@ class AnimationsController < ApplicationController
     @animation.destroy
 
     respond_to do |format|
-      format.html { redirect_to animations_url }
+      format.html { redirect_to gallery_url }
       format.json { head :ok }
     end
   end

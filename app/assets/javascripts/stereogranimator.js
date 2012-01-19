@@ -41,6 +41,9 @@ var bg;
 var sq1;
 var sq2;
 
+// text
+var txt;
+
 // element vars
 // square positions
 var sq1x = 0;
@@ -101,11 +104,12 @@ var ua = navigator.userAgent;
 var isiPad = /iPad/i.test(ua) || /iPod/i.test(ua) || /iPhone/i.test(ua);
 var isdown = false;
 
-var helpVisible = true;
+var helpVisible = false;
 
 function init() {
 	$("#yescanvas").show();
 	$("#nocanvas").hide();
+	toggleInstructions();
 	//find canvas and load images, wait for last image to load
 	canvas = document.getElementById("testCanvas");
 	processcanvas = document.getElementById("processCanvas");
@@ -218,6 +222,14 @@ function run() {
 	sq2.mx = 0;
 	sq2.my = 0;
 	stage.addChild(sq2);
+	
+	// draw text
+	txt = new Text("drag me", "20px share-regular", "#fff");
+	txt.textBaseline = "middle";
+	txt.lineWidth = 80;
+	txt.x = -1000;
+	txt.y = 0;
+	stage.addChild(txt);
 	
 	Ticker.addListener(window);
 }
@@ -843,6 +855,23 @@ function draw() {
 	drawSquare(sq1, sq1x, sq1y);
 	drawSquare(sq2, sq2x, sq2y);
 	drawCorners();
+	drawText();
+}
+
+function drawText()	{
+	if (sq1.over) {
+		// text
+		txt.x = sq1x + hsize/2 - txt.lineWidth;
+		txt.y = sq1y + vsize/2;
+	} else if (sq2.over) {
+		// text
+		txt.x = sq2x + hsize/2 + INSET;
+		txt.y = sq2y + vsize/2;
+	} else {
+		// text
+		txt.x = -1000;
+		txt.y = -1000;
+	}
 }
 
 function drawBackground() {
@@ -1184,6 +1213,8 @@ function handleImageError(e) {
 function toggleInstructions() {
 	if (helpVisible) {
 		helpVisible = false;
+		$(".instructions").width(1200);
+		$(".instructions").height(540);
 		$(".instructions").animate({
 			width: 0,
 			height: 0
@@ -1192,15 +1223,18 @@ function toggleInstructions() {
 		});
 	} else {
 		helpVisible = true;
+		$(".instructions").width(0);
+		$(".instructions").height(0);
 		$(".showInstructions").hide();
 		$(".instructions").animate({
 			width: 1200,
 			height: 540
-		}, 500, 'swing');
+		}, 1000, 'swing');
 	}
 }
 
 function disableCanvas() {
 	$("#yescanvas").hide();
 	$("#nocanvas").show();
+	toggleInstructions();
 }

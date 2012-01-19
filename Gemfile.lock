@@ -51,6 +51,9 @@ GEM
     activesupport (3.1.1)
       multi_json (~> 1.0)
     arel (2.2.1)
+    authlogic (3.1.0)
+      activerecord (>= 3.0.7)
+      activerecord (>= 3.0.7)
     aws-sdk (1.2.3)
       httparty (~> 0.7)
       json (~> 1.4)
@@ -145,6 +148,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  authlogic
   aws-sdk
   coffee-rails (~> 3.1.1)
   curb!

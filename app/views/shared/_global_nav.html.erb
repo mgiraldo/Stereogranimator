@@ -6,3 +6,6 @@
 			<li class="grid_2 omega <%=  "active" if controller_name ==  'about' && action_name != 'index' %>"><%= link_to "ABOUT", about_path %></li>
 		</ul>
 	</div>
+<% if current_user %>
+<%= link_to "Logout", :logout%>
+<% end %>

@@ -167,11 +167,19 @@ a:hover {
 #mainContent {
   background: $backimage repeat-x;
   .thumb {
+    position: relative;
     float: left;
     width: 150px;
     height: 155px;
     margin: 0 6px 15px 4px;
     background: $sprites -308px -103px no-repeat;
+    .kill {
+      position: absolute;
+      display: block;
+      top: 4px;
+      left: 10px;
+      z-index: 10;
+    }
     .pad {
       padding: 5px;
       position: relative;
