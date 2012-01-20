@@ -32,10 +32,17 @@
 				</div>
 			</div>
 			<div class="clear"></div>
-			<div class="quote grid_4">
+			<div class="grid_4">
+				<p><span class="big"><%= number_with_delimiter @imagecount %></span><br />original stereographs</p>
 			</div>
 			<div class="quote grid_4">
 				<p>“We have now obtained the doubleeyed or twin pictures, or <em>Stereograph</em>, if we may coin a name. But the pictures are two, and we want to slide them into each other, so to speak, as in natural vision, that we may see them as one. How shall we make one picture out of two, the corresponding parts of which are separated by a distance of two or three inches?”<br />
 					—<%= link_to "Oliver Wendell Holmes", "http://www.theatlantic.com/magazine/archive/1859/06/the-stereoscope-and-the-stereograph/3361/" %>, 1859</p>
+			</div>
+			<div class="grid_2">
+				<p><span class="big"><%= number_with_delimiter @gifcount %></span><br /><%= link_to "animated GIFs", "/gallery/gif" %></p>
+			</div>
+			<div class="grid_2">
+				<p><span class="big"><%= number_with_delimiter @anaglyphcount %></span><br /><%= link_to "anaglyphs", "/gallery/anaglyph" %></p>
 			</div>
 		</div>

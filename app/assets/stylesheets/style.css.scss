@@ -57,6 +57,10 @@ a:hover {
   text-align: center;
 }
 
+.big {
+  font-size: 36px;
+}
+
 .pagination a, .genericButtonLink, .genericButtonLink:link, .genericButtonLink:visited {
   background-color: $linkcolor;
   padding: 10px;
