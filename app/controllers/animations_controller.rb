@@ -127,6 +127,15 @@ class AnimationsController < ApplicationController
   # DELETE /animations/1.json
   def destroy
     @animation = Animation.find(params[:id])
+    @derivatives = Animation.where("digitalid = ? ", @animation[:digitalid])
+    if @derivatives.length == 0
+      # no derivatives for this original image
+      @im = Image.where(:digitalid => @animation.digitalid).first
+      if @im != nil
+        @im.converted = 0
+        @im.save
+      end
+    end
     
     # delete from Amazon S3
     if @animation.filename != nil && @animation.filename != ""
