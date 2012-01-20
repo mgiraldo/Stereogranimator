@@ -1231,7 +1231,7 @@ function toggleInstructions() {
 		$(".instructions").animate({
 			width: 1200,
 			height: 540
-		}, 1000, 'swing');
+		}, 1500, 'swing');
 	}
 }
 

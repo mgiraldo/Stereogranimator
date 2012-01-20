@@ -10,7 +10,7 @@
 
 aws = CGI.escape(@animation.aws_url)
 url = CGI.escape(url_for(:controller=>"gallery",:action=>"view",:id=>@animation.id,:only_path => false))
-tweet = @type == "created" ? CGI.escape("I just created this #{@animation.mode} using the Stereogranimator by @nypl_labs") : CGI.escape("Check out this #{@animation.mode} I found in the Stereogranimator by @nypl_labs")
+tweet = @sharetype == "created" ? CGI.escape("I just created this #{@animation.mode} using the Stereogranimator by @nypl_labs") : CGI.escape("Check out this #{@animation.mode} I found in the Stereogranimator by @nypl_labs")
 twitterurl = "https://twitter.com/share?url=#{url}&text=#{tweet}"
 facebookurl = "http://www.facebook.com/sharer.php?u=#{url}&t=#{tweet}"
 tumblrurl = "http://www.tumblr.com/share/photo?source=#{aws}&caption=#{tweet}&clickthru=#{url}"

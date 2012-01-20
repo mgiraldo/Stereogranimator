@@ -84,6 +84,30 @@ a:hover {
   display: none;
 }
 
+.shTwitter, .shFacebook, .shTumblr, .shPlus, .shReddit {
+  display: inline-block;
+  text-indent: -9999px;
+  margin-right: 5px;
+  width: 16px;
+  height: 16px;
+  background: $sprites no-repeat;
+}
+.shTwitter {
+  background-position: -38px -278px;
+}
+.shFacebook {
+  background-position: -55px -278px;
+}
+.shTumblr {
+  background-position: -72px -278px;
+}
+.shPlus {
+  background-position: -89px -278px;
+}
+.shReddit {
+  background-position: -106px -278px;
+}
+
 #nypl_bar {
   font-family: $nyplfont;
   position: relative;
@@ -261,29 +285,6 @@ a:hover {
       height: 90px;
       font: 16px $prefont;
       color: $nyplgray;
-    }
-    .shTwitter, .shFacebook, .shTumblr, .shPlus, .shReddit {
-      display: inline-block;
-      text-indent: -9999px;
-      margin-right: 5px;
-      width: 16px;
-      height: 16px;
-      background: $sprites no-repeat;
-    }
-    .shTwitter {
-      background-position: -38px -278px;
-    }
-    .shFacebook {
-      background-position: -55px -278px;
-    }
-    .shTumblr {
-      background-position: -72px -278px;
-    }
-    .shPlus {
-      background-position: -89px -278px;
-    }
-    .shReddit {
-      background-position: -106px -278px;
     }
   }
   .metadata {
