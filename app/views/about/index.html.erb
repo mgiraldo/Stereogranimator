@@ -14,25 +14,26 @@
 						<%= link_to (image_tag "sample-anaglyph.jpeg"), "/create", {:title => "click to create your own!"} %>
 					</div>
 				</div>
-			</div>
-			<div class="clear"></div>
-			<div class="startCreating centered">
-				<%= link_to "START CREATING!", "/choose", :class => 'genericButtonLink big' %>
-			</div>
-			<div class="clear"></div>
-			<div>
-				<h1 class="latest grid_3"><span class="visuallyhidden">LATEST</span></h1>
-				<div class="clear"></div>
-<% @images.each_with_index do |image,i| %>
-<%= render :partial => "shared/thumb", :locals => {:image => image} %>
-<% end %>
-				<div class="clear"></div>
-				<div class="more centered">
-					<%= link_to "VIEW MORE IN THE GALLERY >", "/gallery", :class => 'genericButtonLink' %>
+				<div class="startCreating centered">
+					<%= link_to "START CREATING!", "/choose", :class => 'genericButtonLink big' %>
 				</div>
 			</div>
 			<div class="clear"></div>
-			<div class="grid_4">
+		</div>
+		<div class="container_12">
+			<h1 class="latest grid_3"><span class="visuallyhidden">LATEST</span></h1>
+			<div class="clear"></div>
+<% @images.each_with_index do |image,i| %>
+<%= render :partial => "shared/thumb", :locals => {:image => image} %>
+<% end %>
+			<div class="clear"></div>
+			<div class="more centered">
+				<%= link_to "VIEW MORE IN THE GALLERY >", "/gallery", :class => 'genericButtonLink' %>
+			</div>
+		</div>
+		<div class="clear"></div>
+		<div class="stats container_12">
+			<div class="grid_2 prefix_2">
 				<p><span class="big"><%= number_with_delimiter @imagecount %></span><br />original stereographs</p>
 			</div>
 			<div class="quote grid_4">

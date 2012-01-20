@@ -59,6 +59,7 @@ a:hover {
 
 .big {
   font-size: 36px;
+  line-height: 36px;
 }
 
 .pagination a, .genericButtonLink, .genericButtonLink:link, .genericButtonLink:visited {
@@ -285,23 +286,26 @@ a:hover {
       background-position: -106px -278px;
     }
   }
-  .startCreating {
-    width: 221px;
-    height: 32px;
-    background: $sprites -461px 0 no-repeat;
-    margin: 0 auto 20px auto;
-    position: relative;
-    top: -68px;
-    left: -230px;
-  }
   .metadata {
     margin-top: 0;
+  }
+  .stats {
+    margin-top: 30px;
   }
 }
 
 #home {
   #explainer {
     position: relative;
+    .startCreating {
+      position: absolute;
+      top: 440px;
+      left: 120px;
+      width: 221px;
+      height: 32px;
+      background: $sprites -461px 0 no-repeat;
+      margin: 0 auto 20px auto;
+    }
     .mainParagraph {
       position: absolute;
       top: 30px;
