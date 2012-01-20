@@ -17,4 +17,7 @@ class AboutController < ApplicationController
 
   def stereogram
   end
+
+  def credits
+  end
 end

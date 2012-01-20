@@ -13,7 +13,7 @@
 
 img = CGI.escape("#{request.protocol}#{request.host_with_port}" + asset_path("diagram-home.png",:only_path => false))
 url = CGI.escape(url_for(:controller=>"about",:action=>"index",:only_path => false))
-tweet = CGI.escape("Check out the Stereogranimator by @nypl_labs")
+tweet = CGI.escape("NYPL Stereogranimator: create gifs & 3D images from vintage stereographs at The New York Public Library (via @nypl_labs)")
 twitterurl = "https://twitter.com/share?url=#{url}&text=#{tweet}"
 facebookurl = "http://www.facebook.com/sharer.php?u=#{url}&t=#{tweet}"
 tumblrurl = "http://www.tumblr.com/share/photo?source=#{img}&caption=#{tweet}&clickthru=#{url}"
@@ -22,9 +22,6 @@ redditurl = "http://www.reddit.com/submit?url=#{url}"
 
 %>
 				
-				<p>Share on:
-				</p>
-
 	<p class="grid_12">
 		Please help the library by sharing this site!
 		<%= link_to "Twitter", twitterurl, {:class => "shTwitter", :title => "Share on Twitter"} %>

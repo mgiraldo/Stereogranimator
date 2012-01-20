@@ -18,6 +18,7 @@ Stereo::Application.routes.draw do
   match 'about/gif', :to => 'about#gif', :as => "about_gif"
   match 'about/stereogram', :to => 'about#stereogram', :as => "about_stereogram"
   match 'about/anaglyph', :to => 'about#anaglyph', :as => "about_anaglyph"
+  match 'about/credits', :to => 'about#credits', :as => "about_credits"
   match 'what', :to => 'about#what', :as => "about_what"
   match 'gallery', :to => 'gallery#index', :as => "gallery"
   match 'gallery/:type', :to => 'gallery#index', :as => "gallery_type"
