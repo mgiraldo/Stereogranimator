@@ -94,6 +94,46 @@ class Animation < ActiveRecord::Base
       obj.write(:file => "#{Rails.root}/tmp/#{thumbname}", :acl => :public_read, :metadata => { 'photo_from' => 'New York Public Library' })
     end
   end
+  def self.amazonDump
+    countgif = 0
+    countana = 0
+    totalgiff = 0
+    totalgift = 0
+    totalanaf = 0
+    totalanat = 0
+    
+    s3 = AWS::S3.new
+    bucket = s3.buckets['stereogranimator']
+    bucket.objects.each do |ob|
+      tmpurl = ob.public_url.to_s
+      if tmpurl.index("gif") != nil
+        puts "GIF"
+        countgif+=1
+        if tmpurl.index("t_") != nil
+          totalgift += ob.content_length
+        else
+          totalgiff += ob.content_length
+        end
+      else
+        puts "JPEG"
+        countana+=1
+        if tmpurl.index("t_") != nil
+          totalanat += ob.content_length
+        else
+          totalanaf += ob.content_length
+        end
+      end
+    end
+    if countgif > 0
+      puts "Average GIF big size: #{(totalgiff/countgif).round.to_s}"
+      puts "Average GIF thumb size: #{(totalgift/countgif).round.to_s}"
+    end
+    if countana > 0
+      puts "Average JPG big size: #{(totalanaf/countana).round.to_s}"
+      puts "Average JPG thumb size: #{(totalanat/countana).round.to_s}"
+    end
+    puts "There were #{countana} JPEGs and #{countgif} GIFs "
+  end
   def url
     "http://images.nypl.org/index.php?id=#{digitalid}&t=w"
   end

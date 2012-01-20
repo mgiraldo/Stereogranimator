@@ -1,5 +1,16 @@
 class UserSessionsController < ApplicationController
 
+  def dismissInstructions
+    session[:hideInstructions] = true
+    respond_with do |format|
+      format.html do
+        if request.xhr?
+          # left empty just in case
+        end
+      end
+    end
+  end
+  
   # GET /user_sessions/new
   # GET /user_sessions/new.xml
   def new

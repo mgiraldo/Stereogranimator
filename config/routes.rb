@@ -12,6 +12,7 @@ Stereo::Application.routes.draw do
   resources :users, :user_sessions
   match 'login' => 'user_sessions#new', :as => :login
   match 'logout' => 'user_sessions#destroy', :as => :logout
+  match 'dismissInstructions' => 'user_session#dismissInstructions', :as => :dismissInstructions
   
   match 'about', :to => 'about#what', :as => "about"
   match 'about/gif', :to => 'about#gif', :as => "about_gif"

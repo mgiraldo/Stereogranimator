@@ -1135,12 +1135,13 @@ function generate() {
 		},
 		statusCode: {
 		  404: function() {
-			alert('Photo not found error (404)');
-			document.getElementById("btnNext").disabled = false;
+			  alert('Photo not found error (404)');
+		  },
+		  429: function() {
+			  alert('Too many requests (429)');
 		  },
 		  500: function() {
-				alert('Internal server error (500)');
-				document.getElementById("btnNext").disabled = false;
+			  alert('Internal server error (500)');
 		  }
 		}
 	});
@@ -1160,12 +1161,13 @@ function generateFromFlash(_sq1x,_sq1y,_sq2x,_sq2y,_hsize,_vsize,_speed,_index,_
 		},
 		statusCode: {
 		  404: function() {
-			alert('Photo not found error (404)');
-			document.getElementById("btnNext").disabled = false;
+			  alert('Photo not found error (404)');
+		  },
+		  429: function() {
+			  alert('Too many requests (429)');
 		  },
 		  500: function() {
-				alert('Internal server error (500)');
-				document.getElementById("btnNext").disabled = false;
+			  alert('Internal server error (500)');
 		  }
 		}
 	});

@@ -6,6 +6,10 @@ class ApplicationController < ActionController::Base
   private
     def current_user_session
       return @current_user_session if defined?(@current_user_session)
+      # session not defined
+      if session[:last_create] == nil # adding image creation timestamp
+        session[:last_create] = 0
+      end
       @current_user_session = UserSession.find
     end
     
@@ -30,6 +34,10 @@ class ApplicationController < ActionController::Base
         redirect_to account_url
         return false
       end
+    end
+    
+    def set_regular_user
+      session[:last_create] = 0 
     end
     
     def store_location
