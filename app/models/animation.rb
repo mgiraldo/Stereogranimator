@@ -67,23 +67,21 @@ class Animation < ActiveRecord::Base
         thumb.iterations = 0
       else
         # ANAGLYPH!
-        self.filename = unique + ".jpg"
+        self.filename = unique + ".png"
         
-        redlayer = Magick::Image.new(self.width,self.height){self.background_color = "#f00"}
-        cyanlayer = Magick::Image.new(self.width,self.height){self.background_color = "#0ff"}
-        
-        fr1 = redlayer.composite(fr1, 0, 0, Magick::ScreenCompositeOp)
-        fr2 = cyanlayer.composite(fr2, 0, 0, Magick::ScreenCompositeOp)
-        final = fr1.composite(fr2, 0, 0, Magick::MultiplyCompositeOp)
+        fr1 = fr1.gamma_correct(1,0,0)
+        fr2 = fr2.gamma_correct(0,1,1)
+        final = fr2.composite fr1, Magick::CenterGravity, Magick::ScreenCompositeOp
   
         thumb = final.resize_to_fill(140,140)
       end
       
+      format = self.mode=="GIF"?"gif":"png"
       # gotta packet the file
-      final.write("#{Rails.root}/tmp/#{self.filename}") { self.quality = 100 }
+      final.write("#{format}:#{Rails.root}/tmp/#{self.filename}") { self.quality = 100 }
       # and the thumb
       thumbname = "t_" + self.filename
-      thumb.write("#{Rails.root}/tmp/#{thumbname}") { self.quality = 100 }
+      thumb.write("#{format}:#{Rails.root}/tmp/#{thumbname}") { self.quality = 100 }
       
       # upload to Amazon S3
       s3 = AWS::S3.new
@@ -115,7 +113,7 @@ class Animation < ActiveRecord::Base
           totalgiff += ob.content_length
         end
       else
-        puts "JPEG"
+        puts "PNG/JPEG"
         countana+=1
         if tmpurl.index("t_") != nil
           totalanat += ob.content_length
@@ -132,16 +130,19 @@ class Animation < ActiveRecord::Base
       puts "Average JPG big size: #{(totalanaf/countana).round.to_s}"
       puts "Average JPG thumb size: #{(totalanat/countana).round.to_s}"
     end
-    puts "There were #{countana} JPEGs and #{countgif} GIFs "
+    puts "There were #{countana} PNGs/JPEGs and #{countgif} GIFs "
   end
   def url
     "http://images.nypl.org/index.php?id=#{digitalid}&t=w"
   end
   def thumb
-    "/view/" + id.to_s + (mode=="GIF"?".gif":".jpeg") + "?n=1&m=t"
+    "/view/" + id.to_s + (mode=="GIF"?".gif":".png") + "?n=1&m=t"
   end
   def full
-    "/view/" + id.to_s + (mode=="GIF"?".gif":".jpeg") + "?n=1"
+    "/view/" + id.to_s + (mode=="GIF"?".gif":".png") + "?n=1"
+  end
+  def full_count
+    "/view/" + id.to_s + (mode=="GIF"?".gif":".png")
   end
   def aws_url
     "http://s3.amazonaws.com/stereogranimator/#{filename}"

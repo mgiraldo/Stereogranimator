@@ -35,6 +35,7 @@ class GalleryController < ApplicationController
     respond_to do |format|
       format.html # view.html.erb
       format.json { render :json => @animation }
+      format.png { redirect_to redirect }
       format.jpeg { redirect_to redirect }
       format.gif { redirect_to redirect }
     end

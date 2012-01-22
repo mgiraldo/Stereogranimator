@@ -83,8 +83,8 @@ var lasttick = 0;
 var speed = FASTSPEED;
 var frame = 1;
 
-var OFFSET = 0;
-var INSET = 10;
+var OFFSET = 0;// distance from edge to bmp
+var INSET = 10;// initial distance from vert to squares
 
 var THICK = 2;
 var COLOR = "#ffffff";
@@ -1048,6 +1048,7 @@ function drawAnaglyph () {
 	var j = rightimgdata_array.length;
 	var rR, rG, rB;
 	for (i = 0; i < j; i+=4) {
+		/*
 		rR = rightimgdata_array[i];
 		rG = rightimgdata_array[i+1];
 		rB = rightimgdata_array[i+2];
@@ -1062,10 +1063,22 @@ function drawAnaglyph () {
 		leftimgdata_array[i] = leftimgdata_array[i];
 		leftimgdata_array[i+1] = rG;
 		leftimgdata_array[i+2] = rB;
+		*/
+		lR = leftimgdata_array[i];
+		lG = leftimgdata_array[i+1];
+		lB = leftimgdata_array[i+2];
+		// left (RED) operation
+		lR = 255;
+		lG = 255 - (255 - leftimgdata_array[i+1]);
+		lB = 255 - (255 - leftimgdata_array[i+2]);
+		// right (CYAN) operation
+		rightimgdata_array[i] = rightimgdata_array[i];
+		rightimgdata_array[i+1] = lG;
+		rightimgdata_array[i+2] = lB;
 	}
 
 	// Write the MULTIPLIED image data to the canvas
-	ctx3D.putImageData(leftimgdata, 0, 0);
+	ctx3D.putImageData(rightimgdata, 0, 0);
 }
 
 function loadPhoto(str) {

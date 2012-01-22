@@ -35,6 +35,7 @@ class AnimationsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to "/view/#{@animation.id}" }
       format.json { render :json => @animation }
+      format.png { redirect_to @animation.aws_url }
       format.jpeg { redirect_to @animation.aws_url }
       format.gif { redirect_to @animation.aws_url }
     end

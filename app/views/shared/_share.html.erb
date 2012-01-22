@@ -8,12 +8,12 @@
 
 # encoded stuff to use in the share buttons
 
-aws = CGI.escape(@animation.aws_url)
+src = CGI.escape(request.protocol + request.host_with_port + @animation.full_count)
 url = CGI.escape(url_for(:controller=>"gallery",:action=>"view",:id=>@animation.id,:only_path => false))
 tweet = @sharetype == "created" ? CGI.escape("I just created this #{@animation.mode} using the Stereogranimator by @nypl_labs") : CGI.escape("Check out this #{@animation.mode} I found in the Stereogranimator by @nypl_labs")
 twitterurl = "https://twitter.com/share?url=#{url}&text=#{tweet}"
 facebookurl = "http://www.facebook.com/sharer.php?u=#{url}&t=#{tweet}"
-tumblrurl = "http://www.tumblr.com/share/photo?source=#{aws}&caption=#{tweet}&clickthru=#{url}"
+tumblrurl = "http://www.tumblr.com/share/photo?source=#{src}&caption=#{tweet}&clickthru=#{url}"
 googleurl = "https://m.google.com/app/plus/x/?v=compose&content=#{tweet}%20#{url}"
 redditurl = "http://www.reddit.com/submit?url=#{url}"
 
@@ -30,7 +30,7 @@ redditurl = "http://www.reddit.com/submit?url=#{url}"
 				<p>
 <%
 
-embed_img_src = request.protocol + request.host_with_port + "/view/#{@animation.id}" + (@animation.mode=="GIF"?".gif":".jpeg")
+embed_img_src = request.protocol + request.host_with_port + "#{@animation.full_count}"
 embed_string = @animation.mode + " made with the NYPL Labs Stereogranimator"
 embed_code = image_tag(embed_img_src,:alt=>embed_string + " - view more at " + url_for(:controller=>"gallery",:only_path => false))
 embed_code = link_to(embed_code + "<br />" + embed_string,url_for(:controller=>"gallery",:action=>"view",:id=>@animation.id,:only_path => false)) 
