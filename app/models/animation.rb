@@ -1,6 +1,31 @@
 class Animation < ActiveRecord::Base
   after_initialize :updateMetadata
   before_save :imageAndMetadata
+  before_destroy :checkImage
+  def checkImage
+    did = self.digitalid
+    
+    # delete from Amazon S3
+    if self.filename != nil && self.filename != ""
+      s3 = AWS::S3.new
+      bucket = s3.buckets['stereogranimator']
+      obj = bucket.objects[self.filename]
+      obj.delete()
+      obj = bucket.objects["t_" + self.filename]
+      obj.delete()
+    end
+    
+    @derivatives = Animation.where(:digitalid => did)
+    
+    if @derivatives.length == 1
+      # this is the last derivative for the original image
+      @im = Image.where("upper(digitalid) = ?", did.upcase).first
+      if @im != nil
+        @im.converted = 0
+        @im.save
+      end
+    end
+  end
   def imageAndMetadata
     @im = Image.where("upper(digitalid) = ?", self.digitalid.upcase).first
     if @im != nil

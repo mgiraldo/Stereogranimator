@@ -128,31 +128,8 @@ class AnimationsController < ApplicationController
   # DELETE /animations/1.json
   def destroy
     @animation = Animation.find(params[:id])
-    did = @animation.digitalid
-    
-    # delete from Amazon S3
-    if @animation.filename != nil && @animation.filename != ""
-      s3 = AWS::S3.new
-      bucket = s3.buckets['stereogranimator']
-      obj = bucket.objects[@animation.filename]
-      obj.delete()
-      obj = bucket.objects["t_" + @animation.filename]
-      obj.delete()
-    end
-    
     @animation.destroy
 
-    @derivatives = Animation.where(:digitalid => did)
-    
-    if @derivatives.length == 0
-      # no derivatives for this original image
-      @im = Image.where(:digitalid => did).first
-      if @im != nil
-        @im.converted = 0
-        @im.save
-      end
-    end
-    
     respond_to do |format|
       format.html { redirect_to gallery_url }
       format.json { head :ok }
