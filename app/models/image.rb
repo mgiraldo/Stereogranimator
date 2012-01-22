@@ -25,7 +25,7 @@ class Image < ActiveRecord::Base
     return @images
   end
   def self.getMetadata (did)
-    image = Image.where(:digitalid => did).first
+    image = Image.where("upper(digitalid) = ?", did.upcase).first
     @meta = {}
     if  image != nil
       @meta = {"title" => "#{image.title} (#{image.date})", "link" => "http://digitalgallery.nypl.org/nypldigital/id?#{image.digitalid}" }

@@ -2,7 +2,7 @@ class Animation < ActiveRecord::Base
   after_initialize :updateMetadata
   before_save :imageAndMetadata
   def imageAndMetadata
-    @im = Image.where(:digitalid => self.digitalid).first
+    @im = Image.where("upper(digitalid) = ?", self.digitalid.upcase).first
     if @im != nil
       @im.converted = 1
       @im.save
@@ -21,7 +21,7 @@ class Animation < ActiveRecord::Base
       update = true
     end
     if self.metadata==nil && self.digitalid!=nil
-      @im = Image.where(:digitalid => self.digitalid).first
+      @im = Image.where("upper(digitalid) = ?", self.digitalid.upcase).first
       self.metadata = "#{@im.title} #{@im.date}"
       update = true
     end
