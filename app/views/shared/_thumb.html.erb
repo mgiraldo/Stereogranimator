@@ -1,6 +1,6 @@
 				<div class="thumb">
 <% if current_user %>
-					<%= link_to 'delete', "animations/#{image.id}/kill", :confirm => 'Are you sure?', :method => :destroy, :class => "kill" %>
+					<%= link_to 'delete', "/animations/#{image.id}/kill", :confirm => 'Are you sure?', :method => :destroy, :class => "kill" %>
 <% end %>
 					<div class="pad">
 <!--[if (!IE)|(IE 9)]> -->
