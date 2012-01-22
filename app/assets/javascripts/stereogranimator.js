@@ -43,6 +43,7 @@ var sq2;
 
 // text
 var txt;
+var vtxt;
 
 // element vars
 // square positions
@@ -178,7 +179,7 @@ function prepareInterface() {
 
 function centerPhoto() {
 	// center horizontally
-	OFFSET = Math.floor((canvas.width - img.width)/2);
+	OFFSET = Math.floor((canvas.width - img.width));
 
 	bmp.x = OFFSET;
 	bmp.y = 0;
@@ -223,14 +224,22 @@ function run() {
 	sq2.my = 0;
 	stage.addChild(sq2);
 	
-	// draw text
+	// draw square help text
 	txt = new Text("drag me", "20px share-regular", "#fff");
 	txt.textBaseline = "middle";
 	txt.lineWidth = 80;
-	txt.x = -1000;
-	txt.y = 0;
+	txt.x = 0;
+	txt.y = -100;
 	stage.addChild(txt);
 	
+	// draw vertical help text
+	vtxt = new Text("<- shift axis   shift axis ->", "20px share-regular", "#fff");
+	vtxt.textBaseline = "middle";
+	vtxt.lineWidth = 216;
+	vtxt.x = -1000;
+	vtxt.y = 445;
+	stage.addChild(vtxt);
+
 	Ticker.addListener(window);
 }
 
@@ -861,16 +870,27 @@ function draw() {
 function drawText()	{
 	if (sq1.over) {
 		// text
-		txt.x = sq1x + hsize/2 - txt.lineWidth;
-		txt.y = sq1y + vsize/2;
+		txt.x = sq1x + hsize*.5 - txt.lineWidth;
+		txt.y = sq1y + vsize*.5;
 	} else if (sq2.over) {
 		// text
-		txt.x = sq2x + hsize/2 + INSET;
-		txt.y = sq2y + vsize/2;
+		txt.x = sq2x + hsize*.5 + INSET;
+		txt.y = sq2y + vsize*.5;
 	} else {
 		// text
 		txt.x = -1000;
 		txt.y = -1000;
+	}
+	if (vert_sprite.over) {
+		// text
+		vtxt.x = vertx - vtxt.lineWidth*.5;
+		vtxt.y = sq1y + vsize + 30;
+		if (vtxt.y > stageHeight - 30) {
+			vtxt.y = sq1y + vsize - 30;
+		}
+	} else {
+		// text
+		vtxt.x = -1000;
 	}
 }
 
@@ -944,15 +964,15 @@ function drawSquare(square,x,y) {
 	g.drawRect(x,y,hsize,vsize);
 	if (square.over) {
 		CROSSSIZE = INSET*2;
-		g.moveTo(x-CROSSSIZE+hsize/2,y-CROSSSIZE+vsize/2).lineTo(x+CROSSSIZE+hsize/2,y+CROSSSIZE+vsize/2).moveTo(x+CROSSSIZE+hsize/2,y-CROSSSIZE+vsize/2).lineTo(x-CROSSSIZE+hsize/2,y+CROSSSIZE+vsize/2);
+		g.moveTo(x-CROSSSIZE+hsize*.5,y-CROSSSIZE+vsize*.5).lineTo(x+CROSSSIZE+hsize*.5,y+CROSSSIZE+vsize*.5).moveTo(x+CROSSSIZE+hsize*.5,y-CROSSSIZE+vsize*.5).lineTo(x-CROSSSIZE+hsize*.5,y+CROSSSIZE+vsize*.5);
 		// draw arrows
-		g.moveTo(x-CROSSSIZE+hsize/2,(y-CROSSSIZE+vsize/2)+(CROSSSIZE/2)).lineTo(x-CROSSSIZE+hsize/2,y-CROSSSIZE+vsize/2).lineTo(x-CROSSSIZE+hsize/2+(CROSSSIZE/2),y-CROSSSIZE+vsize/2);
-		g.moveTo(x+CROSSSIZE+hsize/2,y+CROSSSIZE+vsize/2-(CROSSSIZE/2)).lineTo(x+CROSSSIZE+hsize/2,y+CROSSSIZE+vsize/2).lineTo(x+CROSSSIZE+hsize/2-(CROSSSIZE/2),y+CROSSSIZE+vsize/2);
-		g.moveTo(x+CROSSSIZE+hsize/2,y-CROSSSIZE+vsize/2+(CROSSSIZE/2)).lineTo(x+CROSSSIZE+hsize/2,y-CROSSSIZE+vsize/2).lineTo(x+CROSSSIZE+hsize/2-(CROSSSIZE/2),y-CROSSSIZE+vsize/2);
-		g.moveTo(x-CROSSSIZE+hsize/2,y+CROSSSIZE+vsize/2-(CROSSSIZE/2)).lineTo(x-CROSSSIZE+hsize/2,y+CROSSSIZE+vsize/2).lineTo(x-CROSSSIZE+hsize/2+(CROSSSIZE/2),y+CROSSSIZE+vsize/2);
+		g.moveTo(x-CROSSSIZE+hsize*.5,(y-CROSSSIZE+vsize*.5)+(CROSSSIZE*.5)).lineTo(x-CROSSSIZE+hsize*.5,y-CROSSSIZE+vsize*.5).lineTo(x-CROSSSIZE+hsize*.5+(CROSSSIZE*.5),y-CROSSSIZE+vsize*.5);
+		g.moveTo(x+CROSSSIZE+hsize*.5,y+CROSSSIZE+vsize*.5-(CROSSSIZE*.5)).lineTo(x+CROSSSIZE+hsize*.5,y+CROSSSIZE+vsize*.5).lineTo(x+CROSSSIZE+hsize*.5-(CROSSSIZE*.5),y+CROSSSIZE+vsize*.5);
+		g.moveTo(x+CROSSSIZE+hsize*.5,y-CROSSSIZE+vsize*.5+(CROSSSIZE*.5)).lineTo(x+CROSSSIZE+hsize*.5,y-CROSSSIZE+vsize*.5).lineTo(x+CROSSSIZE+hsize*.5-(CROSSSIZE*.5),y-CROSSSIZE+vsize*.5);
+		g.moveTo(x-CROSSSIZE+hsize*.5,y+CROSSSIZE+vsize*.5-(CROSSSIZE*.5)).lineTo(x-CROSSSIZE+hsize*.5,y+CROSSSIZE+vsize*.5).lineTo(x-CROSSSIZE+hsize*.5+(CROSSSIZE*.5),y+CROSSSIZE+vsize*.5);
 	} else {
 		g.beginStroke(COLOR);
-		g.moveTo(x-CROSSSIZE+hsize/2,y-CROSSSIZE+vsize/2).lineTo(x+CROSSSIZE+hsize/2,y+CROSSSIZE+vsize/2).moveTo(x+CROSSSIZE+hsize/2,y-CROSSSIZE+vsize/2).lineTo(x-CROSSSIZE+hsize/2,y+CROSSSIZE+vsize/2);
+		g.moveTo(x-CROSSSIZE+hsize*.5,y-CROSSSIZE+vsize*.5).lineTo(x+CROSSSIZE+hsize*.5,y+CROSSSIZE+vsize*.5).moveTo(x+CROSSSIZE+hsize*.5,y-CROSSSIZE+vsize*.5).lineTo(x-CROSSSIZE+hsize*.5,y+CROSSSIZE+vsize*.5);
 	}
 }
 
