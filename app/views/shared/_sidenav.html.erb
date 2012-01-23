@@ -1,9 +1,11 @@
 			<div class="grid_3 alpha">
-				<ul class="sideNav">
-<li><%= link_to_unless_current "Introductory text by Joshua Heineman", { :action => "what"} %></li>
-<li><%= link_to_unless_current "Stereoscopic photography", { :action => "stereogram"} %></li>
-<li><%= link_to_unless_current "What is an anaglyph?", { :action => "anaglyph"} %></li>
-<li><%= link_to_unless_current "What is an animated GIF?", { :action => "gif"} %></li>
+				<ul>
+<li><%= link_to_unless_current "Intro by Joshua Heineman", { :action => "what"} %></li>
+<li><%= link_to_unless_current "The collection", { :action => "collection"} %></li>
+<li><%= link_to_unless_current "Stereoscopy", { :action => "stereoscopy"} %></li>
+<li><%= link_to_unless_current "Anaglyphs", { :action => "anaglyph"} %></li>
+<li><%= link_to_unless_current "Animated GIFs", { :action => "animatedgif"} %></li>
 <li><%= link_to_unless_current "Credits", { :action => "credits"} %></li>
 				</ul>
+				<p class="help">Feedback, questions, problems? Get in touch at <%= link_to "stereo@nypl.org", "mailto:stereo@nypl.org" %></p>
 			</div>

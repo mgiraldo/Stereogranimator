@@ -1,0 +1,51 @@
+<% content_for :dynamic_js do %>
+<%= javascript_include_tag "/assets/lightbox/prototype.js" %>
+<%= javascript_include_tag "/assets/lightbox/scriptaculous.js?load=effects,builder" %>
+<%= javascript_include_tag "/assets/lightbox/lightbox.js" %>
+<%= stylesheet_link_tag "/assets/lightbox/lightbox.css" %>
+<% end %>
+	<div class="container_12">
+		<h1 class="welcome"><span class="visuallyhidden">WELCOME</span></h1>
+		<div class="sideNav grid_9">
+<%= render :partial => "shared/sidenav" %>
+			<div class="grid_6 omega">
+				<h2>Stereoscopic photography</h2>
+<p>Stereoscopic photography recreates the illusion of depth by utilizing the binocularity of human vision. Because our two eyes are set apart, each eye sees the world from a slightly different angle. Our brains combine these two different eye-images into one, a phenomenon that enables us to "see," ever so slightly, around the sides of objects, providing spatial depth and dimension. Stereoscopic views, or stereographs, consist of two nearly twin photographs -- one for the left eye, one for the right. Viewing the side-by-side images though a special lens arrangement called a stereoscope helps our brains combine the two flat images and "see" the illusion of objects in spatial depth.</p>
+			</div>
+			<div class="clear"></div>
+			<div class="grid_3 alpha">
+<%= link_to (image_tag "about-scope1th.jpg"), asset_path("about-scope1.jpg"), {:class => "grid_1 alpha",:rel => "lightbox[scope]", :title => "A stereoscope for glass stereograms"}  %>
+<%= link_to (image_tag "about-scope2th.jpg"), asset_path("about-scope2.jpg"), {:class => "grid_1",:rel => "lightbox[scope]", :title => "A stereoscope for glass stereograms"}  %>
+<%= link_to (image_tag "about-scope3th.jpg"), asset_path("about-scope3.jpg"), {:class => "grid_1 omega",:rel => "lightbox[scope]", :title => "A stereoscope for glass stereograms"}  %>
+<p class="caption">A stereoscope for glass stereograms</p>
+			</div>
+			<div class="grid_6 omega">
+<p>The Getty Museum has produced a nice <a href="http://www.getty.edu/art/exhibitions/genius/extras_watkins.html">simulation</a> of stereo viewing.</p>
+<p>Photographers around the world produced millions of stereoscopic views between 1850 and 1930. Their popularity soared when Queen Victoria and Prince Albert received the gift of a stereoscopic viewer at the Crystal Palace exhibition in 1851. Soon after, the American jurist Oliver Wendell Holmes called for the establishment of "special stereographic collections just as we have professional and other libraries." Around the world, independent and entrepreneurial photographers broke into the growing market for illustrations of all types of subjects: local history and events, grand landscapes, foreign monuments, charming genre scenes, portraits of notables and urban architecture. War and disasters such as floods, fires, train-wrecks, and earthquakes were enormously popular subjects.</p>
+			</div>
+			<div class="clear"></div>
+			<div class="grid_3 alpha">
+<%= link_to (image_tag "about-scope5th.gif"), asset_path("about-scope5.gif"), {:rel => "lightbox[scope]", :title => "Using an early-20th century stereoscope"}  %>
+<p class="caption">Using an early-20th century stereoscope</p>
+			</div>
+			<div class="grid_6 omega">
+<p>By the 1890s, humor and sentimentality had come to dominate the genre market, while leading publishers such as Underwood & Underwood and the Keystone Company produced formulaic topical and documentary series covering landscape, travel, and the growth of cities. Though independent publishers and talented individual cameramen prospered throughout the stereo era, by the end of the century the camera work had attained a uniformity of appearance that prefigured the compositional conventions of routine wire service and publicity photography. In contrast, the artistic and enterprising photographic productions of the earlier period make stereoscopic views even more interesting for the discrete aesthetic visions and regional practices that created them. Stereo views declined in the 1920s and 1930s with the rise of movie newsreels and popular illustrated magazines such as Life.</p>
+			</div>
+			<div class="clear"></div>
+			<div class="grid_3 alpha">
+<%= link_to (image_tag "about-scope6th.jpg"), asset_path("about-scope6.jpg"), {:rel => "lightbox[scope]", :title => "A late-20th century stereoscope"}  %>
+<p class="caption">A late-20th century stereoscope</p>
+			</div>
+			<div class="grid_6 omega">
+<p>Just as the television industry has for more than half a century addressed the diverse entertainment tastes and far-ranging information needs of a complex audience, so stereoscopic views entertained and enlightened a similarly broad and eclectic audience a century ago, and often for the same types of profit. During the period between the 1850s and the 1910s, stereos were a mainstay of home entertainment, perhaps second only to reading as a personal leisure activity. Like television, stereos were an intimate medium viewed by individuals or small groups at home, or at churches, schools, or clubs. Stereoscopes varied from small, wooden, hand-held devices for viewing single images to large, cabinet-size pieces of furniture that could display a changing series of fifty or more views. The subject matter of stereoscopic views was boundless, appealing to many specialized interests. Like cable television in its present diversity and niche marketing, stereos accommodated tastes ranging from vulgar to refined, from simple to scientific. Production quality was also wide-ranging - from exquisitely sharp original silver prints to indistinct, cheaply produced copies, and eventually half-tone photomechanical processes. The makers of stereos were equally diverse. Into the 1880s, they ranged from eager amateurs photographing family scenes for private distribution to the famed camera artists of the day who demanded high-quality publishing and distribution and got it. By the 1890s, stereo photographers tended to be skilled and enterprising professionals who either sold their images to large commercial producers or worked anonymously under contract to them.</p>
+<p>As visual information, stereoscopic views are valuable for the broad community of students, scholars, specialists, and laymen whose research or interests require pictorial documentation or illustration. The small size of the stereo camera enabled photographers to take a more journalistic approach to accommodate the public's interest in popular subjects; the popularity and accessibility of stereoscopic views assured a steady and profitable market. Often, many of the earliest expeditionary photographers took pictures of the same subject in a range of formats, from stereo to mammoth plates, certain that each size would find its appropriate audience. Conversely, by the 1890s the subject matter of stereo views simply does not appear routinely in larger-format photography. Stereoscopic views include topographic views, local history, events, industries and trade, costume, urban and country life, and portraits. In addition, stereos span 80 years of early photographic practice and are an important source for further researching the history of the medium itself, including glass transparencies, albumen prints, silver gelatin prints, and many variants. As historical records, stereo views have the potential to reveal the way the world appeared through the photographers' and audiences' preconceptions even as they mirror that long-vanished world's physical and contextual reality. On many levels, stereographs continue their expository and illustrative functions, inviting further use and study.</p>
+<h3>Good Stereo Resources:</h3>
+<ul>
+	<li><a href="http://www.stereoview.org/">National Stereoscopic Association</a></li>
+	<li><a href="http://www.londonstereo.com/">London Stereoscopic Company</a></li>
+	<li><a href="http://www.stereoscopy.com/">stereoscopy.com</a></li>
+</ul>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>

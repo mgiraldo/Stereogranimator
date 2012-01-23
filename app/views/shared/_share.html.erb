@@ -7,10 +7,12 @@
 <%
 
 # encoded stuff to use in the share buttons
+createdtweet = @animation.mode == "GIF" ? "I just created this GIF using the Stereogranimator (via New York Public Library @nypl_labs)" : "I just created this 3D image using the Stereogranimator (via New York Public Library @nypl_labs)"
+foundtweet = @animation.mode == "GIF" ? "The past reanimated, courtesy of the Stereogranimator (via New York Public Library @nypl_labs)" : "Vintage 3D, courtesy of the Stereogranimator (via New York Public Library @nypl_labs)"
 
 src = CGI.escape(request.protocol + request.host_with_port + @animation.full_count)
 url = CGI.escape(url_for(:controller=>"gallery",:action=>"view",:id=>@animation.id,:only_path => false))
-tweet = @sharetype == "created" ? CGI.escape("I just created this #{@animation.mode} using the Stereogranimator by @nypl_labs") : CGI.escape("Check out this #{@animation.mode} I found in the Stereogranimator by @nypl_labs")
+tweet = @sharetype == "created" ? CGI.escape(createdtweet) : CGI.escape(foundtweet)
 twitterurl = "https://twitter.com/share?url=#{url}&text=#{tweet}"
 facebookurl = "http://www.facebook.com/sharer.php?u=#{url}&t=#{tweet}"
 tumblrurl = "http://www.tumblr.com/share/photo?source=#{src}&caption=#{tweet}&clickthru=#{url}"

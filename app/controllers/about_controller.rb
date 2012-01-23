@@ -9,15 +9,18 @@ class AboutController < ApplicationController
     @imagecount = Image.all.length
   end
 
-  def gif
+  def animatedgif
   end
   
   def anaglyph
   end
 
-  def stereogram
+  def stereoscopy
   end
 
   def credits
+  end
+  
+  def collection
   end
 end

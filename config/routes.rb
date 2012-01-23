@@ -15,10 +15,11 @@ Stereo::Application.routes.draw do
   match 'dismissInstructions' => 'user_session#dismissInstructions', :as => :dismissInstructions
   
   match 'about', :to => 'about#what', :as => "about"
-  match 'about/gif', :to => 'about#gif', :as => "about_gif"
-  match 'about/stereogram', :to => 'about#stereogram', :as => "about_stereogram"
+  match 'about/animatedgif', :to => 'about#animatedgif', :as => "about_animatedgif"
+  match 'about/stereoscopy', :to => 'about#stereoscopy', :as => "about_stereoscopy"
   match 'about/anaglyph', :to => 'about#anaglyph', :as => "about_anaglyph"
   match 'about/credits', :to => 'about#credits', :as => "about_credits"
+  match 'about/collection', :to => 'about#collection', :as => "about_collection"
   match 'what', :to => 'about#what', :as => "about_what"
   match 'gallery', :to => 'gallery#index', :as => "gallery"
   match 'gallery/:type', :to => 'gallery#index', :as => "gallery_type"

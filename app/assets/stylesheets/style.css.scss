@@ -9,7 +9,7 @@ body {
 }
 
 #mainContent {
-  h1, h2, h3, p {
+  h1, h2, h3, p, li {
     padding: 0 5px;
   }
   h2 {
@@ -31,13 +31,23 @@ h3 {
   margin-bottom: 1em;
 }
 
-p {
+p, blockquote {
   font-size: 1em;
   margin: 0 0 $lineheightem 0;
 }
 
+blockquote {
+  margin-left: 70px;
+  margin-right: 70px;
+  font-style: italic;
+}
+
 em {
   color: $emgray;
+}
+
+ul {
+  list-style-type: none;
 }
 
 a, a:link, a:visited {
@@ -158,7 +168,6 @@ a:hover {
   }
   ul {
     position: absolute;
-    list-style-type: none;
     margin: 0;
     top: 70px;
     left: 240px;
@@ -194,7 +203,7 @@ a:hover {
 }
 
 #mainContent {
-  background: $backimage repeat-x;
+  background: $backimage repeat-x;/*asset-url('12_col.gif', image);*/
   .thumb {
     position: relative;
     float: left;
@@ -292,6 +301,18 @@ a:hover {
   }
   .stats {
     margin-top: 30px;
+  }
+  .sideNav {
+    p {
+      &.help {
+        font-style: italic;
+        margin-top: $baselineheightem;
+        line-height: $halflineheightem;
+      }
+      &.caption {
+        line-height: $halflineheightem;
+      }
+    }
   }
 }
 
