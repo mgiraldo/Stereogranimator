@@ -40,6 +40,14 @@ p.caption {
   line-height: $halflineheightem;
 }
 
+p.dropcap:first-letter {
+  float: left;
+  font-size: 4em;
+  line-height: .8em;
+  margin-right: 3px;
+  padding: 2px;
+}
+
 blockquote {
   font-style: italic;
 }
