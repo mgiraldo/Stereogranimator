@@ -1,28 +1,24 @@
 	<div class="container_12">
-		<h1 class="welcome"><span class="visuallyhidden">WELCOME</span></h1>
+		<h1 class="about"><span class="visuallyhidden">ABOUT THIS PROJECT</span></h1>
 		<div class="sideNav grid_9">
+			<div class="grid_3 alpha">
 <%= render :partial => "shared/sidenav" %>
+<%= image_tag "about-anaglyph1.jpg" %>
+<p class="caption">Credit: <a href="http://www.flickr.com/photos/xenmate/6673633381/">xenmate</a> on Flickr</p>
+			</div>
 			<div class="grid_6 omega">
 				<h2>Anaglyphs</h2>
 <p>From <a href="http://en.wikipedia.org/wiki/Anaglyph_image">Wikipedia</a>:</p>
 <blockquote>"Anaglyph images are used to provide a stereoscopic 3D effect, when viewed with glasses where the two lenses are different (usually chromatically opposite) colors, such as red and cyan. Images are made up of two color layers, superimposed, but offset with respect to each other to produce a depth effect. Usually the main subject is in the center, while the foreground and background are shifted laterally in opposite directions. The picture contains two differently filtered colored images, one for each eye. When viewed through the "color coded" "anaglyph glasses", they reveal an integrated stereoscopic image. The visual cortex of the brain fuses this into perception of a three dimensional scene or composition."</blockquote>
-			</div>
-			<div class="clear"></div>
-			<div class="grid_3 alpha">
-<%= image_tag "about-anaglyph1.jpg" %>
-<p class="caption">Credit: <a href="http://www.flickr.com/photos/xenmate/6673633381/">xenmate</a> on Flickr</p>
+<p>The Director of Applied Research at HP Labs in Singapore has a <a href="http://blog.saush.com/2011/07/19/create-3d-anaglyph-images-with-3-lines-of-ruby-code/">useful post on producing anaglyphs</a> (and good background on 3D in general).</p>
 <%
 ### DON'T DELETE THESE IMAGES FROM THE DATABASE!
 %>
-<%= link_to (image_tag "about-anaglyph2.png"), {:controller=>"gallery", :action=>"view", :id=>227} %>
-<%= link_to (image_tag "about-anaglyph3.png"), {:controller=>"gallery", :action=>"view", :id=>231} %>
-<%= link_to (image_tag "about-anaglyph4.png"), {:controller=>"gallery", :action=>"view", :id=>228} %>
-<p class="caption">Some anaglyphs produced with the Stereogranimator</p>
+<h3>Some anaglyphs produced with the Stereogranimator:</h3>
+<%= link_to (image_tag "about-anaglyph2.png", :class=>"grid_2 alpha"), {:controller=>"gallery", :action=>"view", :id=>227} %>
+<%= link_to (image_tag "about-anaglyph3.png", :class=>"grid_2"), {:controller=>"gallery", :action=>"view", :id=>231} %>
+<%= link_to (image_tag "about-anaglyph4.png", :class=>"grid_2 omega"), {:controller=>"gallery", :action=>"view", :id=>228} %>
 			</div>
-			<div class="grid_6 omega">
-<p>The Director of Applied Research at HP Labs in Singapore has a <a href="http://blog.saush.com/2011/07/19/create-3d-anaglyph-images-with-3-lines-of-ruby-code/">useful post on producing anaglyphs</a> (and good background on 3D in general).</p>
-			</div>
-
 		</div>
 		<div class="clear"></div>
 	</div>

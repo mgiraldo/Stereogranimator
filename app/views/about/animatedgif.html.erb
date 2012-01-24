@@ -1,10 +1,12 @@
 	<div class="container_12">
-		<h1 class="welcome"><span class="visuallyhidden">WELCOME</span></h1>
+		<h1 class="about"><span class="visuallyhidden">ABOUT THIS PROJECT</span></h1>
 		<div class="sideNav grid_9">
+			<div class="grid_3 alpha">
 <%= render :partial => "shared/sidenav" %>
+			</div>
 			<div class="grid_6 omega">
 				<h2>About animated GIFs</h2>
-<p>Now a quarter century old, the <a href="http://en.wikipedia.org/wiki/Graphics_Interchange_Format">GIF</a>, or Graphics Interchange Format, predates the web, but it was the web that made it famous. With updates to the Netscape browser in the mid-90s, animated GIFs (loops of successive images) became a staple of early personal websites, providing an easy way to breathe visual life into static hypertext pages. Cast your mind back to the days of dial-up modems and you may recall little workmen digging into infinity alongside a sign bearing "under construction", or small signs blinking "new" indicating updates. Long before the relentless churn of the web we know today, animated gifs prefigured, in their charmingly clunky way, the dynamic, always evolving nature of the new medium.</p>
+<p>Now a quarter century old, the <a href="http://en.wikipedia.org/wiki/Graphics_Interchange_Format">GIF</a>, or Graphics Interchange Format, predates the web, but it was the web that made it famous. With updates to the Netscape browser in the mid-90s, animated GIFs (loops of successive images) became a staple of early personal websites, providing an easy way to breathe visual life into static hypertext pages. Cast your mind back to the days of dial-up modems and you may recall little workmen digging into infinity alongside a sign bearing "under construction", or small signs blinking "new" indicating updates. Long before the relentless churn of the web we know today, animated GIFs prefigured, in their charmingly clunky way, the dynamic, always evolving nature of the new medium.</p>
 			</div>
 			<div class="clear"></div>
 			<div class="grid_3 alpha">
@@ -25,6 +27,13 @@
 	<li><a href="http://dashes.com/anil/2011/07/animated-gifs-triumphant.html">Animated GIFs Triumphant</a> - Anil Dash, July 12, 2011</li>
 	<li><a href="http://3fram.es/">3fram.es</a> - make your own 3-frame loops using your webcam</li>
 </ul>
+<%
+### DON'T DELETE THESE IMAGES FROM THE DATABASE!
+%>
+<h3>Some animated GIFs produced with the Stereogranimator:</h3>
+<%= link_to (image_tag "about-gif5.gif", :class=>"grid_2 alpha"), {:controller=>"gallery", :action=>"view", :id=>232} %>
+<%= link_to (image_tag "about-gif6.gif", :class=>"grid_2"), {:controller=>"gallery", :action=>"view", :id=>218} %>
+<%= link_to (image_tag "about-gif7.gif", :class=>"grid_2 omega"), {:controller=>"gallery", :action=>"view", :id=>80} %>
 			</div>
 		</div>
 		<div class="clear"></div>

@@ -1155,6 +1155,9 @@ function generate() {
 	document.getElementById("btnNext").disabled = true;
 	document.getElementById("btnNext").onclick = {};
 	$("#btnNext").replaceWith("<div class=\"generator\">GENERATING...</div>");
+	// send google analytics
+	_gaq.push(['_trackEvent', 'Granimations', mode, "HTML"]);
+	// post to server
 	$.ajax({
 		url: "/animations/createJson/"+(sq1x-OFFSET)+"/"+(sq1y)+"/"+(sq2x-OFFSET)+"/"+(sq2y)+"/"+hsize+"/"+vsize+"/"+speed+"/"+index+"/"+mode+"/mga.json",
 		dataType: 'json',
@@ -1181,6 +1184,8 @@ function generate() {
 }
 
 function generateFromFlash(_sq1x,_sq1y,_sq2x,_sq2y,_hsize,_vsize,_speed,_index,_mode) {
+	// send google analytics
+	_gaq.push(['_trackEvent', 'Granimations', _mode, "FLASH"]);
 	$.ajax({
 		url: "/animations/createJson/"+(_sq1x)+"/"+(_sq1y)+"/"+(_sq2x)+"/"+(_sq2y)+"/"+_hsize+"/"+_vsize+"/"+_speed+"/"+_index+"/"+_mode+"/mga.json",
 		dataType: 'json',

@@ -13,7 +13,7 @@
 
 img = CGI.escape("#{request.protocol}#{request.host_with_port}" + asset_path("diagram-home.png",:only_path => false))
 url = CGI.escape(url_for(:controller=>"about",:action=>"index",:only_path => false))
-tweet = CGI.escape("Stereogranimator: create & share animated gifs & 3D anaglyphs from over 40K vintage stereographs from The New York Public Library (@nypl_labs)")
+tweet = CGI.escape("Stereogranimator: create & share GIFs & 3D from over 40K vintage stereographs (via New York Public Library @nypl_labs)")
 twitterurl = "https://twitter.com/share?url=#{url}&text=#{tweet}"
 facebookurl = "http://www.facebook.com/sharer.php?u=#{url}&t=#{tweet}"
 tumblrurl = "http://www.tumblr.com/share/photo?source=#{img}&caption=#{tweet}&clickthru=#{url}"

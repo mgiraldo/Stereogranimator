@@ -36,9 +36,11 @@ p, blockquote {
   margin: 0 0 $lineheightem 0;
 }
 
+p.caption {
+  line-height: $halflineheightem;
+}
+
 blockquote {
-  margin-left: 70px;
-  margin-right: 70px;
   font-style: italic;
 }
 
@@ -248,22 +250,26 @@ a:hover {
   }
   .createTop {
     #nav p {
+      font-size: 24px;
+      font-weight: normal;
       margin: 6px 0 9px 0;
     }
+  }
+  h1 {
+    padding: 0;
+    background: $sprites no-repeat;
   }
   h1.create {
     width: 126px;
     height: 31px;
     margin: 29px 10px 9px 10px;
-    padding: 0;
-    background: $sprites -255px -351px no-repeat;
+    background-position: -255px -351px;
   }
   h1.gallery {
     width: 127px;
     height: 31px;
     margin: 29px 10px 15px 10px;
-    padding: 0;
-    background: $sprites -498px -351px no-repeat;
+    background-position: -498px -351px;
   }
   h1.welcome {
     width: 207px;
@@ -271,16 +277,21 @@ a:hover {
     margin: 0;
     margin-top: 29px;
     margin-bottom: 20px;
-    padding: 0;
-    background: $sprites -38px -351px no-repeat;
+    background-position: -38px -351px;
   }
   h1.latest {
     width: 100px;
     height: 31px;
     margin-top: 29px;
     margin-bottom: 20px;
+    background-position: -391px -351px;
+  }
+  h1.about {
+    width: 351px;
+    height: 31px;
+    margin: 29px 10px 15px 10px;
     padding: 0;
-    background: $sprites -391px -351px no-repeat;
+    background-position: -37px -317px;
   }
   .meta {
     .create {
@@ -307,9 +318,6 @@ a:hover {
       &.help {
         font-style: italic;
         margin-top: $baselineheightem;
-        line-height: $halflineheightem;
-      }
-      &.caption {
         line-height: $halflineheightem;
       }
     }
@@ -444,16 +452,21 @@ a:hover {
       text-align: center;
     }
     #toggleLinks {
-      #toggleAna, #toggleGIF {
+      .toggleAna, #toggleGIF {
         display: block;
         float: left;
         width: 200px;
         height: 25px;
         text-align: center;
       }
-      #toggleAna {
-        height: 35px;
-        padding-top: 10px;
+      .toggleAna {
+        height: 50px;
+        #toggleAna {
+          display: block;
+        }
+        .dim {
+          color: $backcolor;
+        }
       }
       .active {
         color: $backcolor;
