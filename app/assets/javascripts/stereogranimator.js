@@ -7,7 +7,6 @@ var bmp;
 var stageWidth = 800;
 var stageHeight = 550;
 
-var NUM_ELEMENTS_TO_DOWNLOAD = 2;
 var numImagesLoaded = 0;
 
 var resize_sprite;
@@ -96,7 +95,7 @@ var BACKALPHA = "rgba(0,0,0,0.75)";
 
 var img = new Image();
 var update = true;
-var first = true;
+var previewActive = false;
 var mode = "GIF";
 var index = "";
 
@@ -125,7 +124,8 @@ function init() {
 	document.getElementById("medSpeed").onclick = function(){changeSpeed(MEDSPEED);};
 	document.getElementById("fastSpeed").onclick = function(){changeSpeed(FASTSPEED);};
 	
-	canvas.ontouchend = function(){isdown = false;sq1.over=sq2.over=hn1.over=hn2.over=false;};
+	canvas.ontouchend = function(){isdown = false;sq1.over=sq2.over=vert_sprite.over=false;};
+	canvas.ontouchstart = function(){previewActive=true;};
 	
 	sheetpng = new Image();
 	sheetpng.onload = handleImageLoad;
@@ -248,6 +248,10 @@ function addInteractivity() {
 	// wrapper function to provide scope for the event handlers:
 	(function(target) {
 		vert_sprite.onPress = function(evt) {
+			if (!previewActive) {
+				previewActive = true;
+				update = true;
+			}
 			// drag
 			vert_sprite.mx = vertx - stage.mouseX;
 			vert_sprite.sq1x = vertx - sq1x;
@@ -276,6 +280,11 @@ function addInteractivity() {
 	// wrapper function to provide scope for the event handlers:
 	(function(target) {
 		sq1.onPress = function(evt) {
+			if (!previewActive) {
+				previewActive = true;
+				update = true;
+			}
+
 			// drag
 			// save mouse position for future reference
 			sq1.mx = sq1x - stage.mouseX;
@@ -323,6 +332,11 @@ function addInteractivity() {
 	// wrapper function to provide scope for the event handlers:
 	(function(target) {
 		sq2.onPress = function(evt) {
+			if (!previewActive) {
+				previewActive = true;
+				update = true;
+			}
+
 			// drag
 			// save mouse position for future reference
 			sq2.mx = sq2x - stage.mouseX;
@@ -370,6 +384,11 @@ function addInteractivity() {
 	// wrapper function to provide scope for the event handlers:
 	(function(target) {
 		target.onPress = function(evt) {
+			if (!previewActive) {
+				previewActive = true;
+				update = true;
+			}
+
 			// drag
 			// save mouse position for future reference
 			target.mx = stage.mouseX - target.x;
@@ -431,6 +450,11 @@ function addInteractivity() {
 	})(corner_sprites[0]);
 	(function(target) {
 		target.onPress = function(evt) {
+			if (!previewActive) {
+				previewActive = true;
+				update = true;
+			}
+
 			// drag
 			// save mouse position for future reference
 			target.mx = stage.mouseX - target.x;
@@ -492,6 +516,11 @@ function addInteractivity() {
 	})(corner_sprites[1]);
 	(function(target) {
 		target.onPress = function(evt) {
+			if (!previewActive) {
+				previewActive = true;
+				update = true;
+			}
+
 			// drag
 			// save mouse position for future reference
 			target.mx = stage.mouseX - target.x;
@@ -553,6 +582,11 @@ function addInteractivity() {
 	})(corner_sprites[2]);
 	(function(target) {
 		target.onPress = function(evt) {
+			if (!previewActive) {
+				previewActive = true;
+				update = true;
+			}
+
 			// drag
 			// save mouse position for future reference
 			target.mx = stage.mouseX - target.x;
@@ -614,6 +648,11 @@ function addInteractivity() {
 	})(corner_sprites[3]);
 	(function(target) {
 		target.onPress = function(evt) {
+			if (!previewActive) {
+				previewActive = true;
+				update = true;
+			}
+
 			// drag
 			// save mouse position for future reference
 			target.mx = stage.mouseX - target.x;
@@ -675,6 +714,11 @@ function addInteractivity() {
 	})(corner_sprites[4]);
 	(function(target) {
 		target.onPress = function(evt) {
+			if (!previewActive) {
+				previewActive = true;
+				update = true;
+			}
+
 			// drag
 			// save mouse position for future reference
 			target.mx = stage.mouseX - target.x;
@@ -736,6 +780,11 @@ function addInteractivity() {
 	})(corner_sprites[5]);
 	(function(target) {
 		target.onPress = function(evt) {
+			if (!previewActive) {
+				previewActive = true;
+				update = true;
+			}
+
 			// drag
 			// save mouse position for future reference
 			target.mx = stage.mouseX - target.x;
@@ -797,6 +846,11 @@ function addInteractivity() {
 	})(corner_sprites[6]);
 	(function(target) {
 		target.onPress = function(evt) {
+			if (!previewActive) {
+				previewActive = true;
+				update = true;
+			}
+
 			// drag
 			// save mouse position for future reference
 			target.mx = stage.mouseX - target.x;
@@ -977,17 +1031,20 @@ function drawSquare(square,x,y) {
 }
 
 function tick() {
-	// this set makes it so the stage only re-renders when an event handler indicates a change has happened.
+	// only draw once clicked
+	if (previewActive) {
+		$("#previewExplain").hide();
+	}
 	if (update) {
 		draw();
 		update = false; // only update once
 		updatePreview();
 		stage.update();
-		if (mode=="ANAGLYPH") {
+		if (previewActive && mode=="ANAGLYPH") {
 			drawAnaglyph();
 		}
 	}
-	if (mode=="GIF") {
+	if (previewActive && mode=="GIF") {
 		drawGIF();
 	}
 }
@@ -1151,36 +1208,38 @@ function changeSpeed(s) {
 }
 
 function generate() {
-	console.log("generating...");
-	document.getElementById("btnNext").disabled = true;
-	document.getElementById("btnNext").onclick = {};
-	$("#btnNext").replaceWith("<div class=\"generator\">GENERATING...</div>");
-	// send google analytics
-	_gaq.push(['_trackEvent', 'Granimations', mode, "HTML"]);
-	// post to server
-	$.ajax({
-		url: "/animations/createJson/"+(sq1x-OFFSET)+"/"+(sq1y)+"/"+(sq2x-OFFSET)+"/"+(sq2y)+"/"+hsize+"/"+vsize+"/"+speed+"/"+index+"/"+mode+"/mga.json",
-		dataType: 'json',
-		data: null,
-		success: function(data) {
-			if (data.redirect) {
-				window.location.href = data.redirect;
-			} else {
-				console.log("cannot redirect: " + data);
+	if (previewActive) {
+		console.log("generating...");
+		document.getElementById("btnNext").disabled = true;
+		document.getElementById("btnNext").onclick = {};
+		$("#btnNext").replaceWith("<div class=\"generator\">GENERATING...</div>");
+		// send google analytics
+		_gaq.push(['_trackEvent', 'Granimations', mode, "HTML"]);
+		// post to server
+		$.ajax({
+			url: "/animations/createJson/"+(sq1x-OFFSET)+"/"+(sq1y)+"/"+(sq2x-OFFSET)+"/"+(sq2y)+"/"+hsize+"/"+vsize+"/"+speed+"/"+index+"/"+mode+"/mga.json",
+			dataType: 'json',
+			data: null,
+			success: function(data) {
+				if (data.redirect) {
+					window.location.href = data.redirect;
+				} else {
+					console.log("cannot redirect: " + data);
+				}
+			},
+			statusCode: {
+			  404: function() {
+				  alert('Photo not found error (404)');
+			  },
+			  429: function() {
+				  alert('Too many requests (429)');
+			  },
+			  500: function() {
+				  alert('Internal server error (500)');
+			  }
 			}
-		},
-		statusCode: {
-		  404: function() {
-			  alert('Photo not found error (404)');
-		  },
-		  429: function() {
-			  alert('Too many requests (429)');
-		  },
-		  500: function() {
-			  alert('Internal server error (500)');
-		  }
-		}
-	});
+		});
+	}
 }
 
 function generateFromFlash(_sq1x,_sq1y,_sq2x,_sq2y,_hsize,_vsize,_speed,_index,_mode) {
@@ -1229,20 +1288,11 @@ function refreshImages() {
 }
 
 function handleImageLoad(e) {
-    numImagesLoaded++;
-
-    // If all elements have been downloaded
-    if (numImagesLoaded == 2) {
-        numImagesLoaded = 0;
-		if (first) {
-			first = false;
-		}
-		run();
-		prepareInterface();
-		// adding interaction
-		addInteractivity();
-		update = true;
-    }
+	run();
+	prepareInterface();
+	// adding interaction
+	addInteractivity();
+	update = true;
 }
 
 //called if there is an error loading the image (usually due to a 404)

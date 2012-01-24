@@ -311,7 +311,7 @@ a:hover {
     margin-top: 0;
   }
   .stats {
-    margin-top: 30px;
+    margin-top: 10px;
   }
   .sideNav {
     p {
@@ -435,6 +435,13 @@ a:hover {
       }
       #previewGIF {
         margin: 0 auto;
+      }
+      #previewExplain {
+        position: absolute;
+        top: 80px;
+        left: 0;
+        right: 0;
+        text-align: center;
       }
     }
     #process {
