@@ -5,7 +5,7 @@ class AnimationsController < ApplicationController
   def choose
     @images = Image.randomSet()
     respond_to do |format|
-      format.html { render :layout => "new_rich"}
+      format.html
     end
   end
   
@@ -46,7 +46,7 @@ class AnimationsController < ApplicationController
   def new
     @metadata = Image.getMetadata(params[:did])
     respond_to do |format|
-      format.html { render :layout => "new_rich"} # new.html.erb
+      format.html # new.html.erb
     end
   end
 
