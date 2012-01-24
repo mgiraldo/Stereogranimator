@@ -16,4 +16,11 @@ namespace :stereo do
     Animation.purgeBlacklisted
     puts "Finished!"
   end
+  task :purgeSiege => :environment do
+    puts "Removing stress test images"
+    stuff = Animation.where(:creator => "siege")
+    puts "Destroying #{stuff.length} images"
+    stuf.destroy_all
+    puts "Finished!"
+  end
 end
