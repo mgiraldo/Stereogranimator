@@ -1,12 +1,13 @@
 namespace :stereo do
   task :push => :environment do
-    puts "Starting pushing images to DB"
+    puts "Deleting existing images"
     Image.destroy_all
+    puts "Starting pushing images to DB"
     Image.pushToDB
     puts "Finished!"
   end
   task :revive => :environment do
-    puts "Recreating entire animation dataset"
+    puts "Recreating entire animation dataset files"
     Animation.recreateAWS
     puts "Finished!"
   end
