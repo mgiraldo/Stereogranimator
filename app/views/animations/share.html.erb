@@ -4,8 +4,9 @@
 				<p><span class="dim">Step 1: CHOOSE &gt; Step 2: CREATE &gt;</span> Step 3: SHARE</p>
 			</div>
 		</div>
+		<div class="container_12">
 <%= render "shared/detail", :locals => {:animation => @animation} %>
-		<div class="meta grid_5">
+			<div class="meta grid_5">
 			<h2>CONGRATULATIONS!</h2>
 
 			<p>Your <%= @animation.mode == "GIF" ? "animated GIF" : "anaglyph" %> has been created!</p>
@@ -16,5 +17,6 @@
 
 <%= render "shared/share", :locals => {:animation => @animation, :sharetype => @sharetype} %>
 			
+			</div>
 		</div>
 		<div class="clear"></div>

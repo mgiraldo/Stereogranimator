@@ -3,8 +3,9 @@
 			<div class="clear"></div>
 <%= render "shared/detail", :locals => {:animation => @animation} %>
 			<div class="meta grid_5">
-				
-<%= render "shared/share", :locals => {:animation => @animation, :sharetype => "viewed"} %>
+
+<% @sharetype = "viewed" %>
+<%= render "shared/share", :locals => {:animation => @animation, :sharetype => @sharetype} %>
 
 				<div class="create"><%= link_to "CREATE YOUR OWN!", "/choose", :class => 'genericButtonLink' %></div>
 
