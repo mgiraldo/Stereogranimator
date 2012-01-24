@@ -214,6 +214,9 @@ a:hover {
 
 #mainContent {
   background: $backimage repeat-x;/*asset-url('12_col.gif', image);*/
+  .showGrid {
+    background: $gridimage;
+  }
   .thumb {
     position: relative;
     float: left;

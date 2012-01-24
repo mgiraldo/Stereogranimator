@@ -1,12 +1,11 @@
 	<div class="container_12">
 		<h1 class="about"><span class="visuallyhidden">ABOUT THIS PROJECT</span></h1>
-		<div class="sideNav grid_9">
-			<div class="grid_3 alpha">
+			<div class="grid_3">
 <%= render :partial => "shared/sidenav" %>
 <%= image_tag "about-anaglyph1.jpg" %>
 <p class="caption">Credit: <a href="http://www.flickr.com/photos/xenmate/6673633381/">xenmate</a> on Flickr</p>
 			</div>
-			<div class="grid_6 omega">
+			<div class="grid_6">
 				<h2>Anaglyphs</h2>
 <p>From <a href="http://en.wikipedia.org/wiki/Anaglyph_image">Wikipedia</a>:</p>
 <blockquote>"Anaglyph images are used to provide a stereoscopic 3D effect, when viewed with glasses where the two lenses are different (usually chromatically opposite) colors, such as red and cyan. Images are made up of two color layers, superimposed, but offset with respect to each other to produce a depth effect. Usually the main subject is in the center, while the foreground and background are shifted laterally in opposite directions. The picture contains two differently filtered colored images, one for each eye. When viewed through the "color coded" "anaglyph glasses", they reveal an integrated stereoscopic image. The visual cortex of the brain fuses this into perception of a three dimensional scene or composition."</blockquote>
@@ -19,6 +18,8 @@
 <%= link_to (image_tag "about-anaglyph3.png", :class=>"grid_2"), {:controller=>"gallery", :action=>"view", :id=>231} %>
 <%= link_to (image_tag "about-anaglyph4.png", :class=>"grid_2 omega"), {:controller=>"gallery", :action=>"view", :id=>1178} %>
 			</div>
-		</div>
+			<div class="grid_3 alpha omega">
+				<%= image_tag "diagram-eyes.png" %>
+			</div>
 		<div class="clear"></div>
 	</div>
