@@ -3,7 +3,7 @@ class AnimationsController < ApplicationController
   
   # GET /choose/nyplid
   def choose
-    @images = Animation.randomSet()
+    @images = Image.randomSet()
     respond_to do |format|
       format.html { render :layout => "new_rich"}
     end

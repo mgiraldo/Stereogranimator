@@ -53,10 +53,6 @@ class Animation < ActiveRecord::Base
       self.save
     end
   end
-  def self.randomSet
-    @images = Image.randomSet
-    return @images
-  end
   def createImage(bypass=false)
     if (self.filename==nil && self.digitalid!=nil) || bypass
       # do some image magick
@@ -72,7 +68,7 @@ class Animation < ActiveRecord::Base
       
       if self.mode == "GIF"
         # ANIMATED GIF!
-        self.filename = self.filename=="" ? unique + ".gif" : self.filename
+        self.filename = self.filename==nil ? unique + ".gif" : self.filename
         
         final = Magick::ImageList.new
         final << fr1
@@ -91,7 +87,7 @@ class Animation < ActiveRecord::Base
         thumb.iterations = 0
       else
         # ANAGLYPH!
-        self.filename = self.filename=="" ? unique + ".png" : self.filename
+        self.filename = self.filename==nil ? unique + ".png" : self.filename
         
         fr1 = fr1.gamma_correct(1,0,0)
         fr2 = fr2.gamma_correct(0,1,1)

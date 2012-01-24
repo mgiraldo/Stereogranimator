@@ -16,7 +16,7 @@ class Image < ActiveRecord::Base
         dbimages = Image.order('converted ASC, random()').limit(100)
       end
       dbimages.each do |e|
-        @images['all'].push(e.digitalid)
+        @images['all'].push(e.digitalid.upcase)
       end
       (0..8).each do |i|
         @images['subset'][i] = dbimages[i]
