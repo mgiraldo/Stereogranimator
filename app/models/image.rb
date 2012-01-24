@@ -37,7 +37,7 @@ class Image < ActiveRecord::Base
       |f|
       dec = ActiveSupport::JSON.decode f
       dec['response']['docs'].each do |d|
-        temp = Image.new(:digitalid => d['image_id'], :title => d['title'])
+        temp = Image.new(:digitalid => d['image_id'], :title => d['title'].to_s)
         if d['dc_coverage'] != nil
           temp.date = d['dc_coverage'].join(" ")
         end

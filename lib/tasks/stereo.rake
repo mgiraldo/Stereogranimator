@@ -5,4 +5,14 @@ namespace :stereo do
     Image.pushToDB
     puts "Finished!"
   end
+  task :revive => :environment do
+    puts "Recreating entire animation dataset"
+    Animation.recreateAWS
+    puts "Finished!"
+  end
+  task :purgeBlacklisted => :environment do
+    puts "Validating all animations are off-blacklist"
+    Animation.purgeBlacklisted
+    puts "Finished!"
+  end
 end

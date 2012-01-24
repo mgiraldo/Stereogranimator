@@ -1,5 +1,4 @@
 class Animation < ActiveRecord::Base
-  after_initialize :updateMetadata
   before_save :imageAndMetadata
   before_destroy :checkImage
   def checkImage
@@ -8,7 +7,7 @@ class Animation < ActiveRecord::Base
     # delete from Amazon S3
     if self.filename != nil && self.filename != ""
       s3 = AWS::S3.new
-      bucket = s3.buckets['stereogranimator']
+      bucket = s3.buckets['stereo.nypl.org']
       obj = bucket.objects[self.filename]
       obj.delete()
       obj = bucket.objects["t_" + self.filename]
@@ -58,8 +57,8 @@ class Animation < ActiveRecord::Base
     @images = Image.randomSet
     return @images
   end
-  def createImage
-    if self.filename==nil && self.digitalid!=nil
+  def createImage(bypass=false)
+    if (self.filename==nil && self.digitalid!=nil) || bypass
       # do some image magick
       # first get each frame
       im = Magick::Image.read(self.url).first
@@ -73,7 +72,7 @@ class Animation < ActiveRecord::Base
       
       if self.mode == "GIF"
         # ANIMATED GIF!
-        self.filename = unique + ".gif"
+        self.filename = self.filename=="" ? unique + ".gif" : self.filename
         
         final = Magick::ImageList.new
         final << fr1
@@ -92,7 +91,7 @@ class Animation < ActiveRecord::Base
         thumb.iterations = 0
       else
         # ANAGLYPH!
-        self.filename = unique + ".png"
+        self.filename = self.filename=="" ? unique + ".png" : self.filename
         
         fr1 = fr1.gamma_correct(1,0,0)
         fr2 = fr2.gamma_correct(0,1,1)
@@ -110,11 +109,27 @@ class Animation < ActiveRecord::Base
       
       # upload to Amazon S3
       s3 = AWS::S3.new
-      bucket = s3.buckets['stereogranimator']
+      bucket = s3.buckets['stereo.nypl.org']
       obj = bucket.objects[self.filename]
-      obj.write(:file => "#{Rails.root}/tmp/#{self.filename}", :acl => :public_read, :metadata => { 'photo_from' => 'New York Public Library' })
+      obj.write(:file => "#{Rails.root}/tmp/#{self.filename}", :acl => :public_read, :metadata => { 'description' => self.metadata, 'photo_from' => 'New York Public Library' })
       obj = bucket.objects[thumbname]
-      obj.write(:file => "#{Rails.root}/tmp/#{thumbname}", :acl => :public_read, :metadata => { 'photo_from' => 'New York Public Library' })
+      obj.write(:file => "#{Rails.root}/tmp/#{thumbname}", :acl => :public_read, :metadata => { 'description' => self.metadata, 'photo_from' => 'New York Public Library' })
+    end
+  end
+  def self.purgeBlacklisted
+    # create an array with kosher images
+    white = Image.find(:all, :select=>"digitalid").map(&:digitalid)
+    # select all animations not present in the images table
+    black = Animation.where("digitalid NOT IN (?)", white)
+    # destroy those animations
+    black.destroy_all
+  end
+  def self.recreateAWS
+    # get all animations
+    batch = Animation.all
+    # run createImage on each using the filename found
+    batch.each do |an|
+      an.createImage(true)
     end
   end
   def self.amazonDump
@@ -126,7 +141,7 @@ class Animation < ActiveRecord::Base
     totalanat = 0
     
     s3 = AWS::S3.new
-    bucket = s3.buckets['stereogranimator']
+    bucket = s3.buckets['stereo.nypl.org']
     bucket.objects.each do |ob|
       tmpurl = ob.public_url.to_s
       if tmpurl.index("gif") != nil
@@ -170,10 +185,10 @@ class Animation < ActiveRecord::Base
     "/view/" + id.to_s + (mode=="GIF"?".gif":".png")
   end
   def aws_url
-    "http://s3.amazonaws.com/stereogranimator/#{filename}"
+    "http://s3.amazonaws.com/stereo.nypl.org/#{filename}"
   end
   def aws_thumb_url
-    "http://s3.amazonaws.com/stereogranimator/t_#{filename}"
+    "http://s3.amazonaws.com/stereo.nypl.org/t_#{filename}"
   end
   def nypl_url
     "http://digitalgallery.nypl.org/nypldigital/dgkeysearchdetail.cfm?&imageID=#{digitalid}"
