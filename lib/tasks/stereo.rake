@@ -20,7 +20,7 @@ namespace :stereo do
     puts "Removing stress test images"
     stuff = Animation.where(:creator => "siege")
     puts "Destroying #{stuff.length} images"
-    stuf.destroy_all
+    stuff.destroy_all
     puts "Finished!"
   end
 end
