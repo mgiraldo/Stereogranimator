@@ -311,7 +311,7 @@ a:hover {
     margin-top: 0;
   }
   .stats {
-    margin-top: 10px;
+    margin-top: 30px;
   }
   .sideNav {
     p {
@@ -574,6 +574,11 @@ a:hover {
     }
     .showInstructions {
       top: 98px;
+    }
+  }
+  .detail {
+    .stats {
+      margin-top: 10px;
     }
   }
 }
