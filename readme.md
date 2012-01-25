@@ -2,7 +2,7 @@
 
 This is a NYPL Labs project built on [Ruby on Rails](http://rubyonrails.org) that also makes use of [EaselJS](http://easeljs.com).
 
-Visit the project at [stereo.nypl.org](http://stereo.nypl.org)
+Visit the project at [stereo.nypl.org](http://stereo.nypl.org).
 
 ## Project code information
 
