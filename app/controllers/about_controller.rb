@@ -4,9 +4,9 @@ class AboutController < ApplicationController
   
   def index
     @images = Animation.order('created_at DESC').limit(6)
-    @anaglyphcount = Animation.where(:mode=>'ANAGLYPH').length
-    @gifcount = Animation.where(:mode=>'GIF').length
-    @imagecount = Image.all.length
+    @anaglyphcount = Animation.select('COUNT(id) as total').where(:mode=>'ANAGLYPH').map(&:total)[0].to_i
+    @gifcount = Animation.select('COUNT(id) as total').where(:mode=>'GIF').map(&:total)[0].to_i
+    @imagecount = Image.select('COUNT(id) as total').map(&:total)[0].to_i
   end
 
   def animatedgif
