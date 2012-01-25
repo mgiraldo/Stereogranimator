@@ -11,10 +11,10 @@
 			</div>
 			<div class="clear"></div>
 			<div class="grid_3 alpha">
-<%= image_tag "about-gif1.gif" %>
-<%= image_tag "about-gif2.gif" %>
-<%= image_tag "about-gif3.gif" %>
-<%= image_tag "about-gif4.gif" %>
+<%= image_tag "about-gif1.gif", :alt=>"Netscape browser logo" %>
+<%= image_tag "about-gif2.gif", :alt=>"'Under construction' icon" %>
+<%= image_tag "about-gif3.gif", :alt=>"'New!' icon" %>
+<%= image_tag "about-gif4.gif", :alt=>"'This website always under construction'" %>
 <p class="caption">"Classic" 1990s-era animated GIFs</p>
 			</div>
 			<div class="grid_6 omega">
@@ -32,9 +32,9 @@
 ### DON'T DELETE THESE IMAGES FROM THE DATABASE!
 %>
 <h3>Some animated GIFs produced with the Stereogranimator:</h3>
-<%= link_to (image_tag "about-gif5.gif", :class=>"grid_2 alpha"), {:controller=>"gallery", :action=>"view", :id=>232} %>
-<%= link_to (image_tag "about-gif6.gif", :class=>"grid_2"), {:controller=>"gallery", :action=>"view", :id=>218} %>
-<%= link_to (image_tag "about-gif7.gif", :class=>"grid_2 omega"), {:controller=>"gallery", :action=>"view", :id=>315} %>
+<%= link_to (image_tag "about-gif5.gif", :class=>"grid_2 alpha", :alt=>"click to see this animated GIF in detail"), {:controller=>"gallery", :action=>"view", :id=>232} %>
+<%= link_to (image_tag "about-gif6.gif", :class=>"grid_2", :alt=>"click to see this animated GIF in detail"), {:controller=>"gallery", :action=>"view", :id=>218} %>
+<%= link_to (image_tag "about-gif7.gif", :class=>"grid_2 omega", :alt=>"click to see this animated GIF in detail"), {:controller=>"gallery", :action=>"view", :id=>315} %>
 			</div>
 		</div>
 		<div class="clear"></div>

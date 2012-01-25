@@ -3,7 +3,7 @@
 		<h1 class="about"><span class="visuallyhidden">ABOUT THIS PROJECT</span></h1>
 			<div class="grid_3">
 <%= render :partial => "shared/sidenav" %>
-<%= image_tag "about-anaglyph1.jpg" %>
+<%= image_tag "about-anaglyph1.jpg", :alt=>"Cardboard cyan/red glasses (photo by Flickr user xenmate)" %>
 <p class="caption">Credit: <a href="http://www.flickr.com/photos/xenmate/6673633381/">xenmate</a> on Flickr</p>
 			</div>
 			<div class="grid_6">
@@ -15,12 +15,12 @@
 ### DON'T DELETE THESE IMAGES FROM THE DATABASE!
 %>
 <h3>Some anaglyphs produced with the Stereogranimator:</h3>
-<%= link_to (image_tag "about-anaglyph2.png", :class=>"grid_2 alpha"), {:controller=>"gallery", :action=>"view", :id=>227} %>
-<%= link_to (image_tag "about-anaglyph3.png", :class=>"grid_2"), {:controller=>"gallery", :action=>"view", :id=>231} %>
-<%= link_to (image_tag "about-anaglyph4.png", :class=>"grid_2 omega"), {:controller=>"gallery", :action=>"view", :id=>1178} %>
+<%= link_to (image_tag "about-anaglyph2.png", :class=>"grid_2 alpha", :alt=>"click to see this anaglyph in detail"), {:controller=>"gallery", :action=>"view", :id=>227} %>
+<%= link_to (image_tag "about-anaglyph3.png", :class=>"grid_2", :alt=>"click to see this anaglyph in detail"), {:controller=>"gallery", :action=>"view", :id=>231} %>
+<%= link_to (image_tag "about-anaglyph4.png", :class=>"grid_2 omega", :alt=>"click to see this anaglyph in detail"), {:controller=>"gallery", :action=>"view", :id=>1178} %>
 			</div>
 			<div class="grid_3 alpha omega">
-				<%= image_tag "diagram-eyes.png" %>
+				<%= image_tag "diagram-eyes.png", :alt=>"A basic diagram of the principle behind anaglyph images" %>
 			</div>
 		<div class="clear"></div>
 	</div>
