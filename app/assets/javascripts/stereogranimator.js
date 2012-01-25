@@ -117,6 +117,8 @@ function init() {
 	
 	document.getElementById("btnNext").onclick = generate;
 	
+	$("#btnNext").hide();
+	
 	document.getElementById("toggleGIF").onclick = function(){toggleMode("GIF");};
 	document.getElementById("toggleAna").onclick = function(){toggleMode("ANAGLYPH");};
 	
@@ -1034,6 +1036,7 @@ function tick() {
 	// only draw once clicked
 	if (previewActive) {
 		$("#previewExplain").hide();
+		$("#btnNext").show();
 	}
 	if (update) {
 		draw();
