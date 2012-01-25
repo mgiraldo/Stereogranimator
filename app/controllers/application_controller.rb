@@ -2,6 +2,16 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   helper :all
   helper_method :current_user_session, :current_user
+  before_filter :ensure_domain
+
+  APP_DOMAIN = 'stereo.nypl.org'
+
+  def ensure_domain
+    if request.env['HTTP_HOST'] != APP_DOMAIN
+      # HTTP 301 is a "permanent" redirect
+      redirect_to "http://#{APP_DOMAIN}", :status => 301
+    end
+  end
   
   private
     def current_user_session
