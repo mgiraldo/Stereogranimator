@@ -1,13 +1,15 @@
 class GalleryController < ApplicationController
   
   def index
-    per = 24
+    per = 30
     page = params[:page] == nil ? 1 : params[:page]
     @type = params[:type] == nil ? "all" : params[:type]
     if @type == "all"
       @images = Animation.where("creator != ?", 'siege').order('created_at DESC').page(page).per(per)
     elsif @type == "gif" || @type == "anaglyph"
       @images = Animation.where("mode = ? AND creator != ?", @type.upcase, 'siege').order('created_at DESC').page(page).per(per)
+    elsif @type == "popular"
+      @images = Animation.where("mode = ? AND creator != ?", @type.upcase, 'siege').order('views DESC').page(page).per(per)
     else
       @images = Animation.where("creator != ?", 'siege').order('created_at DESC').page(page).per(per)
     end
