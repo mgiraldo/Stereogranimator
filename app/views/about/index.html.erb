@@ -28,7 +28,7 @@
 <%= render :partial => "shared/thumb", :locals => {:image => image} %>
 <% end %>
 			<div class="clear"></div>
-			<h2 class="popular grid_3">POPULAR</h2>
+			<h1 class="popular grid_3"><span class="visuallyhidden">POPULAR</span></h1>
 			<div class="clear"></div>
 <% @popular.each_with_index do |image,i| %>
 <%= render :partial => "shared/thumb", :locals => {:image => image} %>
