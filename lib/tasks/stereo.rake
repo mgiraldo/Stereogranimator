@@ -17,25 +17,30 @@ namespace :stereo do
     puts "Finished!"
   end
   task :purgeSiege => :environment do
+    # puts "Removing stress test images"
+    # count = Animation.select('COUNT(id) as total').where(:creator => "siege").map(&:total)[0].to_i
+    # puts "Destroying #{count} images"
+    # puts "Destroying from AWS"
+    # puts "Assembling image list"
+    # awsfiles = Animation.select('filename').where(:creator => "siege").map(&:filename)
+    # puts "Commit to AWS"
+    # s3 = AWS::S3.new
+    # bucket = s3.buckets['stereo.nypl.org']
+    # awsfiles.each do |f|
+      # if f != nil && f != ""
+        # obj = bucket.objects[f]
+        # obj.delete()
+        # obj = bucket.objects["t_" + f]
+        # obj.delete()
+      # end
+    # end
+    # puts "Destroying from DB"
+    # stuff = Animation.where(:creator => "siege")
+    # stuff.destroy_all
+    # puts "Finished!"
     puts "Removing stress test images"
-    count = Animation.select('COUNT(id) as total').where(:creator => "siege").map(&:total)[0].to_i
-    puts "Destroying #{count} images"
-    puts "Destroying from AWS"
-    puts "Assembling image list"
-    awsfiles = Animation.select('filename').where(:creator => "siege").map(&:filename)
-    puts "Commit to AWS"
-    s3 = AWS::S3.new
-    bucket = s3.buckets['stereo.nypl.org']
-    awsfiles.each do |f|
-      if f != nil && f != ""
-        obj = bucket.objects[f]
-        obj.delete()
-        obj = bucket.objects["t_" + f]
-        obj.delete()
-      end
-    end
-    puts "Destroying from DB"
     stuff = Animation.where(:creator => "siege")
+    puts "Destroying #{stuff.length} images"
     stuff.destroy_all
     puts "Finished!"
   end
