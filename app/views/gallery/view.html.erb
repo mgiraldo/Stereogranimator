@@ -1,4 +1,4 @@
-<% content_for :img_metadata do %>
+<%= content_for :img_metadata do %>
 <meta property="og:image" content="#{request.protocol}#{request.host_with_port}#{@animation.full_count}" />
 <link rel="image_src" href="#{request.protocol}#{request.host_with_port}#{@animation.full_count}" />
 <% end %>
