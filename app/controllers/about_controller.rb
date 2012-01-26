@@ -1,6 +1,6 @@
 class AboutController < ApplicationController
   
-  caches_action :index
+  caches_action :index, :expires_in => 60.seconds
   
   def what
   end
