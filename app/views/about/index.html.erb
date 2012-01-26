@@ -24,7 +24,7 @@
 		<div class="container_12">
 			<h1 class="latest grid_3"><span class="visuallyhidden">LATEST</span></h1>
 			<div class="clear"></div>
-<% @images.each_with_index do |image,i| %>
+<% @images.each do |image| %>
 <%= render :partial => "shared/thumb", :locals => {:image => image} %>
 <% end %>
 			<div class="clear"></div>
@@ -48,7 +48,4 @@
 				<p><span class="big"><%= number_with_delimiter @anaglyphcount %></span><br /><%= link_to "anaglyphs", "/gallery/anaglyph" %></p>
 			</div>
 		</div>
-<!--
-<%= Rails.cache.fetch("home_images") %>
--->
 
