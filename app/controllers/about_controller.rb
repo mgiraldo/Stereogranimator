@@ -9,7 +9,7 @@ class AboutController < ApplicationController
       @images = Animation.where("creator != ?", 'siege').order('created_at DESC').limit(6)
       Rails.cache.write("home_images", @images, :expires_in => 5.minutes)
     else
-      @images = Rails.cache.read("home_images")
+      @images = Rails.cache.fetch("home_images")
     end
     ## ANAGLYPH COUNT cache
     if Rails.cache.fetch("home_anaglyphcount") == nil
