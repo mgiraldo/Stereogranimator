@@ -28,6 +28,14 @@
 <%= render :partial => "shared/thumb", :locals => {:image => image} %>
 <% end %>
 			<div class="clear"></div>
+			<!--
+			<h1 class="popular grid_3"><span class="visuallyhidden">POPULAR</span></h1>
+			<div class="clear"></div>
+			-->
+<% @popular.each_with_index do |image,i| %>
+<%= render :partial => "shared/thumb", :locals => {:image => image} %>
+<% end %>
+			<div class="clear"></div>
 			<div class="more centered">
 				<%= link_to "VIEW MORE IN THE GALLERY >", "/gallery", :class => 'genericButtonLink' %>
 			</div>
