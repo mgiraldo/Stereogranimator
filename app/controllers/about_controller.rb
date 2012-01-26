@@ -1,37 +1,15 @@
 class AboutController < ApplicationController
   
+  caches_action :index
+  
   def what
   end
   
   def index
-    ## LATEST IMAGES cache
-    if Rails.cache.fetch("home_images") == nil
-      @images = Animation.where("creator != ?", 'siege').order('created_at DESC').limit(6)
-      Rails.cache.write("home_images", @images, :expires_in => 5.minutes)
-    else
-      @images = Rails.cache.fetch("home_images")
-    end
-    ## ANAGLYPH COUNT cache
-    if Rails.cache.fetch("home_anaglyphcount") == nil
-      @anaglyphcount = Animation.select('COUNT(id) as total').where('mode = ? AND creator != ?','ANAGLYPH','siege').map(&:total)[0].to_i
-      Rails.cache.write("home_anaglyphcount", @anaglyphcount, :expires_in => 5.minutes)
-    else
-      @anaglyphcount = Rails.cache.fetch("home_anaglyphcount")
-    end
-    ## GIF COUNT cache
-    if Rails.cache.fetch("home_gifcount") == nil
-      @gifcount = Animation.select('COUNT(id) as total').where('mode = ? AND creator != ?','GIF','siege').map(&:total)[0].to_i
-      Rails.cache.write("home_gifcount", @gifcount, :expires_in => 5.minutes)
-    else
-      @gifcount = Rails.cache.fetch("home_gifcount")
-    end
-    ## IMAGE COUNT cache
-    if Rails.cache.fetch("home_imagecount") == nil
-      @imagecount = Image.select('COUNT(id) as total').map(&:total)[0].to_i
-      Rails.cache.write("home_imagecount", @imagecount, :expires_in => 5.minutes)
-    else
-      @imagecount = Rails.cache.fetch("home_imagecount")
-    end
+    @images = Animation.where("creator != ?", 'siege').order('created_at DESC').limit(6)
+    @anaglyphcount = Animation.select('COUNT(id) as total').where('mode = ? AND creator != ?','ANAGLYPH','siege').map(&:total)[0].to_i
+    @gifcount = Animation.select('COUNT(id) as total').where('mode = ? AND creator != ?','GIF','siege').map(&:total)[0].to_i
+    @imagecount = Image.select('COUNT(id) as total').map(&:total)[0].to_i
   end
 
   def animatedgif
