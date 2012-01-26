@@ -4,8 +4,8 @@
 <% end %>
 					<div class="pad">
 <!--[if (!IE)|(IE 9)]> -->
-						<%= link_to "VIEW FULL SIZE", "/view/#{image.id}", {:class=>'over'} %>
+						<%= link_to "VIEW FULL SIZE", "/view/#{image.id}", {:class=>'over', :title=>image.metadata} %>
 <!-- <![endif]-->
-						<%= link_to image_tag(image.thumb), "/view/#{image.id}", {:class=>'base'} %>
+						<%= link_to image_tag(image.thumb), "/view/#{image.id}", {:class=>'base', :title=>image.metadata} %>
 					</div>
 				</div>
