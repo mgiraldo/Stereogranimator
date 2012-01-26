@@ -104,7 +104,7 @@ a:hover {
   display: none;
 }
 
-.shTwitter, .shFacebook, .shTumblr, .shPlus, .shReddit {
+.shTwitter, .shFacebook, .shTumblr, .shPlus, .shReddit, .shPinterest {
   display: inline-block;
   text-indent: -9999px;
   margin-right: 5px;
@@ -126,6 +126,9 @@ a:hover {
 }
 .shReddit {
   background-position: -106px -278px;
+}
+.shPinterest {
+  background-position: -140px -278px;
 }
 
 #nypl_bar {

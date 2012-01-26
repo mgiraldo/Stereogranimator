@@ -7,8 +7,8 @@
 <%
 
 # encoded stuff to use in the share buttons
-createdtweet = @animation.mode == "GIF" ? "I just created this GIF using the Stereogranimator (via New York Public Library @nypl_labs)" : "I just created this 3D image using the Stereogranimator (via New York Public Library @nypl_labs)"
-foundtweet = @animation.mode == "GIF" ? "The past reanimated, courtesy of the Stereogranimator (via New York Public Library @nypl_labs)" : "Vintage 3D, courtesy of the Stereogranimator (via New York Public Library @nypl_labs)"
+createdtweet = @animation.mode == "GIF" ? "I just created this GIF using the #Stereogranimator (via New York Public Library @nypl_labs)" : "I just created this 3D image using the #Stereogranimator (via New York Public Library @nypl_labs)"
+foundtweet = @animation.mode == "GIF" ? "The past reanimated, courtesy of the #Stereogranimator (via New York Public Library @nypl_labs)" : "Vintage 3D, courtesy of the #Stereogranimator (via New York Public Library @nypl_labs)"
 
 src = CGI.escape(request.protocol + request.host_with_port + @animation.full_count)
 url = CGI.escape(url_for(:controller=>"gallery",:action=>"view",:id=>@animation.id,:only_path => false))
@@ -18,6 +18,7 @@ facebookurl = "http://www.facebook.com/sharer.php?u=#{url}&t=#{tweet}"
 tumblrurl = "http://www.tumblr.com/share/photo?source=#{src}&caption=#{tweet}&clickthru=#{url}"
 googleurl = "https://m.google.com/app/plus/x/?v=compose&content=#{tweet}%20#{url}"
 redditurl = "http://www.reddit.com/submit?url=#{url}"
+pinteresturl = "http://pinterest.com/pin/create/button/?url=#{url}&media=#{src}&description=#{tweet}"
 
 %>
 				
@@ -27,6 +28,7 @@ redditurl = "http://www.reddit.com/submit?url=#{url}"
 					<%= link_to "Tumblr", tumblrurl, {:class => "shTumblr", :title => "Share on Tumblr"} %>
 					<%= link_to "Google+", googleurl, {:class => "shPlus", :title => "Share on Google+"} %>
 					<%= link_to "Reddit", redditurl, {:class => "shReddit", :title => "Share on Reddit"} %>
+					<%= link_to "Pinterest", redditurl, {:class => "shPinterest", :title => "Pin it!"} %>
 				</p>
 				
 				<p>
