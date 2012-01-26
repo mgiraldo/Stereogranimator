@@ -9,7 +9,7 @@ class GalleryController < ApplicationController
     elsif @type == "gif" || @type == "anaglyph"
       @images = Animation.where("mode = ? AND creator != ?", @type.upcase, 'siege').order('created_at DESC').page(page).per(per)
     elsif @type == "popular"
-      @images = Animation.where("mode = ? AND creator != ?", @type.upcase, 'siege').order('views DESC').page(page).per(per)
+      @images = Animation.where("creator != ?", 'siege').order('views DESC').page(page).per(per)
     else
       @images = Animation.where("creator != ?", 'siege').order('created_at DESC').page(page).per(per)
     end
