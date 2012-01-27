@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120119172832) do
+ActiveRecord::Schema.define(:version => 20120127164236) do
 
   create_table "animations", :force => true do |t|
     t.string   "creator"
@@ -38,6 +38,8 @@ ActiveRecord::Schema.define(:version => 20120119172832) do
     t.datetime "updated_at"
     t.integer  "converted",  :default => 0
   end
+
+  add_index "images", ["digitalid"], :name => "digitalid_index", :unique => true
 
   create_table "users", :force => true do |t|
     t.string   "username"
