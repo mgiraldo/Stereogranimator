@@ -34,6 +34,12 @@
 <%= render :partial => "shared/thumb", :locals => {:image => image} %>
 <% end %>
 			<div class="clear"></div>
+			<h1 class="random grid_3"><span class="visuallyhidden">RANDOM</span></h1>
+			<div class="clear"></div>
+<% @random.each_with_index do |image,i| %>
+<%= render :partial => "shared/thumb", :locals => {:image => image} %>
+<% end %>
+			<div class="clear"></div>
 			<div class="more centered">
 				<%= link_to "VIEW MORE IN THE GALLERY >", "/gallery", :class => 'genericButtonLink' %>
 			</div>
