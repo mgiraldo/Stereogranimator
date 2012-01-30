@@ -5,7 +5,7 @@
 						<em><%= @animation.metadata %></em><br /><%= link_to "View original item in the NYPL Digital Gallery", @animation.nypl_url %><br />
 						This is an <%= @animation.mode == "GIF" ? "Animated GIF" : "Anaglyph" %> (<%= @animation.mode == "GIF" ? (link_to "what is that?", :controller=>"about", :action=>"animatedgif") : (link_to "what is that?", :controller=>"about", :action=>"anaglyph") %>)<br />
 						Created <%= time_ago_in_words(@animation.created_at) %> ago<br />
-						<%= pluralize(@animation.views, "view") %>
+						<%= pluralize(number_with_delimiter(@animation.views), "view") %>
 					</p>
 				</div>
 			</div>
