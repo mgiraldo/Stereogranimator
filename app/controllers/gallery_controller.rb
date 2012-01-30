@@ -4,14 +4,18 @@ class GalleryController < ApplicationController
     per = 30
     page = params[:page] == nil ? 1 : params[:page]
     @type = params[:type] == nil ? "all" : params[:type]
-    if @type == "all"
-      @images = Animation.where("creator != ?", 'siege').order('created_at DESC').page(page).per(per)
-    elsif @type == "gif" || @type == "anaglyph"
-      @images = Animation.where("mode = ? AND creator != ?", @type.upcase, 'siege').order('created_at DESC').page(page).per(per)
-    elsif @type == "popular"
-      @images = Animation.where("creator != ?", 'siege').order('views DESC').page(page).per(per)
+    if params[:q] == nil
+      if @type == "all"
+        @images = Animation.where("creator != ?", 'siege').order('created_at DESC').page(page).per(per)
+      elsif @type == "gif" || @type == "anaglyph"
+        @images = Animation.where("mode = ? AND creator != ?", @type.upcase, 'siege').order('created_at DESC').page(page).per(per)
+      elsif @type == "popular"
+        @images = Animation.where("creator != ?", 'siege').order('views DESC').page(page).per(per)
+      else
+        @images = Animation.where("creator != ?", 'siege').order('created_at DESC').page(page).per(per)
+      end
     else
-      @images = Animation.where("creator != ?", 'siege').order('created_at DESC').page(page).per(per)
+      @images = Animation.where("creator != ? AND metadata LIKE ?", 'siege', "%#{params[:q]}%").order('created_at DESC').page(page).per(per)
     end
     respond_to do |format|
       format.html # index.html.erb

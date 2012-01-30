@@ -1304,7 +1304,7 @@ function searchImages() {
 			}
 		});
 	} else {
-		$("#search .status").text("Please type a keyword");
+		$("#search .status").text("Please type a keyword.");
 	}
 }
 
@@ -1314,6 +1314,23 @@ function initSearch() {
 	    	searchImages();
 	    }
 	});
+}
+
+function initGallerySearch() {
+	$(document).keypress(function(e) {
+	    if(e.keyCode == 13 && $("#search .query").val()!="") {
+	    	searchGallery();
+	    }
+	});
+}
+
+function searchGallery() {
+	if ($("#search .query").val()!="") {
+		window.location.href = "/gallery/?q="+$("#search .query").val();
+		$("#search .status").text("Searching...");
+	} else {
+		$("#search .status").text("Please type a keyword.");
+	}
 }
 
 function refreshImages() {
