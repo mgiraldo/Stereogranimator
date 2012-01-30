@@ -19,8 +19,8 @@ class GalleryController < ApplicationController
         @total = Animation.select('COUNT(id) as total').where("creator != ?", 'siege').map(&:total)[0].to_i
       end
     else
-      @images = Animation.where("creator != ? AND metadata LIKE ?", 'siege', "%#{params[:q]}%").order('created_at DESC').page(page).per(per)
-      @total = Animation.select('COUNT(id) as total').where("creator != ? AND metadata LIKE ?", 'siege', "%#{params[:q]}%").map(&:total)[0].to_i
+      @images = Animation.where("creator != ? AND UPPER(metadata) LIKE ?", 'siege', "%#{params[:q].upcase}%").order('created_at DESC').page(page).per(per)
+      @total = Animation.select('COUNT(id) as total').where("creator != ? AND UPPER(metadata) LIKE ?", 'siege', "%#{params[:q].upcase}%").map(&:total)[0].to_i
     end
     respond_to do |format|
       format.html # index.html.erb
