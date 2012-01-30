@@ -13,6 +13,9 @@ end
 		<div class="container_12">
 			<h1 class="gallery"><span class="visuallyhidden">GALLERY</span></h1>
 			<div class="clear"></div>
+			<div class="meta grid_12">
+			<%= link_to_unless @prevani == nil, "< PREVIOUS", :id => @prevani %> <%= link_to_unless @nextani == nil, "NEXT >", :id => @nextani %>
+			</div>
 <%= render "shared/detail", :locals => {:animation => @animation} %>
 			<div class="meta grid_5">
 
