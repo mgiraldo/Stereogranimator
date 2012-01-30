@@ -1273,6 +1273,49 @@ function generateFromFlash(_sq1x,_sq1y,_sq2x,_sq2y,_hsize,_vsize,_speed,_index,_
 	});
 }
 
+function searchImages() {
+	if ($("#search .query").val()!="") {
+		// post to server
+		$("#search .status").text("Searching...");
+		$.ajax({
+			url: "/choose/"+$("#search .query").val(),
+			dataType: 'json',
+			data: null,
+			success: function(data) {
+				if (data.length>0) {
+					// clean the array
+					image_array = data;
+					$("#search .status").text("Found " + data.length + " result" + (data.length>1?"s":"") + ".");
+					refreshImages();
+				} else {
+					$("#search .status").text("No results :-( Try a different keyword.");
+				}
+			},
+			statusCode: {
+			  404: function() {
+				  alert('Photo not found error (404)');
+			  },
+			  429: function() {
+				  alert('Too many requests (429)');
+			  },
+			  500: function() {
+				  alert('Internal server error (500)');
+			  }
+			}
+		});
+	} else {
+		$("#search .status").text("Please type a keyword");
+	}
+}
+
+function initSearch() {
+	$(document).keypress(function(e) {
+	    if(e.keyCode == 13 && $("#search .query").val()!="") {
+	    	searchImages();
+	    }
+	});
+}
+
 function refreshImages() {
 	if (image_array.length>0) {
 		var r = image_array.sort(function(){ 

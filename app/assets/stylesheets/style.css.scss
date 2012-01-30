@@ -408,6 +408,21 @@ a:hover {
 
 #stereoList {
   padding: 20px 0;
+  #search {
+    margin-bottom: 30px;
+    .query {
+      padding: 5px;
+      width: 210px;
+      margin-right: 10px;
+    }
+    .submit {
+      width: 50px;
+      color: $maincolor;
+      background: $linkcolor;
+      padding: 7px;
+      border: none;
+    }
+  }
   .stereograph {
     position: relative;
     margin-bottom: 30px;

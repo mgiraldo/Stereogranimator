@@ -1,11 +1,19 @@
 class AnimationsController < ApplicationController
   before_filter :require_user, :only => [:index, :edit, :destroy]
   
-  # GET /choose/nyplid
+  # GET /choose
   def choose
     @images = Image.randomSet()
     respond_to do |format|
       format.html
+    end
+  end
+  
+  def chooseSearch
+    @images = Image.findByKeyword(params[:keyword])
+    respond_to do |format|
+      #format.html { render :json => @images }
+      format.json { render :json => @images }
     end
   end
   

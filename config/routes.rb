@@ -6,6 +6,8 @@ Stereo::Application.routes.draw do
   get "gallery/index"
 
   get "about/index"
+  
+  post "animations/chooseSearch"
 
   resources :animations
 
@@ -27,6 +29,7 @@ Stereo::Application.routes.draw do
   match 'gallery/:type/:page.:format', :to => 'gallery#index', :as => "gallery_type_paged_formatted"
   match 'view/:id', :to => 'gallery#view', :as => "gallery_view"
   match 'choose', :to => 'animations#choose', :as => "choose"
+  match 'choose/:keyword', :to => 'animations#chooseSearch', :as => "chooseSearch"
   match 'create', :to => 'animations#choose', :as => "create"
   match 'convert/:did', :to => 'animations#new', :as => "convert"
   match 'share/:id', :to => 'animations#share', :as => "share"

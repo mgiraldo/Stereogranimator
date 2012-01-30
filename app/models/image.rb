@@ -45,4 +45,7 @@ class Image < ActiveRecord::Base
       end
     }
   end
+  def self.findByKeyword(keyword)
+    return Image.select('digitalid').where('title LIKE ?', "%#{keyword}%").map(&:digitalid)
+  end
 end
