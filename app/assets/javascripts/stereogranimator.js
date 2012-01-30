@@ -1318,6 +1318,7 @@ function initSearch() {
 
 function refreshImages() {
 	if (image_array.length>0) {
+		clearImages();
 		var r = image_array.sort(function(){ 
 			return Math.round(Math.random())-0.5
 		}).slice(0,9)
@@ -1326,6 +1327,10 @@ function refreshImages() {
 		for (i=0;i<l;++i) {
 			url = "http://images.nypl.org/index.php?id="+r[i]+"&t=r";
 			href = "/convert/" + r[i];
+			$("#st" + i).toggleClass("stereograph");
+			$("#st" + i).toggleClass("stereographPlain");
+			$("#link_" + i).show();
+			$("#linko_" + i).show();
 			$("#link_" + i).attr("href",href);
 			$("#linko_" + i).attr("href",href);
 			$("#img_" + i).attr("src",url);
@@ -1334,13 +1339,14 @@ function refreshImages() {
 }
 
 function clearImages() {
+	$(".stereograph").toggleClass("stereographPlain");
+	$(".stereograph").toggleClass("stereograph");
 	var i;
 	var url, href;
 	for (i=0;i<9;++i) {
 		url = "/assets/blank.png";
-		href = "#";
-		$("#link_" + i).attr("href",href);
-		$("#linko_" + i).attr("href",href);
+		$("#link_" + i).hide();
+		$("#linko_" + i).hide();
 		$("#img_" + i).attr("src",url);
 	}
 }

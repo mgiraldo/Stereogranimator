@@ -24,7 +24,7 @@ initSearch();
 				<div class="status"></div>
 			</div>
 <% @images["subset"].entries.each_with_index do |image,i| %>
-			<div class="stereograph grid_4 <%= 'alpha' if i.modulo(3) == 0 %><%= 'omega' if i.modulo(3) == 2 %>">
+			<div id="<%= "st#{i}" %>" class="stereograph grid_4 <%= 'alpha' if i.modulo(3) == 0 %><%= 'omega' if i.modulo(3) == 2 %>">
 <!--[if (!IE)|(lte IE 8)]> -->
 				<%= link_to "CHOOSE THIS ONE", "/convert/#{image.digitalid}", {:id => "linko_#{i}", :class=>'over'} %>
 <!-- <![endif]-->

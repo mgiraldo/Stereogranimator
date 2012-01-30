@@ -423,12 +423,16 @@ a:hover {
       border: none;
     }
   }
-  .stereograph {
+  .stereograph, .stereographPlain {
     position: relative;
     margin-bottom: 30px;
     .over {
       position: absolute;
       display: block;
+    }
+  }
+  .stereograph {
+    .over {
       background: $choosebackground;
       text-align: center;
       top: 0;
