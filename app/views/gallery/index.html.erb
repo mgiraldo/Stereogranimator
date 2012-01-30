@@ -17,7 +17,7 @@ initGallerySearch();
 		<div class="container_12">
 			<h1 class="gallery"><span class="visuallyhidden">GALLERY</span></h1>
 			<div id="nav" class="grid_12">
-				<p>SHOW: <%= link_to_unless @type=="all", "ALL", "/gallery/all/1" %>&nbsp;&nbsp;<%= link_to_unless @type=="popular", "POPULAR", "/gallery/popular/1" %>&nbsp;&nbsp;<%= link_to_unless @type=="anaglyph", "ANAGLYPHS", "/gallery/anaglyph/1" %>&nbsp;&nbsp;<%= link_to_unless @type=="gif", "ANIMATED GIFS", "/gallery/gif/1" %>&nbsp;&nbsp;&nbsp;OR <span id="search"><%= text_field_tag 'keyword' ,'', {:class=>"query", :placeholder=>"Search gallery by keyword"} %> <%= submit_tag "SEARCH", :class=>"submit", :onclick => "javascript:searchGallery();" %> <span class="status"></span>Found <%= pluralize(@images.length, "result") %></span></p>
+				<p>SHOW: <%= link_to_unless @type=="all", "ALL", "/gallery/all/1" %>&nbsp;&nbsp;<%= link_to_unless @type=="popular", "POPULAR", "/gallery/popular/1" %>&nbsp;&nbsp;<%= link_to_unless @type=="anaglyph", "ANAGLYPHS", "/gallery/anaglyph/1" %>&nbsp;&nbsp;<%= link_to_unless @type=="gif", "ANIMATED GIFS", "/gallery/gif/1" %>&nbsp;&nbsp;&nbsp;OR <span id="search"><%= text_field_tag 'keyword' ,'', {:class=>"query", :placeholder=>"Search gallery by keyword"} %> <%= submit_tag "SEARCH", :class=>"submit", :onclick => "javascript:searchGallery();" %> <span class="status">Found <%= pluralize(@images.count, "result") %></span></span></p>
 			</div>
 			<div id="galleryList" class="container_12">
 <% @images.each_with_index do |image,i| %>
