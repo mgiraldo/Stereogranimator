@@ -1333,6 +1333,18 @@ function refreshImages() {
 	}
 }
 
+function clearImages() {
+	var i;
+	var url, href;
+	for (i=0;i<9;++i) {
+		url = "/assets/blank.png";
+		href = "#";
+		$("#link_" + i).attr("href",href);
+		$("#linko_" + i).attr("href",href);
+		$("#img_" + i).attr("src",url);
+	}
+}
+
 function handleImageLoad(e) {
 	run();
 	prepareInterface();
