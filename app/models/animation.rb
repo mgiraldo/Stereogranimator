@@ -26,32 +26,31 @@ class Animation < ActiveRecord::Base
     end
   end
   def imageAndMetadata
-    @im = Image.where("upper(digitalid) = ?", self.digitalid.upcase).first
+    @im = Image.where("upper(digitalid) = ? AND converted = 0", self.digitalid.upcase).first
+    # mark image as converted
     if @im != nil
       @im.converted = 1
       @im.save
     end
-    updateMetadata()
-    createImage()
-  end
-  def increaseViews
-    self.views = self.views.to_i + 1
-    self.save
-  end
-  def updateMetadata
     update = false
     if self.views == nil
+      # just being created
       self.views = 0
       update = true
     end
+    # add image metadata to animation
     if self.metadata==nil && self.digitalid!=nil
-      @im = Image.where("upper(digitalid) = ?", self.digitalid.upcase).first
       self.metadata = "#{@im.title} #{@im.date}"
       update = true
     end
     if update
       self.save
     end
+    createImage()
+  end
+  def increaseViews
+    self.views = self.views.to_i + 1
+    self.save
   end
   def createImage(bypass=false)
     if (self.filename==nil && self.digitalid!=nil) || bypass
