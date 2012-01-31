@@ -22,6 +22,13 @@
 <!-- end non-compiled -->
 
 <% end %>
+<% if @metadata["title"]==nil %>
+		<div class="container_12">
+			<div class="grid_12 centered">
+				<h3>There is no metadata for this image. Most likely your final file will not be saved.</h3>
+			</div>
+		</div>
+<% end %>
 	<div id="yescanvas">
 		<div class="createTop container_12">
 			<h1 class="create grid_12"><span class="visuallyhidden">CREATE</span></h1>
