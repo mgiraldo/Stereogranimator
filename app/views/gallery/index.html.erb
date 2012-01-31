@@ -3,6 +3,12 @@ if @type == "gif"
 	@strtype = "Animated GIFs"
 elsif @type == "anaglyph"
 	@strtype = "Anaglyphs"
+elsif @type == "popular"
+	@strtype = "Popular"
+end
+if params[:q]
+	@type = "Search"
+	@strtype = "Search"
 end
 %>
 <% content_for :title do %><%= "#{@strtype} : " unless @type == "all" %>Gallery : <% end %>
