@@ -26,11 +26,13 @@ class Animation < ActiveRecord::Base
     end
   end
   def imageAndMetadata
-    @im = Image.where("upper(digitalid) = ? AND converted = 0", self.digitalid.upcase).first
+    @im = Image.where("upper(digitalid) = ?", self.digitalid.upcase).first
     # mark image as converted
     if @im != nil
-      @im.converted = 1
-      @im.save
+      if @im.converted == 0
+        @im.converted = 1
+        @im.save
+      end
     end
     update = false
     if self.views == nil
@@ -39,7 +41,7 @@ class Animation < ActiveRecord::Base
       update = true
     end
     # add image metadata to animation
-    if self.metadata==nil && self.digitalid!=nil
+    if self.metadata==nil && self.digitalid!=nil && @im
       self.metadata = "#{@im.title} #{@im.date}"
       update = true
     end
