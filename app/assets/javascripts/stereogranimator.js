@@ -1220,7 +1220,7 @@ function generate() {
 		_gaq.push(['_trackEvent', 'Granimations', mode, "HTML"]);
 		// post to server
 		$.ajax({
-			url: "/animations/createJson/"+(sq1x-OFFSET)+"/"+(sq1y)+"/"+(sq2x-OFFSET)+"/"+(sq2y)+"/"+hsize+"/"+vsize+"/"+speed+"/"+index+"/"+mode+"/mga.json",
+			url: "/animations/createJson/"+Math.round(sq1x-OFFSET)+"/"+Math.round(sq1y)+"/"+Math.round(sq2x-OFFSET)+"/"+Math.round(sq2y)+"/"+Math.round(hsize)+"/"+Math.round(vsize)+"/"+Math.round(speed)+"/"+index+"/"+mode+"/mga.json",
 			dataType: 'json',
 			data: null,
 			success: function(data) {
@@ -1249,7 +1249,7 @@ function generateFromFlash(_sq1x,_sq1y,_sq2x,_sq2y,_hsize,_vsize,_speed,_index,_
 	// send google analytics
 	_gaq.push(['_trackEvent', 'Granimations', _mode, "FLASH"]);
 	$.ajax({
-		url: "/animations/createJson/"+(_sq1x)+"/"+(_sq1y)+"/"+(_sq2x)+"/"+(_sq2y)+"/"+_hsize+"/"+_vsize+"/"+_speed+"/"+_index+"/"+_mode+"/mga.json",
+		url: "/animations/createJson/"+Math.round(_sq1x)+"/"+Math.round(_sq1y)+"/"+Math.round(_sq2x)+"/"+Math.round(_sq2y)+"/"+Math.round(_hsize)+"/"+Math.round(_vsize)+"/"+Math.round(_speed)+"/"+_index+"/"+_mode+"/mga.json",
 		dataType: 'json',
 		data: null,
 		success: function(data) {

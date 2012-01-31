@@ -82,24 +82,24 @@ class AnimationsController < ApplicationController
   # GET /animations/createJson/:x1/:y1/:x2/:y2/:width/:height/:delay(cs)/:digitalid/:mode/:creator
   def createJson
     current = Time.now.to_i
-#    if session[:last_create] == nil || current - session[:last_create] < 10 # can only create one every 10 seconds
-#      respond_to do |f|
-#        f.json { render :json => {:message => "Too many requests"}.to_json, :status => 429 }
-#      end
-#      return
-#    end
+   if session[:last_create] == nil || current - session[:last_create] < 5 # can only create one every 10 seconds
+     respond_to do |f|
+       f.json { render :json => {:message => "Too many requests"}.to_json, :status => 429 }
+     end
+     return
+   end
     # update session image creation timestamp
     session[:last_create] = current
     # get parameters from url
     
     @animation = Animation.new()
     
-    @animation.x1 = params[:x1]
-    @animation.y1 = params[:y1]
-    @animation.x2 = params[:x2]
-    @animation.y2 = params[:y2]
-    @animation.width = params[:width]
-    @animation.height = params[:height]
+    @animation.x1 = params[:x1].to_i
+    @animation.y1 = params[:y1].to_i
+    @animation.x2 = params[:x2].to_i
+    @animation.y2 = params[:y2].to_i
+    @animation.width = params[:width].to_i
+    @animation.height = params[:height].to_i
     @animation.delay = params[:delay].to_i
     @animation.digitalid = params[:digitalid]
     @animation.mode = params[:mode]
