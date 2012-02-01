@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120127164236) do
+ActiveRecord::Schema.define(:version => 20120201212118) do
 
   create_table "animations", :force => true do |t|
     t.string   "creator"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(:version => 20120127164236) do
     t.string   "mode"
     t.integer  "views",      :default => 0
     t.text     "metadata"
+    t.string   "rotation"
   end
 
   create_table "images", :force => true do |t|

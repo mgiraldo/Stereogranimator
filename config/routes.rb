@@ -9,9 +9,8 @@ Stereo::Application.routes.draw do
   
   post "animations/chooseSearch"
 
-  resources :animations
-
   resources :users, :user_sessions
+  
   match 'login' => 'user_sessions#new', :as => :login
   match 'logout' => 'user_sessions#destroy', :as => :logout
   match 'dismissInstructions' => 'user_session#dismissInstructions', :as => :dismissInstructions
@@ -37,11 +36,17 @@ Stereo::Application.routes.draw do
   match 'getimagedata/', :to => 'images#getimagedata', :as => "getimagedata_plain"
   match 'getpixels/:digitalid', :to => 'images#getpixels', :as => "getpixels"
 
-  match "/animations/createJson/:x1/:y1/:x2/:y2/:width/:height/:delay/:digitalid/:mode/:creator", :to => 'animations#createJson', :as => "animation_creator"
+  match "/animations/createJson/:x1/:y1/:x2/:y2/:width/:height/:delay/:digitalid/:rotation/:mode/:creator", :to => 'animations#createJson', :as => "animation_rotation"
   
+  match "/animations/createJson/:x1/:y1/:x2/:y2/:width/:height/:delay/:digitalid/:mode/:creator", :to => 'animations#createJson', :as => "animation_creator"
+
   match "/animations/createJson/*path" => "animations#createJson"
+  
+  match "/animations/createJson" => "animations#createJson"
 
   match "/animations/:id/kill" => "animations#destroy"
+
+  resources :animations
 
   root :to => 'about#index'
 

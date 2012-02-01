@@ -41,14 +41,14 @@ class GalleryController < ApplicationController
     end
     if count
       @animation.increaseViews
+      # for the previous/next buttons
+      @prevani = Animation.where( 'id < ?', @animation.id).order('id DESC').limit(1)[0]
+      @nextani = Animation.where( 'id > ?', @animation.id).order('id ASC').limit(1)[0]
     end
     # when showing the thumb
     if params[:m]=="t"
       redirect = @animation.aws_thumb_url
     end
-    # for the previous/next buttons
-    @prevani = Animation.where( 'id < ?', @animation.id).order('id DESC').limit(1)[0]
-    @nextani = Animation.where( 'id > ?', @animation.id).order('id ASC').limit(1)[0]
     respond_to do |format|
       format.html # view.html.erb
       format.json { render :json => @animation }

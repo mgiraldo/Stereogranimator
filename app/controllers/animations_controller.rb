@@ -104,6 +104,7 @@ class AnimationsController < ApplicationController
     @animation.digitalid = params[:digitalid]
     @animation.mode = params[:mode]
     @animation.creator = params[:creator]
+    @animation.rotation = params[:rotation] != nil ? params[:rotation] : ""
           
     respond_to do |format|
       if @animation.save

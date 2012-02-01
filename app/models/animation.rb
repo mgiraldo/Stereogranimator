@@ -59,6 +59,11 @@ class Animation < ActiveRecord::Base
       # do some image magick
       # first get each frame
       im = Magick::Image.read(self.url).first
+      
+      rot = self.rotation == "" ? 0 : self.rotation.to_f
+      
+      im.background_color = "none"
+      im = im.rotate(rot)
         
       # TODO: proper crop of thumbnails (?)
       fr1 = im.crop(self.x1,self.y1,self.width,self.height,true)

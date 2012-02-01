@@ -21,9 +21,6 @@ var resultcanvas;
 var ctx3D;
 var ctxbase;
 
-var leftbmp;
-var rightbmp;
-
 var processimage;
 
 var leftimgdata;
@@ -106,6 +103,21 @@ var isdown = false;
 
 var helpVisible = false;
 
+//////// ROTATION STUFF
+
+var rotateLeftBtn;
+var rotateRightBtn;
+var rotateSize = 30;
+var imageRotation = 0;
+var maxRotation = 20; // no image is skewed more than these degrees
+var rotationIncrement = .1;
+var rotateText;
+var modeText;
+var modeBtn;
+var drawMode = "normal";
+var grid;
+var imagesLoaded = 0;
+
 function init() {
 	$("#yescanvas").show();
 	$("#nocanvas").hide();
@@ -146,42 +158,9 @@ function init() {
 	Ticker.setInterval(10);
 }
 
-function prepareInterface() {
-	vert_sprite = new Shape();
-	vert_sprite.over = false;
-	vert_sprite.x = vertx;
-	vert_sprite.y = verty;
-	stage.addChild(vert_sprite);
-	// eight corners
-	var i, crnr;
-	corner_sprites = [];
-	for (i=0;i<8;++i) {
-		crnr = new Shape();
-		crnr.mysquare = (i<4) ? sq1 : sq2;
-		crnr.mode = (i<4) ? "left" : "right";
-		// multiplier for corner position
-		if (i%4==0) {
-			crnr.xfactor = 0;
-			crnr.yfactor = 0;
-		} else if (i%4==1) {
-			crnr.xfactor = 1;
-			crnr.yfactor = 0;
-		} else if (i%4==2) {
-			crnr.xfactor = 0;
-			crnr.yfactor = 1;
-		} else if (i%4==3) {
-			crnr.xfactor = 1;
-			crnr.yfactor = 1;
-		}
-		stage.addChild(crnr);
-		corner_sprites[i] = crnr;
-	}
-	console.log("prepared sprite");
-}
-
 function centerPhoto() {
 	// center horizontally
-	OFFSET = Math.floor((canvas.width - img.width));
+	OFFSET = Math.floor((canvas.width - img.width)*.5);
 
 	bmp.x = OFFSET;
 	bmp.y = 0;
@@ -202,14 +181,14 @@ function run() {
 	stage.addChild(bg);
 	
 	// starting points for squares
-	sq1x = bmp.x + Math.round(img.width / 2) - hsize - INSET;
-	sq1y = bmp.y + Math.round(img.height / 2) - (vsize / 2);
-	sq2x = bmp.x + Math.round(img.width / 2) + INSET;
-	sq2y = bmp.y + Math.round(img.height / 2) - (vsize / 2);
+	sq1x = bmp.x + Math.round(img.width * .5) - hsize - INSET;
+	sq1y = bmp.y + Math.round(img.height * .5) - (vsize * .5);
+	sq2x = bmp.x + Math.round(img.width * .5) + INSET;
+	sq2y = bmp.y + Math.round(img.height * .5) - (vsize * .5);
 	
 	// starting point for vertical bar
-	vertx = bmp.x + (img.width / 2);
-	verty = bmp.y + (img.height / 2);
+	vertx = bmp.x + (img.width * .5);
+	verty = bmp.y + (img.height * .5);
 	
 	// the squares
 	sq1 = new Shape();
@@ -242,10 +221,143 @@ function run() {
 	vtxt.y = 445;
 	stage.addChild(vtxt);
 
+	vert_sprite = new Shape();
+	vert_sprite.over = false;
+	vert_sprite.x = vertx;
+	vert_sprite.y = verty;
+	stage.addChild(vert_sprite);
+	
+	// eight corners
+	var i, crnr;
+	corner_sprites = [];
+	for (i=0;i<8;++i) {
+		crnr = new Shape();
+		crnr.mysquare = (i<4) ? sq1 : sq2;
+		crnr.mode = (i<4) ? "left" : "right";
+		// multiplier for corner position
+		if (i%4==0) {
+			crnr.xfactor = 0;
+			crnr.yfactor = 0;
+		} else if (i%4==1) {
+			crnr.xfactor = 1;
+			crnr.yfactor = 0;
+		} else if (i%4==2) {
+			crnr.xfactor = 0;
+			crnr.yfactor = 1;
+		} else if (i%4==3) {
+			crnr.xfactor = 1;
+			crnr.yfactor = 1;
+		}
+		stage.addChild(crnr);
+		corner_sprites[i] = crnr;
+	}
+	
+	grid = new Shape();
+	stage.addChild(grid);
+	
+	rotateLeftBtn = new Shape();
+	rotateLeftBtn.over = false;
+	rotateLeftBtn.x = 10;
+	rotateLeftBtn.y = stageHeight - 20 - rotateSize;
+	stage.addChild(rotateLeftBtn);
+	
+	rotateRightBtn = new Shape();
+	rotateRightBtn.over = false;
+	rotateRightBtn.x = 15 + rotateSize;
+	rotateRightBtn.y = stageHeight - 20 - rotateSize;
+	stage.addChild(rotateRightBtn);
+
+	rotateText = new Text("rotate image left/right", "20px share-regular", "#fff");
+	rotateText.textBaseline = "middle";
+	rotateText.lineWidth = 216;
+	rotateText.x = 10 + rotateSize + rotateSize + 10;
+	rotateText.y = stageHeight - 20 - (rotateSize*.5);
+	stage.addChild(rotateText);
+
+	modeText = new Text("", "20px share-regular", "#fff");
+	modeText.textBaseline = "middle";
+	modeText.lineWidth = 100;
+	modeText.x = 10;
+	modeText.y = stageHeight - 20 - (rotateSize*.5);
+	stage.addChild(modeText);
+
+	modeBtn = new Shape();
+	modeBtn.over = false;
+	modeBtn.x = 10;
+	modeBtn.y = stageHeight - 20 - rotateSize;
+	stage.addChild(modeBtn);
+
 	Ticker.addListener(window);
 }
 
 function addInteractivity() {
+	// handle interaction for ROTATE MODE button
+	// wrapper function to provide scope for the event handlers:
+	(function(target) {
+		modeBtn.onPress = function(evt) {
+			update = true;
+			if (drawMode=="normal") {
+				drawMode = "rotate";
+			} else {
+				drawMode = "normal";
+				// reload image from server
+				getImageFromServer();
+			}
+		};
+		modeBtn.onMouseOver = function() {
+			modeText.color = "#f00";
+			target.over = true;
+			update = true;
+		};
+		modeBtn.onMouseOut = function() {
+			modeText.color = "#fff";
+			target.over = false;
+			update = true;
+		};
+	})(modeBtn);
+	
+	// handle interaction for ROTATE LEFT button
+	// wrapper function to provide scope for the event handlers:
+	(function(target) {
+		rotateLeftBtn.onPress = function(evt) {
+			if (imageRotation>-(maxRotation)) {
+				imageRotation -= rotationIncrement;
+				rotateImage();
+				previewActive = true;
+				update = true;
+			}
+		};
+		rotateLeftBtn.onMouseOver = function() {
+			target.over = true;
+			update = true;
+		};
+		rotateLeftBtn.onMouseOut = function() {
+			target.over = false;
+			update = true;
+		};
+	})(rotateLeftBtn);
+	
+	// handle interaction for ROTATE RIGHT button
+	// wrapper function to provide scope for the event handlers:
+	(function(target) {
+		rotateRightBtn.onPress = function(evt) {
+			if (imageRotation<maxRotation) {
+				imageRotation += rotationIncrement;
+				rotateImage();
+				previewActive = true;
+				update = true;
+			}
+		};
+		rotateRightBtn.onMouseOver = function() {
+			target.over = true;
+			update = true;
+		};
+		rotateRightBtn.onMouseOut = function() {
+			target.over = false;
+			update = true;
+		};
+	})(rotateRightBtn);
+	
 	// handle movement for VERTICAL handle
 	// wrapper function to provide scope for the event handlers:
 	(function(target) {
@@ -915,12 +1027,130 @@ function addInteractivity() {
 }
 
 function draw() {
-	drawBackground();
-	drawVertical();
-	drawSquare(sq1, sq1x, sq1y);
-	drawSquare(sq2, sq2x, sq2y);
-	drawCorners();
-	drawText();
+	if (drawMode=="normal") {
+		clearGrid();
+		drawBackground();
+		drawVertical();
+		drawSquare(sq1, sq1x, sq1y);
+		drawSquare(sq2, sq2x, sq2y);
+		drawCorners();
+		drawText();
+	} else {
+		clearBackground();
+		clearVertical();
+		clearSquares();
+		clearCorners();
+		drawGrid();
+	}
+	drawRotate();
+}
+
+function clearGrid() {
+	grid.graphics.clear();
+}
+
+function drawGrid() {
+	var g = grid.graphics;
+	var i;
+	var cols = 17;
+	var rows = 14;
+	var colgap = (img.width/cols);
+	var rowgap = (img.height/rows);
+	var h = img.height;
+	var w = img.width;
+	
+	g.clear();
+	g.setStrokeStyle(1, "round", "round");
+	g.beginStroke(COLOR);
+	for (i=1;i<cols;++i) {
+		g.moveTo(i*colgap,0).lineTo(i*colgap,stageHeight-60);
+	}
+	for (i=1;i<rows;++i) {
+		g.moveTo(0,i*rowgap).lineTo(stageWidth,i*rowgap);
+	}
+}
+
+function rotateImage() {
+	bmp.rotation = imageRotation;
+	var radians = imageRotation * (Math.PI/180);
+	var newx = Math.sin(radians) * img.height;
+	var newy = Math.sin(radians) * img.width;
+	if (imageRotation>0) bmp.x = newx + OFFSET;
+	if (imageRotation<0) bmp.y = -newy;
+}
+
+function drawRotate() {
+	var g;
+	if (drawMode=="rotate") {
+		// TEXT
+		rotateText.visible = true;
+		
+		// LEFT
+		g = rotateLeftBtn.graphics;
+		g.clear();
+		g.setStrokeStyle(THICK, "round", "round");
+		if (rotateLeftBtn.over) {
+			g.beginStroke(OVERCOLOR);
+		} else {
+			g.beginStroke(COLOR);
+		}
+		g.beginFill(FILLALPHA);
+		g.drawRect(0,0,rotateSize,rotateSize);
+		g.moveTo(20,25).lineTo(20,10).lineTo(5,10).lineTo(10,5).moveTo(5,10).lineTo(10,15);
+
+		// RIGHT
+		g = rotateRightBtn.graphics;
+		g.clear();
+		g.setStrokeStyle(THICK, "round", "round");
+		if (rotateRightBtn.over) {
+			g.beginStroke(OVERCOLOR);
+		} else {
+			g.beginStroke(COLOR);
+		}
+		g.beginFill(FILLALPHA);
+		g.drawRect(0,0,rotateSize,rotateSize);
+		g.moveTo(10,25).lineTo(10,10).lineTo(25,10).lineTo(20,5).moveTo(25,10).lineTo(20,15);
+		
+		// MODE BUTTON
+		modeText.text = "edit mode";
+		modeText.x = 305;
+		modeBtn.x = 300;
+		g = modeBtn.graphics;
+		g.clear();
+		g.setStrokeStyle(THICK, "round", "round");
+		if (modeBtn.over) {
+			g.beginStroke(OVERCOLOR);
+		} else {
+			g.beginStroke(COLOR);
+		}
+		g.beginFill(FILLALPHA);
+		g.drawRect(0,0,90,rotateSize);
+	} else {
+		rotateText.visible = false;
+		
+		// LEFT
+		g = rotateLeftBtn.graphics;
+		g.clear();
+		
+		// RIGHT
+		g = rotateRightBtn.graphics;
+		g.clear();
+		
+		// MODE BUTTON
+		modeText.text = "rotate mode";
+		modeText.x = 15;
+		modeBtn.x = 10;
+		g = modeBtn.graphics;
+		g.clear();
+		g.setStrokeStyle(THICK, "round", "round");
+		if (modeBtn.over) {
+			g.beginStroke(OVERCOLOR);
+		} else {
+			g.beginStroke(COLOR);
+		}
+		g.beginFill(FILLALPHA);
+		g.drawRect(0,0,110,rotateSize);
+	}
 }
 
 function drawText()	{
@@ -950,6 +1180,10 @@ function drawText()	{
 	}
 }
 
+function clearBackground() {
+	bg.graphics.clear();
+}
+
 function drawBackground() {
 	var g = bg.graphics;
 	g.clear();
@@ -960,6 +1194,10 @@ function drawBackground() {
 	//g.drawRect(sq1x+hsize,sq1y,(vertx-sq1x-hsize)*2,vsize);
 	g.drawRect(sq2x+hsize,sq1y,stageWidth-(sq2x+hsize),vsize);
 	g.drawRect(0,sq1y+vsize,stageWidth,stageHeight-vsize-sq1y);
+}
+
+function clearVertical() {
+	vert_sprite.graphics.clear();
 }
 
 function drawVertical() {
@@ -977,6 +1215,13 @@ function drawVertical() {
 	g.moveTo(0,-(VERTHEIGHT*.5)).lineTo(0, -stageHeight).moveTo(0,(VERTHEIGHT*.5)).lineTo(0, stageHeight);
 	g.moveTo(-(VERTWIDTH*.5),0).lineTo(-(VERTWIDTH*.5),VERTWIDTH*.5).lineTo(-VERTWIDTH,0).lineTo(-(VERTWIDTH*.5),-(VERTWIDTH*.5)).lineTo(-(VERTWIDTH*.5),0);
 	g.moveTo((VERTWIDTH*.5),0).lineTo((VERTWIDTH*.5),VERTWIDTH*.5).lineTo(VERTWIDTH,0).lineTo((VERTWIDTH*.5),-(VERTWIDTH*.5)).lineTo((VERTWIDTH*.5),0);
+}
+
+function clearCorners() {
+	var i;
+	for (i=0;i<8;++i) {
+		corner_sprites[i].graphics.clear();
+	}
 }
 
 function drawCorners() {
@@ -1004,6 +1249,11 @@ function drawCorners() {
 		crnr.x = x+CORNER_OFFSET+((hsize-CORNER_OFFSET-CORNER_OFFSET)*crnr.xfactor);
 		crnr.y = y+CORNER_OFFSET+((vsize-CORNER_OFFSET-CORNER_OFFSET)*crnr.yfactor);
 	}
+}
+
+function clearSquares() {
+	sq1.graphics.clear();
+	sq2.graphics.clear();
 }
 
 function drawSquare(square,x,y) {
@@ -1034,21 +1284,29 @@ function drawSquare(square,x,y) {
 
 function tick() {
 	// only draw once clicked
-	if (previewActive) {
+	if (previewActive && drawMode=="normal") {
 		$("#previewExplain").hide();
 		$("#btnNext").show();
 	}
 	if (update) {
+		console.log(imageRotation);
 		draw();
 		update = false; // only update once
 		updatePreview();
 		stage.update();
-		if (previewActive && mode=="ANAGLYPH") {
+		if (previewActive && mode=="ANAGLYPH" && drawMode=="normal") {
 			drawAnaglyph();
 		}
 	}
-	if (previewActive && mode=="GIF") {
+	if (previewActive && mode=="GIF" && drawMode=="normal") {
 		drawGIF();
+	}
+	if (drawMode=="rotate") {
+		document.getElementById("previewGIF").style.display = "none";
+		document.getElementById("previewAnaglyph").style.display = "none";
+		$("#previewExplain").show();
+		$("#btnNext").hide();
+		$("#previewExplain").text("Preview will be created once you exit rotate mode");
 	}
 }
 
@@ -1128,22 +1386,6 @@ function drawAnaglyph () {
 	var j = rightimgdata_array.length;
 	var rR, rG, rB;
 	for (i = 0; i < j; i+=4) {
-		/*
-		rR = rightimgdata_array[i];
-		rG = rightimgdata_array[i+1];
-		rB = rightimgdata_array[i+2];
-		// right operation
-		// Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
-		rR = 255;
-		rG = 255 - (255 - rightimgdata_array[i+1]);
-		rB = 255 - (255 - rightimgdata_array[i+2]);
-	
-		// Screen blend = 255 - [((255 - Top Color)*(255 - Bottom Color))/255]
-		// Multiply blend = (Top Color) * (Bottom Color) /255
-		leftimgdata_array[i] = leftimgdata_array[i];
-		leftimgdata_array[i+1] = rG;
-		leftimgdata_array[i+2] = rB;
-		*/
 		lR = leftimgdata_array[i];
 		lG = leftimgdata_array[i+1];
 		lB = leftimgdata_array[i+2];
@@ -1166,16 +1408,22 @@ function loadPhoto(str) {
 	console.log("photo");
 	img.onload = handleImageLoad;
 	img.onerror = handleImageError;
-	// for animated GIF
 	var url = "http://images.nypl.org/index.php?id="+index+"&t=w";
+	img = new Image();
 	img.src = url;
+	
+	getImageFromServer();
+}
+
+function getImageFromServer() {
+	// for the gif
+	var url = "/getimagedata.jpeg?r="+imageRotation+"&url="+index;
 	var p = document.getElementById("previewGIF");
 	p.style.background = "url('"+url+"') no-repeat -10000px -10000px";
-	
-	// get image data for future processing if anaglyph
+	// for the anaglyph
 	$.getImageData({
 		  url: index,
-		  server: "/getimagedata/?callback=?",
+		  server: "/getimagedata/?r="+imageRotation+"&callback=?",
 		  success: function(image){
 			// Set up the canvas
 			ctx3D = resultcanvas.getContext('2d');
@@ -1183,13 +1431,13 @@ function loadPhoto(str) {
 			
 			// Draw the image on to the BASE canvas
 			ctxbase.drawImage(image, 0, 0, image.width, image.height);
+			handleImageLoad(image);
 		  },
 		  error: function(xhr, text_status){
 		    // Handle your error here
 		    console.log("Could not load image");
 		  }
 	});
-
 }
 
 function changeSpeed(s) {
@@ -1220,9 +1468,21 @@ function generate() {
 		_gaq.push(['_trackEvent', 'Granimations', mode, "HTML"]);
 		// post to server
 		$.ajax({
-			url: "/animations/createJson/"+Math.round(sq1x-OFFSET)+"/"+Math.round(sq1y)+"/"+Math.round(sq2x-OFFSET)+"/"+Math.round(sq2y)+"/"+Math.round(hsize)+"/"+Math.round(vsize)+"/"+Math.round(speed)+"/"+index+"/"+mode+"/mga.json",
+			url: "/animations/createJson.json",
 			dataType: 'json',
-			data: null,
+			data: {
+				x1:Math.round(sq1x-OFFSET),
+				y1:Math.round(sq1y),
+				x2:Math.round(sq2x-OFFSET),
+				y2:Math.round(sq2y),
+				height:Math.round(vsize),
+				width:Math.round(hsize),
+				delay:Math.round(speed),
+				digitalid:index,
+				rotation:imageRotation,
+				mode:mode,
+				creator:"mga"
+					},
 			success: function(data) {
 				if (data.redirect) {
 					window.location.href = data.redirect;
@@ -1369,11 +1629,12 @@ function clearImages() {
 }
 
 function handleImageLoad(e) {
-	run();
-	prepareInterface();
-	// adding interaction
-	addInteractivity();
-	update = true;
+	imagesLoaded++;
+	if (imagesLoaded==2) {
+		run();
+		addInteractivity();
+		update = true;
+	}
 }
 
 //called if there is an error loading the image (usually due to a 404)
