@@ -109,7 +109,7 @@ var rotateLeftBtn;
 var rotateRightBtn;
 var rotateSize = 30;
 var imageRotation = 0;
-var maxRotation = 2; // no image is skewed more than these degrees
+var maxRotation = 3; // no image is skewed more than these degrees
 var rotationIncrement = .1;
 var rotateText;
 var modeText;
