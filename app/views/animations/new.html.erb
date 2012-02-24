@@ -1,6 +1,9 @@
 <% content_for :title do %>Step 2 CREATE : <% end %>
 <% content_for :dynamic_js do %>
 <!-- non compiled JS (heroku limitation) -->
+<!--[if (!IE)|(lte IE 8)]><!-->
+<%= javascript_include_tag "/assets/easel.js" %>
+<!-- <![endif]-->
 
 <%= javascript_include_tag "/assets/swfobject.js" %>
 <!-- end non-compiled -->
