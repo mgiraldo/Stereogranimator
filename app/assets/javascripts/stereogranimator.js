@@ -8,12 +8,9 @@ var bmp;
 var stageWidth = 800;
 var stageHeight = 550;
 
-var numImagesLoaded = 0;
-
 var resize_sprite;
 var vert_sprite;
 var corner_sprites;
-var sheetpng;
 var sheetsrc;
 
 // anaglyph mode vars
@@ -119,8 +116,8 @@ var drawMode = "normal";
 var grid;
 var imagesLoaded = 0;
 
-// typekit misbehaves
-var thefont = "'Arial Narrow',sans-serif";
+// typekit misbehaves in chrome
+var thefont = "share-regular,'Arial Narrow',sans-serif";
 
 function init() {
 	$("#yescanvas").show();
@@ -145,10 +142,6 @@ function init() {
 	canvas.ontouchend = function(){isdown = false;sq1.over=sq2.over=vert_sprite.over=false;};
 	canvas.ontouchstart = function(){previewActive=true;};
 	
-	sheetpng = new Image();
-	sheetpng.onload = handleImageLoad;
-	sheetpng.onerror = handleImageError;
-	
 	stage = new Stage(canvas);
 	stage.enableMouseOver(10);
 	Touch.enable(stage);
@@ -156,7 +149,6 @@ function init() {
 	changeSpeed(speed);
 	toggleMode(mode);
 
-	sheetpng.src = sheetsrc;
 	loadPhoto(index);
 	
 	Ticker.setInterval(10);
@@ -1634,7 +1626,8 @@ function clearImages() {
 
 function handleImageLoad(e) {
 	imagesLoaded++;
-	if (imagesLoaded==2) {
+	// this is a hack since only should be called once
+	if (imagesLoaded==1) {
 		run();
 		addInteractivity();
 		update = true;

@@ -88,9 +88,10 @@
 <script type="text/javascript">
 // establish the photo to be used
 index = "<%= params[:did] %>";
-sheetsrc = "<%= image_path('sprites.png') %>"
 if (Modernizr.canvas) {
-	init();
+	window.onload = function () {
+		init();
+	}
 } else {
 	disableCanvas();
 	swfobject.embedSWF("<%= asset_path("main.swf") %>", "fallback", "1200", "582", "10", "<%= asset_path("expressInstall.swf") %>", {index:"<%= params[:did] %>",host:"<%= request.protocol + request.host_with_port %>"}, {wmode: "transparent"});
