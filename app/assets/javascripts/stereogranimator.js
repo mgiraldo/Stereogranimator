@@ -119,7 +119,7 @@ var grid;
 var imagesLoaded = 0;
 
 // typekit misbehaves
-var thefont = "share-regular,'Arial Narrow',sans-serif";
+var thefont = "'Arial Narrow',sans-serif";
 
 function init() {
 	$("#yescanvas").show();
