@@ -1,3 +1,4 @@
+{
 var image_array = [];
 
 var canvas;
@@ -1672,4 +1673,5 @@ function disableCanvas() {
 	$("#yescanvas").hide();
 	$("#nocanvas").show();
 	toggleInstructions();
+}
 }
