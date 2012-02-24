@@ -118,6 +118,9 @@ var drawMode = "normal";
 var grid;
 var imagesLoaded = 0;
 
+// typekit misbehaves
+var thefont = "share-regular,'Arial Narrow',sans-serif";
+
 function init() {
 	$("#yescanvas").show();
 	$("#nocanvas").hide();
@@ -206,7 +209,7 @@ function run() {
 	stage.addChild(sq2);
 	
 	// draw square help text
-	txt = new Text("drag me", "20px share-regular,'Arial Narrow',sans-serif", "#fff");
+	txt = new Text("drag me", "20px " + thefont, "#fff");
 	txt.textBaseline = "middle";
 	txt.lineWidth = 80;
 	txt.x = 0;
@@ -214,7 +217,7 @@ function run() {
 	stage.addChild(txt);
 	
 	// draw vertical help text
-	vtxt = new Text("<- shift axis   shift axis ->", "20px share-regular,'Arial Narrow',sans-serif", "#fff");
+	vtxt = new Text("<- shift axis   shift axis ->", "20px " + thefont, "#fff");
 	vtxt.textBaseline = "middle";
 	vtxt.lineWidth = 216;
 	vtxt.x = -1000;
@@ -267,14 +270,14 @@ function run() {
 	rotateRightBtn.y = stageHeight - 20 - rotateSize;
 	stage.addChild(rotateRightBtn);
 
-	rotateText = new Text("rotate image left/right", "20px share-regular,'Arial Narrow',sans-serif", "#fff");
+	rotateText = new Text("rotate image left/right", "20px " + thefont, "#fff");
 	rotateText.textBaseline = "middle";
 	rotateText.lineWidth = 216;
 	rotateText.x = 10 + rotateSize + rotateSize + 10;
 	rotateText.y = stageHeight - 20 - (rotateSize*.5);
 	stage.addChild(rotateText);
 
-	modeText = new Text("", "20px share-regular,'Arial Narrow',sans-serif", "#fff");
+	modeText = new Text("", "20px " + thefont, "#fff");
 	modeText.textBaseline = "middle";
 	modeText.lineWidth = 100;
 	modeText.x = 10;
