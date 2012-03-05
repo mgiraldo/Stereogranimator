@@ -193,7 +193,7 @@ class Animation < ActiveRecord::Base
     "http://s3.amazonaws.com/stereo.nypl.org/t_#{filename}"
   end
   def nypl_url
-    "http://digitalgallery.nypl.org/nypldigital/dgkeysearchdetail.cfm?&imageID=#{digitalid}"
+    "http://digitalgallery.nypl.org/nypldigital/dgkeysearchdetail.cfm?word=#{digitalid}"
   end
   def as_json(options = { })
       h = super(options)
