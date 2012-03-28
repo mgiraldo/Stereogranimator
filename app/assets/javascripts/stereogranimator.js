@@ -1285,7 +1285,7 @@ function tick() {
 		$("#btnNext").show();
 	}
 	if (update) {
-		console.log(imageRotation);
+		//console.log(imageRotation);
 		draw();
 		update = false; // only update once
 		updatePreview();
@@ -1401,7 +1401,7 @@ function drawAnaglyph () {
 
 function loadPhoto(str) {
 	index = str;
-	console.log("photo");
+	//console.log("photo");
 	img.onload = handleImageLoad;
 	img.onerror = handleImageError;
 	var url = "http://images.nypl.org/index.php?id="+index+"&t=w";
@@ -1431,14 +1431,14 @@ function getImageFromServer() {
 		  },
 		  error: function(xhr, text_status){
 		    // Handle your error here
-		    console.log("Could not load image");
+		    //console.log("Could not load image");
 		  }
 	});
 }
 
 function changeSpeed(s) {
 	speed = s;
-	console.log(speed);
+	//console.log(speed);
 	var sDiv = $("#slowSpeed");
 	var mDiv = $("#medSpeed");
 	var fDiv = $("#fastSpeed");
@@ -1456,7 +1456,7 @@ function changeSpeed(s) {
 
 function generate() {
 	if (previewActive) {
-		console.log("generating...");
+		//console.log("generating...");
 		document.getElementById("btnNext").disabled = true;
 		document.getElementById("btnNext").onclick = {};
 		$("#btnNext").replaceWith("<div class=\"generator\">GENERATING...</div>");
@@ -1483,7 +1483,7 @@ function generate() {
 				if (data.redirect) {
 					window.location.href = data.redirect;
 				} else {
-					console.log("cannot redirect: " + data);
+					//console.log("cannot redirect: " + data);
 				}
 			},
 			statusCode: {
@@ -1512,7 +1512,7 @@ function generateFromFlash(_sq1x,_sq1y,_sq2x,_sq2y,_hsize,_vsize,_speed,_index,_
 			if (data.redirect) {
 				window.location.href = data.redirect;
 			} else {
-				console.log("cannot redirect: " + data);
+				//console.log("cannot redirect: " + data);
 			}
 		},
 		statusCode: {
@@ -1636,7 +1636,7 @@ function handleImageLoad(e) {
 
 //called if there is an error loading the image (usually due to a 404)
 function handleImageError(e) {
-    console.log("Error Loading Image : " + e.target.src);
+    //console.log("Error Loading Image : " + e.target.src);
 }
 
 function toggleInstructions() {
