@@ -15,7 +15,7 @@ gem "rmagick", :require => 'RMagick'
 
 gem 'aws-sdk'
 
-gem 'curb', :git => 'https://github.com/taf2/curb'
+gem 'curb', '~> 0.7.15' #, :git => 'https://github.com/taf2/curb'
 
 gem 'feedzirra', :git => 'https://github.com/pauldix/feedzirra.git'
 
