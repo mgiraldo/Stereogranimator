@@ -2,7 +2,7 @@
 				<span class="dim"><%= url_for(:controller=>"gallery",:action=>"view",:id=>@animation.id,:only_path => false) %></span>
 				</p>
 				
-				<p><%= link_to "Create another version", "/convert/#{@animation.digitalid}" %> of the original.</p>
+				<p><%= link_to "Create another version", "/convert/#{@animation.digitalid}?xid=#{@animation.external_id}" %> of the original.</p>
 				
 <%
 

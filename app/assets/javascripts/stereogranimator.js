@@ -116,6 +116,10 @@ var drawMode = "normal";
 var grid;
 var imagesLoaded = 0;
 
+var xid = 0;
+
+var imgurl = "";
+
 // typekit misbehaves in chrome
 var thefont = "share-regular,'Arial Narrow',sans-serif";
 
@@ -297,7 +301,7 @@ function addInteractivity() {
 			} else {
 				drawMode = "normal";
 				// reload image from server
-				getImageFromServer();
+				getImageFromServer(xid);
 			}
 		};
 		modeBtn.onMouseOver = function() {
@@ -1404,23 +1408,52 @@ function loadPhoto(str) {
 	//console.log("photo");
 	img.onload = handleImageLoad;
 	img.onerror = handleImageError;
-	var url = "http://images.nypl.org/index.php?id="+index+"&t=w";
-	img = new Image();
-	img.src = url;
-	
-	getImageFromServer();
+	imgurl = "http://images.nypl.org/index.php?id="+index+"&t=w";
+	if (xid!=0) {
+		$.ajax({
+			url: "/s/v",
+			dataType: 'json',
+			data: {id:index},
+			success: function(data) {
+				if(data!=false) {
+					imgurl = data;
+					img = new Image();
+					img.src = "/getimagedata.jpeg?r="+imageRotation+"&url="+escape(imgurl);
+					getImageFromServer();
+				} else {
+					alert("Image not in allowed list. Sorry :(");
+				}
+			},
+			statusCode: {
+			  404: function() {
+				  alert('Not found error (404)');
+			  },
+			  429: function() {
+				  alert('Too many requests (429)');
+			  },
+			  500: function() {
+				  alert('Internal server error (500)');
+			  }
+			}
+		});
+	} else {
+		img = new Image();
+		img.src = imgurl;
+		getImageFromServer();
+	}
 }
 
 function getImageFromServer() {
-	// for the gif
-	var url = "/getimagedata.jpeg?r="+imageRotation+"&url="+index;
+	var url = "/getimagedata.jpeg?r="+imageRotation+"&url="+escape(imgurl);
 	var p = document.getElementById("previewGIF");
 	p.style.background = "url('"+url+"') no-repeat -10000px -10000px";
 	// for the anaglyph
+	/**/
 	$.getImageData({
-		  url: index,
+		  url: imgurl,
 		  server: "/getimagedata/?r="+imageRotation+"&callback=?",
 		  success: function(image){
+			console.log(image);
 			// Set up the canvas
 			ctx3D = resultcanvas.getContext('2d');
 			ctxbase = processcanvas.getContext('2d');
@@ -1430,10 +1463,12 @@ function getImageFromServer() {
 			handleImageLoad(image);
 		  },
 		  error: function(xhr, text_status){
+			  alert("error loading image");
 		    // Handle your error here
 		    //console.log("Could not load image");
 		  }
 	});
+	/**/
 }
 
 function changeSpeed(s) {
@@ -1477,6 +1512,7 @@ function generate() {
 				digitalid:index,
 				rotation:imageRotation,
 				mode:mode,
+				xid:xid,
 				creator:"mga"
 					},
 			success: function(data) {
@@ -1505,7 +1541,7 @@ function generateFromFlash(_sq1x,_sq1y,_sq2x,_sq2y,_hsize,_vsize,_speed,_index,_
 	// send google analytics
 	_gaq.push(['_trackEvent', 'Granimations', _mode, "FLASH"]);
 	$.ajax({
-		url: "/animations/createJson/"+Math.round(_sq1x)+"/"+Math.round(_sq1y)+"/"+Math.round(_sq2x)+"/"+Math.round(_sq2y)+"/"+Math.round(_hsize)+"/"+Math.round(_vsize)+"/"+Math.round(_speed)+"/"+_index+"/"+_mode+"/mga.json",
+		url: "/animations/createJson/"+Math.round(_sq1x)+"/"+Math.round(_sq1y)+"/"+Math.round(_sq2x)+"/"+Math.round(_sq2y)+"/"+Math.round(_hsize)+"/"+Math.round(_vsize)+"/"+Math.round(_speed)+"/"+_index+"/"+_mode+"/mga.json?xid="+xid,
 		dataType: 'json',
 		data: null,
 		success: function(data) {
@@ -1598,15 +1634,23 @@ function refreshImages() {
 		var i, l = r.length;
 		var url, href;
 		for (i=0;i<l;++i) {
-			url = "http://images.nypl.org/index.php?id="+r[i]+"&t=r";
-			href = "/convert/" + r[i];
+			url = r[i]["url"];
+			href = "/convert/" + r[i]["id"] + "?xid=" + r[i]["xid"];
+			meta = r[i]["owner"];
+			xid = r[i]["xid"];
 			$("#st" + i).toggleClass("stereograph");
 			$("#st" + i).toggleClass("stereographPlain");
 			$("#link_" + i).show();
 			$("#linko_" + i).show();
 			$("#link_" + i).attr("href",href);
+			$("#link_" + i).attr("title",meta);
 			$("#linko_" + i).attr("href",href);
+			$("#linko_" + i).attr("title",meta);
 			$("#img_" + i).attr("src",url);
+			$("#img_" + i).attr("alt",meta);
+			if (xid!=0) $("#st" + i + " .ext").css("background-image","url(/assets/ext"+xid+".png)");
+			$("#st" + i + " .ext").css("display",(xid==0)?"none":"block");
+			$("#st" + i + " .ext").attr("title",meta);
 		}
 	}
 }

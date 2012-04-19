@@ -1,8 +1,9 @@
 class Animation < ActiveRecord::Base
-  before_save :imageAndMetadata
+  before_save :createImage
   before_destroy :checkImage
   def checkImage
     did = self.digitalid
+    xid = self.external_id
     
     # delete from Amazon S3
     if self.filename != nil && self.filename != ""
@@ -14,10 +15,10 @@ class Animation < ActiveRecord::Base
       obj.delete()
     end
     
-    @derivatives = Animation.where(:digitalid => did)
+    @derivatives = Animation.where(:digitalid => did, :external_id => xid)
     
     if @derivatives.length == 1
-      # this is the last derivative for the original image
+      # this is the last derivative for the original image IF FROM NYPL
       @im = Image.where("upper(digitalid) = ?", did.upcase).first
       if @im != nil
         @im.converted = 0
@@ -25,40 +26,24 @@ class Animation < ActiveRecord::Base
       end
     end
   end
-  def imageAndMetadata
-    @im = Image.where("upper(digitalid) = ?", self.digitalid.upcase).first
-    # mark image as converted
-    if @im != nil
-      if @im.converted == 0
-        @im.converted = 1
-        @im.save
-      end
-    end
-    update = false
-    if self.views == nil
-      # just being created
-      self.views = 0
-      update = true
-    end
-    # add image metadata to animation
-    if self.metadata==nil && self.digitalid!=nil && @im
-      self.metadata = "#{@im.title} #{@im.date}"
-      update = true
-    end
-    if update
-      self.save
-    end
-    createImage()
-  end
   def increaseViews
     self.views = self.views.to_i + 1
     self.save
   end
-  def createImage(bypass=false)
-    if (self.filename==nil && self.digitalid!=nil) || bypass
+  def createImage
+    url = self.url
+    if self.external_id!=0
+      external_photo = Image.flickrDataForPhoto(self.digitalid)
+      url = external_photo[:original_url]
+    end
+    if (url && self.filename==nil && self.digitalid!=nil)
       # do some image magick
       # first get each frame
-      im = Magick::Image.read(self.url).first
+      im = Magick::Image.read(url).first
+      
+      if (im.columns > 800)
+        im = im.resize_to_fit(800)
+      end
       
       rot = self.rotation == "" ? 0 : self.rotation.to_f
       
@@ -113,9 +98,9 @@ class Animation < ActiveRecord::Base
       s3 = AWS::S3.new
       bucket = s3.buckets['stereo.nypl.org']
       obj = bucket.objects[self.filename]
-      obj.write(:file => "#{Rails.root}/tmp/#{self.filename}", :acl => :public_read, :metadata => { 'description' => self.metadata, 'photo_from' => 'New York Public Library' })
+      obj.write(:file => "#{Rails.root}/tmp/#{self.filename}", :acl => :public_read, :metadata => { 'description' => self.metadata, 'photo_from' => 'NYPL Labs Stereogranimator' })
       obj = bucket.objects[thumbname]
-      obj.write(:file => "#{Rails.root}/tmp/#{thumbname}", :acl => :public_read, :metadata => { 'description' => self.metadata, 'photo_from' => 'New York Public Library' })
+      obj.write(:file => "#{Rails.root}/tmp/#{thumbname}", :acl => :public_read, :metadata => { 'description' => self.metadata, 'photo_from' => 'NYPL Labs Stereogranimator' })
     end
   end
   def self.purgeBlacklisted
@@ -127,12 +112,17 @@ class Animation < ActiveRecord::Base
     black.destroy_all
   end
   def self.recreateAWS
+    #
+    #
+    #  COMMENTED WHEN ADDED FLICKR INTEGRATION WHICH BREAKS THIS
+    #
+    #
     # get all animations
-    batch = Animation.all
+    #batch = Animation.all
     # run createImage on each using the filename found
-    batch.each do |an|
-      an.createImage(true)
-    end
+    #batch.each do |an|
+      #an.createImage(true)
+    #end
   end
   def self.amazonDump
     countgif = 0
@@ -174,27 +164,51 @@ class Animation < ActiveRecord::Base
     end
     puts "There were #{countana} PNGs/JPEGs and #{countgif} GIFs "
   end
+  
+  def owner
+    if self.external_id==0
+      "NYPL Digital Gallery"
+    else
+      Image.externalData(self.external_id)[:name]
+    end
+  end
+  
+  def owner_url
+    if self.external_id==0
+      self.nypl_url
+    else
+      Image.flickrDataForPhoto(self.digitalid)[:info]["urls"][0]["_content"]
+    end
+  end
+  
   def url
     "http://images.nypl.org/index.php?id=#{digitalid}&t=w"
   end
+  
   def thumb
     "/view/" + id.to_s + (mode=="GIF"?".gif":".png") + "?n=1&m=t"
   end
+  
   def full
     "/view/" + id.to_s + (mode=="GIF"?".gif":".png") + "?n=1"
   end
+  
   def full_count
     "/view/" + id.to_s + (mode=="GIF"?".gif":".png")
   end
+  
   def aws_url
     "http://s3.amazonaws.com/stereo.nypl.org/#{filename}"
   end
+  
   def aws_thumb_url
     "http://s3.amazonaws.com/stereo.nypl.org/t_#{filename}"
   end
+  
   def nypl_url
     "http://digitalgallery.nypl.org/nypldigital/dgkeysearchdetail.cfm?imageID=#{digitalid.downcase}"
   end
+  
   def as_json(options = { })
       h = super(options)
       h[:url] = url

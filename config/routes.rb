@@ -32,9 +32,14 @@ Stereo::Application.routes.draw do
   match 'create', :to => 'animations#choose', :as => "create"
   match 'convert/:did', :to => 'animations#new', :as => "convert"
   match 'share/:id', :to => 'animations#share', :as => "share"
+  
   match 'getimagedata/:digitalid', :to => 'images#getimagedata', :as => "getimagedata"
   match 'getimagedata/', :to => 'images#getimagedata', :as => "getimagedata_plain"
   match 'getpixels/:digitalid', :to => 'images#getpixels', :as => "getpixels"
+  match 's/v', :to => 'images#verifyPhoto'
+  
+  #test
+  match 'flickr/', :to => 'images#flickr'
 
   match "/animations/createJson/:x1/:y1/:x2/:y2/:width/:height/:delay/:digitalid/:rotation/:mode/:creator", :to => 'animations#createJson', :as => "animation_rotation"
   

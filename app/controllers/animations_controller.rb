@@ -39,7 +39,6 @@ class AnimationsController < ApplicationController
   # GET /animations/1.json
   def show
     @animation = Animation.find(params[:id])
-
     respond_to do |format|
       format.html { redirect_to "/view/#{@animation.id}" }
       format.json { render :json => @animation }
@@ -53,6 +52,10 @@ class AnimationsController < ApplicationController
   # GET /animations/new.json
   def new
     @metadata = Image.getMetadata(params[:did])
+    if params[:xid].to_i!=0
+      photoinfo = Image.flickrDataForPhoto(params[:did])
+      @metadata = {"title"=>photoinfo[:info]["title"],"link"=>photoinfo[:info]["urls"][0]["_content"],"owner"=>Image.externalData(params[:xid].to_i)[:name]}
+    end
     respond_to do |format|
       format.html # new.html.erb
     end
@@ -105,7 +108,26 @@ class AnimationsController < ApplicationController
     @animation.mode = params[:mode]
     @animation.creator = params[:creator]
     @animation.rotation = params[:rotation] != nil ? params[:rotation] : ""
-          
+    @animation.external_id = params[:xid] != nil ? params[:xid] : 0
+    @animation.views = 0
+    
+    # get metadata
+    meta = ""
+    if @animation.external_id!=0
+      external_photo = Image.flickrDataForPhoto(params[:digitalid])
+      meta = external_photo[:info]["title"]
+    else
+      @im = Image.where("upper(digitalid) = ?", params[:digitalid].upcase).first
+      if @im != nil
+        meta = @im.meta
+        if @im.converted == 0
+          @im.converted = 1
+          @im.save
+        end
+      end
+    end
+    @animation.metadata = meta
+    #####
     respond_to do |format|
       if @animation.save
         format.html { render :nothing => true }

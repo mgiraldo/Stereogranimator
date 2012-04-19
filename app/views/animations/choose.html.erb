@@ -2,7 +2,7 @@
 <% content_for :dynamic_js do %>
 <script type="text/javascript">
 
-image_array.push('<%=@images["all"].join("','")%>');
+image_array.push(<%=raw @images["all"].map{|x|"{id:'#{x[:id]}',xid:#{x[:xid]},url:'#{x[:url].html_safe}',owner:'#{x[:owner]}'}"}.join(",")%>);
 initSearch();
 
 </script>
@@ -26,9 +26,10 @@ initSearch();
 <% @images["subset"].entries.each_with_index do |image,i| %>
 			<div id="<%= "st#{i}" %>" class="stereograph grid_4 <%= 'alpha' if i.modulo(3) == 0 %><%= 'omega' if i.modulo(3) == 2 %>">
 <!--[if (!IE)|(lte IE 8)]><!-->
-				<%= link_to "CHOOSE THIS ONE", "/convert/#{image.digitalid}", {:id => "linko_#{i}", :class=>'over'} %>
+				<%= link_to "CHOOSE THIS ONE", "/convert/#{image[:id]}?xid=#{image[:xid]}", {:id => "linko_#{i}", :class=>'over', :title => image[:owner]} %>
 <!-- <![endif]-->
-				<%= link_to image_tag(image.thumb_url, {:id => "img_#{i}"}), "/convert/#{image.digitalid}", {:class=>'base',:id => "link_#{i}"} %>
+				<%= link_to image_tag(image[:url], {:id => "img_#{i}", :width => 300, :alt => image[:owner]}), "/convert/#{image[:id]}?xid=#{image[:xid]}", {:class=>'base',:id => "link_#{i}", :title => image[:owner]} %>
+				<%= link_to "", "/convert/#{image[:id]}?xid=#{image[:xid]}", {:class=>'ext', :title => image[:owner]} %>
 			</div>
 	<% if i.modulo(3) == 2 %>
 			<div class="clear"></div>

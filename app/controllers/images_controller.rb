@@ -1,9 +1,13 @@
 class ImagesController < ApplicationController
   # GET /getimagedata/digitalid
   def getimagedata
-    url = "http://images.nypl.org/index.php?id=#{params[:url]}&t=w"
+    url = params[:url]
     im = Magick::Image.read(url).first
     im.background_color = "none"
+    # test for width (for HQ images)
+    if (im.columns > 800)
+      im = im.resize_to_fit(800)
+    end
     im = im.rotate(params[:r].to_f)
     str = ActiveSupport::Base64.encode64(im.to_blob{self.format = "JPEG"})
     output = {
@@ -18,7 +22,7 @@ class ImagesController < ApplicationController
     end
   end
   
-  # GET /getimagedata/digitalid
+  # GET /getpixels/digitalid
   def getpixels
     url = "http://images.nypl.org/index.php?id=#{params[:digitalid]}&t=w"
     im = Magick::Image.read(url).first
@@ -27,6 +31,18 @@ class ImagesController < ApplicationController
       format.jpeg { render :text => im.to_blob{self.format = "JPEG"}, :status => 200, :type => 'image/jpg' }
     end
     
+  end
+  
+  def verifyPhoto
+    respond_to do |format|
+      format.json { render :json => Image.verifyFlickrPhoto(params[:id]).to_json }
+    end
+  end
+  
+  def flickr
+    respond_to do |format|
+      format.json { render :json => Image.verifyFlickrPhoto("2351567966") }
+    end
   end
   
 end

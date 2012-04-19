@@ -69,18 +69,21 @@
 	</div>
 <%= render :partial => "shared/nocanvas" %>
 	<div class="metadata container_12">
-		<p class="grid_12"><%= @metadata["title"] %> <%= link_to "View in NYPL Digital Gallery", @metadata["link"] %></p>
+		<p class="grid_12">
+			<%= @metadata["title"] %> <%= link_to "View in the #{@metadata["owner"]}", @metadata["link"] %>
+		</p>
 	</div>
 
 <script type="text/javascript">
 // establish the photo to be used
 index = "<%= params[:did] %>";
+xid = <%= params[:xid]==nil ? 0 : params[:xid] %>;
 if (Modernizr.canvas) {
 	window.onload = function () {
 		init();
 	}
 } else {
 	disableCanvas();
-	swfobject.embedSWF("<%= asset_path("main.swf") %>", "fallback", "1200", "582", "10", "<%= asset_path("expressInstall.swf") %>", {index:"<%= params[:did] %>",host:"<%= request.protocol + request.host_with_port %>"}, {wmode: "transparent"});
+	swfobject.embedSWF("<%= asset_path("main.swf") %>", "fallback", "1200", "582", "10", "<%= asset_path("expressInstall.swf") %>", {index:index,host:"<%= request.protocol + request.host_with_port %>"}, {wmode: "transparent"});
 }
 </script>

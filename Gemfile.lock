@@ -48,7 +48,7 @@ GEM
     authlogic (3.1.0)
       activerecord (>= 3.0.7)
       activerecord (>= 3.0.7)
-    aws-sdk (1.3.6)
+    aws-sdk (1.4.0)
       httparty (~> 0.7)
       json (~> 1.4)
       nokogiri (>= 1.4.4)
@@ -60,13 +60,14 @@ GEM
     coffee-script (2.2.0)
       coffee-script-source
       execjs
-    coffee-script-source (1.2.0)
+    coffee-script-source (1.3.1)
     curb (0.7.18)
     erubis (2.7.0)
     execjs (1.3.0)
       multi_json (~> 1.0)
+    flickraw (0.9.5)
     hike (1.2.1)
-    httparty (0.8.1)
+    httparty (0.8.2)
       multi_json
       multi_xml
     i18n (0.6.0)
@@ -78,15 +79,15 @@ GEM
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
       railties (>= 3.0.0)
-    loofah (1.2.0)
+    loofah (1.2.1)
       nokogiri (>= 1.4.4)
     mail (2.3.3)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.18)
-    multi_json (1.2.0)
-    multi_xml (0.4.2)
+    multi_json (1.3.2)
+    multi_xml (0.4.4)
     nokogiri (1.5.2)
     pg (0.13.2)
     polyglot (0.3.3)
@@ -136,7 +137,7 @@ GEM
     treetop (1.4.10)
       polyglot
       polyglot (>= 0.3.1)
-    tzinfo (0.3.32)
+    tzinfo (0.3.33)
     uglifier (1.2.4)
       execjs (>= 0.3.0)
       multi_json (>= 1.0.2)
@@ -151,6 +152,7 @@ DEPENDENCIES
   coffee-rails (~> 3.1.1)
   curb (~> 0.7.15)
   feedzirra!
+  flickraw
   jquery-rails
   json
   kaminari
