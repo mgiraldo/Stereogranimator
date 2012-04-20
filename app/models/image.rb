@@ -91,7 +91,7 @@ class Image < ActiveRecord::Base
       dbimages = Image.order('converted ASC, random()').limit(100)
     end
     dbimages.each do |e|
-      @images['all'].push({:id=>e.digitalid.upcase,:xid=>0,:url=>e.thumb_url,:owner=>"From: New York Public Library Digital Gallery"})
+      @images['all'].push({:id=>e.digitalid.upcase,:xid=>0,:url=>e.thumb_url,:owner=>"From: NYPL Digital Gallery"})
     end
     # add some images from external resources (Flickr)
     Image.flickr_sets.each do |set|
@@ -104,8 +104,9 @@ class Image < ActiveRecord::Base
         end
       end
     end
+    @images['all'] = @images['all'].shuffle
     (0..8).each do |i|
-      @images['subset'][i] = {:id=>@images['all'][i][:id],:xid=>0,:url=>@images['all'][i][:url],:owner=>@images['all'][i][:owner]}
+      @images['subset'][i] = {:id=>@images['all'][i][:id],:xid=>@images['all'][i][:xid],:url=>@images['all'][i][:url],:owner=>@images['all'][i][:owner]}
     end
     return @images
   end
@@ -138,6 +139,17 @@ class Image < ActiveRecord::Base
   end
   
   def self.findByKeyword(keyword)
-    return Image.select('digitalid').where('UPPER(title) LIKE ?', "%#{keyword.upcase}%").map(&:digitalid)
+    bpl = self.externalData(1)
+    r = []
+    local = Image.select('digitalid').where('UPPER(title) LIKE ?', "%#{keyword.upcase}%")
+    local.each{|x|r.push({:id=>x[:digitalid],:owner=>"From: NYPL Digital Gallery",:xid=>0,:url=>x.thumb_url})}
+    begin
+      info = flickr.photos.search(:user_id => bpl[:owner_id],:tags=>"stereograph,#{keyword}",:tag_mode=>'all',:per_page=>20)
+    rescue
+      return r
+    else
+      info.each{|x|r.push({:id=>x["id"],:xid=>1,:owner=>"From: #{bpl[:name]}",:url=>FlickRaw.url_m(x)})}
+      return r
+    end
   end
 end

@@ -43,10 +43,8 @@ class ImagesController < ApplicationController
     end
   end
   
-  def flickr
-    respond_to do |format|
-      format.json { render :json => Image.verifyFlickrPhoto("2351567966") }
-    end
+  def test
+    render :json => Image.randomSet()
   end
   
 end

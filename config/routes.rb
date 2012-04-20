@@ -40,7 +40,7 @@ Stereo::Application.routes.draw do
   match 's/v', :to => 'images#verifyPhoto'
   
   #test
-  match 'flickr/', :to => 'images#flickr'
+  match 'test/', :to => 'images#test'
 
   match "/animations/createJson/:x1/:y1/:x2/:y2/:width/:height/:delay/:digitalid/:rotation/:mode/:creator", :to => 'animations#createJson', :as => "animation_rotation"
   

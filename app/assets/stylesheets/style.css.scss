@@ -435,7 +435,10 @@ a:hover {
     margin-bottom: 30px;
     .over, .ext {
       position: absolute;
-      display: none;
+      display: block;
+    }
+    .ext.nypl {
+      display:none;
     }
   }
   .stereograph {
@@ -446,6 +449,9 @@ a:hover {
       left: 5px;
       background-repeat: no-repeat;
       box-shadow:0 0 5px #000;
+    }
+    .icon {
+      background-image: asset-url("ext1.png",image);
     }
     .over {
       background: $choosebackground;

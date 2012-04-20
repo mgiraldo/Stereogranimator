@@ -1648,8 +1648,14 @@ function refreshImages() {
 			$("#linko_" + i).attr("title",meta);
 			$("#img_" + i).attr("src",url);
 			$("#img_" + i).attr("alt",meta);
-			if (xid!=0) $("#st" + i + " .ext").css("background-image","url(/assets/ext"+xid+".png)");
-			$("#st" + i + " .ext").css("display",(xid==0)?"none":"block");
+			if (xid==0) {
+				$("#st" + i + " .ext").addClass("nypl");
+				$("#st" + i + " .ext").removeClass("icon");
+			}
+			if (xid!=0) {
+				$("#st" + i + " .ext").addClass("icon");
+				$("#st" + i + " .ext").removeClass("nypl");
+			}
 			$("#st" + i + " .ext").attr("title",meta);
 		}
 	}
