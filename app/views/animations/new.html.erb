@@ -84,6 +84,6 @@ if (Modernizr.canvas) {
 	}
 } else {
 	disableCanvas();
-	swfobject.embedSWF("<%= asset_path("main.swf") %>", "fallback", "1200", "582", "10", "<%= asset_path("expressInstall.swf") %>", {index:index,host:"<%= request.protocol + request.host_with_port %>"}, {wmode: "transparent"});
+	swfobject.embedSWF("<%= asset_path("main.swf") %>", "fallback", "1200", "582", "10", "<%= asset_path("expressInstall.swf") %>", {index:index,xid:xid,host:"<%= request.protocol + request.host_with_port %>"}, {wmode: "transparent"});
 }
 </script>

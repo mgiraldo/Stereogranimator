@@ -24,8 +24,12 @@ class ImagesController < ApplicationController
   
   # GET /getpixels/digitalid
   def getpixels
-    url = "http://images.nypl.org/index.php?id=#{params[:digitalid]}&t=w"
+    url = params[:url]
     im = Magick::Image.read(url).first
+    # test for width (for HQ images)
+    if (im.columns > 800)
+      im = im.resize_to_fit(800)
+    end
 
     respond_to do |format|
       format.jpeg { render :text => im.to_blob{self.format = "JPEG"}, :status => 200, :type => 'image/jpg' }

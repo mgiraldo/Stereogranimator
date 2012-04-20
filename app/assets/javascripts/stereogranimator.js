@@ -1453,7 +1453,7 @@ function getImageFromServer() {
 		  url: imgurl,
 		  server: "/getimagedata/?r="+imageRotation+"&callback=?",
 		  success: function(image){
-			console.log(image);
+			//console.log(image);
 			// Set up the canvas
 			ctx3D = resultcanvas.getContext('2d');
 			ctxbase = processcanvas.getContext('2d');

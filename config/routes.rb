@@ -35,6 +35,7 @@ Stereo::Application.routes.draw do
   
   match 'getimagedata/:digitalid', :to => 'images#getimagedata', :as => "getimagedata"
   match 'getimagedata/', :to => 'images#getimagedata', :as => "getimagedata_plain"
+  match 'getpixels', :to => 'images#getpixels', :as => "getpixels"
   match 'getpixels/:digitalid', :to => 'images#getpixels', :as => "getpixels"
   match 's/v', :to => 'images#verifyPhoto'
   
