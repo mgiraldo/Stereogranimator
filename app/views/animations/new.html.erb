@@ -71,7 +71,7 @@
 	<div class="metadata container_12">
 		<p class="grid_12">
 			<em><%= @metadata["title"] %></em><br />
-			<%= link_to image_tag("ext#{params[:xid]}.png"), @metadata["homeurl"], {:title=>"#{@metadata["owner"]}"} unless params[:xid]==0 %> <%= @metadata["owner"] %> <%= link_to "View original item", @metadata["link"], {:title=>"View original item"} %><br />
+			<%= link_to image_tag("ext#{params[:xid]}.png"), @metadata["homeurl"], {:title=>"#{@metadata["owner"]}"} %> <%= @metadata["owner"] %> <%= link_to "View original item", @metadata["link"], {:title=>"View original item"} %><br />
 		</p>
 	</div>
 

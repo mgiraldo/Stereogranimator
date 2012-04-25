@@ -167,7 +167,7 @@ class Animation < ActiveRecord::Base
   
   def owner
     if self.external_id==0
-      "NYPL Digital Gallery"
+      "New York Public Library"
     else
       Image.externalData(self.external_id)[:name]
     end
@@ -175,7 +175,7 @@ class Animation < ActiveRecord::Base
   
   def owner_url
     if self.external_id==0
-      self.nypl_url
+      "http://nypl.org"
     else
       Image.externalData(self.external_id)[:homeurl]
     end
