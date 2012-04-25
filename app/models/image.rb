@@ -128,7 +128,7 @@ class Image < ActiveRecord::Base
     image = Image.where("upper(digitalid) = ?", did.upcase).first
     @meta = {}
     if  image != nil
-      @meta = {"title" => "#{image.title} (#{image.date})", "link" => "http://digitalgallery.nypl.org/nypldigital/id?#{image.digitalid}", "homeurl" => "http://nypl.org" }
+      @meta = {"title" => "#{image.title} (#{image.date})", "owner" => "New York Public Library", "link" => "http://digitalgallery.nypl.org/nypldigital/id?#{image.digitalid}", "homeurl" => "http://nypl.org" }
     end
     return @meta
   end
