@@ -4,23 +4,25 @@ class GalleryController < ApplicationController
     per = 30
     page = params[:page] == nil ? 1 : params[:page]
     @type = params[:type] == nil ? "all" : params[:type]
+    xid = params[:xid] == nil || params[:xid] == "" ? -1 : params[:xid]
+    xidwhere = (xid != -1) ? " AND external_id = ? " : " AND external_id != ? "
     if params[:q] == nil
       if @type == "all"
-        @images = Animation.where("creator != ?", 'siege').order('created_at DESC').page(page).per(per)
-        @total = Animation.select('COUNT(id) as total').where("creator != ?", 'siege').map(&:total)[0].to_i
+        @images = Animation.where("creator != ? #{xidwhere}", 'siege', xid).order('created_at DESC').page(page).per(per)
+        @total = Animation.select('COUNT(id) as total').where("creator != ? #{xidwhere}", 'siege', xid).map(&:total)[0].to_i
       elsif @type == "gif" || @type == "anaglyph"
-        @images = Animation.where("mode = ? AND creator != ?", @type.upcase, 'siege').order('created_at DESC').page(page).per(per)
-        @total = Animation.select('COUNT(id) as total').where("mode = ? AND creator != ?", @type.upcase, 'siege').map(&:total)[0].to_i
+        @images = Animation.where("mode = ? AND creator != ? #{xidwhere}", @type.upcase, 'siege', xid).order('created_at DESC').page(page).per(per)
+        @total = Animation.select('COUNT(id) as total').where("mode = ? AND creator != ? #{xidwhere}", @type.upcase, 'siege', xid).map(&:total)[0].to_i
       elsif @type == "popular"
-        @images = Animation.where("creator != ?", 'siege').order('views DESC').page(page).per(per)
-        @total = Animation.select('COUNT(id) as total').where("creator != ?", 'siege').map(&:total)[0].to_i
+        @images = Animation.where("creator != ? #{xidwhere}", 'siege', xid).order('views DESC').page(page).per(per)
+        @total = Animation.select('COUNT(id) as total').where("creator != ? #{xidwhere}", 'siege', xid).map(&:total)[0].to_i
       else
-        @images = Animation.where("creator != ?", 'siege').order('created_at DESC').page(page).per(per)
-        @total = Animation.select('COUNT(id) as total').where("creator != ?", 'siege').map(&:total)[0].to_i
+        @images = Animation.where("creator != ? #{xidwhere}", 'siege', xid).order('created_at DESC').page(page).per(per)
+        @total = Animation.select('COUNT(id) as total').where("creator != ? #{xidwhere}", 'siege', xid).map(&:total)[0].to_i
       end
     else
-      @images = Animation.where("creator != ? AND UPPER(metadata) LIKE ?", 'siege', "%#{params[:q].upcase}%").order('created_at DESC').page(page).per(per)
-      @total = Animation.select('COUNT(id) as total').where("creator != ? AND UPPER(metadata) LIKE ?", 'siege', "%#{params[:q].upcase}%").map(&:total)[0].to_i
+      @images = Animation.where("creator != ? AND UPPER(metadata) LIKE ? #{xidwhere}", 'siege', "%#{params[:q].upcase}%", xid).order('created_at DESC').page(page).per(per)
+      @total = Animation.select('COUNT(id) as total').where("creator != ? AND UPPER(metadata) LIKE ? #{xidwhere}", 'siege', "%#{params[:q].upcase}%", xid).map(&:total)[0].to_i
     end
     respond_to do |format|
       format.html # index.html.erb

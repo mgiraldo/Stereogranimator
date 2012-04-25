@@ -99,7 +99,7 @@ var ua = navigator.userAgent;
 var isiPad = /iPad/i.test(ua) || /iPod/i.test(ua) || /iPhone/i.test(ua);
 var isdown = false;
 
-var helpVisible = false;
+var helpVisible = true;
 
 //////// ROTATION STUFF
 
@@ -1618,7 +1618,7 @@ function initGallerySearch() {
 
 function searchGallery() {
 	if ($("#search .query").val()!="") {
-		window.location.href = "/gallery/?q="+$("#search .query").val();
+		window.location.href = "/gallery/?q="+$("#search .query").val() + "&xid=" + $("#frm-collections_xid").val();
 		$("#search .status").text("Searching...");
 	} else {
 		$("#search .status").text("Please type a keyword.");
@@ -1648,15 +1648,6 @@ function refreshImages() {
 			$("#linko_" + i).attr("title",meta);
 			$("#img_" + i).attr("src",url);
 			$("#img_" + i).attr("alt",meta);
-			if (xid==0) {
-				$("#st" + i + " .ext").addClass("nypl");
-				$("#st" + i + " .ext").removeClass("icon");
-			}
-			if (xid!=0) {
-				$("#st" + i + " .ext").addClass("icon");
-				$("#st" + i + " .ext").removeClass("nypl");
-			}
-			$("#st" + i + " .ext").attr("title",meta);
 		}
 	}
 }

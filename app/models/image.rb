@@ -15,9 +15,18 @@ class Image < ActiveRecord::Base
     "http://images.nypl.org/index.php?id=#{digitalid}&t=w"
   end
   
+  def self.galleryCollectionList
+    l = {:id=>0, :name=>"New York Public Library"}
+    r = [l]
+    self.flickr_sets.each do |s|
+      r.push({:id=>s[:id], :name=>s[:name]})
+    end
+    return r
+  end
+  
   def self.flickr_sets
     #ids from flickr to include in queries
-    [{:id=>1, :set_id=>"72157604192771132", :owner_id=>"24029425@N06", :name=>"Boston Public Library Stereograph Collection", :baseurl=>"http://www.flickr.com/photos/boston_public_library/"}]
+    [{:id=>1, :set_id=>"72157604192771132", :owner_id=>"24029425@N06", :name=>"Boston Public Library", :baseurl=>"http://www.flickr.com/photos/boston_public_library/", :homeurl=>"http://www.bpl.org/"}]
   end
   
   def self.externalData(id)
@@ -119,7 +128,7 @@ class Image < ActiveRecord::Base
     image = Image.where("upper(digitalid) = ?", did.upcase).first
     @meta = {}
     if  image != nil
-      @meta = {"title" => "#{image.title} (#{image.date})", "link" => "http://digitalgallery.nypl.org/nypldigital/id?#{image.digitalid}" }
+      @meta = {"title" => "#{image.title} (#{image.date})", "link" => "http://digitalgallery.nypl.org/nypldigital/id?#{image.digitalid}", "homeurl" => "http://nypl.org" }
     end
     return @meta
   end

@@ -16,6 +16,14 @@ end
 <script type="text/javascript">
 
 initGallerySearch();
+window.onload = function () {
+	$("#frm-collections_xid").change(
+		function () {
+			base = window.location.href;
+			window.location.href = base.substring(0,base.indexOf("?")) + "?xid=" + $("#frm-collections_xid").val();
+		}
+	);
+}
 
 </script>
 
@@ -23,7 +31,7 @@ initGallerySearch();
 		<div class="container_12">
 			<h1 class="gallery"><span class="visuallyhidden">GALLERY</span></h1>
 			<div id="nav" class="grid_12">
-				<p>SHOW: <%= link_to_unless @type=="all", "ALL", "/gallery/all/1" %>&nbsp;&nbsp;<%= link_to_unless @type=="popular", "POPULAR", "/gallery/popular/1" %>&nbsp;&nbsp;<%= link_to_unless @type=="anaglyph", "ANAGLYPHS", "/gallery/anaglyph/1" %>&nbsp;&nbsp;<%= link_to_unless @type=="gif", "ANIMATED GIFS", "/gallery/gif/1" %>&nbsp;&nbsp;&nbsp;OR <span id="search"><%= text_field_tag 'keyword' , "#{params[:q]}", {:class=>"query", :placeholder=>"Search gallery by keyword"} %> <%= submit_tag "SEARCH", :class=>"submit", :onclick => "javascript:searchGallery();" %> <span class="status">Found <%= pluralize(number_with_delimiter(@total), "result") %></span></span></p>
+				<p><%= select("frm-collections","xid",Image.galleryCollectionList.collect {|c| [ c[:name], c[:id] ] }, { :include_blank => "All collections", :selected => params[:xid] }) %> SHOW: <%= link_to_unless @type=="all", "ALL", "/gallery/all/1?xid=#{params[:xid]}" %>&nbsp;&nbsp;<%= link_to_unless @type=="popular", "POPULAR", "/gallery/popular/1?xid=#{params[:xid]}" %>&nbsp;&nbsp;<%= link_to_unless @type=="anaglyph", "ANAGLYPHS", "/gallery/anaglyph/1?xid=#{params[:xid]}" %>&nbsp;&nbsp;<%= link_to_unless @type=="gif", "ANIMATED GIFS", "/gallery/gif/1?xid=#{params[:xid]}" %>&nbsp;&nbsp;&nbsp;OR <span id="search"><%= text_field_tag 'keyword' , "#{params[:q]}", {:class=>"query", :placeholder=>"Search gallery by keyword"} %> <%= submit_tag "SEARCH", :class=>"submit", :onclick => "javascript:searchGallery();" %> <span class="status">Found <%= pluralize(number_with_delimiter(@total), "result") %></span></span></p>
 			</div>
 			<div id="galleryList" class="container_12">
 <% @images.each_with_index do |image,i| %>

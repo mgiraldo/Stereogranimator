@@ -177,9 +177,18 @@ class Animation < ActiveRecord::Base
     if self.external_id==0
       self.nypl_url
     else
+      Image.externalData(self.external_id)[:homeurl]
+    end
+  end
+  
+  def original_url
+    if self.external_id==0
+      self.nypl_url
+    else
       Image.flickrDataForPhoto(self.digitalid)[:info]["urls"][0]["_content"]
     end
   end
+
   
   def url
     "http://images.nypl.org/index.php?id=#{digitalid}&t=w"

@@ -70,7 +70,8 @@
 <%= render :partial => "shared/nocanvas" %>
 	<div class="metadata container_12">
 		<p class="grid_12">
-			<%= @metadata["title"] %> <%= link_to "View in the #{@metadata["owner"]}", @metadata["link"] %>
+			<em><%= @metadata["title"] %></em><br />
+			<%= link_to image_tag("ext#{params[:xid]}.png"), @metadata["homeurl"], {:title=>"#{@metadata["owner"]}"} unless params[:xid]==0 %> <%= @metadata["owner"] %> <%= link_to "View original item", @metadata["link"], {:title=>"View original item"} %><br />
 		</p>
 	</div>
 

@@ -29,8 +29,6 @@ initSearch();
 				<%= link_to "CHOOSE THIS ONE", "/convert/#{image[:id]}?xid=#{image[:xid]}", {:id => "linko_#{i}", :class=>'over', :title => image[:owner]} %>
 <!-- <![endif]-->
 				<%= link_to image_tag(image[:url], {:id => "img_#{i}", :width => 300, :alt => image[:owner]}), "/convert/#{image[:id]}?xid=#{image[:xid]}", {:class=>'base',:id => "link_#{i}", :title => image[:owner]} %>
-				<% logoclass = (image[:xid]==0) ? 'ext nypl' : 'ext icon' %>
-				<%= link_to "", "/convert/#{image[:id]}?xid=#{image[:xid]}", {:class=>logoclass, :title => image[:owner]} %>
 			</div>
 	<% if i.modulo(3) == 2 %>
 			<div class="clear"></div>

@@ -52,9 +52,11 @@ class AnimationsController < ApplicationController
   # GET /animations/new.json
   def new
     @metadata = Image.getMetadata(params[:did])
-    if params[:xid].to_i!=0
+    params[:xid] = params[:xid]==nil ? 0 : params[:xid].to_i
+    if params[:xid]!=0
       photoinfo = Image.flickrDataForPhoto(params[:did])
-      @metadata = {"title"=>photoinfo[:info]["title"],"link"=>photoinfo[:info]["urls"][0]["_content"],"owner"=>Image.externalData(params[:xid].to_i)[:name]}
+      externalinfo = Image.externalData(params[:xid])
+      @metadata = {"title"=>photoinfo[:info]["title"],"link"=>photoinfo[:info]["urls"][0]["_content"],"owner"=>externalinfo[:name],"homeurl"=>externalinfo[:homeurl]}
     end
     respond_to do |format|
       format.html # new.html.erb

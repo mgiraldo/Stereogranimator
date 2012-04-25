@@ -3,8 +3,8 @@
 				<div class="stats">
 					<p>
 						<em><%= @animation.metadata %></em><br />
-						<%= link_to "View original item in the #{@animation.owner}", @animation.owner_url, {:title=>"View original item in the #{@animation.owner}"} %><br />
-						<%= link_to image_tag("ext#{@animation.external_id}.png"), @animation.owner_url, {:title=>"View original item in the #{@animation.owner}"} unless @animation.external_id==0 %><br />
+						<%= link_to image_tag("ext#{@animation.external_id}.png"), @animation.owner_url, {:title=>"#{@animation.owner}"} unless @animation.external_id==0 %> <%= @animation.owner %><br />
+						<%= link_to "View original item", @animation.original_url, {:title=>"View original item"} %><br />
 						This is an <%= @animation.mode == "GIF" ? "Animated GIF" : "Anaglyph" %> (<%= @animation.mode == "GIF" ? (link_to "what is that?", :controller=>"about", :action=>"animatedgif") : (link_to "what is that?", :controller=>"about", :action=>"anaglyph") %>)<br />
 						Created <%= time_ago_in_words(@animation.created_at) %> ago<br />
 						<%= pluralize(number_with_delimiter(@animation.views), "view") %>
