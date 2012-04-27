@@ -618,8 +618,8 @@ a:hover {
     top: 0;
     left: 0;
     z-index: 1;
-    width: 1200px;
-    height: 540px;
+    width: 0;
+    height: 0;
     background: asset-url('instructions.png', image) no-repeat;
   }
   .showInstructions, .showInstructions:link {
