@@ -60,6 +60,19 @@ class Image < ActiveRecord::Base
       return FlickRaw.url_o(info)
     end
   end
+
+  def self.countFlickrPhotos
+    count = 0
+    Image.flickr_sets.each do |set|
+      begin
+        info = flickr.photosets.getInfo(:photoset_id => set[:set_id])
+      rescue
+      else
+        count += info["count_photos"].to_i
+      end 
+    end
+    return count
+  end
   
   def self.listFromFlickrSet(set_id)
     # get set info to figure out image count

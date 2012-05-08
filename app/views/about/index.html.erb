@@ -46,7 +46,13 @@
 		</div>
 		<div class="clear"></div>
 		<div class="stats container_12">
-			<div class="grid_2 prefix_2">
+			<div class="grid_2">
+				<p><span class="big"><%= number_with_delimiter @collectioncount %></span>
+					<br />collections
+					<br /><%= image_tag "ext0_big.png", :alt=>"New York Public Library" %> <%= image_tag "ext1_big.png", :alt=>"Boston Public Library" %>
+				</p>
+			</div>
+			<div class="grid_2">
 				<p><span class="big"><%= number_with_delimiter @imagecount %></span><br />original stereographs</p>
 			</div>
 			<div class="quote grid_4">

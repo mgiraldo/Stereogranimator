@@ -44,7 +44,7 @@ class ImagesController < ApplicationController
   end
   
   def test
-    render :json => Image.randomSet()
+    render :json => flickr.photosets.getInfo(:photoset_id => "72157604192771132")
   end
   
 end
