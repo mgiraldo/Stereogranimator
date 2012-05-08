@@ -113,7 +113,7 @@ class Image < ActiveRecord::Base
       dbimages = Image.order('converted ASC, random()').limit(100)
     end
     dbimages.each do |e|
-      @images['all'].push({:id=>e.digitalid.upcase,:xid=>0,:url=>e.thumb_url,:owner=>"From: NYPL Digital Gallery"})
+      @images['all'].push({:id=>e.digitalid.upcase,:xid=>0,:url=>e.thumb_url,:owner=>"From: New York Public Library"})
     end
     # add some images from external resources (Flickr)
     Image.flickr_sets.each do |set|

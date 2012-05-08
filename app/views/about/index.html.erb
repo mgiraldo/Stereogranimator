@@ -4,7 +4,7 @@
 				<h1 class="welcome"><span class="visuallyhidden">WELCOME</span></h1>
 			</div>
 			<div id="explainer" class="grid_12">
-				<p class="mainParagraph">Create and share 3D images from the stereograph collections of The New York Public Library (and others). <a href="/about/collection">Get involved</a></p>
+				<p class="mainParagraph">Create and share 3D images from the stereograph collections of The New York Public Library (<a href="/about/collection">and others</a>).</p>
 				<%= link_to (image_tag "sample-stereo.jpeg", {:class=>"stereo"}), "/create", {:title => "click to create your own!"} %>
 				<%= link_to (image_tag "diagram-home.png", {:class=>"diagram"}), "/create", {:title => "click to create your own!"} %>
 				<div class="samples">
@@ -49,7 +49,7 @@
 			<div class="grid_2">
 				<p><span class="big"><%= number_with_delimiter @collectioncount %></span>
 					<br />collections
-					<br /><%= image_tag "ext0_big.png", :alt=>"New York Public Library" %> <%= image_tag "ext1_big.png", :alt=>"Boston Public Library" %>
+					<br /><%= link_to (image_tag "ext0_big.png"), "http://www.nypl.org", :title=>"New York Public Library" %> <%= link_to (image_tag "ext1_big.png"), "http://www.bpl.org", :title=>"Boston Public Library" %>
 				</p>
 			</div>
 			<div class="grid_2">
