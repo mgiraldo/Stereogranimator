@@ -71,7 +71,10 @@
 	<div class="metadata container_12">
 		<p class="grid_12">
 			<em><%= @metadata["title"] %></em><br />
-			<%= link_to image_tag("ext#{params[:xid]}.png"), @metadata["homeurl"], {:title=>"#{@metadata["owner"]}"} %> <%= @metadata["owner"] %> <%= link_to "View original item", @metadata["link"], {:title=>"View original item"} %><br />
+			<% onclick = "recordOutboundLink(this, 'Outbound Links', 'Original site #{params[:xid]}');return false;" %>
+			<%= link_to image_tag("ext#{params[:xid]}.png"), @metadata["homeurl"], {:onclick=>onclick,:title=>"#{@metadata["owner"]}"} %>
+			<% onclick = "recordOutboundLink(this, 'Outbound Links', 'Gallery site #{params[:xid]}');return false;" %>
+			<%= @metadata["owner"] %> <%= link_to "View original item", @metadata["link"], {:onclick=>onclick,:title=>"View original item"} %><br />
 		</p>
 	</div>
 

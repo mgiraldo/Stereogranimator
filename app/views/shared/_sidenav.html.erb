@@ -6,4 +6,4 @@
 <li><%= link_to_unless_current "Animated GIFs", { :action => "animatedgif"} %></li>
 <li><%= link_to_unless_current "Credits", { :action => "credits"} %></li>
 				</ul>
-				<p class="help">Feedback, questions, problems? Get in touch at <%= link_to "stereo@nypl.org", "mailto:stereo@nypl.org" %></p>
+				<p class="help">Feedback, questions, problems? Get in touch at <%= link_to "stereo@nypl.org", "mailto:stereo@nypl.org", :onclick=>"recordOutboundLink(this, 'Outbound Links', 'Mailto');return false;" %></p>
