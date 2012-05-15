@@ -166,7 +166,7 @@ class Image < ActiveRecord::Base
     local = Image.select('digitalid').where('UPPER(title) LIKE ?', "%#{keyword.upcase}%")
     local.each{|x|r.push({:id=>x[:digitalid],:owner=>"From: NYPL Digital Gallery",:xid=>0,:url=>x.thumb_url})}
     begin
-      info = flickr.photos.search(:user_id => bpl[:owner_id],:tags=>"stereograph",:text=>"#{keyword}",:tag_mode=>'all',:per_page=>20)
+      info = flickr.photos.search(:user_id => bpl[:owner_id],:tags=>"stereograph",:text=>"stereograph, #{keyword}",:tag_mode=>'all',:per_page=>20)
     rescue
       return r
     else
