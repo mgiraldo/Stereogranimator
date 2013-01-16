@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.1'
+gem 'rails', '3.2.11'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -17,7 +17,7 @@ gem 'aws-sdk'
 
 gem 'curb', '~> 0.7.15' #, :git => 'https://github.com/taf2/curb'
 
-gem 'feedzirra', :git => 'https://github.com/pauldix/feedzirra.git'
+# gem 'feedzirra', :git => 'https://github.com/pauldix/feedzirra.git'
 
 gem 'kaminari'
 
@@ -27,8 +27,8 @@ gem 'flickraw'
 # in production environments by default.
 group :assets do
   gem 'sass'
-  gem 'sass-rails',   '3.1.4'
-  gem 'coffee-rails', '~> 3.1.1'
+  gem 'sass-rails',   '~> 3.2.3'
+  gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
 end
 

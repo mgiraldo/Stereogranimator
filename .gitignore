@@ -1,4 +1,4 @@
-
+.DS_Store
 .project
 
 db/development.sqlite3
@@ -8,3 +8,4 @@ db/test.sqlite3
 log/development.log
 access_log
 error_log
+test/*
