@@ -20,7 +20,13 @@ initSearch();
 			<p>Select an image from these nine. Click "REFRESH PHOTO LIST" to get another batch or use the search box below to find images by keyword.</p>
 			<div id="search" class="centered">
 				<%= text_field_tag 'keyword' ,'', {:class=>"query", :placeholder=>"Search originals by keyword"} %>
-				<%= submit_tag "FIND", :class=>"submit", :onclick => "javascript:searchImages();" %><br />
+				<%= submit_tag "FIND", :class=>"submit", :onclick => "javascript:searchImages();" %> or 
+	<% if @flickr_url == "?noflickr=1" %>
+				<%= link_to "use NYPL/BPL photos", @flickr_url %>
+	<% else %>
+				<%= link_to "use your Flickr photos", @flickr_url %>
+	<% end %>
+				<br />
 				<div class="status"></div>
 			</div>
 <% @images["subset"].entries.each_with_index do |image,i| %>
@@ -43,6 +49,8 @@ initSearch();
 				<%= link_to "RETRY", "/create", {:class => 'genericButtonLink'} %>
 			</div>
 <% end %>
+<%= debug @flickr_url %>
+<%= debug @images %>
 		</div>
 		<div class="clear"></div>
 	</div>

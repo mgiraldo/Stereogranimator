@@ -169,7 +169,11 @@ class Animation < ActiveRecord::Base
     if self.external_id==0
       "New York Public Library"
     else
-      Image.externalData(self.external_id)[:name]
+      if self.external_id == -1
+        Image.flickrDataForPhoto(self.digitalid)[:info]["owner"]["username"]
+      else
+        Image.externalData(self.external_id)[:name]
+      end
     end
   end
   

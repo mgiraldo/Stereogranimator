@@ -2,6 +2,7 @@ class ImagesController < ApplicationController
   # GET /getimagedata/digitalid
   def getimagedata
     url = params[:url]
+    puts url
     im = Magick::Image.read(url).first
     im.background_color = "none"
     # test for width (for HQ images)

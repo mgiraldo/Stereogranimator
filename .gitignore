@@ -9,3 +9,7 @@ log/development.log
 access_log
 error_log
 test/*
+examples/*
+tmp/*
+
+*.sublime-*
