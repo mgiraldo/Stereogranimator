@@ -98,9 +98,9 @@ class Animation < ActiveRecord::Base
       s3 = AWS::S3.new
       bucket = s3.buckets['stereo.nypl.org']
       obj = bucket.objects[self.filename]
-      obj.write(:file => "#{Rails.root}/tmp/#{self.filename}", :acl => :public_read, :metadata => { 'description' => self.metadata, 'photo_from' => 'NYPL Labs Stereogranimator' })
+      obj.write(:file => "#{Rails.root}/tmp/#{self.filename}", :acl => :public_read, :metadata => { 'description' => URI.escape(self.metadata), 'photo_from' => 'NYPL Labs Stereogranimator' })
       obj = bucket.objects[thumbname]
-      obj.write(:file => "#{Rails.root}/tmp/#{thumbname}", :acl => :public_read, :metadata => { 'description' => self.metadata, 'photo_from' => 'NYPL Labs Stereogranimator' })
+      obj.write(:file => "#{Rails.root}/tmp/#{thumbname}", :acl => :public_read, :metadata => { 'description' => URI.escape(self.metadata), 'photo_from' => 'NYPL Labs Stereogranimator' })
     end
   end
   def self.purgeBlacklisted

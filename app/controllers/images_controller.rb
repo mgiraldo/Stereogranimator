@@ -10,7 +10,7 @@ class ImagesController < ApplicationController
       im = im.resize_to_fit(800)
     end
     im = im.rotate(params[:r].to_f)
-    str = ActiveSupport::Base64.encode64(im.to_blob{self.format = "JPEG"})
+    str = Base64.encode64(im.to_blob{self.format = "JPEG"})
     output = {
       "width" => im.columns,
       "height" => im.rows,
