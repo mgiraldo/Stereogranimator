@@ -7,6 +7,8 @@ class AnimationsController < ApplicationController
 
     @get_from_flickr = false
 
+    @flickr_url = "?noflickr=1"
+
     # user overrides, doesnt want flickr
     # there is a cookie
     if cookies[:flickr_verifier] == nil
@@ -21,8 +23,6 @@ class AnimationsController < ApplicationController
           cookies[:flickr_token] = response["oauth_token"]
           cookies[:flickr_secret] = response["oauth_token_secret"]
           cookies[:flickr_verifier] = params[:oauth_verifier]
-          flickr.access_token = response["oauth_token"]
-          flickr.access_secret = response["oauth_token_secret"]
           @get_from_flickr = true
         else
           # some error in cookies... get a new url
@@ -42,6 +42,8 @@ class AnimationsController < ApplicationController
       @get_from_flickr = false
     end
 
+    checkFlickrCookies()
+    
     @images = Image.randomSet(@get_from_flickr)
     respond_to do |format|
       format.html

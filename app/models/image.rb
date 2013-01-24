@@ -111,13 +111,15 @@ class Image < ActiveRecord::Base
     if personal
       # only user photos in flickr
       extras = "url_m, url_o, owner_name"
-      all = flickr.photos.search(:user_id => "me", :extras => extras)
+      all = flickr.photos.search(:content_type => 1, :media => "photos", :user_id => "me", :extras => extras)
       all.each do |ext|
         @images['all'].push({:id=>ext["id"],:xid=>-1,:url=>ext["url_m"],:owner=>"From Flickr user <a href=\"http://www.flickr.com/user/" + ext["owner"] + "\">" + ext["ownername"] + "</a>"})
       end
       @images['all'] = @images['all'].shuffle
-      (0..8).each do |i|
-        @images['subset'][i] = {:id=>@images['all'][i][:id],:xid=>@images['all'][i][:xid],:url=>@images['all'][i][:url],:owner=>@images['all'][i][:owner]}
+      if @images['all'].count > 0
+        (0..8).each do |i|
+          @images['subset'][i] = {:id=>@images['all'][i][:id],:xid=>@images['all'][i][:xid],:url=>@images['all'][i][:url],:owner=>@images['all'][i][:owner]}
+        end
       end
     else
       # get 100 images from NYPL list
@@ -192,7 +194,7 @@ class Image < ActiveRecord::Base
         userid = "me"
       end
       extras = "url_m, url_o, owner_name"
-      info = flickr.photos.search(:user_id => userid,:text=>"#{keyword}",:tag_mode=>'all',:per_page=>20,:extras => extras)
+      info = flickr.photos.search(:content_type => 1, :media => "photos", :user_id => userid,:text=>"#{keyword}",:tag_mode=>'all',:per_page=>20,:extras => extras)
     rescue
       return r
     else
