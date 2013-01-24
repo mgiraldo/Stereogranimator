@@ -2,7 +2,10 @@
 <% content_for :dynamic_js do %>
 <script type="text/javascript">
 
+<% if @images["all"].count > 0 %>
 image_array.push(<%=raw @images["all"].map{|x|"{id:'#{x[:id]}',xid:#{x[:xid]},url:'#{x[:url].html_safe}',owner:'#{x[:owner]}'}"}.join(",")%>);
+<% end %>
+
 initSearch();
 
 </script>

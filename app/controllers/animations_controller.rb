@@ -18,6 +18,7 @@ class AnimationsController < ApplicationController
         if cookies[:flickr_token] != nil && cookies[:flickr_secret] != nil
           # gimme my access
           response = flickr.get_access_token(cookies[:flickr_token], cookies[:flickr_secret], params[:oauth_verifier])
+          puts response
           # set flickr access info to user's info
           cookies[:flickr_username] = URI.unescape(response["username"])
           cookies[:flickr_token] = response["oauth_token"]
@@ -43,7 +44,7 @@ class AnimationsController < ApplicationController
     end
 
     checkFlickrCookies()
-    
+
     @images = Image.randomSet(@get_from_flickr)
     respond_to do |format|
       format.html
