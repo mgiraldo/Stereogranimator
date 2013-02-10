@@ -3,6 +3,9 @@ class AnimationsController < ApplicationController
   
   # GET /choose
   def choose
+    if params[:logoutflickr].to_i == 1
+      killFlickrSession()
+    end
     callback_url = URI.escape(request.protocol + request.host_with_port + "/choose")
 
     @get_from_flickr = false
@@ -49,6 +52,13 @@ class AnimationsController < ApplicationController
     respond_to do |format|
       format.html
     end
+  end
+
+  def killFlickrSession
+    cookies[:flickr_username] = nil
+    cookies[:flickr_token] = nil
+    cookies[:flickr_secret] = nil
+    cookies[:flickr_verifier] = nil
   end
 
   def getFlickrToken

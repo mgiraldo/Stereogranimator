@@ -27,6 +27,9 @@ initSearch();
 	<% else %>
 				<%= link_to "use your Flickr photos", @flickr_url %>
 	<% end %>
+	<% if @flickr_url == "?noflickr=1" %>
+				| <%= link_to "logout from Flickr", "?logoutflickr=1" %>
+	<% end %>
 				<br />
 				<div class="status"></div>
 			</div>
