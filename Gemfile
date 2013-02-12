@@ -9,7 +9,7 @@ gem 'authlogic'
 
 gem 'pg'
 
-gem 'json'
+gem 'json', '1.7.7'
 
 gem "rmagick", :require => 'RMagick'
 
