@@ -74,7 +74,7 @@ class ApplicationController < ActionController::Base
     token = flickr.get_request_token(:oauth_callback => callback_url)
     cookies[:flickr_token] = token['oauth_token']
     cookies[:flickr_secret] = token['oauth_token_secret']
-    return flickr.get_authorize_url(token['oauth_token'], :perms => 'delete', :oauth_callback => callback_url)
+    return flickr.get_authorize_url(token['oauth_token'], :perms => 'read', :oauth_callback => callback_url)
   end
 
   def checkFlickrCookies
