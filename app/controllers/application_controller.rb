@@ -2,9 +2,87 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   helper :all
   helper_method :current_user_session, :current_user
-  before_filter :ensure_domain
+  before_filter :ensure_domain, :check_flickr
 
   APP_DOMAIN = 'stereo.nypl.org'
+
+  def logout_flickr
+    killFlickrSession()
+    redirect_to "/"
+  end
+
+  def get_flickr
+    url = getFlickrToken()
+    redirect_to url
+  end
+
+  def check_flickr
+    @get_from_flickr = false
+
+    @flickr_url = "/getflickr"
+
+    # puts ">>>>>>  #{@get_from_flickr}  <<<<<<<<"
+
+    # user overrides, doesnt want flickr
+    # there is a cookie
+    if cookies[:flickr_verifier] == nil || cookies[:flickr_verifier] == ""
+      # are we returning from flickr?
+      if params[:oauth_verifier]
+        # yes
+        if cookies[:flickr_token] != nil && cookies[:flickr_secret] != nil
+          # gimme my access
+          response = flickr.get_access_token(cookies[:flickr_token], cookies[:flickr_secret], params[:oauth_verifier])
+          puts response
+          # set flickr access info to user's info
+          cookies[:flickr_username] = URI.unescape(response["username"])
+          cookies[:flickr_token] = response["oauth_token"]
+          cookies[:flickr_secret] = response["oauth_token_secret"]
+          cookies[:flickr_verifier] = params[:oauth_verifier]
+          @get_from_flickr = true
+        # else
+          # some error in cookies... get a new url
+          # @flickr_url = getFlickrToken()
+        end
+      # else
+        # user has not authenticated yet
+        # @flickr_url = getFlickrToken()
+      end
+    else
+      # there was a verified cookie...
+      # puts ">>>>>>  #{cookies[:flickr_verifier]}  <<<<<<<<"
+      @get_from_flickr = true
+    end
+
+    # puts ">>>>>>  #{@get_from_flickr}  <<<<<<<<"
+
+    if params[:noflickr] != nil && params[:noflickr].to_i == 1
+      @get_from_flickr = false
+    end
+
+    checkFlickrCookies()
+  end
+
+  def killFlickrSession
+    cookies[:flickr_username] = nil
+    cookies[:flickr_token] = nil
+    cookies[:flickr_secret] = nil
+    cookies[:flickr_verifier] = nil
+  end
+
+  def getFlickrToken
+    callback_url = URI.escape("#{request.protocol}#{request.host_with_port}/create")
+    token = flickr.get_request_token(:oauth_callback => callback_url)
+    cookies[:flickr_token] = token['oauth_token']
+    cookies[:flickr_secret] = token['oauth_token_secret']
+    return flickr.get_authorize_url(token['oauth_token'], :perms => 'read', :oauth_callback => callback_url)
+  end
+
+  def checkFlickrCookies
+    if cookies[:flickr_verifier] != nil && cookies[:flickr_token] != nil && cookies[:flickr_secret] != nil
+      flickr.access_token = cookies[:flickr_token]
+      flickr.access_secret = cookies[:flickr_secret]
+    end
+  end
 
   def ensure_domain
     if request.env['HTTP_HOST'] != APP_DOMAIN

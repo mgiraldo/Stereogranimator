@@ -3,14 +3,18 @@ class AnimationsController < ApplicationController
   
   # GET /choose
   def choose
-    @images = Image.randomSet()
+    # @get_from_flickr = false
+    @images = Image.randomSet(@get_from_flickr) # @get_from_flickr is in app controller
     respond_to do |format|
       format.html
     end
   end
   
   def chooseSearch
-    @images = Image.findByKeyword(params[:keyword])
+    xid = 1
+    # checkFlickrCookies()
+    xid = -1 if cookies[:flickr_secret] != nil
+    @images = Image.findByKeyword(params[:keyword], xid)
     respond_to do |format|
       #format.html { render :json => @images }
       format.json { render :json => @images }
@@ -51,15 +55,26 @@ class AnimationsController < ApplicationController
   # GET /animations/new
   # GET /animations/new.json
   def new
+    # checkFlickrCookies()
     @metadata = Image.getMetadata(params[:did])
     params[:xid] = params[:xid]==nil ? 0 : params[:xid].to_i
     if params[:xid]!=0
       photoinfo = Image.flickrDataForPhoto(params[:did])
       externalinfo = Image.externalData(params[:xid])
-      @metadata = {"title"=>photoinfo[:info]["title"],"link"=>photoinfo[:info]["urls"][0]["_content"],"owner"=>externalinfo[:name],"homeurl"=>externalinfo[:homeurl]}
+      if params[:xid] == -1
+        # personal set
+        @metadata = {"title"=>photoinfo[:info]["title"],"link"=>photoinfo[:info]["urls"][0]["_content"],"owner"=>photoinfo[:info]["owner"]["username"],"homeurl"=>"http://www.flickr.com/user/" + photoinfo[:info]["owner"]["nsid"]}
+      else
+        # bpl set
+        @metadata = {"title"=>photoinfo[:info]["title"],"link"=>photoinfo[:info]["urls"][0]["_content"],"owner"=>externalinfo[:name],"homeurl"=>externalinfo[:homeurl]}
+      end
     end
-    respond_to do |format|
-      format.html # new.html.erb
+    if params[:xid].to_i == -1 && (cookies[:flickr_verifier] == nil || cookies[:flickr_token] == nil || cookies[:flickr_secret] == nil)
+      redirect_to "/"
+    else
+      respond_to do |format|
+        format.html # new.html.erb
+      end
     end
   end
 
@@ -86,6 +101,7 @@ class AnimationsController < ApplicationController
 
   # GET /animations/createJson/:x1/:y1/:x2/:y2/:width/:height/:delay(cs)/:digitalid/:mode/:creator
   def createJson
+
     current = Time.now.to_i
     if session[:last_create] == nil || current - session[:last_create] < 5 # can only create one every 10 seconds
      respond_to do |f|
@@ -115,6 +131,7 @@ class AnimationsController < ApplicationController
     
     # get metadata
     meta = ""
+    # checkFlickrCookies()
     if @animation.external_id!=0
       external_photo = Image.flickrDataForPhoto(params[:digitalid])
       meta = external_photo[:info]["title"]

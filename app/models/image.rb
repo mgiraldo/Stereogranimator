@@ -16,11 +16,11 @@ class Image < ActiveRecord::Base
   end
   
   def self.galleryCollectionList
-    l = {:id=>0, :name=>"New York Public Library"}
-    r = [l]
+    r = [{:id=>0, :name=>"New York Public Library"}]
     self.flickr_sets.each do |s|
       r.push({:id=>s[:id], :name=>s[:name]})
     end
+    r.push({:id=>-1, :name=>"Flickr community"})
     return r
   end
   
@@ -43,7 +43,7 @@ class Image < ActiveRecord::Base
     rescue
       return nil
     else
-      output = {:info => info, :original_url  => FlickRaw.url_o(info)}
+      output = {:info => info, :original_url  => FlickRaw.url_b(info)} # changed from url_o since not all flickr users will be pro
       return output
     end
   end
@@ -54,10 +54,11 @@ class Image < ActiveRecord::Base
     rescue
       return false
     else
-      if !Image.ownerExists(info["owner"]["nsid"])
-        return false
-      end
-      return FlickRaw.url_o(info)
+      # all flickr images are potentially allowed now
+      # if !Image.ownerExists(info["owner"]["nsid"])
+      #   return false
+      # end
+      return FlickRaw.url_b(info)
     end
   end
 
@@ -102,33 +103,49 @@ class Image < ActiveRecord::Base
     end
   end
   
-  def self.randomSet
+  def self.randomSet (personal)
     @images = {}
     @images['all'] = Array.new
     @images['subset'] = Array.new
-    # get 100 images from NYPL list
-    dbimages = Image.where(:converted => 0).order('random()').limit(100)
-    # check in case all images have been converted
-    if dbimages.length == 0 || dbimages.length < 9
-      dbimages = Image.order('converted ASC, random()').limit(100)
-    end
-    dbimages.each do |e|
-      @images['all'].push({:id=>e.digitalid.upcase,:xid=>0,:url=>e.thumb_url,:owner=>"From: New York Public Library"})
-    end
-    # add some images from external resources (Flickr)
-    Image.flickr_sets.each do |set|
-      # get the photos
-      external = Image.listFromFlickrSet(set[:set_id])
-      # append them to dbimages
-      if external != nil
-        external.each do |ext|
-          @images['all'].push({:id=>ext["id"],:xid=>set[:id],:url=>ext["url_m"],:owner=>"From: " + Image.externalData(set[:id])[:name]})
+    # check for personal photos
+    if personal
+      # only user photos in flickr
+      extras = "url_m, url_o, owner_name"
+      all = flickr.photos.search(:content_type => 1, :media => "photos", :user_id => "me", :extras => extras)
+      all.each do |ext|
+        @images['all'].push({:id=>ext["id"],:xid=>-1,:url=>ext["url_m"],:owner=>"From Flickr user <a href=\"http://www.flickr.com/user/" + ext["owner"] + "\">" + ext["ownername"] + "</a>"})
+      end
+      @images['all'] = @images['all'].shuffle
+      if @images['all'].count > 0
+        (0..8).each do |i|
+          @images['subset'][i] = {:id=>@images['all'][i][:id],:xid=>@images['all'][i][:xid],:url=>@images['all'][i][:url],:owner=>@images['all'][i][:owner]}
         end
       end
-    end
-    @images['all'] = @images['all'].shuffle
-    (0..8).each do |i|
-      @images['subset'][i] = {:id=>@images['all'][i][:id],:xid=>@images['all'][i][:xid],:url=>@images['all'][i][:url],:owner=>@images['all'][i][:owner]}
+    else
+      # get 100 images from NYPL list
+      dbimages = Image.where(:converted => 0).order('random()').limit(100)
+      # check in case all images have been converted
+      if dbimages.length == 0 || dbimages.length < 9
+        dbimages = Image.order('converted ASC, random()').limit(100)
+      end
+      dbimages.each do |e|
+        @images['all'].push({:id=>e.digitalid.upcase,:xid=>0,:url=>e.thumb_url,:owner=>"From: New York Public Library"})
+      end
+      # add some images from external resources (Flickr)
+      Image.flickr_sets.each do |set|
+        # get the photos
+        external = Image.listFromFlickrSet(set[:set_id])
+        # append them to dbimages
+        if external != nil
+          external.each do |ext|
+            @images['all'].push({:id=>ext["id"],:xid=>set[:id],:url=>ext["url_m"],:owner=>"From: " + Image.externalData(set[:id])[:name]})
+          end
+        end
+      end
+      @images['all'] = @images['all'].shuffle
+      (0..8).each do |i|
+        @images['subset'][i] = {:id=>@images['all'][i][:id],:xid=>@images['all'][i][:xid],:url=>@images['all'][i][:url],:owner=>@images['all'][i][:owner]}
+      end
     end
     return @images
   end
@@ -160,17 +177,34 @@ class Image < ActiveRecord::Base
     }
   end
   
-  def self.findByKeyword(keyword)
-    bpl = self.externalData(1)
+  def self.findByKeyword(keyword, xid)
+    # following line only for BPL set
+    bpl = self.externalData(xid) unless xid == -1
+
     r = []
+
+    # standard internal image search
     local = Image.select('digitalid').where('UPPER(title) LIKE ?', "%#{keyword.upcase}%")
     local.each{|x|r.push({:id=>x[:digitalid],:owner=>"From: New York Public Library",:xid=>0,:url=>x.thumb_url})}
     begin
-      info = flickr.photos.search(:user_id => bpl[:owner_id],:tags=>"stereograph",:text=>"stereograph, #{keyword}",:tag_mode=>'all',:per_page=>20)
+      # search teh flickrz
+      if xid != -1
+        userid = bpl[:owner_id]
+      else
+        userid = "me"
+      end
+      extras = "url_m, url_o, owner_name"
+      info = flickr.photos.search(:content_type => 1, :media => "photos", :user_id => userid,:text=>"#{keyword}",:tag_mode=>'all',:per_page=>20,:extras => extras)
     rescue
       return r
     else
-      info.each{|x|r.push({:id=>x["id"],:xid=>1,:owner=>"From: #{bpl[:name]}",:url=>FlickRaw.url_m(x)})}
+      # following line works only for BPL
+      # info.each{|x|r.push({:id=>x["id"],:xid=>1,:owner=>"From: #{bpl[:name]}",:url=>FlickRaw.url_m(x)})}
+      if xid != -1
+        info.each{|x|r.push({:id=>x["id"],:xid=>xid,:owner=>"From: #{bpl[:name]}",:url=>FlickRaw.url_m(x)})}
+      else
+        info.each{|x|r.push({:id=>x["id"],:xid=>xid,:owner=>"From Flickr user <a href=\"http://www.flickr.com/user/" + x["owner"] + "\">" + x["ownername"] + "</a>",:url=>FlickRaw.url_m(x)})}
+      end
       return r
     end
   end

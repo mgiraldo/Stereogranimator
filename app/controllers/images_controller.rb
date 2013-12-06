@@ -2,14 +2,20 @@ class ImagesController < ApplicationController
   # GET /getimagedata/digitalid
   def getimagedata
     url = params[:url]
+    puts url
     im = Magick::Image.read(url).first
     im.background_color = "none"
     # test for width (for HQ images)
     if (im.columns > 800)
       im = im.resize_to_fit(800)
     end
+
+    if (im.rows > 600)
+      im = im.resize_to_fit(800,600)
+    end
+    
     im = im.rotate(params[:r].to_f)
-    str = ActiveSupport::Base64.encode64(im.to_blob{self.format = "JPEG"})
+    str = Base64.encode64(im.to_blob{self.format = "JPEG"})
     output = {
       "width" => im.columns,
       "height" => im.rows,
@@ -29,6 +35,10 @@ class ImagesController < ApplicationController
     # test for width (for HQ images)
     if (im.columns > 800)
       im = im.resize_to_fit(800)
+    end
+
+    if (im.rows > 600)
+      im = im.resize_to_fit(800,600)
     end
 
     respond_to do |format|

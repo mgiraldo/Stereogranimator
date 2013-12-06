@@ -2,7 +2,10 @@
 <% content_for :dynamic_js do %>
 <script type="text/javascript">
 
-image_array.push(<%=raw @images["all"].map{|x|"{id:'#{x[:id]}',xid:#{x[:xid]},url:'#{x[:url].html_safe}',owner:'#{x[:owner]}'}"}.join(",")%>);
+<% if @images["all"].count > 0 %>
+image_array.push(<%=raw @images["all"].map{|x|"{id:'#{x[:id]}',xid:#{x[:xid]},url:'#{x[:url]}',owner:'#{x[:owner]}'}"}.join(",")%>);
+<% end %>
+
 initSearch();
 
 </script>
@@ -16,13 +19,21 @@ initSearch();
 			</div>
 		</div>
 		<div id="stereoList" class="grid_12">
-<% if @images["subset"].length > 0 %>
-			<p>Select an image from these nine. Click "REFRESH PHOTO LIST" to get another batch or use the search box below to find images by keyword.</p>
 			<div id="search" class="centered">
 				<%= text_field_tag 'keyword' ,'', {:class=>"query", :placeholder=>"Search originals by keyword"} %>
-				<%= submit_tag "FIND", :class=>"submit", :onclick => "javascript:searchImages();" %><br />
+				<%= submit_tag "FIND", :class=>"submit", :onclick => "javascript:searchImages();" %> or 
+	<% if (params[:noflickr] == nil || params[:noflickr] == "0") && (cookies[:flickr_username] == nil || cookies[:flickr_username] != "") %>
+				<%= link_to "use NYPL/BPL photos", "/create?noflickr=1" %>
+	<% elsif (params[:noflickr] != nil && params[:noflickr] == "1") && cookies[:flickr_username] != nil && cookies[:flickr_username] != "" %>
+				<%= link_to "use your Flickr photos", "/create?noflickr=0" %>
+	<% else %>
+				<%= link_to "use your Flickr photos", @flickr_url %>
+	<% end %>
+				<br />
 				<div class="status"></div>
 			</div>
+<% if @images["subset"].length > 0 %>
+			<p class="centered">Select an image from these nine. Click "REFRESH PHOTO LIST" to get another batch.</p>
 <% @images["subset"].entries.each_with_index do |image,i| %>
 			<div id="<%= "st#{i}" %>" class="stereograph grid_4 <%= 'alpha' if i.modulo(3) == 0 %><%= 'omega' if i.modulo(3) == 2 %>">
 <!--[if (!IE)|(lte IE 8)]><!-->
@@ -38,7 +49,13 @@ initSearch();
 				<%= link_to "REFRESH PHOTO LIST", "javascript:;", {:class => 'genericButtonLink', :onclick => "javascript:refreshImages();" } %>
 			</div>
 <% else %>
-			<p class="centered">There was a problem retrieving images. Please try again.</p>
+			<p class="centered">
+				<% if @get_from_flickr %>
+				No images were found in your Flickr set. <%= link_to "Use NYPL/BPL photos", @flickr_url %>.
+				<% else %>
+				No images were found. Please try again.
+				<% end %>
+				</p>
 			<div class="centered">
 				<%= link_to "RETRY", "/create", {:class => 'genericButtonLink'} %>
 			</div>
