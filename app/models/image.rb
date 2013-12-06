@@ -16,11 +16,11 @@ class Image < ActiveRecord::Base
   end
   
   def self.galleryCollectionList
-    l = {:id=>0, :name=>"New York Public Library"}
-    r = [l]
+    r = [{:id=>0, :name=>"New York Public Library"}]
     self.flickr_sets.each do |s|
       r.push({:id=>s[:id], :name=>s[:name]})
     end
+    r.push({:id=>-1, :name=>"Flickr community"})
     return r
   end
   
