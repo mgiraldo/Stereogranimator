@@ -5,6 +5,14 @@
 			</div>
 			<div id="explainer" class="grid_12">
 				<p class="mainParagraph">Create and share 3D images from the stereograph collections of The New York Public Library (<a href="/about/collection">and others</a>).</p>
+			<p class="flickrParagraph">
+				Use your 
+<% if cookies[:flickr_username] != nil && cookies[:flickr_username] != "" %>
+				<%= link_to (image_tag "white-flickr.png"), "/create" %>
+<% else %>
+				<%= link_to (image_tag "white-flickr.png"), @flickr_url %>
+<% end %>
+				images!</p>
 				<%= link_to (image_tag "sample-stereo.jpeg", {:class=>"stereo"}), "/create", {:title => "click to create your own!"} %>
 				<%= link_to (image_tag "diagram-home.png", {:class=>"diagram"}), "/create", {:title => "click to create your own!"} %>
 				<div class="samples">

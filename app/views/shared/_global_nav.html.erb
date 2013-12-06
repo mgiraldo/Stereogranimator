@@ -5,6 +5,13 @@
 			<li class="grid_2 <%=  "active" if controller_name ==  'gallery' %>"><%= link_to "GALLERY", gallery_path %></li>
 			<li class="grid_2 omega <%=  "active" if controller_name ==  'about' && action_name != 'index' %>"><%= link_to "ABOUT", about_path %></li>
 		</ul>
+		<div id="flickr_logout">
+<% if cookies[:flickr_username] != nil && cookies[:flickr_username] != "" %>
+			<%= link_to "Disconnect from Flickr", "/logoutflickr" %>
+<% else %>
+			<%= link_to "Connect to Flickr", @flickr_url %>
+<% end %>
+		</div>
 	</div>
 <% if current_user %>
 <%= link_to "Logout", :logout%>

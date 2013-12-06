@@ -9,6 +9,11 @@ class ImagesController < ApplicationController
     if (im.columns > 800)
       im = im.resize_to_fit(800)
     end
+
+    if (im.rows > 600)
+      im = im.resize_to_fit(800,600)
+    end
+    
     im = im.rotate(params[:r].to_f)
     str = Base64.encode64(im.to_blob{self.format = "JPEG"})
     output = {
@@ -30,6 +35,10 @@ class ImagesController < ApplicationController
     # test for width (for HQ images)
     if (im.columns > 800)
       im = im.resize_to_fit(800)
+    end
+
+    if (im.rows > 600)
+      im = im.resize_to_fit(800,600)
     end
 
     respond_to do |format|

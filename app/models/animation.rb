@@ -44,6 +44,10 @@ class Animation < ActiveRecord::Base
       if (im.columns > 800)
         im = im.resize_to_fit(800)
       end
+
+      if (im.rows > 600)
+        im = im.resize_to_fit(800,600)
+      end
       
       rot = self.rotation == "" ? 0 : self.rotation.to_f
       

@@ -3,82 +3,16 @@ class AnimationsController < ApplicationController
   
   # GET /choose
   def choose
-    if params[:logoutflickr].to_i == 1
-      killFlickrSession()
-    end
-    callback_url = URI.escape(request.protocol + request.host_with_port + "/choose")
-
-    @get_from_flickr = false
-
-    @flickr_url = "?noflickr=1"
-
-    # user overrides, doesnt want flickr
-    # there is a cookie
-    if cookies[:flickr_verifier] == nil
-      # are we returning from flickr?
-      if params[:oauth_verifier]
-        # yes
-        if cookies[:flickr_token] != nil && cookies[:flickr_secret] != nil
-          # gimme my access
-          response = flickr.get_access_token(cookies[:flickr_token], cookies[:flickr_secret], params[:oauth_verifier])
-          puts response
-          # set flickr access info to user's info
-          cookies[:flickr_username] = URI.unescape(response["username"])
-          cookies[:flickr_token] = response["oauth_token"]
-          cookies[:flickr_secret] = response["oauth_token_secret"]
-          cookies[:flickr_verifier] = params[:oauth_verifier]
-          @get_from_flickr = true
-        else
-          # some error in cookies... get a new url
-          @flickr_url = getFlickrToken()
-        end
-      else
-        # user has not authenticated yet
-        @flickr_url = getFlickrToken()
-      end
-    else
-      # there was a verified cookie...
-      @get_from_flickr = true
-    end
-
-    if params[:noflickr] != nil && params[:noflickr].to_i == 1
-      @flickr_url = "?noflickr=0"
-      @get_from_flickr = false
-    end
-
-    checkFlickrCookies()
-
-    @images = Image.randomSet(@get_from_flickr)
+    # @get_from_flickr = false
+    @images = Image.randomSet(@get_from_flickr) # @get_from_flickr is in app controller
     respond_to do |format|
       format.html
-    end
-  end
-
-  def killFlickrSession
-    cookies[:flickr_username] = nil
-    cookies[:flickr_token] = nil
-    cookies[:flickr_secret] = nil
-    cookies[:flickr_verifier] = nil
-  end
-
-  def getFlickrToken
-    callback_url = URI.escape(request.protocol + request.host_with_port + "/choose")
-    token = flickr.get_request_token(:oauth_callback => callback_url)
-    cookies[:flickr_token] = token['oauth_token']
-    cookies[:flickr_secret] = token['oauth_token_secret']
-    return flickr.get_authorize_url(token['oauth_token'], :perms => 'delete', :oauth_callback => callback_url)
-  end
-
-  def checkFlickrCookies
-    if cookies[:flickr_verifier] != nil && cookies[:flickr_token] != nil && cookies[:flickr_secret] != nil
-      flickr.access_token = cookies[:flickr_token]
-      flickr.access_secret = cookies[:flickr_secret]
     end
   end
   
   def chooseSearch
     xid = 1
-    checkFlickrCookies()
+    # checkFlickrCookies()
     xid = -1 if cookies[:flickr_secret] != nil
     @images = Image.findByKeyword(params[:keyword], xid)
     respond_to do |format|
@@ -121,7 +55,7 @@ class AnimationsController < ApplicationController
   # GET /animations/new
   # GET /animations/new.json
   def new
-    checkFlickrCookies()
+    # checkFlickrCookies()
     @metadata = Image.getMetadata(params[:did])
     params[:xid] = params[:xid]==nil ? 0 : params[:xid].to_i
     if params[:xid]!=0
@@ -197,7 +131,7 @@ class AnimationsController < ApplicationController
     
     # get metadata
     meta = ""
-    checkFlickrCookies()
+    # checkFlickrCookies()
     if @animation.external_id!=0
       external_photo = Image.flickrDataForPhoto(params[:digitalid])
       meta = external_photo[:info]["title"]

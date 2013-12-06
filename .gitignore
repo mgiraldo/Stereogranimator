@@ -4,7 +4,7 @@
 db/development.sqlite3
 
 db/test.sqlite3
-
+config/database.yml
 log/development.log
 access_log
 error_log

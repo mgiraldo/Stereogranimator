@@ -11,7 +11,7 @@ gem 'pg'
 
 gem 'json', '1.7.7'
 
-gem "rmagick", :require => 'RMagick'
+gem "rmagick", '~> 2.13.2', :require => 'RMagick'
 
 gem 'aws-sdk'
 

@@ -20,6 +20,7 @@ Stereo::Application.routes.draw do
   match 'about/stereoscopy', :to => 'about#stereoscopy', :as => "about_stereoscopy"
   match 'about/anaglyph', :to => 'about#anaglyph', :as => "about_anaglyph"
   match 'about/credits', :to => 'about#credits', :as => "about_credits"
+  match 'about/flickr', :to => 'about#flickr', :as => "about_flickr"
   match 'about/collection', :to => 'about#collection', :as => "about_collection"
   match 'what', :to => 'about#what', :as => "about_what"
   match 'gallery', :to => 'gallery#index', :as => "gallery"
@@ -41,6 +42,9 @@ Stereo::Application.routes.draw do
   
   #test
   match 'test/', :to => 'images#test'
+
+  match 'logoutflickr' => 'application#logout_flickr'
+  match 'getflickr' => 'application#get_flickr'
 
   match "/animations/createJson/:x1/:y1/:x2/:y2/:width/:height/:delay/:digitalid/:rotation/:mode/:creator", :to => 'animations#createJson', :as => "animation_rotation"
   

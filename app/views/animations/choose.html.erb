@@ -22,13 +22,12 @@ initSearch();
 			<div id="search" class="centered">
 				<%= text_field_tag 'keyword' ,'', {:class=>"query", :placeholder=>"Search originals by keyword"} %>
 				<%= submit_tag "FIND", :class=>"submit", :onclick => "javascript:searchImages();" %> or 
-	<% if @flickr_url == "?noflickr=1" %>
-				<%= link_to "use NYPL/BPL photos", @flickr_url %>
+	<% if (params[:noflickr] == nil || params[:noflickr] == "0") && (cookies[:flickr_username] == nil || cookies[:flickr_username] != "") %>
+				<%= link_to "use NYPL/BPL photos", "/create?noflickr=1" %>
+	<% elsif (params[:noflickr] != nil && params[:noflickr] == "1") && cookies[:flickr_username] != nil && cookies[:flickr_username] != "" %>
+				<%= link_to "use your Flickr photos", "/create?noflickr=0" %>
 	<% else %>
 				<%= link_to "use your Flickr photos", @flickr_url %>
-	<% end %>
-	<% if @flickr_url == "?noflickr=1" %>
-				| <%= link_to "logout from Flickr", "?logoutflickr=1" %>
 	<% end %>
 				<br />
 				<div class="status"></div>

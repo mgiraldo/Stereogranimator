@@ -215,6 +215,12 @@ a:hover {
   }
 }
 
+#flickr_logout {
+  position: absolute;
+  right: 0;
+  top: 70px;
+}
+
 #mainContent {
   background: $backimage repeat-x;/*asset-url('12_col.gif', image);*/
   .showGrid {
@@ -379,6 +385,19 @@ a:hover {
       font-size: 18px;
       line-height: $lineheightem;
       margin-top: 0;
+    }
+    .flickrParagraph {
+      position: absolute;
+      top: 360px;
+      left: 0;
+      width: 450px;
+      font-size: 28px;
+      line-height: $lineheightem;
+      margin-top: 0;
+      text-align: center;
+      img {
+        margin: 0;
+      }
     }
     .stereo, .diagram, .samples {
       display: block;

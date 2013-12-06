@@ -99,7 +99,7 @@ GEM
     rake (10.0.3)
     rdoc (3.12)
       json (~> 1.4)
-    rmagick (2.13.1)
+    rmagick (2.13.2)
     sass (3.1.15)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
@@ -135,7 +135,7 @@ DEPENDENCIES
   kaminari
   pg
   rails (= 3.2.11)
-  rmagick
+  rmagick (~> 2.13.2)
   sass
   sass-rails (~> 3.2.3)
   uglifier (>= 1.0.3)
