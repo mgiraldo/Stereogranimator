@@ -22,7 +22,9 @@ initSearch();
 			<div id="search" class="centered">
 				<%= text_field_tag 'keyword' ,'', {:class=>"query", :placeholder=>"Search originals by keyword"} %>
 				<%= submit_tag "FIND", :class=>"submit", :onclick => "javascript:searchImages();" %> or 
-	<% if (params[:noflickr] == nil || params[:noflickr] == "0") && (cookies[:flickr_username] == nil || cookies[:flickr_username] != "") %>
+	<% if params[:noflickr] == nil && (cookies[:flickr_username] == nil || cookies[:flickr_username] == "") %>
+				<%= link_to "use your Flickr photos", @flickr_url %>
+	<% elsif (params[:noflickr] == nil || params[:noflickr] == "0") && (cookies[:flickr_username] == nil || cookies[:flickr_username] != "") %>
 				<%= link_to "use NYPL/BPL photos", "/create?noflickr=1" %>
 	<% elsif (params[:noflickr] != nil && params[:noflickr] == "1") && cookies[:flickr_username] != nil && cookies[:flickr_username] != "" %>
 				<%= link_to "use your Flickr photos", "/create?noflickr=0" %>
