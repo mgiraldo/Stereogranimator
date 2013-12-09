@@ -41,6 +41,7 @@ class Image < ActiveRecord::Base
     begin
       info = flickr.photos.getInfo(:photo_id => id)
     rescue
+      # Flickr returns nil for 404s and other images that are not accessible for all
       return nil
     else
       output = {:info => info, :original_url  => FlickRaw.url_b(info)} # changed from url_o since not all flickr users will be pro

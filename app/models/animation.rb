@@ -34,7 +34,11 @@ class Animation < ActiveRecord::Base
     url = self.url
     if self.external_id!=0
       external_photo = Image.flickrDataForPhoto(self.digitalid)
-      url = external_photo[:original_url]
+      if external_photo != nil
+        url = external_photo[:original_url]
+      else
+        url = nil
+      end
     end
     if (url && self.filename==nil && self.digitalid!=nil)
       # do some image magick
@@ -107,6 +111,87 @@ class Animation < ActiveRecord::Base
       obj.write(:file => "#{Rails.root}/tmp/#{thumbname}", :acl => :public_read, :metadata => { 'description' => URI.escape(self.metadata), 'photo_from' => 'NYPL Labs Stereogranimator' })
     end
   end
+
+  def owner
+    if self.external_id==0
+      "New York Public Library"
+    else
+      if self.external_id == -1
+        data = Image.flickrDataForPhoto(self.digitalid)
+        if (data)
+          data[:info]["owner"]["username"]
+        else
+          "Flickr"
+        end
+      else
+        data = Image.externalData(self.external_id)
+        if (data)
+          data[:name]
+        else
+          "[N/A]"
+        end
+      end
+    end
+  end
+  
+  def owner_url
+    if self.external_id==0
+      "http://nypl.org"
+    else
+      Image.externalData(self.external_id)[:homeurl]
+    end
+  end
+  
+  def original_url
+    if self.external_id==0
+      self.nypl_url
+    else
+      data = Image.flickrDataForPhoto(self.digitalid)
+      if (data)
+        data[:info]["urls"][0]["_content"]
+      else
+        ""
+      end
+    end
+  end
+  
+  def url
+    "http://images.nypl.org/index.php?id=#{digitalid}&t=w"
+  end
+  
+  def thumb
+    "/view/" + id.to_s + (mode=="GIF"?".gif":".png") + "?n=1&m=t"
+  end
+  
+  def full
+    "/view/" + id.to_s + (mode=="GIF"?".gif":".png") + "?n=1"
+  end
+  
+  def full_count
+    "/view/" + id.to_s + (mode=="GIF"?".gif":".png")
+  end
+  
+  def aws_url
+    "http://s3.amazonaws.com/stereo.nypl.org/#{filename}"
+  end
+  
+  def aws_thumb_url
+    "http://s3.amazonaws.com/stereo.nypl.org/t_#{filename}"
+  end
+  
+  def nypl_url
+    "http://digitalgallery.nypl.org/nypldigital/dgkeysearchdetail.cfm?imageID=#{digitalid.downcase}"
+  end
+  
+  def as_json(options = { })
+      h = super(options)
+      h[:url] = url
+      h[:aws_url]   = aws_url
+      h[:aws_thumb_url]   = aws_thumb_url
+      h[:redirect] = "/share/#{id}"
+      h
+  end
+
   def self.purgeBlacklisted
     # create an array with kosher images
     white = Image.find(:all, :select=>"digitalid").map(&:digitalid)
@@ -115,6 +200,7 @@ class Animation < ActiveRecord::Base
     # destroy those animations
     black.destroy_all
   end
+
   def self.recreateAWS
     #
     #
@@ -128,6 +214,7 @@ class Animation < ActiveRecord::Base
       #an.createImage(true)
     #end
   end
+
   def self.amazonDump
     countgif = 0
     countana = 0
@@ -168,70 +255,21 @@ class Animation < ActiveRecord::Base
     end
     puts "There were #{countana} PNGs/JPEGs and #{countgif} GIFs "
   end
-  
-  def owner
-    if self.external_id==0
-      "New York Public Library"
-    else
-      if self.external_id == -1
-        Image.flickrDataForPhoto(self.digitalid)[:info]["owner"]["username"]
-      else
-        Image.externalData(self.external_id)[:name]
+
+  def self.process_takedowns
+    # look at all flickr urls
+    takedowns = 0
+    # see if it functional (non-404)
+    candidates = Animation.where(:external_id => -1)
+    candidates.each do |animation|
+      # puts animation.original_url
+      if animation.original_url == ""
+        # Flickr returned nil... we must delete
+        takedowns = takedowns + 1
+        animation.destroy
       end
     end
-  end
-  
-  def owner_url
-    if self.external_id==0
-      "http://nypl.org"
-    else
-      Image.externalData(self.external_id)[:homeurl]
-    end
-  end
-  
-  def original_url
-    if self.external_id==0
-      self.nypl_url
-    else
-      Image.flickrDataForPhoto(self.digitalid)[:info]["urls"][0]["_content"]
-    end
-  end
-
-  
-  def url
-    "http://images.nypl.org/index.php?id=#{digitalid}&t=w"
-  end
-  
-  def thumb
-    "/view/" + id.to_s + (mode=="GIF"?".gif":".png") + "?n=1&m=t"
-  end
-  
-  def full
-    "/view/" + id.to_s + (mode=="GIF"?".gif":".png") + "?n=1"
-  end
-  
-  def full_count
-    "/view/" + id.to_s + (mode=="GIF"?".gif":".png")
-  end
-  
-  def aws_url
-    "http://s3.amazonaws.com/stereo.nypl.org/#{filename}"
-  end
-  
-  def aws_thumb_url
-    "http://s3.amazonaws.com/stereo.nypl.org/t_#{filename}"
-  end
-  
-  def nypl_url
-    "http://digitalgallery.nypl.org/nypldigital/dgkeysearchdetail.cfm?imageID=#{digitalid.downcase}"
-  end
-  
-  def as_json(options = { })
-      h = super(options)
-      h[:url] = url
-      h[:aws_url]   = aws_url
-      h[:aws_thumb_url]   = aws_thumb_url
-      h[:redirect] = "/share/#{id}"
-      h
+    # delete if not working
+    puts "#{takedowns} files removed."
   end
 end

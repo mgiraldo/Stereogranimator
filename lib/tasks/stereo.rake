@@ -6,16 +6,19 @@ namespace :stereo do
     Image.pushToDB
     puts "Finished!"
   end
+
   task :revive => :environment do
     puts "Recreating entire animation dataset files"
     Animation.recreateAWS
     puts "Finished!"
   end
+
   task :purgeBlacklisted => :environment do
     puts "Validating all animations are off-blacklist"
     Animation.purgeBlacklisted
     puts "Finished!"
   end
+
   task :purgeSiege => :environment do
     # puts "Removing stress test images"
     # count = Animation.select('COUNT(id) as total').where(:creator => "siege").map(&:total)[0].to_i
@@ -44,4 +47,11 @@ namespace :stereo do
     stuff.destroy_all
     puts "Finished!"
   end
+
+  task :process_takedowns => :environment do
+    puts "Processing Flickr takedowns"
+    Animation.process_takedowns
+    puts "Done!"
+  end
+
 end
