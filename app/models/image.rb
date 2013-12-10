@@ -194,6 +194,7 @@ class Image < ActiveRecord::Base
       # search teh flickrz
       if xid != -1
         userid = bpl[:owner_id]
+        keyword = "stereograph #{keyword}"
       else
         userid = "me"
       end
