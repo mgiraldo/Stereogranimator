@@ -185,8 +185,11 @@ class Image < ActiveRecord::Base
     r = []
 
     # standard internal image search
-    local = Image.select('digitalid').where('UPPER(title) LIKE ?', "%#{keyword.upcase}%")
-    local.each{|x|r.push({:id=>x[:digitalid],:owner=>"From: New York Public Library",:xid=>0,:url=>x.thumb_url})}
+    # not to use if searching my flickr photos only
+    if xid != -1
+      local = Image.select('digitalid').where('UPPER(title) LIKE ?', "%#{keyword.upcase}%")
+      local.each{|x|r.push({:id=>x[:digitalid],:owner=>"From: New York Public Library",:xid=>0,:url=>x.thumb_url})}
+    end
     begin
       # search teh flickrz
       if xid != -1

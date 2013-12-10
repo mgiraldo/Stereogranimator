@@ -1,4 +1,4 @@
-{
+
 var image_array = [];
 
 var canvas;
@@ -1570,7 +1570,7 @@ function searchImages() {
 		// post to server
 		$("#search .status").text("Searching...");
 		$.ajax({
-			url: "/choose/"+$("#search .query").val(),
+			url: "/choose/"+$("#search .query").val().trim()+"?xid="+$(".frm-xid").val(),
 			dataType: 'json',
 			data: null,
 			success: function(data) {
@@ -1707,5 +1707,4 @@ function disableCanvas() {
 	$("#yescanvas").hide();
 	$("#nocanvas").show();
 	toggleInstructions();
-}
 }
