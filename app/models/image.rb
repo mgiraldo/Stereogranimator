@@ -120,7 +120,7 @@ class Image < ActiveRecord::Base
       if @images['all'].count > 0
         max_images = 9
         num_images = 0
-        @images['all'].each do |i|
+        @images['all'].each do |k,i|
           @images['subset'][i] = {:id=>@images['all'][i][:id],:xid=>@images['all'][i][:xid],:url=>@images['all'][i][:url],:owner=>@images['all'][i][:owner]}
           num_images = num_images + 1
           break if num_images >= max_images
