@@ -123,7 +123,9 @@ class Image < ActiveRecord::Base
         @images.each do |i|
           @images['subset'][i] = {:id=>@images['all'][i][:id],:xid=>@images['all'][i][:xid],:url=>@images['all'][i][:url],:owner=>@images['all'][i][:owner]}
           num_images++
-          break if num_images >= max_images
+          if num_images >= max_images
+            break
+          end
         end
       end
     else
