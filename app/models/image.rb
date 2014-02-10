@@ -118,8 +118,12 @@ class Image < ActiveRecord::Base
       end
       @images['all'] = @images['all'].shuffle
       if @images['all'].count > 0
-        (0..8).each do |i|
+        max_images = 9
+        num_images = 0
+        @images.each do |i|
           @images['subset'][i] = {:id=>@images['all'][i][:id],:xid=>@images['all'][i][:xid],:url=>@images['all'][i][:url],:owner=>@images['all'][i][:owner]}
+          num_images++
+          break if num_images >= max_images
         end
       end
     else
