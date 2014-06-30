@@ -1,7 +1,5 @@
 source 'http://rubygems.org'
 
-ruby "2.1.0"
-
 gem 'rails', '3.2.11'
 
 # Bundle edge Rails instead:
@@ -23,7 +21,7 @@ gem 'curb', '~> 0.7.15' #, :git => 'https://github.com/taf2/curb'
 
 gem 'kaminari'
 
-gem 'flickraw'
+gem 'flickraw', '0.9.8'
 
 # Gems used only for assets and not required
 # in production environments by default.
