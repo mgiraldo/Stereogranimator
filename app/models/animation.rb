@@ -160,15 +160,15 @@ class Animation < ActiveRecord::Base
   end
   
   def thumb
-    "/view/" + id.to_s + (mode=="GIF"?".gif":".png") + "?n=1&m=t"
+    "/view/" + id.to_s + (mode=="GIF" ? ".gif" : ".png") + "?n=1&m=t"
   end
   
   def full
-    "/view/" + id.to_s + (mode=="GIF"?".gif":".png") + "?n=1"
+    "/view/" + id.to_s + (mode=="GIF" ? ".gif" : ".png") + "?n=1"
   end
   
   def full_count
-    "/view/" + id.to_s + (mode=="GIF"?".gif":".png")
+    "/view/" + id.to_s + (mode=="GIF" ? ".gif" : ".png")
   end
   
   def aws_url
@@ -188,7 +188,7 @@ class Animation < ActiveRecord::Base
       h[:url] = url
       h[:aws_url]   = aws_url
       h[:aws_thumb_url]   = aws_thumb_url
-      h[:redirect] = "/share/#{id}"
+      h[:redirect] = "#{id}"
       h
   end
 

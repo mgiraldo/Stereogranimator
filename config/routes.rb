@@ -6,15 +6,22 @@ Stereo::Application.routes.draw do
   get "gallery/index"
 
   get "about/index"
-  
+
   post "animations/chooseSearch"
 
   resources :users, :user_sessions
-  
+
   match 'login' => 'user_sessions#new', :as => :login
   match 'logout' => 'user_sessions#destroy', :as => :logout
   match 'dismissInstructions' => 'user_session#dismissInstructions', :as => :dismissInstructions
-  
+
+## for publiceye exhibit
+  match 'create_pe', :to => 'animations#choose_publiceye'
+  match 'create_pe/:keyword', :to => 'animations#chooseSearch_publiceye'
+  match 'convert_pe/:did', :to => 'animations#new_publiceye'
+  match 'share_pe/:id', :to => 'animations#share_publiceye'
+## end publiceye
+
   match 'about', :to => 'about#what', :as => "about"
   match 'about/animatedgif', :to => 'about#animatedgif', :as => "about_animatedgif"
   match 'about/stereoscopy', :to => 'about#stereoscopy', :as => "about_stereoscopy"
@@ -33,13 +40,13 @@ Stereo::Application.routes.draw do
   match 'create', :to => 'animations#choose', :as => "create"
   match 'convert/:did', :to => 'animations#new', :as => "convert"
   match 'share/:id', :to => 'animations#share', :as => "share"
-  
+
   match 'getimagedata/:digitalid', :to => 'images#getimagedata', :as => "getimagedata"
   match 'getimagedata/', :to => 'images#getimagedata', :as => "getimagedata_plain"
   match 'getpixels', :to => 'images#getpixels', :as => "getpixels"
   match 'getpixels/:digitalid', :to => 'images#getpixels', :as => "getpixels"
   match 's/v', :to => 'images#verifyPhoto'
-  
+
   #test
   match 'test/', :to => 'images#test'
 
@@ -47,11 +54,11 @@ Stereo::Application.routes.draw do
   match 'getflickr' => 'application#get_flickr'
 
   match "/animations/createJson/:x1/:y1/:x2/:y2/:width/:height/:delay/:digitalid/:rotation/:mode/:creator", :to => 'animations#createJson', :as => "animation_rotation"
-  
+
   match "/animations/createJson/:x1/:y1/:x2/:y2/:width/:height/:delay/:digitalid/:mode/:creator", :to => 'animations#createJson', :as => "animation_creator"
 
   match "/animations/createJson/*path" => "animations#createJson"
-  
+
   match "/animations/createJson" => "animations#createJson"
 
   match "/animations/:id/kill" => "animations#destroy"

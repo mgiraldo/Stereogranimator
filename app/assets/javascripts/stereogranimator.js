@@ -1,3 +1,4 @@
+var is_publiceye = false;
 
 var image_array = [];
 
@@ -66,11 +67,11 @@ var CORNER_TOP_LEFT = 1;
 var CORNER_TOP_RIGHT = 2;
 var CORNER_BOTTOM_LEFT = 3;
 var CORNER_BOTTOM_RIGHT = 4;
-var CORNER_OFFSET = 10;
+var CORNER_OFFSET = 20;
 
 // vertical bar values
-var VERTWIDTH = 10;
-var VERTHEIGHT = 60;
+var VERTWIDTH = 20;
+var VERTHEIGHT = 80;
 
 // animation preview tick and speed
 var now = 0;
@@ -105,7 +106,7 @@ var helpVisible = true;
 
 var rotateLeftBtn;
 var rotateRightBtn;
-var rotateSize = 30;
+var rotateSize = 40;
 var imageRotation = 0;
 var maxRotation = 3; // no image is skewed more than these degrees
 var rotationIncrement = .1;
@@ -121,9 +122,10 @@ var xid = 0;
 var imgurl = "";
 
 // typekit misbehaves in chrome
-var thefont = "share-regular,'Arial Narrow',sans-serif";
+var thefont = "share-regular,AvenirNextCondensed-Medium,'Arial Narrow',sans-serif";
 
 function init() {
+	console.log("hello:"+is_publiceye);
 	$("#yescanvas").show();
 	$("#nocanvas").hide();
 	toggleInstructions();
@@ -131,30 +133,30 @@ function init() {
 	canvas = document.getElementById("testCanvas");
 	processcanvas = document.getElementById("processCanvas");
 	resultcanvas = document.getElementById("resultCanvas");
-	
+
 	document.getElementById("btnNext").onclick = generate;
-	
+
 	$("#btnNext").hide();
-	
+
 	document.getElementById("toggleGIF").onclick = function(){toggleMode("GIF");};
 	document.getElementById("toggleAna").onclick = function(){toggleMode("ANAGLYPH");};
-	
+
 	document.getElementById("slowSpeed").onclick = function(){changeSpeed(SLOWSPEED);};
 	document.getElementById("medSpeed").onclick = function(){changeSpeed(MEDSPEED);};
 	document.getElementById("fastSpeed").onclick = function(){changeSpeed(FASTSPEED);};
-	
+
 	canvas.ontouchend = function(){isdown = false;sq1.over=sq2.over=vert_sprite.over=false;};
 	canvas.ontouchstart = function(){previewActive=true;};
-	
+
 	stage = new Stage(canvas);
 	stage.enableMouseOver(10);
 	Touch.enable(stage);
-	
+
 	changeSpeed(speed);
 	toggleMode(mode);
 
 	loadPhoto(index);
-	
+
 	Ticker.setInterval(10);
 }
 
@@ -173,23 +175,23 @@ function run() {
 	// place image in bitmap:
 	bmp = new Bitmap(img);
 	stage.addChild(bmp);
-	
+
 	centerPhoto();
-	
+
 	// background black
 	bg = new Shape();
 	stage.addChild(bg);
-	
+
 	// starting points for squares
 	sq1x = bmp.x + Math.round(img.width * .5) - hsize - INSET;
 	sq1y = bmp.y + Math.round(img.height * .5) - (vsize * .5);
 	sq2x = bmp.x + Math.round(img.width * .5) + INSET;
 	sq2y = bmp.y + Math.round(img.height * .5) - (vsize * .5);
-	
+
 	// starting point for vertical bar
 	vertx = bmp.x + (img.width * .5);
 	verty = bmp.y + (img.height * .5);
-	
+
 	// the squares
 	sq1 = new Shape();
 	sq1.over = false;
@@ -197,14 +199,14 @@ function run() {
 	sq1.mx = 0;
 	sq1.my = 0;
 	stage.addChild(sq1);
-	
+
 	sq2 = new Shape();
 	sq2.over = false;
 	// to control for mouse position when dragging
 	sq2.mx = 0;
 	sq2.my = 0;
 	stage.addChild(sq2);
-	
+
 	// draw square help text
 	txt = new Text("drag me", "20px " + thefont, "#fff");
 	txt.textBaseline = "middle";
@@ -212,7 +214,7 @@ function run() {
 	txt.x = 0;
 	txt.y = -100;
 	stage.addChild(txt);
-	
+
 	// draw vertical help text
 	vtxt = new Text("<- shift axis   shift axis ->", "20px " + thefont, "#fff");
 	vtxt.textBaseline = "middle";
@@ -226,7 +228,7 @@ function run() {
 	vert_sprite.x = vertx;
 	vert_sprite.y = verty;
 	stage.addChild(vert_sprite);
-	
+
 	// eight corners
 	var i, crnr;
 	corner_sprites = [];
@@ -251,26 +253,26 @@ function run() {
 		stage.addChild(crnr);
 		corner_sprites[i] = crnr;
 	}
-	
+
 	grid = new Shape();
 	stage.addChild(grid);
-	
+
 	rotateLeftBtn = new Shape();
 	rotateLeftBtn.over = false;
 	rotateLeftBtn.x = 10;
 	rotateLeftBtn.y = stageHeight - 20 - rotateSize;
 	stage.addChild(rotateLeftBtn);
-	
+
 	rotateRightBtn = new Shape();
 	rotateRightBtn.over = false;
-	rotateRightBtn.x = 15 + rotateSize;
+	rotateRightBtn.x = 30 + rotateSize;
 	rotateRightBtn.y = stageHeight - 20 - rotateSize;
 	stage.addChild(rotateRightBtn);
 
 	rotateText = new Text("rotate image left/right", "20px " + thefont, "#fff");
 	rotateText.textBaseline = "middle";
 	rotateText.lineWidth = 216;
-	rotateText.x = 10 + rotateSize + rotateSize + 10;
+	rotateText.x = 10 + rotateSize + rotateSize + 30;
 	rotateText.y = stageHeight - 20 - (rotateSize*.5);
 	stage.addChild(rotateText);
 
@@ -315,7 +317,7 @@ function addInteractivity() {
 			update = true;
 		};
 	})(modeBtn);
-	
+
 	// handle interaction for ROTATE LEFT button
 	// wrapper function to provide scope for the event handlers:
 	(function(target) {
@@ -336,7 +338,7 @@ function addInteractivity() {
 			update = true;
 		};
 	})(rotateLeftBtn);
-	
+
 	// handle interaction for ROTATE RIGHT button
 	// wrapper function to provide scope for the event handlers:
 	(function(target) {
@@ -357,7 +359,7 @@ function addInteractivity() {
 			update = true;
 		};
 	})(rotateRightBtn);
-	
+
 	// handle movement for VERTICAL handle
 	// wrapper function to provide scope for the event handlers:
 	(function(target) {
@@ -389,7 +391,7 @@ function addInteractivity() {
 			update = true;
 		};
 	})(vert_sprite);
-	
+
 	// handle movement for LEFT square
 	// wrapper function to provide scope for the event handlers:
 	(function(target) {
@@ -1058,7 +1060,7 @@ function drawGrid() {
 	var rowgap = (img.height/rows);
 	var h = img.height;
 	var w = img.width;
-	
+
 	g.clear();
 	g.setStrokeStyle(1, "round", "round");
 	g.beginStroke(COLOR);
@@ -1084,7 +1086,7 @@ function drawRotate() {
 	if (drawMode=="rotate") {
 		// TEXT
 		rotateText.visible = true;
-		
+
 		// LEFT
 		g = rotateLeftBtn.graphics;
 		g.clear();
@@ -1110,11 +1112,11 @@ function drawRotate() {
 		g.beginFill(FILLALPHA);
 		g.drawRect(0,0,rotateSize,rotateSize);
 		g.moveTo(10,25).lineTo(10,10).lineTo(25,10).lineTo(20,5).moveTo(25,10).lineTo(20,15);
-		
+
 		// MODE BUTTON
 		modeText.text = "edit mode";
-		modeText.x = 305;
-		modeBtn.x = 300;
+		modeText.x = 325;
+		modeBtn.x = 320;
 		g = modeBtn.graphics;
 		g.clear();
 		g.setStrokeStyle(THICK, "round", "round");
@@ -1127,15 +1129,15 @@ function drawRotate() {
 		g.drawRect(0,0,90,rotateSize);
 	} else {
 		rotateText.visible = false;
-		
+
 		// LEFT
 		g = rotateLeftBtn.graphics;
 		g.clear();
-		
+
 		// RIGHT
 		g = rotateRightBtn.graphics;
 		g.clear();
-		
+
 		// MODE BUTTON
 		modeText.text = "rotate mode";
 		modeText.x = 15;
@@ -1157,11 +1159,11 @@ function drawText()	{
 	if (sq1.over) {
 		// text
 		txt.x = sq1x + hsize*.5 - txt.lineWidth;
-		txt.y = sq1y + vsize*.5;
+		txt.y = sq1y + vsize*.5 + INSET;
 	} else if (sq2.over) {
 		// text
 		txt.x = sq2x + hsize*.5 + INSET;
-		txt.y = sq2y + vsize*.5;
+		txt.y = sq2y + vsize*.5 + INSET;
 	} else {
 		// text
 		txt.x = -1000;
@@ -1268,17 +1270,17 @@ function drawSquare(square,x,y) {
 	}
 	g.beginFill(FILLALPHA);
 	g.drawRect(x,y,hsize,vsize);
-	if (square.over) {
+	if (true || isiPad || square.over) {
 		CROSSSIZE = INSET*2;
-		g.moveTo(x-CROSSSIZE+hsize*.5,y-CROSSSIZE+vsize*.5).lineTo(x+CROSSSIZE+hsize*.5,y+CROSSSIZE+vsize*.5).moveTo(x+CROSSSIZE+hsize*.5,y-CROSSSIZE+vsize*.5).lineTo(x-CROSSSIZE+hsize*.5,y+CROSSSIZE+vsize*.5);
+		g.moveTo(x-CROSSSIZE+hsize*.5,y+vsize*.5).lineTo(x+CROSSSIZE+hsize*.5,y+vsize*.5).moveTo(x+hsize*.5,y-CROSSSIZE+vsize*.5).lineTo(x+hsize*.5,y+CROSSSIZE+vsize*.5);
 		// draw arrows
-		g.moveTo(x-CROSSSIZE+hsize*.5,(y-CROSSSIZE+vsize*.5)+(CROSSSIZE*.5)).lineTo(x-CROSSSIZE+hsize*.5,y-CROSSSIZE+vsize*.5).lineTo(x-CROSSSIZE+hsize*.5+(CROSSSIZE*.5),y-CROSSSIZE+vsize*.5);
-		g.moveTo(x+CROSSSIZE+hsize*.5,y+CROSSSIZE+vsize*.5-(CROSSSIZE*.5)).lineTo(x+CROSSSIZE+hsize*.5,y+CROSSSIZE+vsize*.5).lineTo(x+CROSSSIZE+hsize*.5-(CROSSSIZE*.5),y+CROSSSIZE+vsize*.5);
-		g.moveTo(x+CROSSSIZE+hsize*.5,y-CROSSSIZE+vsize*.5+(CROSSSIZE*.5)).lineTo(x+CROSSSIZE+hsize*.5,y-CROSSSIZE+vsize*.5).lineTo(x+CROSSSIZE+hsize*.5-(CROSSSIZE*.5),y-CROSSSIZE+vsize*.5);
-		g.moveTo(x-CROSSSIZE+hsize*.5,y+CROSSSIZE+vsize*.5-(CROSSSIZE*.5)).lineTo(x-CROSSSIZE+hsize*.5,y+CROSSSIZE+vsize*.5).lineTo(x-CROSSSIZE+hsize*.5+(CROSSSIZE*.5),y+CROSSSIZE+vsize*.5);
+		g.moveTo(x-CROSSSIZE+hsize*.5+(CROSSSIZE*.3),(y+vsize*.5)+(CROSSSIZE*.3)).lineTo(x-CROSSSIZE+hsize*.5,y+vsize*.5).lineTo(x-CROSSSIZE+hsize*.5+(CROSSSIZE*.3),y-CROSSSIZE*.3+vsize*.5);
+		g.moveTo(x+CROSSSIZE+hsize*.5-(CROSSSIZE*.3),y+vsize*.5-(CROSSSIZE*.3)).lineTo(x+CROSSSIZE+hsize*.5,y+vsize*.5).lineTo(x+CROSSSIZE+hsize*.5-(CROSSSIZE*.3),y+CROSSSIZE*.3+vsize*.5);
+		g.moveTo(x-CROSSSIZE*.3+hsize*.5,y-CROSSSIZE+vsize*.5+(CROSSSIZE*.3)).lineTo(x+hsize*.5,y-CROSSSIZE+vsize*.5).lineTo(x+CROSSSIZE*.3+hsize*.5,y-CROSSSIZE+vsize*.5+(CROSSSIZE*.3));
+		g.moveTo(x-CROSSSIZE*.3+hsize*.5,y+CROSSSIZE+vsize*.5-(CROSSSIZE*.3)).lineTo(x+hsize*.5,y+CROSSSIZE+vsize*.5).lineTo(x+CROSSSIZE*.3+hsize*.5,y+CROSSSIZE+vsize*.5-(CROSSSIZE*.3));
 	} else {
 		g.beginStroke(COLOR);
-		g.moveTo(x-CROSSSIZE+hsize*.5,y-CROSSSIZE+vsize*.5).lineTo(x+CROSSSIZE+hsize*.5,y+CROSSSIZE+vsize*.5).moveTo(x+CROSSSIZE+hsize*.5,y-CROSSSIZE+vsize*.5).lineTo(x-CROSSSIZE+hsize*.5,y+CROSSSIZE+vsize*.5);
+		g.moveTo(x-CROSSSIZE+hsize*.5,y+vsize*.5).lineTo(x+CROSSSIZE+hsize*.5,y+vsize*.5).moveTo(x+hsize*.5,y-CROSSSIZE+vsize*.5).lineTo(x+hsize*.5,y+CROSSSIZE+vsize*.5);
 	}
 }
 
@@ -1324,18 +1326,18 @@ function toggleMode(m) {
 	var linksDiv = $("#toggleLinks");
 	var extraDiv = $("#GIFExtraLinks");
 	if (m=="GIF") {
-		togglerDiv.removeClass("anaglyphActive"); 
-		togglerDiv.addClass("GIFActive"); 
-		anaDiv.removeClass("active"); 
-		gifDiv.addClass("active"); 
-		extraDiv.show(); 
+		togglerDiv.removeClass("anaglyphActive");
+		togglerDiv.addClass("GIFActive");
+		anaDiv.removeClass("active");
+		gifDiv.addClass("active");
+		extraDiv.show();
 	} else {
 		update = true;
-		togglerDiv.addClass("anaglyphActive"); 
-		togglerDiv.removeClass("GIFActive"); 
-		gifDiv.removeClass("active"); 
-		anaDiv.addClass("active"); 
-		extraDiv.hide(); 
+		togglerDiv.addClass("anaglyphActive");
+		togglerDiv.removeClass("GIFActive");
+		gifDiv.removeClass("active");
+		anaDiv.addClass("active");
+		extraDiv.hide();
 	}
 }
 
@@ -1343,7 +1345,7 @@ function drawGIF () {
 	// get rid of anaglyph canvas in preview
 	document.getElementById("previewGIF").style.display = "block";
 	document.getElementById("previewAnaglyph").style.display = "none";
-	
+
 	now = new Date().getTime();
 	if (now - lasttick >= speed) {
 		lasttick = now;
@@ -1367,7 +1369,7 @@ function drawAnaglyph () {
 	now = new Date().getTime();
 	// left = 0,255,255
 	// right = 255,0,0
-	
+
 	// *** RIGHT IMAGE
 	// Get the image data
 	rightimgdata = ctxbase.getImageData(sq1x-OFFSET, sq1y, hsize, vsize);
@@ -1381,8 +1383,8 @@ function drawAnaglyph () {
 	// if iPad, do a smaller preview (1/4 size)
 	resultcanvas.width = hsize;
 	resultcanvas.height = vsize;
-	
-	var i; 
+
+	var i;
 	var j = rightimgdata_array.length;
 	var rR, rG, rB;
 	for (i = 0; i < j; i+=4) {
@@ -1457,7 +1459,7 @@ function getImageFromServer() {
 			// Set up the canvas
 			ctx3D = resultcanvas.getContext('2d');
 			ctxbase = processcanvas.getContext('2d');
-			
+
 			// Draw the image on to the BASE canvas
 			ctxbase.drawImage(image, 0, 0, image.width, image.height);
 			handleImageLoad(image);
@@ -1516,10 +1518,10 @@ function generate() {
 				creator:"mga"
 					},
 			success: function(data) {
-				if (data.redirect) {
-					window.location.href = data.redirect;
+				if (!is_publiceye) {
+					window.location.href = "/share/"+data.redirect;
 				} else {
-					//console.log("cannot redirect: " + data);
+					window.location.href = "/share_pe/"+data.redirect;
 				}
 			},
 			statusCode: {
@@ -1545,10 +1547,10 @@ function generateFromFlash(_sq1x,_sq1y,_sq2x,_sq2y,_hsize,_vsize,_speed,_index,_
 		dataType: 'json',
 		data: null,
 		success: function(data) {
-			if (data.redirect) {
-				window.location.href = data.redirect;
+			if (!is_publiceye) {
+				window.location.href = "/share/"+data.redirect;
 			} else {
-				//console.log("cannot redirect: " + data);
+				window.location.href = "/share_pe/"+data.redirect;
 			}
 		},
 		statusCode: {
@@ -1628,14 +1630,15 @@ function searchGallery() {
 function refreshImages() {
 	if (image_array.length>0) {
 		clearImages();
-		var r = image_array.sort(function(){ 
+		var r = image_array.sort(function(){
 			return Math.round(Math.random())-0.5
 		}).slice(0,9)
 		var i, l = r.length;
 		var url, href;
 		for (i=0;i<l;++i) {
 			url = r[i]["url"];
-			href = "/convert/" + r[i]["id"] + "?xid=" + r[i]["xid"];
+			var path = (!is_publiceye ? "/convert/" : "/convert_pe/");
+			href = path + r[i]["id"] + "?xid=" + r[i]["xid"];
 			meta = r[i]["owner"];
 			xid = r[i]["xid"];
 			$("#st" + i).toggleClass("stereograph");

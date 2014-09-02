@@ -1,0 +1,91 @@
+<% content_for :title do %>Step 2 CREATE : <% end %>
+<% content_for :dynamic_js do %>
+<!-- non compiled JS (heroku limitation) -->
+<!--[if (!IE)|(gte IE 9)]><!-->
+<%= javascript_include_tag "/assets/easel.js" %>
+<!-- <![endif]-->
+
+<%= javascript_include_tag "/assets/swfobject.js" %>
+<!-- end non-compiled -->
+
+<% end %>
+<% if @metadata["title"]==nil %>
+		<div class="_container_12">
+			<div class="_grid_12 centered">
+				<h3>There is no metadata for this image. Most likely your final file will not be saved.</h3>
+			</div>
+		</div>
+<% end %>
+	<div id="yescanvas" class="publiceye">
+		<div class="createTop _container_12">
+			<div id="nav" class="_grid_12">
+				<p><span class="dim"><%= link_to "CHOOSE", "/create_pe" %> &gt;</span> CREATE &gt; <span class="dim">SHARE</span></p>
+			</div>
+		</div>
+		<div id="stereogranimator">
+			<div class="sideshow">
+				<div id="toggler">
+					<div id="toggleLinks">
+						<div class="toggleAna">
+							<a href="javascript:;" id="toggleAna">VIEW AS 3D ANAGLYPH</a>
+							<span class="dim">REQUIRES 3D GLASSES</span>
+						</div>
+						<a href="javascript:;" id="toggleGIF">VIEW AS ANIMATED GIF</a>
+					</div>
+					<div id="GIFExtraLinks">
+						<div>
+							<a href="javascript:;" id="slowSpeed">SLOW</a>
+							<a href="javascript:;" id="medSpeed">MEDIUM</a>
+							<a href="javascript:;" id="fastSpeed">FAST</a>
+						</div>
+					</div>
+				</div>
+				<div id="preview">
+					<div id="previewContainer">
+						<div id="previewGIF">
+						</div>
+						<div id="previewAnaglyph">
+							<canvas id="resultCanvas"></canvas>
+						</div>
+						<div id="previewExplain">
+							A real-time preview of your creation will appear<br />when you make your first tap in the<br />Stereogranimator below
+						</div>
+					</div>
+				</div>
+				<div id="process">
+					<canvas id="processCanvas" width="1000" height="1000"></canvas>
+				</div>
+			</div>
+			<div class="canvasHolder">
+				<canvas id="testCanvas" width="800" height="540"></canvas>
+			</div>
+			<div class="nextStep">
+				<a href="javascript:;" id="btnNext" class="genericButtonLink">SAVE IMAGE &gt;</a>
+			</div>
+			<div class="clear"></div>
+<%= render :partial => "shared/instructions" %>
+		</div>
+	</div>
+<%= render :partial => "shared/nocanvas" %>
+	<div class="metadata _container_12">
+		<p class="_grid_12">
+			<em><%= @metadata["title"] %></em><br />
+			<%= image_tag("ext#{params[:xid]}.png") %>
+			<%= @metadata["owner"] %><br />
+		</p>
+	</div>
+
+<script type="text/javascript">
+// establish the photo to be used
+index = "<%= params[:did] %>";
+xid = <%= params[:xid]==nil ? 0 : params[:xid] %>;
+is_publiceye = true;
+if (Modernizr.canvas) {
+	window.onload = function () {
+		init();
+	}
+} else {
+	disableCanvas();
+	swfobject.embedSWF("<%= asset_path("main.swf") %>", "fallback", "1200", "582", "10", "<%= asset_path("expressInstall.swf") %>", {index:index,xid:xid,host:"<%= request.protocol + request.host_with_port %>"}, {wmode: "transparent"});
+}
+</script>

@@ -24,25 +24,17 @@ embed_url = url_for(:controller=>"gallery",:action=>"view",:id=>@animation.id,:o
 <meta name="twitter:creator" content="@nypl_stereo">
 <% end %>
 
-		<div class="createTop container_12">
-			<h1 class="create grid_12"><span class="visuallyhidden">CREATE</span></h1>
-			<div id="nav" class="grid_12">
+		<div class="createTop publiceye">
+			<div id="nav">
 				<p><span class="dim">Step 1: CHOOSE &gt; Step 2: CREATE &gt;</span> Step 3: SHARE</p>
 			</div>
 		</div>
-		<div class="container_12">
-<%= render "shared/detail" %>
-			<div class="meta grid_5">
+		<div class="detail publiceye">
 			<h2>CONGRATULATIONS!</h2>
-
 			<p>Your <%= @animation.mode == "GIF" ? "animated GIF" : "anaglyph" %> has been created!</p>
+<%= render "shared/detail", :publiceye => true %>
 
-			<div class="create"><%= link_to "CREATE ANOTHER ONE!", "/choose", :class => 'genericButtonLink' %></div>
+			<div class="create"><%= link_to "CREATE ANOTHER ONE!", "/create_pe", :class => 'genericButtonLink' %></div>
 
-<% @sharetype = "created" %>
-
-<%= render "shared/share" %>
-
-			</div>
 		</div>
 		<div class="clear"></div>

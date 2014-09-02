@@ -1,0 +1,117 @@
+body {
+  min-width: inherit;
+  background-image: none;
+}
+
+#footer {
+  display: none;
+}
+
+#mainContent .publiceye {
+  &#stereoList {
+    width: 680px;
+    margin: 0 auto;
+  }
+
+  .stereograph {
+    width: 300px;
+    height: 220px;
+    float: left;
+    margin: 0 20px;
+  }
+
+  #nav p {
+    font-size: 18px;
+    margin: 15px 0 15px 80px;
+  }
+
+  #stereogranimator {
+    width: 800px;
+  }
+
+  .instructions {
+    top: 410px;
+  }
+
+  .showInstructions {
+    top: 400px;
+  }
+
+  .canvasHolder {
+    // float: none;
+  }
+
+  .sideshow {
+    // float: none;
+    border: none;
+    width: 100%;
+    height: inherit;
+  }
+
+  #toggler {
+    top: -51px;
+    left: 370px;
+    height: 50px;
+    background-position-x: -420px;
+    background-position-y: -406px;
+    background-repeat: no-repeat;
+    background-size: 250%;
+
+    &.anaglyphActive {
+      background-position-x: -6px;
+    }
+
+    #toggleLinks, #GIFExtraLinks a {
+      font-size: 15px;
+
+      #toggleGIF, #toggleAna {
+        height: 20px;
+        margin-top: 5px;
+      }
+    }
+
+    #GIFExtraLinks div {
+      padding-left: 40px;
+    }
+  }
+
+  .nextStep {
+    top: 150px;
+    right: 60px;
+  }
+
+  #preview {
+    width: inherit;
+    height: inherit;
+  }
+
+  #previewContainer {
+    height: 400px;
+    overflow: hidden;
+    border-bottom: 2px solid white;
+  }
+
+  #previewAnaglyph, #previewGIF {
+    display: none;
+  }
+
+  &.detail {
+    h2, p {
+      text-align: center;
+    }
+
+    .grid_5 {
+      display: block;
+      float: none;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+
+    .create {
+      width: 200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+  }
+}

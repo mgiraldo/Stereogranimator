@@ -1,6 +1,6 @@
 class AnimationsController < ApplicationController
   before_filter :require_user, :only => [:index, :edit, :destroy]
-  
+
   # GET /choose
   def choose
     # @get_from_flickr = false
@@ -9,7 +9,7 @@ class AnimationsController < ApplicationController
       format.html
     end
   end
-  
+
   def chooseSearch
     xid = 1
     # checkFlickrCookies()
@@ -20,7 +20,7 @@ class AnimationsController < ApplicationController
       format.json { render :json => @images }
     end
   end
-  
+
   # GET /animations
   # GET /animations.json
   def index
@@ -33,12 +33,12 @@ class AnimationsController < ApplicationController
 
   def share
     @animation = Animation.find(params[:id])
-  
+
     respond_to do |format|
       format.html # show.html.erb
     end
   end
-  
+
   # GET /animations/1
   # GET /animations/1.json
   def show
@@ -78,6 +78,60 @@ class AnimationsController < ApplicationController
     end
   end
 
+  # GET /choose
+  def choose_publiceye
+    # @get_from_flickr = false
+    @images = Image.randomSet(@get_from_flickr) # @get_from_flickr is in app controller
+    respond_to do |format|
+      format.html { render :layout => "publiceye" }
+    end
+  end
+
+  def chooseSearch_publiceye
+    xid = 1
+    # checkFlickrCookies()
+    xid = params[:xid].to_i if params[:xid] != nil
+    @images = Image.findByKeyword(params[:keyword], xid)
+    respond_to do |format|
+      format.html { render :json => @images }
+      format.json { render :json => @images }
+    end
+  end
+
+  # GET /animations/new
+  # GET /animations/new.json
+  def new_publiceye
+    # checkFlickrCookies()
+    @metadata = Image.getMetadata(params[:did])
+    params[:xid] = params[:xid]==nil ? 0 : params[:xid].to_i
+    if params[:xid]!=0
+      photoinfo = Image.flickrDataForPhoto(params[:did])
+      externalinfo = Image.externalData(params[:xid])
+      if params[:xid] == -1
+        # personal set
+        @metadata = {"title"=>photoinfo[:info]["title"],"link"=>photoinfo[:info]["urls"][0]["_content"],"owner"=>photoinfo[:info]["owner"]["username"],"homeurl"=>"http://www.flickr.com/user/" + photoinfo[:info]["owner"]["nsid"]}
+      else
+        # bpl set
+        @metadata = {"title"=>photoinfo[:info]["title"],"link"=>photoinfo[:info]["urls"][0]["_content"],"owner"=>externalinfo[:name],"homeurl"=>externalinfo[:homeurl]}
+      end
+    end
+    if params[:xid].to_i == -1 && (cookies[:flickr_verifier] == nil || cookies[:flickr_token] == nil || cookies[:flickr_secret] == nil)
+      redirect_to "/"
+    else
+      respond_to do |format|
+        format.html { render :layout => "publiceye" }
+      end
+    end
+  end
+
+  def share_publiceye
+    @animation = Animation.find(params[:id])
+
+    respond_to do |format|
+      format.html { render :layout => "publiceye" }
+    end
+  end
+
   # GET /animations/1/edit
   def edit
     @animation = Animation.find(params[:id])
@@ -103,7 +157,7 @@ class AnimationsController < ApplicationController
   def createJson
 
     current = Time.now.to_i
-    if session[:last_create] == nil || current - session[:last_create] < 5 # can only create one every 10 seconds
+    if session[:last_create] != nil && current - session[:last_create] < 5 # can only create one every 10 seconds
      respond_to do |f|
        f.json { render :json => {:message => "Too many requests"}.to_json, :status => 429 }
      end
@@ -112,9 +166,9 @@ class AnimationsController < ApplicationController
     # update session image creation timestamp
     session[:last_create] = current
     # get parameters from url
-    
+
     @animation = Animation.new()
-    
+
     @animation.x1 = params[:x1].to_i
     @animation.y1 = params[:y1].to_i
     @animation.x2 = params[:x2].to_i
@@ -128,7 +182,7 @@ class AnimationsController < ApplicationController
     @animation.rotation = params[:rotation] != nil ? params[:rotation] : ""
     @animation.external_id = params[:xid] != nil ? params[:xid] : 0
     @animation.views = 0
-    
+
     # get metadata
     meta = ""
     # checkFlickrCookies()
@@ -157,7 +211,7 @@ class AnimationsController < ApplicationController
       end
     end
   end
-  
+
   # PUT /animations/1
   # PUT /animations/1.json
   def update
@@ -173,7 +227,7 @@ class AnimationsController < ApplicationController
       end
     end
   end
-  
+
   # DELETE /animations/1
   # DELETE /animations/1.json
   def destroy

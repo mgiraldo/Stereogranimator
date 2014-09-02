@@ -1,0 +1,57 @@
+<% content_for :title do %>Step 1 CHOOSE : <% end %>
+<% content_for :dynamic_js do %>
+<script type="text/javascript">
+
+<% if @images["all"].count > 0 %>
+image_array.push(<%=raw @images["all"].map{|x|"{id:'#{x[:id]}',xid:#{x[:xid]},url:'#{x[:url]}',owner:'#{x[:owner]}'}"}.join(",")%>);
+<% end %>
+
+is_publiceye = true;
+initSearch();
+
+</script>
+
+<% end %>
+	<div class="_container_12 publiceye">
+		<div class="createTop">
+			<div id="nav" class="_grid_12">
+				<p>CHOOSE &gt; <span class="dim">CREATE &gt; SHARE</span></p>
+			</div>
+		</div>
+		<div id="stereoList" class="_grid_12 publiceye">
+			<div id="search" class="centered">
+				<%= text_field_tag 'keyword' ,'', {:class=>"query", :placeholder=>"Search originals by keyword"} %>
+				<%= submit_tag "FIND", :class=>"submit", :onclick => "javascript:searchImages();" %>
+				<br />
+				<div class="status"></div>
+			</div>
+<% if @images["subset"].length > 0 %>
+			<p class="centered">Select an image from these nine. Click "REFRESH PHOTO LIST" to get another batch.</p>
+<% @images["subset"].entries.each_with_index do |image,i| %>
+			<div id="<%= "st#{i}" %>" class="stereograph _grid_4">
+<!--[if (!IE)|(lte IE 8)]><!-->
+				<%= link_to "CHOOSE THIS ONE", "/convert_pe/#{image[:id]}?xid=#{image[:xid]}", {:id => "linko_#{i}", :class=>'over', :title => image[:owner]} %>
+<!-- <![endif]-->
+				<%= link_to image_tag(image[:url], {:id => "img_#{i}", :width => 300, :alt => image[:owner]}), "/convert_pe/#{image[:id]}?xid=#{image[:xid]}", {:class=>'base',:id => "link_#{i}", :title => image[:owner]} %>
+			</div>
+	<% break if i >= 5 %>
+<% end %>
+			<div class="clear"></div>
+			<div class="centered">
+				<%= link_to "REFRESH PHOTO LIST", "javascript:;", {:class => 'genericButtonLink', :onclick => "javascript:refreshImages();" } %>
+			</div>
+<% else %>
+			<p class="centered">
+				<% if @get_from_flickr %>
+				No images were found in your Flickr set. <%= link_to "Use NYPL/BPL photos", @flickr_url %>.
+				<% else %>
+				No images were found. Please try again.
+				<% end %>
+				</p>
+			<div class="centered">
+				<%= link_to "RETRY", "/create", {:class => 'genericButtonLink'} %>
+			</div>
+<% end %>
+		</div>
+		<div class="clear"></div>
+	</div>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<script type="text/javascript">
+  TypekitConfig = {
+    kitId: 'vvr4jfd'
+  };
+  (function() {
+    var tk = document.createElement('script');
+    tk.src = '//use.typekit.com/' + TypekitConfig.kitId + '.js';
+    tk.type = 'text/javascript';
+    tk.async = 'true';
+    tk.onload = tk.onreadystatechange = function() {
+      var rs = this.readyState;
+      if (rs && rs != 'complete' && rs != 'loaded') return;
+      try { Typekit.load(TypekitConfig); } catch (e) {}
+    };
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(tk, s);
+  })();
+</script>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="minimum-scale=1.0, width=device-width, maximum-scale=1, user-scalable=no ,initial-scale=1.0" />
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+
+<title><%= yield :title %>Stereogranimator</title>
+
+<%= favicon_link_tag %>
+
+<%= stylesheet_link_tag "application" %>
+<%= stylesheet_link_tag "publiceye" %>
+
+<!-- APP JS -->
+<%= javascript_include_tag "application" %>
+<%= javascript_include_tag "general" %>
+
+<!-- dynamic JS -->
+<%= yield :dynamic_js %>
+<!-- end dynamic JS -->
+
+<%= csrf_meta_tags %>
+
+<meta property="fb:page_id" content="282379325161500" />
+
+<%= yield :img_metadata %>
+
+</head>
+
+<body>
+
+	<div id="mainContent">
+<%= yield %>
+	</div>
+
+<%= render "shared/footer" %>
+<script type="text/javascript">
+  function recordOutboundLink(link, category, action) {
+    _gat._getTrackerByName()._trackEvent(category, action);
+    setTimeout('document.location = "' + link.href + '"', 100);
+  }
+</script>
+</body>
+</html>
