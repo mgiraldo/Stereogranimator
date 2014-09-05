@@ -1288,7 +1288,7 @@ function tick() {
 	// only draw once clicked
 	if (previewActive && drawMode=="normal") {
 		$("#previewExplain").hide();
-		$("#btnNext").show();
+		$("#btnNext").fadeIn();
 	}
 	if (update) {
 		//console.log(imageRotation);

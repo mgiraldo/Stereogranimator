@@ -1,3 +1,6 @@
+@import "base";
+@import "mixins";
+
 body {
   min-width: inherit;
   background-image: none;
@@ -52,13 +55,15 @@ body {
     top: -51px;
     left: 370px;
     height: 50px;
-    background-position-x: -420px;
-    background-position-y: -406px;
-    background-repeat: no-repeat;
-    background-size: 250%;
+
+    &.GIFactive {
+      background: $sprites -420px -406px no-repeat;
+      background-size: 250%;
+    }
 
     &.anaglyphActive {
-      background-position-x: -6px;
+      background: $sprites -6px -406px no-repeat;
+      background-size: 250%;
     }
 
     #toggleLinks, #GIFExtraLinks a {
@@ -76,8 +81,26 @@ body {
   }
 
   .nextStep {
-    top: 150px;
-    right: 60px;
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    right: 5px;
+    width: 130px;
+    height: 80px;
+    overflow: hidden;
+  }
+
+  #btnNext {
+    display: block;
+    position: absolute;
+    width: 90px;
+    height: 110px;
+    bottom: -60px;
+    border-radius: 100px;
+    padding-top: 20px;
+    padding-left: 30px;
+    font-size: 24px;
+    @include transform(rotateZ(0deg));
   }
 
   #preview {
