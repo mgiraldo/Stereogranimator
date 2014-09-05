@@ -4,7 +4,7 @@ class Animation < ActiveRecord::Base
   def checkImage
     did = self.digitalid
     xid = self.external_id
-    
+
     # delete from Amazon S3
     if self.filename != nil && self.filename != ""
       s3 = AWS::S3.new
@@ -14,9 +14,9 @@ class Animation < ActiveRecord::Base
       obj = bucket.objects["t_" + self.filename]
       obj.delete()
     end
-    
+
     @derivatives = Animation.where(:digitalid => did, :external_id => xid)
-    
+
     if @derivatives.length == 1
       # this is the last derivative for the original image IF FROM NYPL
       @im = Image.where("upper(digitalid) = ?", did.upcase).first
@@ -44,7 +44,7 @@ class Animation < ActiveRecord::Base
       # do some image magick
       # first get each frame
       im = Magick::Image.read(url).first
-      
+
       if (im.columns > 800)
         im = im.resize_to_fit(800)
       end
@@ -52,30 +52,30 @@ class Animation < ActiveRecord::Base
       if (im.rows > 600)
         im = im.resize_to_fit(800,600)
       end
-      
+
       rot = self.rotation == "" ? 0 : self.rotation.to_f
-      
+
       im.background_color = "none"
       im = im.rotate(rot)
-        
+
       # TODO: proper crop of thumbnails (?)
       fr1 = im.crop(self.x1,self.y1,self.width,self.height,true)
       fr2 = im.crop(self.x2,self.y2,self.width,self.height,true)
-      
+
       # future filename
       unique = Digest::SHA1.hexdigest('nyplsalt' + Time.now.to_s)
-      
+
       if self.mode == "GIF"
         # ANIMATED GIF!
         self.filename = self.filename==nil ? unique + ".gif" : self.filename
-        
+
         final = Magick::ImageList.new
         final << fr1
         final << fr2
         final.ticks_per_second = 1000
         final.delay = self.delay
         final.iterations = 0
-        
+
         fr3 = fr1.resize_to_fill(140,140)
         fr4 = fr2.resize_to_fill(140,140)
         thumb = Magick::ImageList.new
@@ -87,21 +87,21 @@ class Animation < ActiveRecord::Base
       else
         # ANAGLYPH!
         self.filename = self.filename==nil ? unique + ".png" : self.filename
-        
+
         fr1 = fr1.gamma_correct(1,0,0)
         fr2 = fr2.gamma_correct(0,1,1)
         final = fr2.composite fr1, Magick::CenterGravity, Magick::ScreenCompositeOp
-  
+
         thumb = final.resize_to_fill(140,140)
       end
-      
+
       format = self.mode=="GIF"?"gif":"png"
       # gotta packet the file
       final.write("#{format}:#{Rails.root}/tmp/#{self.filename}") { self.quality = 100 }
       # and the thumb
       thumbname = "t_" + self.filename
       thumb.write("#{format}:#{Rails.root}/tmp/#{thumbname}") { self.quality = 100 }
-      
+
       # upload to Amazon S3
       s3 = AWS::S3.new
       bucket = s3.buckets['stereo.nypl.org']
@@ -133,7 +133,7 @@ class Animation < ActiveRecord::Base
       end
     end
   end
-  
+
   def owner_url
     if self.external_id==0
       "http://nypl.org"
@@ -141,7 +141,7 @@ class Animation < ActiveRecord::Base
       Image.externalData(self.external_id)[:homeurl]
     end
   end
-  
+
   def original_url
     if self.external_id==0
       self.nypl_url
@@ -154,35 +154,39 @@ class Animation < ActiveRecord::Base
       end
     end
   end
-  
+
   def url
-    "http://images.nypl.org/index.php?id=#{digitalid}&t=w"
+    if external_id != 1
+      "http://images.nypl.org/index.php?id=#{digitalid}&t=w"
+    else
+      Image.flickrDataForPhoto(digitalid)[:original_url]
+    end
   end
-  
+
   def thumb
-    "/view/" + id.to_s + (mode=="GIF"?".gif":".png") + "?n=1&m=t"
+    "/view/" + id.to_s + (mode== "GIF" ? ".gif" : ".png") + "?n=1&m=t"
   end
-  
+
   def full
-    "/view/" + id.to_s + (mode=="GIF"?".gif":".png") + "?n=1"
+    "/view/" + id.to_s + (mode== "GIF" ? ".gif" : ".png") + "?n=1"
   end
-  
+
   def full_count
-    "/view/" + id.to_s + (mode=="GIF"?".gif":".png")
+    "/view/" + id.to_s + (mode== "GIF" ? ".gif" : ".png")
   end
-  
+
   def aws_url
     "http://s3.amazonaws.com/stereo.nypl.org/#{filename}"
   end
-  
+
   def aws_thumb_url
     "http://s3.amazonaws.com/stereo.nypl.org/t_#{filename}"
   end
-  
+
   def nypl_url
     "http://digitalgallery.nypl.org/nypldigital/dgkeysearchdetail.cfm?imageID=#{digitalid.downcase}"
   end
-  
+
   def as_json(options = { })
       h = super(options)
       h[:url] = url
@@ -222,7 +226,7 @@ class Animation < ActiveRecord::Base
     totalgift = 0
     totalanaf = 0
     totalanat = 0
-    
+
     s3 = AWS::S3.new
     bucket = s3.buckets['stereo.nypl.org']
     bucket.objects.each do |ob|
