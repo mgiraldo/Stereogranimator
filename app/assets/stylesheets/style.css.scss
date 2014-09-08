@@ -1,4 +1,5 @@
 @import "base";
+@import "mixins";
 
 body {
   background: $backcolor $bodyimage repeat-x;
@@ -225,6 +226,16 @@ a:hover {
   background: $backimage repeat-x;/*asset-url('12_col.gif', image);*/
   .showGrid {
     background: $gridimage;
+  }
+  .homeThumb {
+    width: 100%;
+    clear: both;
+    height: 170px;
+    overflow: hidden;
+  }
+  .homeNews {
+    @extend .homeThumb;
+    height: 140px;
   }
   .thumb {
     position: relative;
@@ -503,7 +514,7 @@ a:hover {
   border-top: $basicborder;
   .canvasHolder, .sideshow {
     height: $stereoheight;
-    float: left;
+    float: right;
     border-bottom: $basicborder;
   }
   .canvasHolder {
@@ -677,6 +688,185 @@ a:hover {
   padding-bottom: 100px;
   a, a:link, a:visited {
     color: $maincolor;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  body {
+    min-width: inherit;
+  }
+
+  .container_12 {
+    width: auto;
+
+    .grid_12 {
+      width: auto;
+      clear: both;
+    }
+  }
+
+  ul#mainNav {
+    left: 80px;
+  }
+
+  /*
+  home scaled
+  */
+  #home #explainer {
+    .mainParagraph, .flickrParagraph {
+      font-size: 16px;
+    }
+
+    .flickrParagraph {
+      top: 70%;
+    }
+
+    .mainParagraph, .flickrParagraph, .left, .left img {
+      width: 47%;
+    }
+
+    .startCreating {
+      top: 80%;
+      left: 10%;
+    }
+
+    .center, .center img {
+      width: 27%;
+    }
+
+    .right {
+      width: 23%;
+
+      img {
+        width: 100%;
+      }
+    }
+  }
+
+  /*
+  end home scaled
+  */
+
+  #mainContent {
+    &#stereoList {
+      width: auto;
+      margin: 0 auto;
+    }
+
+    .clear {
+      width: 0;
+      clear: none;
+    }
+
+    .centered {
+      clear: both;
+    }
+
+
+    .stereograph {
+      width: 300px;
+      height: 220px;
+      float: left;
+      margin: 0 20px;
+    }
+
+    #nav.stereo p {
+      font-size: 18px;
+      margin: 15px 0 15px 5px;
+    }
+
+    #stereogranimator {
+      width: $canvaswidth;
+    }
+
+    .instructions {
+      top: 410px;
+    }
+
+    .showInstructions, .showInstructions:link {
+      top: 400px;
+    }
+
+    .canvasHolder {
+      // float: none;
+    }
+
+    .sideshow {
+      float: none;
+      border: none;
+      width: 100%;
+      height: inherit;
+
+      #preview {
+        width: inherit;
+        height: inherit;
+      }
+
+      #previewContainer {
+        height: 400px;
+        overflow: hidden;
+        border-bottom: 2px solid white;
+      }
+
+      #previewAnaglyph, #previewGIF {
+        display: none;
+      }
+
+    }
+
+    #toggler {
+      top: -61px;
+      left: 380px;
+      height: 50px;
+
+
+      #GIFExtraLinks div {
+        padding-left: 40px;
+      }
+    }
+
+    .nextStep {
+      position: fixed;
+      top: auto;
+      bottom: 0;
+      right: 5px;
+      width: 130px;
+      height: 80px;
+      overflow: hidden;
+    }
+
+    #btnNext {
+      display: block;
+      position: absolute;
+      width: 90px;
+      height: 110px;
+      bottom: -60px;
+      border-radius: 100px;
+      padding-top: 20px;
+      padding-left: 30px;
+      font-size: 24px;
+      @include transform(rotateZ(0deg));
+    }
+
+    &.detail {
+      h2, p {
+        text-align: center;
+      }
+
+      .grid_5 {
+        display: block;
+        float: none;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+      }
+
+      .create {
+        width: 200px;
+        margin: 0 auto;
+        text-align: center;
+      }
+    }
   }
 }
 

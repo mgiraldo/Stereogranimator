@@ -19,14 +19,11 @@
 	<div id="yescanvas">
 		<div class="createTop container_12">
 			<h1 class="create grid_12"><span class="visuallyhidden">CREATE</span></h1>
-			<div id="nav" class="grid_12">
+			<div id="nav" class="grid_12 stereo">
 				<p><span class="dim"><%= link_to "Step 1: CHOOSE", "/create" %> &gt;</span> Step 2: CREATE &gt; <span class="dim">Step 3: SHARE</span></p>
 			</div>
 		</div>
 		<div id="stereogranimator">
-			<div class="canvasHolder">
-				<canvas id="testCanvas" width="800" height="540"></canvas>
-			</div>
 			<div class="sideshow">
 				<div id="toggler">
 					<div id="toggleLinks">
@@ -59,6 +56,9 @@
 				<div id="process">
 					<canvas id="processCanvas" width="1000" height="1000"></canvas>
 				</div>
+			</div>
+			<div class="canvasHolder">
+				<canvas id="testCanvas" width="800" height="540"></canvas>
 			</div>
 			<div class="nextStep">
 				<a href="javascript:;" id="btnNext" class="genericButtonLink">SAVE IMAGE &gt;</a>

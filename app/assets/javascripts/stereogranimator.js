@@ -125,7 +125,6 @@ var imgurl = "";
 var thefont = "share-regular,AvenirNextCondensed-Medium,'Arial Narrow',sans-serif";
 
 function init() {
-	console.log("hello:"+is_publiceye);
 	$("#yescanvas").show();
 	$("#nocanvas").hide();
 	toggleInstructions();

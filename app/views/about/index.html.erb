@@ -13,9 +13,9 @@
 				<%= link_to (image_tag "white-flickr.png"), @flickr_url %>
 <% end %>
 				images!</p>
-				<%= link_to (image_tag "sample-stereo.jpeg", {:class=>"stereo"}), "/create", {:title => "click to create your own!"} %>
-				<%= link_to (image_tag "diagram-home.png", {:class=>"diagram"}), "/create", {:title => "click to create your own!"} %>
-				<div class="samples">
+				<%= link_to (image_tag "sample-stereo.jpeg", {:class=>"stereo"}), "/create", {:title => "click to create your own!", :class => "left"} %>
+				<%= link_to (image_tag "diagram-home.png", {:class=>"diagram"}), "/create", {:title => "click to create your own!", :class => "center"} %>
+				<div class="samples right">
 					<div class="GIF">
 						<%= link_to (image_tag "sample-gif.gif"), "/create", {:title => "click to create your own!"} %>
 					</div>
@@ -31,23 +31,23 @@
 		</div>
 		<div class="container_12">
 			<h1 class="latest grid_3"><span class="visuallyhidden">LATEST</span></h1>
-			<div class="clear"></div>
+			<div class="homeThumb">
 <% @images.each_with_index do |image,i| %>
 <%= render :partial => "shared/thumb", :locals => {:image => image} %>
 <% end %>
-			<div class="clear"></div>
+			</div>
 			<h1 class="popular grid_3"><span class="visuallyhidden">POPULAR</span></h1>
-			<div class="clear"></div>
+			<div class="homeThumb">
 <% @popular.each_with_index do |image,i| %>
 <%= render :partial => "shared/thumb", :locals => {:image => image} %>
 <% end %>
-			<div class="clear"></div>
+			</div>
 			<h1 class="random grid_3"><span class="visuallyhidden">RANDOM</span></h1>
-			<div class="clear"></div>
+			<div class="homeThumb">
 <% @random.each_with_index do |image,i| %>
 <%= render :partial => "shared/thumb", :locals => {:image => image} %>
 <% end %>
-			<div class="clear"></div>
+			</div>
 			<div class="more centered">
 				<%= link_to "VIEW MORE IN THE GALLERY >", "/gallery", :class => 'genericButtonLink' %>
 			</div>
@@ -77,12 +77,13 @@
 		<div class="clear"></div>
 		<div class="container_12">
 			<h1 class="news grid_3"><span class="visuallyhidden">IN THE NEWS</span></h1>
-			<div class="clear"></div>
+			<div class="homeNews">
 			<%= link_to (image_tag "n-atlantic.png", :class=>"grid_2"), "http://www.theatlantic.com/technology/archive/2012/01/the-new-york-public-librarys-animated-gif-maker/252070/", :onclick=>"recordOutboundLink(this, 'Outbound Links', 'News');return false;" %>
 			<%= link_to (image_tag "n-cnet.png", :class=>"grid_2"), "http://news.cnet.com/8301-17938_105-57367237-1/vintage-3d-wiggle-gifs-respun-with-librarys-cool-tool/", :onclick=>"recordOutboundLink(this, 'Outbound Links', 'News');return false;" %>
 			<%= link_to (image_tag "n-artinfo.png", :class=>"grid_2"), "http://blogs.artinfo.com/artintheair/2012/01/26/new-york-public-library-turns-its-19th-century-photo-collection-into-3d-animated-gifs/", :onclick=>"recordOutboundLink(this, 'Outbound Links', 'News');return false;" %>
 			<%= link_to (image_tag "n-creators.png", :class=>"grid_2"), "http://www.thecreatorsproject.com/blog/nypl-lets-you-make-gifs-from-turn-of-the-century-stereographs", :onclick=>"recordOutboundLink(this, 'Outbound Links', 'News');return false;" %>
 			<%= link_to (image_tag "n-nyt.png", :class=>"grid_2"), "http://artsbeat.blogs.nytimes.com/2012/01/26/3-d-it-yourself-thanks-to-new-library-site/", :onclick=>"recordOutboundLink(this, 'Outbound Links', 'News');return false;" %>
 			<%= link_to (image_tag "n-tpm.png", :class=>"grid_2"), "http://idealab.talkingpointsmemo.com/2012/01/new-york-public-library-launches-stereogranimator.php", :onclick=>"recordOutboundLink(this, 'Outbound Links', 'News');return false;" %>
+			</div>
 		</div>
 
