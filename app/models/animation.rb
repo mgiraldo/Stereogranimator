@@ -184,7 +184,7 @@ class Animation < ActiveRecord::Base
   end
 
   def nypl_url
-    "http://digitalgallery.nypl.org/nypldigital/dgkeysearchdetail.cfm?imageID=#{digitalid.downcase}"
+    "http://digitalcollections.nypl.org/items/image_id/#{digitalid.downcase}"
   end
 
   def as_json(options = { })
