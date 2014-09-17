@@ -1,5 +1,5 @@
 class GalleryController < ApplicationController
-  
+
   def index
     per = 30
     page = params[:page] == nil ? 1 : params[:page]
@@ -21,15 +21,23 @@ class GalleryController < ApplicationController
         @total = Animation.select('COUNT(id) as total').where("creator != ? #{xidwhere}", 'siege', xid).map(&:total)[0].to_i
       end
     else
-      @images = Animation.where("creator != ? AND UPPER(metadata) LIKE ? #{xidwhere}", 'siege', "%#{params[:q].upcase}%", xid).order('created_at DESC').page(page).per(per)
-      @total = Animation.select('COUNT(id) as total').where("creator != ? AND UPPER(metadata) LIKE ? #{xidwhere}", 'siege', "%#{params[:q].upcase}%", xid).map(&:total)[0].to_i
+      if !params[:q].strip.start_with?("imageid:")
+        # the normal endpoint
+        @images = Animation.where("creator != ? AND UPPER(metadata) LIKE ? #{xidwhere}", 'siege', "%#{params[:q].upcase}%", xid).order('created_at DESC').page(page).per(per)
+        @total = Animation.select('COUNT(id) as total').where("creator != ? AND UPPER(metadata) LIKE ? #{xidwhere}", 'siege', "%#{params[:q].upcase}%", xid).map(&:total)[0].to_i
+      else
+        # endpoint for DC query of imageid children/remixes
+        imageid = params[:q].strip.gsub(/imageid\:/, '').upcase
+        @images = Animation.where("UPPER(digitalid) = ?", imageid).order('created_at DESC').page(page).per(per)
+        @total = Animation.select('COUNT(id) as total').where("UPPER(digitalid) = ?", imageid).map(&:total)[0].to_i
+      end
     end
     respond_to do |format|
       format.html # index.html.erb
       format.json { render :json => @images }
     end
   end
-  
+
   # GET /view/1
   # GET /view/1.json
   def view
@@ -59,5 +67,5 @@ class GalleryController < ApplicationController
       format.gif { redirect_to redirect }
     end
   end
-  
+
 end
