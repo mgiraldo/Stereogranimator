@@ -1,11 +1,13 @@
 				<p>You can share this image using the direct link:<br />
 				<span class="dim"><%= url_for(:controller=>"gallery",:action=>"view",:id=>@animation.id,:only_path => false) %></span>
 				</p>
-				
+
 				<% if  @animation.original_url != "" %>
 				<p><%= link_to "Create another version", "/convert/#{@animation.digitalid}?xid=#{@animation.external_id}" %> of the original.</p>
 				<% end %>
-				
+
+				<p><%= link_to "See other versions", "/gallery/?q=imageid:#{@animation.digitalid}" %> people have created.</p>
+
 <%
 
 # encoded stuff to use in the share buttons
@@ -31,14 +33,14 @@ pinteresturl = "http://pinterest.com/pin/create/button/?url=#{url}&media=#{src}&
 					<%= link_to "Reddit", redditurl, {:onclick=>"recordOutboundLink(this, 'Outbound Links', 'Reddit');return false;",:class => "shReddit", :title => "Share on Reddit"} %>
 					<%= link_to "Pinterest", pinteresturl, {:onclick=>"recordOutboundLink(this, 'Outbound Links', 'Pinterest');return false;",:class => "shPinterest", :title => "Pin it!"} %>
 				</p>
-				
+
 				<p>
 <%
 
 embed_img_src = request.protocol + request.host_with_port + "#{@animation.full_count}"
 embed_string = @animation.mode + " made with the NYPL Labs Stereogranimator"
 embed_code = image_tag(embed_img_src,:alt=>embed_string + " - view more at " + url_for(:controller=>"gallery",:only_path => false))
-embed_code = link_to(embed_code + "<br />" + embed_string,url_for(:controller=>"gallery",:action=>"view",:id=>@animation.id,:only_path => false)) 
+embed_code = link_to(embed_code + "<br />" + embed_string,url_for(:controller=>"gallery",:action=>"view",:id=>@animation.id,:only_path => false))
 
 %>
 					You can also use this embed code for your blog or website:<br />
@@ -46,9 +48,9 @@ embed_code = link_to(embed_code + "<br />" + embed_string,url_for(:controller=>"
 				</p>
 
 				<%= form_tag("/send", {:method => "post",:class => "emailShare"}) do %>
-				
+
 					<%= label_tag :from, "From:" %><br />
 					<%= text_field_tag :from %><br />
 					<%= submit_tag("SEND") %>
-				
+
 				<% end %>
