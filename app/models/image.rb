@@ -2,19 +2,19 @@ class Image < ActiveRecord::Base
   def isFlickr
     self[:isFlickr]==nil ? false : self[:isFlickr]
   end
-  
+
   def isFlickr=(val)
     self[:isFlickr]=val
   end
-  
+
   def thumb_url
     "http://images.nypl.org/index.php?id=#{digitalid}&t=r"
   end
-  
+
   def big_url
     "http://images.nypl.org/index.php?id=#{digitalid}&t=w"
   end
-  
+
   def self.galleryCollectionList
     r = [{:id=>0, :name=>"New York Public Library"}]
     self.flickr_sets.each do |s|
@@ -23,20 +23,20 @@ class Image < ActiveRecord::Base
     r.push({:id=>-1, :name=>"Flickr community"})
     return r
   end
-  
+
   def self.flickr_sets
     #ids from flickr to include in queries
     [{:id=>1, :set_id=>"72157604192771132", :owner_id=>"24029425@N06", :name=>"Boston Public Library", :baseurl=>"http://www.flickr.com/photos/boston_public_library/", :homeurl=>"http://www.bpl.org/"}]
   end
-  
+
   def self.externalData(id)
     return self.flickr_sets.select{|f| f[:id]==id}[0]
   end
-  
+
   def self.ownerExists(id)
     return self.flickr_sets.select{|f| f[:owner_id]==id}.length>0
   end
-  
+
   def self.flickrDataForPhoto(id)
     begin
       info = flickr.photos.getInfo(:photo_id => id)
@@ -48,7 +48,7 @@ class Image < ActiveRecord::Base
       return output
     end
   end
-  
+
   def self.verifyFlickrPhoto(id)
     begin
       info = flickr.photos.getInfo(:photo_id => id)
@@ -71,11 +71,11 @@ class Image < ActiveRecord::Base
       rescue
       else
         count += info["count_photos"].to_i
-      end 
+      end
     end
     return count
   end
-  
+
   def self.listFromFlickrSet(set_id)
     # get set info to figure out image count
     begin
@@ -100,11 +100,11 @@ class Image < ActiveRecord::Base
         return nil
       else
         return list["photo"]
-      end 
+      end
     end
   end
-  
-  def self.randomSet (personal)
+
+  def self.randomSet (personal, nypl_only=false)
     @images = {}
     @images['all'] = Array.new
     @images['subset'] = Array.new
@@ -137,13 +137,15 @@ class Image < ActiveRecord::Base
         @images['all'].push({:id=>e.digitalid.upcase,:xid=>0,:url=>e.thumb_url,:owner=>"From: New York Public Library"})
       end
       # add some images from external resources (Flickr)
-      Image.flickr_sets.each do |set|
-        # get the photos
-        external = Image.listFromFlickrSet(set[:set_id])
-        # append them to dbimages
-        if external != nil
-          external.each do |ext|
-            @images['all'].push({:id=>ext["id"],:xid=>set[:id],:url=>ext["url_m"],:owner=>"From: " + Image.externalData(set[:id])[:name]})
+      if !nypl_only
+        Image.flickr_sets.each do |set|
+          # get the photos
+          external = Image.listFromFlickrSet(set[:set_id])
+          # append them to dbimages
+          if external != nil
+            external.each do |ext|
+              @images['all'].push({:id=>ext["id"],:xid=>set[:id],:url=>ext["url_m"],:owner=>"From: " + Image.externalData(set[:id])[:name]})
+            end
           end
         end
       end
@@ -154,11 +156,11 @@ class Image < ActiveRecord::Base
     end
     return @images
   end
-  
+
   def meta
     "#{title} #{date}"
   end
-  
+
   def self.getMetadata (did)
     image = Image.where("upper(digitalid) = ?", did.upcase).first
     @meta = {}
@@ -167,7 +169,7 @@ class Image < ActiveRecord::Base
     end
     return @meta
   end
-  
+
   def self.pushToDB
     File.open("dennis_images.txt", 'r') {
       |f|
@@ -181,7 +183,7 @@ class Image < ActiveRecord::Base
       end
     }
   end
-  
+
   def self.findByKeyword(keyword, xid)
     # following line only for BPL set
     bpl = self.externalData(xid) unless xid == -1
@@ -191,7 +193,7 @@ class Image < ActiveRecord::Base
     # standard internal image search
     # not to use if searching my flickr photos only
     if xid != -1
-      local = Image.select('digitalid').where('UPPER(title) LIKE ?', "%#{keyword.upcase}%")
+      local = Image.select('digitalid').where('UPPER(title) LIKE ?', "%#{keyword.gsub(/\+/, ' ').upcase}%")
       local.each{|x|r.push({:id=>x[:digitalid],:owner=>"From: New York Public Library",:xid=>0,:url=>x.thumb_url})}
     end
     begin

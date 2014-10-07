@@ -80,17 +80,16 @@ class AnimationsController < ApplicationController
 
   # GET /choose
   def choose_publiceye
-    # @get_from_flickr = false
-    @images = Image.randomSet(@get_from_flickr) # @get_from_flickr is in app controller
+    get_from_flickr = false
+    nypl_only = true
+    @images = Image.randomSet(get_from_flickr, nypl_only)
     respond_to do |format|
       format.html { render :layout => "publiceye" }
     end
   end
 
   def chooseSearch_publiceye
-    xid = 1
-    # checkFlickrCookies()
-    xid = params[:xid].to_i if params[:xid] != nil
+    xid = 0
     @images = Image.findByKeyword(params[:keyword], xid)
     respond_to do |format|
       format.html { render :json => @images }

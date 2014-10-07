@@ -1566,14 +1566,29 @@ function generateFromFlash(_sq1x,_sq1y,_sq2x,_sq2y,_hsize,_vsize,_speed,_index,_
 	});
 }
 
+function escapeHtml(text) {
+  var map = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    ' ': '+',
+    '.': '',
+    "'": '&#039;'
+  };
+
+  return text.replace(/[&<>"' \.]/g, function(m) { return map[m]; });
+}
+
 function searchImages() {
 	if ($("#search .query").val()!="") {
 		// post to server
 		$("#search .status").text("Searching...");
+		cleaned = escapeHtml($("#search .query").val().trim());
 		$.ajax({
-			url: "/choose/"+$("#search .query").val().trim()+"?xid="+$(".frm-xid").val(),
+			url: "/choose/"+cleaned,
 			dataType: 'json',
-			data: null,
+			data: {xid:$(".frm-xid").val()},
 			success: function(data) {
 				if (data.length>0) {
 					// clean the array

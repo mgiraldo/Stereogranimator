@@ -20,6 +20,7 @@ initSearch();
 		</div>
 		<div id="stereoList" class="_grid_12 publiceye">
 			<div id="search" class="centered">
+				<%= hidden_field_tag 'xid' ,'0', {:class=>"frm-xid"} %>
 				<%= text_field_tag 'keyword' ,'', {:class=>"query", :placeholder=>"Search originals by keyword"} %>
 				<%= submit_tag "FIND", :class=>"submit", :onclick => "javascript:searchImages();" %>
 				<br />
