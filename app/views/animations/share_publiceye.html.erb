@@ -22,6 +22,21 @@ embed_url = url_for(:controller=>"gallery",:action=>"view",:id=>@animation.id,:o
 <meta name="twitter:description" content="<%= @animation.metadata %>">
 <meta name="twitter:image" content="<%= embed_img_src %>">
 <meta name="twitter:creator" content="@nypl_stereo">
+<script type="text/javascript">
+$(document).ready(function() {
+  $("#tweet_button").click(function(event){
+    event.preventDefault();
+    data = {
+      name:$("#username").val(),
+      id: <%= @animation.id %>
+    };
+    html = '<div class="tweeted_publiceye"><p>Tweet sent!</p><p>Maybe create another one?</p></div>';
+    $(".share_publiceye").replaceWith(html);
+    console.log("tweet!", data);
+    $.post( "/tweet_pe", data, function( s ) {}, "json");
+  });
+});
+</script>
 <% end %>
 
 		<div class="createTop publiceye">
@@ -33,6 +48,18 @@ embed_url = url_for(:controller=>"gallery",:action=>"view",:id=>@animation.id,:o
 			<h2>CONGRATULATIONS!</h2>
 			<p>Your <%= @animation.mode == "GIF" ? "animated GIF" : "anaglyph" %> has been created!</p>
 <%= render "shared/detail", :publiceye => true %>
+
+			<div class="share_publiceye">
+				<h2>Share this image on Twitter:</h2>
+				<p>
+					Your tweet will be <span>posted by @nypl_labs</span>. If you want to be @mentioned in the tweet type your Twitter handle (optional).
+				</p>
+				<div id="tweet" class="centered">
+					<%= text_field_tag 'username' ,'', {:class=>"query", :placeholder=>"@myself"} %>
+					<%= link_to "TWEET", "#", :id => "tweet_button", :name => "tweet_button", :class=>"submit genericButtonLink" %>
+				</div>
+			</div>
+
 
 			<div class="create"><%= link_to "CREATE ANOTHER ONE!", "/create_pe", :class => 'genericButtonLink' %></div>
 

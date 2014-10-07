@@ -15,6 +15,54 @@ body {
   display: none;
 }
 
+.tweeted_publiceye {
+  font-size: $bigfont;
+  line-height: 2em;
+  margin: $bigfont auto;
+}
+
+.share_publiceye {
+  font-size: $bigfont*.5;
+  line-height: normal;
+  margin: 10px auto;
+
+  h2 {
+    font-size: $bigfont*.7;
+    margin-bottom: .6em;
+  }
+
+  p {
+    width: 50%;
+    margin: 0 auto;
+
+    span {
+      color: $linkcolor;
+    }
+  }
+
+  #tweet {
+    padding: 10px 0 40px;
+  }
+
+  .query {
+    font-family: $bodyfont;
+    font-size: $bigfont*.75;
+    padding: $bigfont*.5 $bigfont;
+    width: 100px;
+    margin-right: 10px;
+  }
+
+  .submit {
+    font-family: $bodyfont;
+    font-size: $bigfont*.75;
+    padding: $bigfont*.5 $bigfont;
+    -webkit-appearance: none;
+    border-radius: 0;
+    border: none;
+  }
+
+}
+
 #mainContent .publiceye {
   &#stereoList {
     width: 680px;
@@ -22,7 +70,8 @@ body {
   }
 
   &.metadata, .stats {
-    font-size: $bigfont*.4;
+    font-size: $bigfont*.5;
+    line-height: normal;
   }
 
   .stereograph {
@@ -86,17 +135,18 @@ body {
 
   #toggler {
     top: auto;
-    bottom: 0;
+    bottom: -$toggleheight*.2;
     left: 200px;
     background-image: none;
-    background-color: #222;
+    background-color: rgba(34, 34, 34, 0.75);
+    border: none;
     height: $toggleheight;
 
     &.GIFActive {
       // background-image: none;
-      background-color: white;
+      background-color: rgba(255, 255, 255, 0.75);
       #toggleLinks .toggleAna {
-        background-color: #222;
+        background-color: rgba(34, 34, 34, 0.75);
       }
     }
 
@@ -152,9 +202,14 @@ body {
     top: auto;
     bottom: 0;
     right: 5px;
-    width: 130px;
+    width: 220px;
     height: 80px;
     overflow: hidden;
+
+    .generator {
+      padding: $bigfont*.3 $bigfont*.4;
+      margin: 0;
+    }
   }
 
   #btnNext {
@@ -163,6 +218,7 @@ body {
     width: 90px;
     height: 110px;
     bottom: -60px;
+    right: 10px;
     border-radius: 100px;
     padding-top: 20px;
     padding-left: 30px;
@@ -170,12 +226,8 @@ body {
     line-height: 1em;
     padding-right: 10px;
     font-size: 24px;
-    @include transform(rotateZ(0deg));
   }
 
-  .generator {
-    padding: $bigfont*.5 $bigfont;
-  }
 
   #preview {
     width: inherit;
@@ -185,7 +237,7 @@ body {
   #previewContainer {
     height: 400px;
     overflow: hidden;
-    border-bottom: 2px solid white;
+    border-bottom: none;
   }
 
   #previewAnaglyph, #previewGIF {
@@ -195,6 +247,7 @@ body {
   &.detail {
     h2, p {
       text-align: center;
+      margin-bottom: 0;
     }
 
     .grid_5 {

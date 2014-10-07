@@ -26,7 +26,7 @@ initSearch();
 				<div class="status"></div>
 			</div>
 <% if @images["subset"].length > 0 %>
-			<p class="centered">Tap an image to use.<br />Tap "REFRESH PHOTO LIST" to get another batch.</p>
+			<p class="centered">Tap an image to use.</p>
 <% @images["subset"].entries.each_with_index do |image,i| %>
 			<div id="<%= "st#{i}" %>" class="stereograph _grid_4">
 <!--[if (!IE)|(lte IE 8)]><!-->
@@ -38,6 +38,7 @@ initSearch();
 <% end %>
 			<div class="clear"></div>
 			<div class="centered">
+				<p class="centered">Tap "REFRESH PHOTO LIST" to get another batch.</p>
 				<%= link_to "REFRESH PHOTO LIST", "javascript:;", {:class => 'genericButtonLink', :onclick => "javascript:refreshImages();" } %>
 			</div>
 <% else %>

@@ -16,6 +16,7 @@ Stereo::Application.routes.draw do
   match 'create_pe/:keyword', :to => 'animations#chooseSearch_publiceye'
   match 'convert_pe/:did', :to => 'animations#new_publiceye'
   match 'share_pe/:id', :to => 'animations#share_publiceye'
+  match 'tweet_pe', :to => 'animations#tweet_publiceye'
 ## end publiceye
 
   # basic creation "workflow"
