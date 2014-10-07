@@ -1,9 +1,14 @@
 @import "base";
 @import "mixins";
 
+$bigfont: 30px;
+$toggleheight: 60px;
+$togglemargin: 10px;
+
 body {
   min-width: inherit;
   background-image: none;
+  font-size: $bigfont;
 }
 
 #footer {
@@ -16,6 +21,10 @@ body {
     margin: 0 auto;
   }
 
+  &.metadata, .stats {
+    font-size: $bigfont*.4;
+  }
+
   .stereograph {
     width: 300px;
     height: 220px;
@@ -23,9 +32,33 @@ body {
     margin: 0 20px;
   }
 
+  .genericButtonLink {
+    padding: $bigfont*.5 $bigfont;
+  }
+
+  #nav {
+    line-height: 1em;
+  }
+
   #nav p {
-    font-size: 18px;
-    margin: 15px 0 15px 80px;
+    font-family: $bodyfont;
+    font-size: $bigfont*.5;
+    margin: 5px 0 0 5px;
+  }
+
+  #search .query {
+    font-family: $bodyfont;
+    font-size: $bigfont*.75;
+    padding: $bigfont*.5 $bigfont;
+    width: 260px;
+  }
+
+  #search .submit {
+    font-family: $bodyfont;
+    font-size: $bigfont*.75;
+    padding: $bigfont*.5 $bigfont;
+    -webkit-appearance: none;
+    border-radius: 0;
   }
 
   #stereogranimator {
@@ -52,31 +85,65 @@ body {
   }
 
   #toggler {
-    top: -51px;
-    left: 370px;
-    height: 50px;
+    top: auto;
+    bottom: 0;
+    left: 200px;
+    background-image: none;
+    background-color: #222;
+    height: $toggleheight;
 
-    &.GIFactive {
-      background: $sprites -420px -406px no-repeat;
-      background-size: 250%;
+    &.GIFActive {
+      // background-image: none;
+      background-color: white;
+      #toggleLinks .toggleAna {
+        background-color: #222;
+      }
     }
 
     &.anaglyphActive {
-      background: $sprites -6px -406px no-repeat;
-      background-size: 250%;
+      // background-image: none;
+      #toggleLinks .toggleAna {
+        background-color: white;
+      }
+    }
+
+    #toggleLinks {
+      @include clearfix;
+      .dim {
+        display: block;
+        height: $toggleheight*.5;
+        line-height: normal;
+      }
     }
 
     #toggleLinks, #GIFExtraLinks a {
       font-size: 15px;
 
       #toggleGIF, #toggleAna {
-        height: 20px;
-        margin-top: 5px;
+        height: $toggleheight*.5-$togglemargin;
+        margin-top: $togglemargin;
+        line-height: normal;
       }
+
+      .toggleGIF, .toggleAna {
+        height: auto;
+        margin: 0;
+      }
+    }
+
+    #GIFExtraLinks {
+      height: $toggleheight*.5;
+      margin: 0;
+      position: absolute;
+      right: 30px;
+      bottom: $toggleheight*.2;
     }
 
     #GIFExtraLinks div {
       padding-left: 40px;
+      padding: 0;
+      height: $toggleheight*.5;
+      line-height: normal;
     }
   }
 
@@ -99,8 +166,15 @@ body {
     border-radius: 100px;
     padding-top: 20px;
     padding-left: 30px;
+    padding-bottom: 0;
+    line-height: 1em;
+    padding-right: 10px;
     font-size: 24px;
     @include transform(rotateZ(0deg));
+  }
+
+  .generator {
+    padding: $bigfont*.5 $bigfont;
   }
 
   #preview {
@@ -132,7 +206,7 @@ body {
     }
 
     .create {
-      width: 200px;
+      width: auto;
       margin: 0 auto;
       text-align: center;
     }

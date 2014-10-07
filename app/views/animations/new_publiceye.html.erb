@@ -19,7 +19,7 @@
 	<div id="yescanvas" class="publiceye">
 		<div class="createTop _container_12">
 			<div id="nav" class="_grid_12">
-				<p><span class="dim"><%= link_to "CHOOSE", "/create_pe" %> &gt;</span> CREATE &gt; <span class="dim">SHARE</span></p>
+				<p><span class="dim">1. <%= link_to "CHOOSE", "/create_pe" %> &gt;</span> 2. CREATE &gt; <span class="dim">3. SHARE</span></p>
 			</div>
 		</div>
 		<div id="stereogranimator">
@@ -67,7 +67,7 @@
 		</div>
 	</div>
 <%= render :partial => "shared/nocanvas" %>
-	<div class="metadata _container_12">
+	<div class="metadata _container_12 publiceye">
 		<p class="_grid_12">
 			<em><%= @metadata["title"] %></em><br />
 			<%= image_tag("ext#{params[:xid]}.png") %>

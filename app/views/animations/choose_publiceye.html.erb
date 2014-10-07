@@ -15,7 +15,7 @@ initSearch();
 	<div class="_container_12 publiceye">
 		<div class="createTop">
 			<div id="nav" class="_grid_12">
-				<p>CHOOSE &gt; <span class="dim">CREATE &gt; SHARE</span></p>
+				<p>1. CHOOSE &gt; <span class="dim">2. CREATE &gt; 3. SHARE</span></p>
 			</div>
 		</div>
 		<div id="stereoList" class="_grid_12 publiceye">
@@ -26,7 +26,7 @@ initSearch();
 				<div class="status"></div>
 			</div>
 <% if @images["subset"].length > 0 %>
-			<p class="centered">Select an image from these nine. Click "REFRESH PHOTO LIST" to get another batch.</p>
+			<p class="centered">Tap an image to use.<br />Tap "REFRESH PHOTO LIST" to get another batch.</p>
 <% @images["subset"].entries.each_with_index do |image,i| %>
 			<div id="<%= "st#{i}" %>" class="stereograph _grid_4">
 <!--[if (!IE)|(lte IE 8)]><!-->
@@ -34,7 +34,7 @@ initSearch();
 <!-- <![endif]-->
 				<%= link_to image_tag(image[:url], {:id => "img_#{i}", :width => 300, :alt => image[:owner]}), "/convert_pe/#{image[:id]}?xid=#{image[:xid]}", {:class=>'base',:id => "link_#{i}", :title => image[:owner]} %>
 			</div>
-	<% break if i >= 5 %>
+	<% break if i >= 3 %>
 <% end %>
 			<div class="clear"></div>
 			<div class="centered">
