@@ -30,10 +30,19 @@ $(document).ready(function() {
       name:$("#username").val(),
       id: <%= @animation.id %>
     };
-    html = '<div class="tweeted_publiceye"><p>Tweet sent!</p><p>Maybe create another one?</p></div>';
-    $(".share_publiceye").replaceWith(html);
-    console.log("tweet!", data);
-    $.post( "/tweet_pe", data, function( s ) {}, "json");
+    html = '<div class="column tweet_share shared_publiceye"><p>Tweet sent!</p><p>Create another image?</p></div>';
+    $(".tweet_share").replaceWith(html);
+    $.post( "/share_js_pe", data, function( s ) {}, "json");
+  });
+  $("#email_button").click(function(event){
+    event.preventDefault();
+    data = {
+      email:$("#email").val(),
+      id: <%= @animation.id %>
+    };
+    html = '<div class="column email_share shared_publiceye"><p>Email sent!</p><p>Create another image?</p></div>';
+    $(".email_share").replaceWith(html);
+    $.post( "/share_js_pe", data, function( s ) {}, "json");
   });
 });
 </script>
@@ -50,14 +59,27 @@ $(document).ready(function() {
 <%= render "shared/detail", :publiceye => true %>
 
 			<div class="share_publiceye">
-				<h2>Share this image on Twitter:</h2>
-				<p>
-					Your tweet will be <span>posted by @nypl_labs</span>. If you want to be @mentioned in the tweet type your Twitter handle (optional).
-				</p>
-				<div id="tweet" class="centered">
-					<%= text_field_tag 'username' ,'', {:class=>"query", :placeholder=>"@myself"} %>
-					<%= link_to "TWEET", "#", :id => "tweet_button", :name => "tweet_button", :class=>"submit genericButtonLink" %>
-				</div>
+        <div class="column tweet_share">
+          <h2>Share this image on Twitter:</h2>
+          <p>
+            Your tweet will be <span>posted by @nypl_labs</span>.<br />If you want to be @mentioned in the tweet, type your Twitter handle (optional).
+          </p>
+          <div class="centered tweet">
+            <%= text_field_tag 'username' ,'', {:class=>"query", :placeholder=>"@myself"} %>
+            <%= link_to "TWEET", "#", :id => "tweet_button", :name => "tweet_button", :class=>"submit genericButtonLink" %>
+          </div>
+        </div>
+        <div class="column email_share">
+          <h2>Send to your email:</h2>
+          <p>
+            Type your email and we will send you the image.<br />We won't keep your email.<br /><br />
+          </p>
+          <div class="centered email">
+            <%= text_field_tag 'email' ,'', {:class=>"query", :placeholder=>"me@email.com"} %>
+            <%= link_to "TWEET", "#", :id => "email_button", :name => "email_button", :class=>"submit genericButtonLink" %>
+          </div>
+        </div>
+        <div class="centered"></div>
 			</div>
 
 

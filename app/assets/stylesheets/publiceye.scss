@@ -15,9 +15,9 @@ body {
   display: none;
 }
 
-.tweeted_publiceye {
+.shared_publiceye {
   font-size: $bigfont;
-  line-height: 2em;
+  line-height: 1.4em;
   margin: $bigfont auto;
 }
 
@@ -32,7 +32,7 @@ body {
   }
 
   p {
-    width: 50%;
+    width: 90%;
     margin: 0 auto;
 
     span {
@@ -40,7 +40,13 @@ body {
     }
   }
 
-  #tweet {
+  .column {
+    width: 45%;
+    float: left;
+    margin-left: 2%;
+  }
+
+  .tweet, .email {
     padding: 10px 0 40px;
   }
 
@@ -48,7 +54,7 @@ body {
     font-family: $bodyfont;
     font-size: $bigfont*.75;
     padding: $bigfont*.5 $bigfont;
-    width: 100px;
+    width: 140px;
     margin-right: 10px;
   }
 
@@ -87,6 +93,7 @@ body {
 
   #nav {
     line-height: 1em;
+    padding-top: 1px;
   }
 
   #nav p {
@@ -203,7 +210,7 @@ body {
     bottom: 0;
     right: 5px;
     width: 220px;
-    height: 80px;
+    height: 100px;
     overflow: hidden;
 
     .generator {
@@ -216,7 +223,7 @@ body {
     display: block;
     position: absolute;
     width: 90px;
-    height: 110px;
+    height: 130px;
     bottom: -60px;
     right: 10px;
     border-radius: 100px;
@@ -226,6 +233,7 @@ body {
     line-height: 1em;
     padding-right: 10px;
     font-size: 24px;
+    border: 5px solid black;
   }
 
 

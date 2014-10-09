@@ -131,8 +131,8 @@ class AnimationsController < ApplicationController
     end
   end
 
-  def tweet_publiceye
-    puts "Attempted tweet for id #{params[:id]} and username #{params[:name]}"
+  def share_js_publiceye
+    puts "Attempted tweet for id #{params[:id]}, username #{params[:name]}, email #{params[:email]}"
 
     respond_to do |format|
       format.html { render :json => "true" }
