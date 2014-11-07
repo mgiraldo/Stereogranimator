@@ -87,7 +87,7 @@ class ApplicationController < ActionController::Base
   def ensure_domain
     if request.env['HTTP_HOST'] != APP_DOMAIN
       # HTTP 301 is a permanent redirect
-      redirect_to "http://#{APP_DOMAIN}#{request.fullpath}", :status => 302 unless request.env['HTTP_HOST'] == 'stereostaging.heroku.com' || request.env['HTTP_HOST'] == 'localhost:3000' || request.env['HTTP_HOST'].include?('xip.io:3000')
+      redirect_to "http://#{APP_DOMAIN}#{request.fullpath}", :status => 302 unless request.env['HTTP_HOST'] == 'stereostaging.herokuapp.com' || request.env['HTTP_HOST'] == 'stereostaging.heroku.com' || request.env['HTTP_HOST'] == 'localhost:3000' || request.env['HTTP_HOST'].include?('xip.io:3000')
     end
   end
   
