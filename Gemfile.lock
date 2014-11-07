@@ -139,6 +139,7 @@ DEPENDENCIES
   jquery-rails
   json (= 1.7.7)
   kaminari
+  mail
   pg
   rails (= 3.2.11)
   rmagick (~> 2.13.2)

@@ -132,11 +132,40 @@ class AnimationsController < ApplicationController
   end
 
   def share_js_publiceye
-    puts "Attempted tweet for id #{params[:id]}, username #{params[:name]}, email #{params[:email]}"
+    puts "Attempted share for id #{params[:id]}, username #{params[:name]}, email #{params[:email]}"
+
+    if params[:email] && is_valid_email(params[:email])
+      animation = Animation.find(params[:id])
+      Mail.deliver do
+        to 'mauriciogiraldo@nypl.org'#params[:email]
+        from 'stereo@nypl.org'
+        subject 'testing send mail'
+        body "Sending email with Ruby through SendGrid!\n\nYour image can be found at: #{animation.share_url}"
+      end
+    end
 
     respond_to do |format|
       format.html { render :json => "true" }
     end
+  end
+
+  def is_valid_email(value)
+    begin
+      m = Mail::Address.new(value)
+      # We must check that value contains a domain and that value is an email address
+      r = m.domain && m.address == value
+      t = m.__send__(:tree)
+      # We need to dig into treetop
+      # A valid domain must have dot_atom_text elements size > 1
+      # user@localhost is excluded
+      # treetop must respond to domain
+      # We exclude valid email values like <user@localhost.com>
+      # Hence we use m.__send__(tree).domain
+      r &&= (t.domain.dot_atom_text.elements.size > 1)
+    rescue Exception => e
+      r = false
+    end
+    r
   end
 
   # GET /animations/1/edit

@@ -163,6 +163,10 @@ class Animation < ActiveRecord::Base
     end
   end
 
+  def share_url
+    "/view/" + id.to_s
+  end
+
   def thumb
     "/view/" + id.to_s + (mode== "GIF" ? ".gif" : ".png") + "?n=1&m=t"
   end
