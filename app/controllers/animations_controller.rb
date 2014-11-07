@@ -133,6 +133,7 @@ class AnimationsController < ApplicationController
 
   def share_js_publiceye
     puts "Attempted share for id #{params[:id]}, username #{params[:name]}, email #{params[:email]}"
+    puts "env:#{ENV['SENDGRID_USERNAME']} pw:#{ENV['SENDGRID_PASSWORD']}"
 
     if params[:email] && is_valid_email(params[:email])
       animation = Animation.find(params[:id])
