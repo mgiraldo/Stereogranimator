@@ -133,7 +133,10 @@ class AnimationsController < ApplicationController
 
   def share_js_publiceye
     puts "Attempted share for id #{params[:id]}, username #{params[:name]}, email #{params[:email]}"
-    puts "env:#{ENV['SENDGRID_USERNAME']} pw:#{ENV['SENDGRID_PASSWORD']}"
+
+    animation = Animation.find(params[:id])
+
+    url = url_for(:controller=>"gallery",:action=>"view",:id=>animation.id,:only_path => false)
 
     if params[:email] && is_valid_email(params[:email])
       Mail.defaults do
@@ -148,12 +151,13 @@ class AnimationsController < ApplicationController
         }
       end
 
-      animation = Animation.find(params[:id])
+      email = params[:email]
+
       Mail.deliver do
-        to 'mauriciogiraldo@nypl.org'#params[:email]
+        to "#{email}"
         from 'stereo@nypl.org'
         subject 'testing send mail'
-        body "Sending email with Ruby through SendGrid!\n\nYour image can be found at: #{animation.share_url}"
+        body "Sending email with Ruby through SendGrid!\n\nYour image can be found at: #{url}"
       end
     end
 
