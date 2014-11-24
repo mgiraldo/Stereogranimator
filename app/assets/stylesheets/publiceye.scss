@@ -21,6 +21,10 @@ body {
   margin: $bigfont auto;
 }
 
+#mainContent .centered {
+  line-height: normal;
+}
+
 .share_publiceye {
   font-size: $bigfont*.5;
   line-height: normal;
@@ -122,11 +126,21 @@ body {
   }
 
   .instructions {
-    top: 410px;
+    top: 0;
+    background-image: asset-url('instructions-ipad.png', image);
   }
 
   .showInstructions {
-    top: 400px;
+    top: -10px;
+    left: 385px;
+    width: 31px;
+    height: 30px;
+    background-color: $linkcolor;
+    border-radius: 15px;
+    background-position: -911px -409px;
+    &:hover {
+      background-position: -911px -384px;
+    }
   }
 
   .canvasHolder {

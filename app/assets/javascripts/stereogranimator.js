@@ -1698,13 +1698,27 @@ function handleImageError(e) {
 }
 
 function toggleInstructions() {
+	var w,h,l_open,l_closed;
+	if (!is_publiceye) {
+		w = 1200;
+		h = 540;
+		l_open = 0;
+		l_closed = 0;
+	} else {
+		w = 800;
+		h = 950;
+		l_open = 0;
+		l_closed = 385;
+	}
 	if (helpVisible) {
 		helpVisible = false;
-		$(".instructions").width(1200);
-		$(".instructions").height(540);
+		$(".instructions").width(w);
+		$(".instructions").height(h);
+		$(".instructions").css('left', l_open);
 		$(".instructions").animate({
 			width: 0,
-			height: 0
+			height: 0,
+			left: l_closed
 		}, 500, 'swing', function () {
 			$(".showInstructions").show();
 		});
@@ -1712,11 +1726,13 @@ function toggleInstructions() {
 		helpVisible = true;
 		$(".instructions").width(0);
 		$(".instructions").height(0);
+		$(".instructions").css('left', l_closed);
 		$(".showInstructions").hide();
 		$(".instructions").animate({
-			width: 1200,
-			height: 540
-		}, 1500, 'swing');
+			width: w,
+			height: h,
+			left: l_open
+		}, 1000, 'swing');
 	}
 }
 
