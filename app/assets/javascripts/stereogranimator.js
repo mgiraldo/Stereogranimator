@@ -1719,7 +1719,7 @@ function toggleInstructions() {
 			width: 0,
 			height: 0,
 			left: l_closed
-		}, 500, 'swing', function () {
+		}, 1000, 'swing', function () {
 			$(".showInstructions").show();
 		});
 	} else {
