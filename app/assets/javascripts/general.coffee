@@ -27,15 +27,12 @@ class General
     window.addEventListener "mousewheel", @resetTimer, false
     window.addEventListener "touchmove", @resetTimer, false
     window.addEventListener "MSPointerMove", @resetTimer, false
-    # @resetTimer()
+    @resetTimer()
 
-  resetTimer: () ->
-    t = @
-    clearTimeout(@idle_id) if @idle_id != -1
-    @idle_id = setTimeout( () ->
-      t.isIdle()
-    , 120000)
-    console.log "timer reset", @idle_id
+  resetTimer: () =>
+    c = window.clearTimeout(@idle_id) #if @idle_id != -1
+    @idle_id = window.setTimeout(@isIdle, 60000)
+    console.log "timer reset", c, @idle_id
 
   isIdle: () ->
     console.log "idle... redirecting"

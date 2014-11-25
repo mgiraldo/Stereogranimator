@@ -2,10 +2,10 @@
 <% content_for :dynamic_js do %>
 <!-- non compiled JS (heroku limitation) -->
 <!--[if (!IE)|(gte IE 9)]><!-->
-<%= javascript_include_tag "/assets/easel.js" %>
+<%= javascript_include_tag "easel" %>
 <!-- <![endif]-->
 
-<%= javascript_include_tag "/assets/swfobject.js" %>
+<%= javascript_include_tag "swfobject" %>
 <!-- end non-compiled -->
 
 <% end %>
