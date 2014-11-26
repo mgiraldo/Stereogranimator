@@ -139,18 +139,6 @@ class AnimationsController < ApplicationController
     url = url_for(:controller=>"gallery",:action=>"view",:id=>animation.id,:only_path => false)
 
     if params[:email] && is_valid_email(params[:email])
-      Mail.defaults do
-        delivery_method :smtp, {
-          :address => 'smtp.sendgrid.net',
-          :port => '587',
-          :domain => 'herokuapp.com',
-          :user_name => ENV['SENDGRID_USERNAME'],
-          :password => ENV['SENDGRID_PASSWORD'],
-          :authentication => :plain,
-          :enable_starttls_auto => true
-        }
-      end
-
       email = params[:email]
 
       Mail.deliver do
@@ -159,6 +147,11 @@ class AnimationsController < ApplicationController
         subject 'testing send mail'
         body "Sending email with Ruby through SendGrid!\n\nYour image can be found at: #{url}"
       end
+    elsif params[:name] =~ /^([a-zA-Z](_?[a-zA-Z0-9]+)*_?|_([a-zA-Z0-9]+_?)*)$/ || params[:name] =~ /^@([a-zA-Z](_?[a-zA-Z0-9]+)*_?|_([a-zA-Z0-9]+_?)*)$/
+      puts "yes tweet: #{params[:name]} contains @? #{params[:name].include? '@'}"
+      username = params[:name]
+      username = "@#{username}" unless username.include?("@")
+      $twitter_client.update("(test) Check out this image: #{url} created by #{username} with #Stereogranimator")
     end
 
     respond_to do |format|

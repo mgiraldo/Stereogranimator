@@ -11,7 +11,7 @@ gem 'authlogic'
 
 gem 'pg'
 
-gem 'json', '1.7.7'
+gem 'json', '~> 1.8'
 
 gem "rmagick", '~> 2.13.2', :require => 'RMagick'
 
@@ -37,6 +37,8 @@ end
 gem 'jquery-rails'
 
 gem 'mail'
+
+gem 'twitter', '~> 5.0.0'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

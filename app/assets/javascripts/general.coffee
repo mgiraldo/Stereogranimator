@@ -32,10 +32,10 @@ class General
   resetTimer: () =>
     c = window.clearTimeout(@idle_id) #if @idle_id != -1
     @idle_id = window.setTimeout(@isIdle, 60000)
-    console.log "timer reset", c, @idle_id
+    # console.log "timer reset", c, @idle_id
 
   isIdle: () ->
-    console.log "idle... redirecting"
+    # console.log "idle... redirecting"
     window.location.href = "/create_pe"
 
 $ ->
