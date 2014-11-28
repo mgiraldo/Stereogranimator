@@ -30,7 +30,7 @@ $(document).ready(function() {
       name:$.trim($("#username").val()),
       id: <%= @animation.id %>
     };
-    if (data.name=="") return;
+    if (data.name=="") data.name = "nypl_stereo";
     html = '<div class="column tweet_share shared_publiceye"><p>Tweet sent!</p><p>Create another image?</p></div>';
     $(".tweet_share").replaceWith(html);
     $.post( "/share_js_pe", data, function( s ) {}, "json");

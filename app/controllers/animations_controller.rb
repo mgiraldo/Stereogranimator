@@ -172,7 +172,7 @@ class AnimationsController < ApplicationController
 </body>
 </html>'
 
-      body_plain = 'Hello!\n\nYou created an image in the NYPL Public Eye exhibition and requested us to send it to you.\n\nYour image can be found at: ##url##\n\n\nBest,\nNYPL Labs\nhttp://stereo.nypl.org'
+      body_plain = 'Hello!\n\nYou created an image in the NYPL Public Eye exhibition\nand requested us to send it to you.\n\nYour image can be found at:\n##url##\n\n\nBest,\nNYPL Labs\nhttp://stereo.nypl.org'
 
       body_html = body_plain.gsub(/\\n/,'<br />')
       body_html = body_html.gsub(/##url##/,"<a href='#{url}'><img src='#{url}.gif' /></a>")
@@ -199,7 +199,10 @@ class AnimationsController < ApplicationController
       puts "yes tweet: #{params[:name]} contains @? #{params[:name].include? '@'}"
       username = params[:name]
       username = "@#{username}" unless username.include?("@")
-      $twitter_client.update("(test) Check out this image: #{url} created by #{username} with #Stereogranimator")
+      update = "(test) Check out this image: #{url}"
+      update += " by #{username}" unless username == "@nypl_stereo"
+      update += "\nCreated with #Stereogranimator"
+      $twitter_client.update(update)
     end
 
     respond_to do |format|
