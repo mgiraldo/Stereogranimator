@@ -202,7 +202,7 @@ class AnimationsController < ApplicationController
       update = "(test) Check out this image: #{url}"
       update += " by #{username}" unless username == "@nypl_stereo"
       update += "\nCreated with #Stereogranimator"
-      $twitter_client.update(update)
+      # $twitter_client.update(update)
     end
 
     respond_to do |format|
