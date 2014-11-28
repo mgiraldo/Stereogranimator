@@ -141,11 +141,59 @@ class AnimationsController < ApplicationController
     if params[:email] && is_valid_email(params[:email])
       email = params[:email]
 
+      hdr = {
+        :filters =>
+        {
+          :templates => {
+            :settings => {
+              :enable => 1,
+              :template_id => "e8f89441-7c6c-4144-81fd-02cc622625e6"
+            }
+          }
+        }
+      }
+
+      # puts hdr.to_json()
+
+      html = '<html>
+<head>
+  <title></title>
+</head>
+<body>
+<p style="text-align: center;"><img alt="NYPL Labs Stereogranimator" src="https://marketing-image-production.s3.amazonaws.com/uploads/df12af12a32f2d70f6f2e2c1ffab365297610b86b255a24efe90dd930aeadc96193d03262d0732f34b7fa1a8334d4078945eec672d607bcf9a0f8aca98def37e/bd2731858b0b9a76544f839ba2214f4c6fc6cf8eb7650c8f6107e0f0__ecc382d3-a0a9-4cde-9294-2772355361eb.png" style="width: 300px; height: 112px;" /></p>
+
+<p style="text-align: center;"><span style="font-size:12px;"><span style="font-family:arial,helvetica,sans-serif;"><%body%></span></span></p>
+
+<p style="text-align: center;"><span style="font-size:12px;"><span style="font-family:arial,helvetica,sans-serif;">---</span></span></p>
+
+<p style="text-align: center;"><a href="http://stereo.nypl.org"><span style="font-size:12px;"><span style="font-family:arial,helvetica,sans-serif;">Visit Stereogranimator</span></span></a></p>
+
+<p style="text-align: center;"><a href="http://nypl.org"><font face="arial, helvetica, sans-serif"><span style="font-size: 12px;">The New York Public Library</span></font></a></p>
+</body>
+</html>'
+
+      body_plain = 'Hello!\n\nYou created an image in the NYPL Public Eye exhibition and requested us to send it to you.\n\nYour image can be found at: ##url##\n\n\nBest,\nNYPL Labs\nhttp://stereo.nypl.org'
+
+      body_html = body_plain.gsub(/\\n/,'<br />')
+      body_html = body_html.gsub(/##url##/,"<a href='#{url}'><img src='#{url}.gif' /></a>")
+      html = html.gsub(/<%body%>/, body_html)
+
+      # puts body_plain
+      # puts body_html
+
+
       Mail.deliver do
+        # header['X-SMTPAPI'] =  hdr.to_json()
         to "#{email}"
         from 'stereo@nypl.org'
-        subject 'testing send mail'
-        body "Sending email with Ruby through SendGrid!\n\nYour image can be found at: #{url}"
+        subject 'The Stereogranimator image you created'
+        text_part do
+          body "#{body_plain}"
+        end
+        html_part do
+          content_type 'text/html; charset=UTF-8'
+          body "#{html}"
+        end
       end
     elsif params[:name] =~ /^([a-zA-Z](_?[a-zA-Z0-9]+)*_?|_([a-zA-Z0-9]+_?)*)$/ || params[:name] =~ /^@([a-zA-Z](_?[a-zA-Z0-9]+)*_?|_([a-zA-Z0-9]+_?)*)$/
       puts "yes tweet: #{params[:name]} contains @? #{params[:name].include? '@'}"

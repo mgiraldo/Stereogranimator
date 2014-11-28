@@ -27,9 +27,10 @@ $(document).ready(function() {
   $("#tweet_button").click(function(event){
     event.preventDefault();
     data = {
-      name:$("#username").val(),
+      name:$.trim($("#username").val()),
       id: <%= @animation.id %>
     };
+    if (data.name=="") return;
     html = '<div class="column tweet_share shared_publiceye"><p>Tweet sent!</p><p>Create another image?</p></div>';
     $(".tweet_share").replaceWith(html);
     $.post( "/share_js_pe", data, function( s ) {}, "json");
@@ -37,9 +38,10 @@ $(document).ready(function() {
   $("#email_button").click(function(event){
     event.preventDefault();
     data = {
-      email:$("#email").val(),
+      email:$.trim($("#email").val()),
       id: <%= @animation.id %>
     };
+    if (data.email=="") return;
     html = '<div class="column email_share shared_publiceye"><p>Email sent!</p><p>Create another image?</p></div>';
     $(".email_share").replaceWith(html);
     $.post( "/share_js_pe", data, function( s ) {}, "json");
