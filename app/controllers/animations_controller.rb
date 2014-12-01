@@ -155,15 +155,26 @@ class AnimationsController < ApplicationController
 </html>
 '
 
-      body_plain = 'Greetings from The New York Public Library!\n\n
-        You created an image with the Stereogranimator in the NYPL exhibition Public Eye: 175 Years of Sharing Photography. Then you asked us to send it to you.\n\n
-        Your image can be found here:\n
-        ##url##\n\n\n
-        You can make more images like this and share them with your friends using The Stereogranimator at http://stereo.nypl.org.\n\n
-        Best,\n
-        NYPL Labs\n
-        http://stereo.nypl.org\n\n\n
-        The New York Public Library | 5th Ave & 42nd St. NY, NY 10018
+      body_plain = '
+Greetings from The New York Public Library!\n\n
+
+You created an image with the Stereogranimator in the\n
+NYPL exhibition Public Eye: 175 Years of Sharing Photography. Then you asked us to send it to you.\n\n
+
+Your image can be found here:\n\n
+
+##url##\n\n\n
+
+
+You can make more images like this and share them with your friends\n
+using The Stereogranimator at http://stereo.nypl.org.\n\n
+
+Best,\n
+NYPL Labs\n
+http://stereo.nypl.org\n\n\n
+
+
+The New York Public Library | 5th Ave & 42nd St. NY, NY 10018
         '
 
       body_html = body_plain.gsub(/\\n/,'<br />')
@@ -173,6 +184,7 @@ class AnimationsController < ApplicationController
       # puts body_plain
       # puts body_html
 
+      body_plain = body_plain.gsub(/\\n/,'')
       body_plain = body_plain.gsub(/##url##/, url)
 
       Mail.deliver do
