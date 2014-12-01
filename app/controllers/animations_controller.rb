@@ -159,7 +159,8 @@ class AnimationsController < ApplicationController
 Greetings from The New York Public Library!\n\n
 
 You created an image with the Stereogranimator in the\n
-NYPL exhibition Public Eye: 175 Years of Sharing Photography. Then you asked us to send it to you.\n\n
+NYPL exhibition Public Eye: 175 Years of Sharing Photography.\n
+Then you asked us to send it to you.\n\n
 
 Your image can be found here:\n\n
 
