@@ -132,7 +132,7 @@ class AnimationsController < ApplicationController
   end
 
   def share_js_publiceye
-    puts "Attempted share for id #{params[:id]}, username #{params[:name]}, email #{params[:email]}"
+    # puts "Attempted share for id #{params[:id]}, username #{params[:name]}, email #{params[:email]}"
 
     animation = Animation.find(params[:id])
 
@@ -141,49 +141,41 @@ class AnimationsController < ApplicationController
     if params[:email] && is_valid_email(params[:email])
       email = params[:email]
 
-      hdr = {
-        :filters =>
-        {
-          :templates => {
-            :settings => {
-              :enable => 1,
-              :template_id => "e8f89441-7c6c-4144-81fd-02cc622625e6"
-            }
-          }
-        }
-      }
-
-      # puts hdr.to_json()
-
-      html = '<html>
+      html = '
+<html>
 <head>
   <title></title>
 </head>
 <body>
-<p style="text-align: center;"><img alt="NYPL Labs Stereogranimator" src="https://marketing-image-production.s3.amazonaws.com/uploads/df12af12a32f2d70f6f2e2c1ffab365297610b86b255a24efe90dd930aeadc96193d03262d0732f34b7fa1a8334d4078945eec672d607bcf9a0f8aca98def37e/bd2731858b0b9a76544f839ba2214f4c6fc6cf8eb7650c8f6107e0f0__ecc382d3-a0a9-4cde-9294-2772355361eb.png" style="width: 300px; height: 112px;" /></p>
+<p style="text-align: center;"><a href="http://nypl.org"><img alt="NYPL Labs Stereogranimator" src="http://stereo.nypl.org/assets/email-header_nypl.png" style="width: 300px; height: 50px;" /></a><br /><a href="http://stereo.nypl.org"><img alt="NYPL Labs Stereogranimator" src="http://stereo.nypl.org/assets/email-header_stereo.png" style="width: 300px; height: 62px;" /></a></p>
 
-<p style="text-align: center;"><span style="font-size:12px;"><span style="font-family:arial,helvetica,sans-serif;"><%body%></span></span></p>
+<p style="text-align: center;"><span style="font-size:12px;"><span style="font-family:helvetica,arial,sans-serif;"><%body%></span></span></p>
 
-<p style="text-align: center;"><span style="font-size:12px;"><span style="font-family:arial,helvetica,sans-serif;">---</span></span></p>
-
-<p style="text-align: center;"><a href="http://stereo.nypl.org"><span style="font-size:12px;"><span style="font-family:arial,helvetica,sans-serif;">Visit Stereogranimator</span></span></a></p>
-
-<p style="text-align: center;"><a href="http://nypl.org"><font face="arial, helvetica, sans-serif"><span style="font-size: 12px;">The New York Public Library</span></font></a></p>
 </body>
-</html>'
+</html>
+'
 
-      body_plain = 'Hello!\n\nYou created an image in the NYPL Public Eye exhibition\nand requested us to send it to you.\n\nYour image can be found at:\n##url##\n\n\nBest,\nNYPL Labs\nhttp://stereo.nypl.org'
+      body_plain = 'Greetings from The New York Public Library!\n\n
+        You created an image with the Stereogranimator in the NYPL exhibition Public Eye: 175 Years of Sharing Photography. Then you asked us to send it to you.\n\n
+        Your image can be found here:\n
+        ##url##\n\n\n
+        You can make more images like this and share them with your friends using The Stereogranimator at http://stereo.nypl.org.\n\n
+        Best,\n
+        NYPL Labs\n
+        http://stereo.nypl.org\n\n\n
+        The New York Public Library | 5th Ave & 42nd St. NY, NY 10018
+        '
 
       body_html = body_plain.gsub(/\\n/,'<br />')
-      body_html = body_html.gsub(/##url##/,"<a href='#{url}'><img src='#{url}.gif' /></a>")
+      body_html = body_html.gsub(/##url##/,"<a href='#{url}'><img src='#{url}.gif' /></a><br /><br /><a href='#{url}'>#{url}</a>")
       html = html.gsub(/<%body%>/, body_html)
 
       # puts body_plain
       # puts body_html
 
+      body_plain = body_plain.gsub(/##url##/, url)
 
       Mail.deliver do
-        # header['X-SMTPAPI'] =  hdr.to_json()
         to "#{email}"
         from 'stereo@nypl.org'
         subject 'The Stereogranimator image you created'
@@ -196,13 +188,13 @@ class AnimationsController < ApplicationController
         end
       end
     elsif params[:name] =~ /^([a-zA-Z](_?[a-zA-Z0-9]+)*_?|_([a-zA-Z0-9]+_?)*)$/ || params[:name] =~ /^@([a-zA-Z](_?[a-zA-Z0-9]+)*_?|_([a-zA-Z0-9]+_?)*)$/
-      puts "yes tweet: #{params[:name]} contains @? #{params[:name].include? '@'}"
+      # puts "yes tweet: #{params[:name]} contains @? #{params[:name].include? '@'}"
       username = params[:name]
       username = "@#{username}" unless username.include?("@")
-      update = "(test) Check out this image: #{url}"
+      update = "Check out this image: #{url}"
       update += " by #{username}" unless username == "@nypl_stereo"
-      update += "\nCreated with #Stereogranimator"
-      # $twitter_client.update(update)
+      update += "\nCreated at @NYPL's Public Eye: 175 Years of Sharing Photography"
+      $twitter_client.update(update)
     end
 
     respond_to do |format|
