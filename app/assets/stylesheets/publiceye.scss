@@ -71,6 +71,21 @@ body {
     border: none;
   }
 
+  #username {
+    display: none;
+  }
+
+  #add_mention_button {
+    display: inline-block;
+    font-family: $bodyfont;
+    font-size: $bigfont*.75;
+    padding: $bigfont*.5 $bigfont;
+    width: 140px;
+    margin-right: 10px;
+    color: $emgray;
+    border: 1px dashed $emgray;
+  }
+
 }
 
 #mainContent .publiceye {

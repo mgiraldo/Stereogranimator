@@ -24,6 +24,10 @@ embed_url = url_for(:controller=>"gallery",:action=>"view",:id=>@animation.id,:o
 <meta name="twitter:creator" content="@nypl_stereo">
 <script type="text/javascript">
 $(document).ready(function() {
+  $("#add_mention_button").click(function(event){
+    $("#add_mention_button").hide();
+    $("#username").show().focus();
+  });
   $("#tweet_button").click(function(event){
     event.preventDefault();
     data = {
@@ -33,6 +37,7 @@ $(document).ready(function() {
     if (data.name=="") data.name = "nypl_stereo";
     html = '<div class="column tweet_share shared_publiceye"><p>Tweet sent!</p><p>Create another image?</p></div>';
     $(".tweet_share").replaceWith(html);
+    console.log(data);
     $.post( "/share_js_pe", data, function( s ) {}, "json");
   });
   $("#email_button").click(function(event){
@@ -64,9 +69,10 @@ $(document).ready(function() {
         <div class="column tweet_share">
           <h2>Share this image on Twitter:</h2>
           <p>
-            Your tweet will be <span>posted by @nypl_stereo</span>.<br />If you want to be @mentioned in the tweet, type your Twitter handle (optional).
+            Your tweet will be <span>posted by @nypl_stereo</span>.<br />Tap "also @me" if you want to be @mentioned.<br /><br />
           </p>
           <div class="centered tweet">
+            <span id="add_mention_button">also @me</span>
             <%= text_field_tag 'username' ,'', {:class=>"query", :placeholder=>"@myself"} %>
             <%= link_to "TWEET", "#", :id => "tweet_button", :name => "tweet_button", :class=>"submit genericButtonLink" %>
           </div>
