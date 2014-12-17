@@ -18,6 +18,7 @@ Visit the project at [stereo.nypl.org](http://stereo.nypl.org).
 * Normalize.css: Public Domain
 * EaselJS: MIT license
 * SWFObject: MIT license
+* Finger icon Created by Takao Umehara from the Noun Project
 
 ### Everything else:
 

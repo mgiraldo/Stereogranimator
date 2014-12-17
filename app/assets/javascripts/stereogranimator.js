@@ -125,6 +125,7 @@ var imgurl = "";
 var thefont = "share-regular,AvenirNextCondensed-Medium,'Arial Narrow',sans-serif";
 
 function init() {
+  if (is_publiceye) mode = "ANAGLYPH";
   $("#yescanvas").show();
   $("#nocanvas").hide();
   toggleInstructions();
@@ -1305,6 +1306,7 @@ function tick() {
   // only draw once clicked
   if (previewActive && drawMode=="normal") {
     $("#previewExplain").hide();
+    $("#help-finger").hide();
     $("#btnNext").fadeIn();
   }
   if (update) {

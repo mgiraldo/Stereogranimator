@@ -1,6 +1,17 @@
 @import "base";
 @import "mixins";
 
+@font-face {
+  font-family: 'icomoon';
+  src:font-url('icomoon.eot?inoaca');
+  src:font-url('icomoon.eot?#iefixinoaca') format('embedded-opentype'),
+    font-url('icomoon.woff?inoaca') format('woff'),
+    font-url('icomoon.ttf?inoaca') format('truetype'),
+    font-url('icomoon.svg?inoaca#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
 $bigfont: 30px;
 $toggleheight: 60px;
 $togglemargin: 10px;
@@ -13,6 +24,66 @@ body {
 
 #footer {
   display: none;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  font-family: 'icomoon';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-finger:before {
+  content: "\e600";
+}
+
+@include keyframe(demo) {
+  0% {
+    top: 600px;
+    left: 900px;
+  }
+
+  10% {
+    top: 600px;
+    left: 400px;
+  }
+
+  40% {
+    top: 600px;
+    left: 400px;
+  }
+
+  50% {
+    top: 760px;
+    left: 540px;
+  }
+
+  90% {
+    top: 760px;
+    left: 540px;
+  }
+
+  100% {
+    top: 720px;
+    left: 900px;
+  }
+}
+
+#help-finger {
+  display: block;
+  position: fixed;
+  top: 600px;
+  left: 900px;
+  font-size: 400px;
+  @include text-shadow(-3px, 3px, 0px, black);
+  @include animation(demo, 2s, 5s);
 }
 
 .shared_publiceye {
@@ -272,6 +343,13 @@ body {
   #preview {
     width: inherit;
     height: inherit;
+
+    // #previewExplain {
+    //   top: 500px;
+    //   span {
+    //     background: rgba(0, 0, 0, .55);
+    //   }
+    // }
   }
 
   #previewContainer {
