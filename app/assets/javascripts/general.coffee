@@ -36,7 +36,7 @@ class General
 
   isIdle: () ->
     # console.log "idle... redirecting"
-    # window.location.href = "/create_pe"
+    window.location.href = "/create_pe"
 
 $ ->
   window._gen = new General()

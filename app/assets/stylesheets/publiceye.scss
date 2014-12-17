@@ -65,12 +65,12 @@ body {
     left: 540px;
   }
 
-  90% {
+  80% {
     top: 760px;
     left: 540px;
   }
 
-  100% {
+  90% {
     top: 720px;
     left: 900px;
   }
@@ -83,7 +83,7 @@ body {
   left: 900px;
   font-size: 400px;
   @include text-shadow(-3px, 3px, 0px, black);
-  @include animation(demo, 2s, 5s);
+  @include animation(demo, 2s, 5s, ease-out, infinite);
 }
 
 .shared_publiceye {

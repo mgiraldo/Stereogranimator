@@ -231,22 +231,25 @@
   }
 }
 
-@mixin animation ($animation, $delay:0s, $duration:1s, $timing: ease-out) {
+@mixin animation ($animation, $delay:0s, $duration:1s, $timing: ease-out, $iterations: 1, $mode: forwards) {
   -webkit-animation-delay: $delay;
   -webkit-animation-duration: $duration;
   -webkit-animation-name: $animation;
   -webkit-animation-timing-function: $timing;
-  -webkit-animation-fill-mode: forwards; /* this prevents the animation from restarting! */
+  -webkit-animation-fill-mode: $mode;
+  -webkit-animation-iteration-count: $iterations;
 
   -moz-animation-delay: $delay;
   -moz-animation-duration: $duration;
   -moz-animation-name: $animation;
   -moz-animation-timing-function: $timing;
-  -moz-animation-fill-mode: forwards; /* this prevents the animation from restarting! */
+  -moz-animation-fill-mode: $mode;
+  -moz-animation-iteration-count: $iterations;
 
   animation-delay: $delay;
   animation-duration: $duration;
   animation-name: $animation;
   animation-timing-function: $timing;
-  animation-fill-mode: forwards; /* this prevents the animation from restarting! */
+  animation-fill-mode: $mode;
+  animation-iteration-count: $iterations;
 }
