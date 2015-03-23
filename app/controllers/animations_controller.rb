@@ -81,7 +81,7 @@ class AnimationsController < ApplicationController
   # GET /choose
   def choose_publiceye
     get_from_flickr = false
-    nypl_only = true
+    nypl_only = false
     @images = Image.randomSet(get_from_flickr, nypl_only)
     respond_to do |format|
       format.html { render :layout => "publiceye" }
