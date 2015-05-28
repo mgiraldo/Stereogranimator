@@ -57,7 +57,10 @@
 			<div class="grid_2">
 				<p><span class="big"><%= number_with_delimiter @collectioncount %></span>
 					<br />collections
-					<br /><%= link_to (image_tag "ext0_big.png"), "http://www.nypl.org", :title=>"New York Public Library" %> <%= link_to (image_tag "ext1_big.png"), "http://www.bpl.org", {:onclick=>"recordOutboundLink(this, 'Outbound Links', 'Twitter');return false;",:title=>"Boston Public Library"} %>
+					<br /><%= link_to (image_tag "ext0_big.png"), "http://www.nypl.org", :title=>"New York Public Library" %>
+					<% Image.flickr_sets.each do |set| %>
+						<%= link_to (image_tag "ext#{set[:id]}_big.png"), "#{set[:homeurl]}", {:onclick=>"recordOutboundLink(this, 'Outbound Links', 'External Collection');return false;",:title=>"#{set[:name]}"} %>
+					<% end %>
 				</p>
 			</div>
 			<div class="grid_2">

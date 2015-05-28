@@ -26,7 +26,10 @@ class Image < ActiveRecord::Base
 
   def self.flickr_sets
     #ids from flickr to include in queries
-    [{:id=>1, :set_id=>"72157604192771132", :owner_id=>"24029425@N06", :name=>"Boston Public Library", :baseurl=>"http://www.flickr.com/photos/boston_public_library/", :homeurl=>"http://www.bpl.org/"}]
+    [
+      {:id=>1, :set_id=>"72157604192771132", :owner_id=>"24029425@N06", :name=>"Boston Public Library", :baseurl=>"http://www.flickr.com/photos/boston_public_library/", :homeurl=>"http://www.bpl.org/"},
+      {:id=>2, :set_id=>"72157649209402704", :owner_id=>"27784370@N05", :name=>"U.S. Geological Survey", :baseurl=>"http://www.flickr.com/photos/usgeologicalsurvey/", :homeurl=>"http://www.usgs.gov/"}
+    ]
   end
 
   def self.externalData(id)
