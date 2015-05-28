@@ -13,7 +13,7 @@ class AboutController < ApplicationController
     @gifcount = Animation.select('COUNT(id) as total').where('mode = ? AND creator != ?','GIF','siege').map(&:total)[0].to_i
     @imagecount = Image.select('COUNT(id) as total').map(&:total)[0].to_i
     @imagecount += Image.countFlickrPhotos
-    @collectioncount = 2
+    @collectioncount = 1 + Image.flickr_sets.count
   end
 
   def animatedgif
