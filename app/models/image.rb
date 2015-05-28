@@ -190,7 +190,7 @@ class Image < ActiveRecord::Base
 
   def self.findByKeyword(keyword, xid)
     # following line only for BPL set
-    bpl = self.externalData(xid) unless xid == -1
+    external = self.externalData(xid) unless xid == -1
 
     r = []
 
@@ -203,7 +203,7 @@ class Image < ActiveRecord::Base
     begin
       # search teh flickrz
       if xid != -1
-        userid = bpl[:owner_id]
+        userid = external[:owner_id]
         keyword = "stereograph #{keyword}"
       else
         userid = "me"
@@ -213,10 +213,10 @@ class Image < ActiveRecord::Base
     rescue
       return r
     else
-      # following line works only for BPL
-      # info.each{|x|r.push({:id=>x["id"],:xid=>1,:owner=>"From: #{bpl[:name]}",:url=>FlickRaw.url_m(x)})}
+      # following line works only for external
+      # info.each{|x|r.push({:id=>x["id"],:xid=>1,:owner=>"From: #{external[:name]}",:url=>FlickRaw.url_m(x)})}
       if xid != -1
-        info.each{|x|r.push({:id=>x["id"],:xid=>xid,:owner=>"From: #{bpl[:name]}",:url=>FlickRaw.url_m(x)})}
+        info.each{|x|r.push({:id=>x["id"],:xid=>xid,:owner=>"From: #{external[:name]}",:url=>FlickRaw.url_m(x)})}
       else
         info.each{|x|r.push({:id=>x["id"],:xid=>xid,:owner=>"From Flickr user <a href=\"http://www.flickr.com/user/" + x["owner"] + "\">" + x["ownername"] + "</a>",:url=>FlickRaw.url_m(x)})}
       end
