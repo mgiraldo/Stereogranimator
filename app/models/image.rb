@@ -189,9 +189,6 @@ class Image < ActiveRecord::Base
   end
 
   def self.findByKeyword(keyword, xid)
-    # following line only for BPL set
-    external = self.externalData(xid) unless xid == -1
-
     r = []
 
     # standard internal image search
@@ -202,23 +199,48 @@ class Image < ActiveRecord::Base
     end
     begin
       # search teh flickrz
+      extras = "url_m, url_o, owner_name"
+
+      searchparams = []
+
+      info = []
+
+      # puts "#{keyword}, #{xid}"
+
       if xid != -1
-        userid = external[:owner_id]
-        keyword = "stereograph #{keyword}"
+        flickr_sets.each do |set|
+          xid = set[:id]
+          name = set[:name]
+          external = externalData(xid)
+          userid = external[:owner_id]
+          searchparams.push({:name => name, :xid => xid, :userid => userid, :keyword => "stereograph #{keyword}"})
+        end
       else
         userid = "me"
+        searchparams = [{:name => userid, :xid => -1, :userid => userid, :keyword => "#{keyword}"}]
       end
-      extras = "url_m, url_o, owner_name"
-      info = flickr.photos.search(:content_type => 1, :media => "photos", :user_id => userid,:text=>"#{keyword}",:tag_mode=>'all',:per_page=>20,:extras => extras)
+
+      # puts "#{searchparams}"
+
+      searchparams.each do |param|
+        info.push(:name => param[:name], :xid => param[:xid], :photos => flickr.photos.search(:content_type => 1, :media => "photos", :user_id => param[:userid],:text=>"#{param[:keyword]}",:tag_mode=>'all',:per_page=>20,:extras => extras))
+        # puts "param: #{param}"
+        # puts "#{info}"
+      end
+
     rescue
       return r
     else
       # following line works only for external
       # info.each{|x|r.push({:id=>x["id"],:xid=>1,:owner=>"From: #{external[:name]}",:url=>FlickRaw.url_m(x)})}
       if xid != -1
-        info.each{|x|r.push({:id=>x["id"],:xid=>xid,:owner=>"From: #{external[:name]}",:url=>FlickRaw.url_m(x)})}
+        info.each do |results|
+          results[:photos].each {|x|r.push({:id=>x["id"],:xid=>results[:xid],:owner=>"From: #{results[:name]}",:url=>FlickRaw.url_m(x)})} if results[:photos].count > 0
+        end
       else
-        info.each{|x|r.push({:id=>x["id"],:xid=>xid,:owner=>"From Flickr user <a href=\"http://www.flickr.com/user/" + x["owner"] + "\">" + x["ownername"] + "</a>",:url=>FlickRaw.url_m(x)})}
+        info.each do |results|
+          results[:photos].each{|x|r.push({:id=>x["id"],:xid=>xid,:owner=>"From Flickr user <a href=\"http://www.flickr.com/user/" + x["owner"] + "\">" + x["ownername"] + "</a>",:url=>FlickRaw.url_m(x)})} if results[:photos].count > 0
+        end
       end
       return r
     end
