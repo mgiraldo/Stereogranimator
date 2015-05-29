@@ -27,7 +27,7 @@ initSearch();
 				<%= link_to "use your Flickr photos", @flickr_url %>
 	<% elsif (params[:noflickr] == nil || params[:noflickr] == "0") && (cookies[:flickr_username] == nil || cookies[:flickr_username] != "") %>
 				<%= hidden_field_tag 'xid' ,'-1', {:class=>"frm-xid"} %>
-				<%= link_to "use NYPL/BPL photos", "/create?noflickr=1" %>
+				<%= link_to "use Stereogranimator photos", "/create?noflickr=1" %>
 	<% elsif (params[:noflickr] != nil && params[:noflickr] == "1") && cookies[:flickr_username] != nil && cookies[:flickr_username] != "" %>
 				<%= hidden_field_tag 'xid' ,'1', {:class=>"frm-xid"} %>
 				<%= link_to "use your Flickr photos", "/create?noflickr=0" %>
