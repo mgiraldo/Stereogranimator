@@ -194,8 +194,8 @@ class Image < ActiveRecord::Base
     # standard internal image search
     # not to use if searching my flickr photos only
     if xid != -1
-      local = Image.select('digitalid').where('UPPER(title) LIKE ?', "%#{keyword.gsub(/\+/, ' ').upcase}%")
-      local.each{|x|r.push({:id=>x[:digitalid],:owner=>"From: New York Public Library",:xid=>0,:url=>x.thumb_url})}
+      local = Image.where('UPPER(title) LIKE ?', "%#{keyword.gsub(/\+/, ' ').upcase}%")
+      local.each{|x|r.push({:id=>x[:digitalid],:owner=>"From: New York Public Library",:xid=>0,:url=>x.thumb_url,:metadata=>x[:title]})}
     end
     begin
       # search teh flickrz
@@ -235,11 +235,11 @@ class Image < ActiveRecord::Base
       # info.each{|x|r.push({:id=>x["id"],:xid=>1,:owner=>"From: #{external[:name]}",:url=>FlickRaw.url_m(x)})}
       if xid != -1
         info.each do |results|
-          results[:photos].each {|x|r.push({:id=>x["id"],:xid=>results[:xid],:owner=>"From: #{results[:name]}",:url=>FlickRaw.url_m(x)})} if results[:photos].count > 0
+          results[:photos].each {|x|r.push({:id=>x["id"],:xid=>results[:xid],:owner=>"From: #{results[:name]}",:url=>FlickRaw.url_m(x),:metadata=>x["title"]})} if results[:photos].count > 0
         end
       else
         info.each do |results|
-          results[:photos].each{|x|r.push({:id=>x["id"],:xid=>xid,:owner=>"From Flickr user <a href=\"http://www.flickr.com/user/" + x["owner"] + "\">" + x["ownername"] + "</a>",:url=>FlickRaw.url_m(x)})} if results[:photos].count > 0
+          results[:photos].each{|x|r.push({:id=>x["id"],:xid=>xid,:owner=>"From Flickr user <a href=\"http://www.flickr.com/user/" + x["owner"] + "\">" + x["ownername"] + "</a>",:url=>FlickRaw.url_m(x),:metadata=>x["title"]})} if results[:photos].count > 0
         end
       end
       return r
