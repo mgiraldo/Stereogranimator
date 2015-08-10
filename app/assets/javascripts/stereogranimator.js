@@ -375,6 +375,10 @@ function addInteractivity() {
       //console.log("vs1:"+vert.sq1x+" vs2:"+vert.sq2x+" s1:"+sq1x+" s2:"+sq2x+" vm:"+vert.mx+" vx:"+vertx);
       evt.onMouseMove = function(ev) {
         vertx = stage.mouseX + target.mx;
+        // constrain axis to prevent drag beyond image
+        // console.log("v.sq1", target.sq1x, " s1:",sq1x," s2:",sq2x," v.sq2",target.sq2x," vx:",vertx, "hsize", hsize);
+        if (vertx - target.sq1x < 0) vertx = target.sq1x;
+        if (vertx + (-1*target.sq2x) + hsize > stageWidth) vertx = stageWidth + target.sq2x - hsize;
         // move squares along with bar
         sq1x = vertx - target.sq1x;
         sq2x = vertx - target.sq2x;
@@ -519,19 +523,23 @@ function addInteractivity() {
         target.x = stage.mouseX - target.mx;
         if (target.mode=="right" && target.x-CORNER_OFFSET < vertx) {
           // prevent from moving to left side
-          target.x = vertx + CORNER_OFFSET + 1;
+          target.x = vertx + CORNER_OFFSET;
         }
         if (target.x > target.x2-MINSIZE) {
           target.x = target.x2-MINSIZE;
-        }
-        hsize = target.x2 - (target.x - CORNER_OFFSET);
-        if (hsize < MINSIZE) {
-          hsize = MINSIZE;
         }
         target.y = stage.mouseY - target.my;
         if (target.y > target.y2-MINSIZE) {
           target.y = target.y2-MINSIZE;
         }
+
+        checkLimits(target);
+
+        hsize = target.x2 - (target.x - CORNER_OFFSET);
+        if (hsize < MINSIZE) {
+          hsize = MINSIZE;
+        }
+
         vsize = target.y2 - (target.y - CORNER_OFFSET);
         if (vsize < MINSIZE) {
           vsize = MINSIZE;
@@ -585,18 +593,21 @@ function addInteractivity() {
         target.x = stage.mouseX - target.mx;
         if (target.mode=="left" && target.x+CORNER_OFFSET > vertx) {
           // prevent from moving to right side
-          target.x = vertx - CORNER_OFFSET - 1;
+          target.x = vertx - CORNER_OFFSET;
         }
         if (target.x < target.x1+MINSIZE) {
           target.x = target.x1+MINSIZE;
         }
-        hsize = (target.x + CORNER_OFFSET) - target.x1;
-        if (hsize < MINSIZE) {
-          hsize = MINSIZE;
-        }
         target.y = stage.mouseY - target.my;
         if (target.y > target.y2-MINSIZE) {
           target.y = target.y2-MINSIZE;
+        }
+
+        checkLimits(target);
+
+        hsize = (target.x + CORNER_OFFSET) - target.x1;
+        if (hsize < MINSIZE) {
+          hsize = MINSIZE;
         }
         vsize = target.y2 - (target.y - CORNER_OFFSET);
         if (vsize < MINSIZE) {
@@ -651,18 +662,21 @@ function addInteractivity() {
         target.x = stage.mouseX - target.mx;
         if (target.mode=="right" && target.x-CORNER_OFFSET <= vertx) {
           // prevent from moving to left side
-          target.x = vertx + CORNER_OFFSET + 1;
+          target.x = vertx + CORNER_OFFSET;
         }
         if (target.x > target.x2-MINSIZE) {
           target.x = target.x2-MINSIZE;
         }
-        hsize = target.x2 - (target.x - CORNER_OFFSET);
-        if (hsize < MINSIZE) {
-          hsize = MINSIZE;
-        }
         target.y = stage.mouseY - target.my;
         if (target.y < target.y1+MINSIZE) {
           target.y = target.y1+MINSIZE;
+        }
+
+        checkLimits(target);
+
+        hsize = target.x2 - (target.x - CORNER_OFFSET);
+        if (hsize < MINSIZE) {
+          hsize = MINSIZE;
         }
         vsize = (target.y + CORNER_OFFSET) - target.y1;
         if (vsize < MINSIZE) {
@@ -717,18 +731,21 @@ function addInteractivity() {
         target.x = stage.mouseX - target.mx;
         if (target.mode=="left" && target.x+CORNER_OFFSET > vertx) {
           // prevent from moving to right side
-          target.x = vertx - CORNER_OFFSET - 1;
+          target.x = vertx - CORNER_OFFSET;
         }
         if (target.x < target.x1+MINSIZE) {
           target.x = target.x1+MINSIZE;
         }
-        hsize = (target.x + CORNER_OFFSET) - target.x1;
-        if (hsize < MINSIZE) {
-          hsize = MINSIZE;
-        }
         target.y = stage.mouseY - target.my;
         if (target.y < target.y1+MINSIZE) {
           target.y = target.y1+MINSIZE;
+        }
+
+        checkLimits(target);
+
+        hsize = (target.x + CORNER_OFFSET) - target.x1;
+        if (hsize < MINSIZE) {
+          hsize = MINSIZE;
         }
         vsize = (target.y + CORNER_OFFSET) - target.y1;
         if (vsize < MINSIZE) {
@@ -783,18 +800,21 @@ function addInteractivity() {
         target.x = stage.mouseX - target.mx;
         if (target.mode=="right" && target.x-CORNER_OFFSET < vertx) {
           // prevent from moving to left side
-          target.x = vertx + CORNER_OFFSET + 1;
+          target.x = vertx + CORNER_OFFSET;
         }
         if (target.x > target.x2-MINSIZE) {
           target.x = target.x2-MINSIZE;
         }
-        hsize = target.x2 - (target.x - CORNER_OFFSET);
-        if (hsize < MINSIZE) {
-          hsize = MINSIZE;
-        }
         target.y = stage.mouseY - target.my;
         if (target.y > target.y2-MINSIZE) {
           target.y = target.y2-MINSIZE;
+        }
+
+        checkLimits(target);
+
+        hsize = target.x2 - (target.x - CORNER_OFFSET);
+        if (hsize < MINSIZE) {
+          hsize = MINSIZE;
         }
         vsize = target.y2 - (target.y - CORNER_OFFSET);
         if (vsize < MINSIZE) {
@@ -849,18 +869,21 @@ function addInteractivity() {
         target.x = stage.mouseX - target.mx;
         if (target.mode=="left" && target.x+CORNER_OFFSET > vertx) {
           // prevent from moving to right side
-          target.x = vertx - CORNER_OFFSET - 1;
+          target.x = vertx - CORNER_OFFSET;
         }
         if (target.x < target.x1+MINSIZE) {
           target.x = target.x1+MINSIZE;
         }
-        hsize = (target.x + CORNER_OFFSET) - target.x1;
-        if (hsize < MINSIZE) {
-          hsize = MINSIZE;
-        }
         target.y = stage.mouseY - target.my;
         if (target.y > target.y2-MINSIZE) {
           target.y = target.y2-MINSIZE;
+        }
+
+        checkLimits(target);
+
+        hsize = (target.x + CORNER_OFFSET) - target.x1;
+        if (hsize < MINSIZE) {
+          hsize = MINSIZE;
         }
         vsize = target.y2 - (target.y - CORNER_OFFSET);
         if (vsize < MINSIZE) {
@@ -915,18 +938,21 @@ function addInteractivity() {
         target.x = stage.mouseX - target.mx;
         if (target.mode=="right" && target.x-CORNER_OFFSET <= vertx) {
           // prevent from moving to left side
-          target.x = vertx + CORNER_OFFSET + 1;
+          target.x = vertx + CORNER_OFFSET;
         }
         if (target.x > target.x2-MINSIZE) {
           target.x = target.x2-MINSIZE;
         }
-        hsize = target.x2 - (target.x - CORNER_OFFSET);
-        if (hsize < MINSIZE) {
-          hsize = MINSIZE;
-        }
         target.y = stage.mouseY - target.my;
         if (target.y < target.y1+MINSIZE) {
           target.y = target.y1+MINSIZE;
+        }
+
+        checkLimits(target);
+
+        hsize = target.x2 - (target.x - CORNER_OFFSET);
+        if (hsize < MINSIZE) {
+          hsize = MINSIZE;
         }
         vsize = (target.y + CORNER_OFFSET) - target.y1;
         if (vsize < MINSIZE) {
@@ -981,18 +1007,21 @@ function addInteractivity() {
         target.x = stage.mouseX - target.mx;
         if (target.mode=="left" && target.x+CORNER_OFFSET > vertx) {
           // prevent from moving to right side
-          target.x = vertx - CORNER_OFFSET - 1;
+          target.x = vertx - CORNER_OFFSET;
         }
         if (target.x < target.x1+MINSIZE) {
           target.x = target.x1+MINSIZE;
         }
-        hsize = (target.x + CORNER_OFFSET) - target.x1;
-        if (hsize < MINSIZE) {
-          hsize = MINSIZE;
-        }
         target.y = stage.mouseY - target.my;
         if (target.y < target.y1+MINSIZE) {
           target.y = target.y1+MINSIZE;
+        }
+
+        checkLimits(target);
+
+        hsize = (target.x + CORNER_OFFSET) - target.x1;
+        if (hsize < MINSIZE) {
+          hsize = MINSIZE;
         }
         vsize = (target.y + CORNER_OFFSET) - target.y1;
         if (vsize < MINSIZE) {
@@ -1026,6 +1055,13 @@ function addInteractivity() {
       update = true;
     };
   })(corner_sprites[7]);
+}
+
+function checkLimits(target) {
+  if (target.x - CORNER_OFFSET < 0) target.x = CORNER_OFFSET;
+  if (target.y - CORNER_OFFSET < 0) target.y = CORNER_OFFSET;
+  if (target.x + CORNER_OFFSET > stageWidth) target.x = stageWidth - CORNER_OFFSET;
+  if (target.y + CORNER_OFFSET > stageHeight) target.y = stageHeight - CORNER_OFFSET;
 }
 
 function draw() {
