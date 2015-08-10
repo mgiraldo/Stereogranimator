@@ -28,7 +28,8 @@ class Image < ActiveRecord::Base
     #ids from flickr to include in queries
     [
       {:id=>1, :set_id=>"72157604192771132", :owner_id=>"24029425@N06", :name=>"Boston Public Library", :baseurl=>"http://www.flickr.com/photos/boston_public_library/", :homeurl=>"http://www.bpl.org/"},
-      {:id=>2, :set_id=>"72157649209402704", :owner_id=>"27784370@N05", :name=>"U.S. Geological Survey", :baseurl=>"http://www.flickr.com/photos/usgeologicalsurvey/", :homeurl=>"http://www.usgs.gov/"}
+      {:id=>2, :set_id=>"72157649209402704", :owner_id=>"27784370@N05", :name=>"U.S. Geological Survey", :baseurl=>"http://www.flickr.com/photos/usgeologicalsurvey/", :homeurl=>"http://www.usgs.gov/"},
+      {:id=>3, :set_id=>"72157656753591086", :owner_id=>"49212622@N08", :name=>"New-York Historical Society", :baseurl=>"https://www.flickr.com/photos/n-yhs/", :homeurl=>"http://nyhistory.org/"}
     ]
   end
 
@@ -220,12 +221,12 @@ class Image < ActiveRecord::Base
         searchparams = [{:name => userid, :xid => -1, :userid => userid, :keyword => "#{keyword}"}]
       end
 
-      # puts "#{searchparams}"
+      puts "#{searchparams}"
 
       searchparams.each do |param|
         info.push(:name => param[:name], :xid => param[:xid], :photos => flickr.photos.search(:content_type => 1, :media => "photos", :user_id => param[:userid],:text=>"#{param[:keyword]}",:tag_mode=>'all',:per_page=>20,:extras => extras))
-        # puts "param: #{param}"
-        # puts "#{info}"
+        puts "param: #{param}"
+        puts "#{info}"
       end
 
     rescue

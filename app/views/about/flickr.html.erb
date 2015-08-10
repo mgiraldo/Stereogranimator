@@ -1,4 +1,4 @@
-<% content_for :title do %>Flickr : About : <% end %>
+<% content_for :title do %>Your collection @ Stereogranimator : About : <% end %>
 <div class="container_12">
 <h1 class="about"><span class="visuallyhidden">ABOUT THIS PROJECT</span></h1>
 <div class="sideNav grid_9">
@@ -6,6 +6,22 @@
 <%= render :partial => "shared/sidenav" %>
 </div>
 <div class="grid_6 omega">
+
+<h2>Contributing your collection</h2>
+
+<p>If you are a cultural or historical organization and want to join the Boston Public Library, USGS and others and include your stereograph collection on this site, contact us at stereo@nypl.org. In order to have your collection included in the Stereogranimator, you will also need to:</p>
+
+<p>
+<ol>
+<li>Upload your collection to <%= link_to "Flickr", "https://flickr.com" %> and tag each photo with "stereograph". We will use the Flickr API to load those images here and allow users to stereogranimate them so those albums need to be <strong>publicly visible</strong>. Titles and descriptions in the images will be used for keyword searches so make sure they are good!</li>
+<li>Provide logo files to be included alongside each of your items, <%= link_to "as shown here", {:controller=>"gallery", :action=>"view", :id=>218} %>. Logos should be no larger than 75x25 pixels.</li>
+<li>We need a collection description (about 1 paragraph), which would appear on the project <%= link_to "About page", about_collection_path %>.</li>
+
+</ol>
+</p>
+
+<p>Once you have the above, contact us at stereo@nypl.org</p>
+
 <h2>Flickr</h2>
 <p>Are you a stereograph enthusiast who's got hundreds or thousands of vintage stereographs just waiting to be stereogranimated (yes, we're talking to you, <a href="http://www.brianmay.com/brian/magsandpress/SWvol33no5_08/LondonStereoReborn.html">Brian May</a>)? Do you have a 3D camera you're itching to try out? Stereogranimator is now for you, thanks to the magic of <a href="https://www.flickr.com">Flickr</a>!</p>
 
@@ -17,7 +33,9 @@
 <li>Stereogranimate away on your own creations!</li>
 </ol>
 
-<p>Check out other <a href="/gallery?xid=-1">community stereogranimations</a>. Oh and have fun!
+<p>Check out other <a href="/gallery?xid=-1">community stereogranimations</a>.</p>
+
+<p>Oh and have fun!</p>
 
 </div>
 <div class="clear"></div>
