@@ -1637,14 +1637,16 @@ function escapeHtml(text) {
 }
 
 function searchImages() {
-  if ($("#search .query").val()!="") {
+  // if ($("#search .query").val()!="") {
     // post to server
     $("#search .status").text("Searching...");
-    cleaned = escapeHtml($("#search .query").val().trim());
+    var cleaned = escapeHtml($("#search .query").val().trim());
+    if (cleaned=="") cleaned = " ";
+    var xid = $("#frm-collections_xid").val();
     $.ajax({
       url: "/choose/"+cleaned,
       dataType: 'json',
-      data: {xid:$(".frm-xid").val()},
+      data: {xid:xid},
       success: function(data) {
         if (data.length>0) {
           // clean the array
@@ -1667,14 +1669,14 @@ function searchImages() {
         }
       }
     });
-  } else {
-    $("#search .status").text("Please type a keyword.");
-  }
+  // } else {
+  //   $("#search .status").text("Please type a keyword.");
+  // }
 }
 
 function initSearch() {
   $(document).keypress(function(e) {
-      if(e.keyCode == 13 && $("#search .query").val()!="") {
+      if(e.keyCode == 13) {
         searchImages();
       }
   });
