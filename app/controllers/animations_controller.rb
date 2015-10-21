@@ -13,7 +13,7 @@ class AnimationsController < ApplicationController
   def chooseSearch
     xid = 1
     # checkFlickrCookies()
-    xid = params[:xid].to_i if params[:xid] != nil
+    xid = params[:xid]
     @images = Image.findByKeyword(params[:keyword], xid)
     respond_to do |format|
       format.html { render :json => @images }

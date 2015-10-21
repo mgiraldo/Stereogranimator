@@ -21,15 +21,18 @@ initSearch();
 		<div id="stereoList" class="grid_12">
 			<div id="search" class="centered">
 				<%= text_field_tag 'keyword' ,'', {:class=>"query", :placeholder=>"Search originals by keyword"} %>
-				<%= submit_tag "FIND", :class=>"submit", :onclick => "javascript:searchImages();" %> or 
+				<%= submit_tag "FIND", :class=>"submit", :onclick => "javascript:searchImages();" %>
+	<% if (cookies[:flickr_username] == nil || cookies[:flickr_username] == "") || ((params[:noflickr] != nil && params[:noflickr] == "1") && cookies[:flickr_username] != nil && cookies[:flickr_username] != "") %>
+				in <%= select("frm-collections","xid",Image.galleryCollectionList[0..Image.galleryCollectionList.count-2].collect {|c| [ c[:name], c[:id] ] }, { :include_blank => "All collections", :selected => params[:xid] }) %>
+	<% end %>
+				or
 	<% if (cookies[:flickr_username] == nil || cookies[:flickr_username] == "") %>
-				<%= hidden_field_tag 'xid' ,'1', {:class=>"frm-xid"} %>
+				<%# hidden_field_tag 'xid' ,'1', {:class=>"frm-xid"} %>
 				<%= link_to "use your Flickr photos", @flickr_url %>
 	<% elsif (params[:noflickr] == nil || params[:noflickr] == "0") && (cookies[:flickr_username] == nil || cookies[:flickr_username] != "") %>
-				<%= hidden_field_tag 'xid' ,'-1', {:class=>"frm-xid"} %>
+				<%= hidden_field_tag 'xid' ,'-1', {:id => "frm-collections_xid", :class=>"frm-xid"} %>
 				<%= link_to "use Stereogranimator photos", "/create?noflickr=1" %>
 	<% elsif (params[:noflickr] != nil && params[:noflickr] == "1") && cookies[:flickr_username] != nil && cookies[:flickr_username] != "" %>
-				<%= hidden_field_tag 'xid' ,'1', {:class=>"frm-xid"} %>
 				<%= link_to "use your Flickr photos", "/create?noflickr=0" %>
 	<% else %>
 				<%= hidden_field_tag 'xid' ,'1', {:class=>"frm-xid"} %>

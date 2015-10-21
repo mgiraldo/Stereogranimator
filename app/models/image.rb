@@ -192,10 +192,12 @@ class Image < ActiveRecord::Base
   def self.findByKeyword(keyword, xid)
     r = []
 
+    xid = xid.to_i if xid != ''
+
     # standard internal image search
     # not to use if searching my flickr photos only
-    if xid != -1
-      local = Image.where('UPPER(title) LIKE ?', "%#{keyword.gsub(/\+/, ' ').upcase}%")
+    if xid == 0 || xid == ''
+      local = Image.where('UPPER(title) LIKE ?', "%#{keyword.gsub(/\+/, ' ').upcase}%").limit(500)
       local.each{|x|r.push({:id=>x[:digitalid],:owner=>"From: New York Public Library",:xid=>0,:url=>x.thumb_url,:metadata=>x[:title]})}
     end
     begin
@@ -210,23 +212,25 @@ class Image < ActiveRecord::Base
 
       if xid != -1
         flickr_sets.each do |set|
-          xid = set[:id]
-          name = set[:name]
-          external = externalData(xid)
-          userid = external[:owner_id]
-          searchparams.push({:name => name, :xid => xid, :userid => userid, :keyword => "stereograph #{keyword}"})
+          if xid == '' || (xid != '' && xid == set[:id])
+            sid = set[:id]
+            name = set[:name]
+            external = externalData(sid)
+            userid = external[:owner_id]
+            searchparams.push({:name => name, :xid => sid, :userid => userid, :keyword => "stereograph #{keyword}"})
+          end
         end
       else
         userid = "me"
         searchparams = [{:name => userid, :xid => -1, :userid => userid, :keyword => "#{keyword}"}]
       end
 
-      puts "#{searchparams}"
+      # puts "#{searchparams}"
 
       searchparams.each do |param|
-        info.push(:name => param[:name], :xid => param[:xid], :photos => flickr.photos.search(:content_type => 1, :media => "photos", :user_id => param[:userid],:text=>"#{param[:keyword]}",:tag_mode=>'all',:per_page=>20,:extras => extras))
+        info.push(:name => param[:name], :xid => param[:xid], :photos => flickr.photos.search(:content_type => 1, :media => "photos", :user_id => param[:userid],:text=>"#{param[:keyword]}",:tag_mode=>'all',:per_page=>100,:extras => extras))
         puts "param: #{param}"
-        puts "#{info}"
+        # puts "#{info}"
       end
 
     rescue
