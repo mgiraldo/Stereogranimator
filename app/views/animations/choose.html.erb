@@ -8,6 +8,14 @@ image_array.push(<%=raw @images["all"].map{|x|"{id:'#{x[:id]}',xid:#{x[:xid]},ur
 
 initSearch();
 
+window.onload = function () {
+	$("#frm-collections_xid").change(
+		function () {
+			searchImages();
+		}
+	);
+}
+
 </script>
 
 <% end %>
