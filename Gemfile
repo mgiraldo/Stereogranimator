@@ -46,6 +46,8 @@ gem 'twitter', '~> 5.0.0'
 # Use unicorn as the web server
 gem 'unicorn'
 
+gem 'newrelic_rpm'
+
 # Deploy with Capistrano
 # gem 'capistrano'
 
