@@ -85,6 +85,7 @@ GEM
     multi_json (1.10.1)
     multi_xml (0.4.4)
     multipart-post (2.0.0)
+    newrelic_rpm (3.15.0.314)
     nokogiri (1.5.2)
     pg (0.13.2)
     polyglot (0.3.3)
@@ -167,6 +168,7 @@ DEPENDENCIES
   json (~> 1.8)
   kaminari
   mail
+  newrelic_rpm
   pg
   rails (= 3.2.11)
   rmagick (~> 2.13.2)
