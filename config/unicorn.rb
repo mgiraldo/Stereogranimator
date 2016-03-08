@@ -12,3 +12,16 @@ before_fork do |server, worker|
   defined?(ActiveRecord::Base) and
     ActiveRecord::Base.connection.disconnect!
 end
+
+after_fork do |server, worker|
+
+  Signal.trap 'TERM' do
+    puts 'Unicorn worker intercepting TERM and doing nothing. Wait for master to sent QUIT'
+  end
+
+  defined?(ActiveRecord::Base) and
+    ActiveRecord::Base.establish_connection(
+      Rails.application.config.database_configuration[Rails.env]
+    )
+
+end
