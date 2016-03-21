@@ -131,12 +131,12 @@ class Image < ActiveRecord::Base
         end
       end
     else
-      # get 100 images from NYPL list
-      # dbimages = Image.where(:converted => 0).order('random()').limit(100)
-      dbimages = Image.order('converted ASC, random()').limit(100)
+      # get 200 images from NYPL list
+      # dbimages = Image.where(:converted => 0).order('random()').limit(200)
+      dbimages = Image.order('converted ASC, random()').limit(200)
       # check in case all images have been converted
       if dbimages.length == 0 || dbimages.length < 9
-        dbimages = Image.order('converted ASC, random()').limit(100)
+        dbimages = Image.order('converted ASC, random()').limit(200)
       end
       dbimages.each do |e|
         @images['all'].push({:id=>e.digitalid.upcase,:xid=>0,:url=>e.thumb_url,:owner=>"From: New York Public Library"})

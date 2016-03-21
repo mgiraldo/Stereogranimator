@@ -1,10 +1,10 @@
 class AboutController < ApplicationController
-  
-  caches_page :index, :expires_in => 2.minutes
-  
+
+  caches_action :index, :expires_in => 2.minutes, :cache_path => "home"
+
   def what
   end
-  
+
   def index
     @images = Animation.where("creator != ? AND external_id != -1", 'siege').order('created_at DESC').limit(6)
     @popular = Animation.where("creator != ? AND views > 300 AND external_id != -1", 'siege').order('random()').limit(6)
@@ -18,7 +18,7 @@ class AboutController < ApplicationController
 
   def animatedgif
   end
-  
+
   def anaglyph
   end
 
@@ -27,7 +27,7 @@ class AboutController < ApplicationController
 
   def credits
   end
-  
+
   def collection
   end
 end

@@ -1,6 +1,8 @@
 class AnimationsController < ApplicationController
   before_filter :require_user, :only => [:index, :edit, :destroy]
 
+  caches_action :choose, :expires_in => 12.hours, :cache_path => "choose"
+
   # GET /choose
   def choose
     # @get_from_flickr = false
