@@ -1,7 +1,7 @@
 class AnimationsController < ApplicationController
   before_filter :require_user, :only => [:index, :edit, :destroy]
 
-  caches_action :choose, :expires_in => 12.hours, :cache_path => "choose"
+  caches_action :choose, :expires_in => 12.hours, :cache_path => "chooser"
 
   # GET /choose
   def choose
