@@ -43,6 +43,8 @@ class Animation < ActiveRecord::Base
     if (url && self.filename==nil && self.digitalid!=nil)
       # do some image magick
       # first get each frame
+      # remove the https (flickr doesnt like heroku in https)
+      url = url.gsub(/https:/, 'http:')
       im = Magick::Image.read(url).first
 
       if (im.columns > 800)
