@@ -29,7 +29,8 @@ class Image < ActiveRecord::Base
     [
       {:id=>1, :set_id=>"72157604192771132", :owner_id=>"24029425@N06", :name=>"Boston Public Library", :baseurl=>"http://www.flickr.com/photos/boston_public_library/", :homeurl=>"http://www.bpl.org/"},
       {:id=>2, :set_id=>"72157649209402704", :owner_id=>"27784370@N05", :name=>"U.S. Geological Survey", :baseurl=>"http://www.flickr.com/photos/usgeologicalsurvey/", :homeurl=>"http://www.usgs.gov/"},
-      {:id=>3, :set_id=>"72157656753591086", :owner_id=>"49212622@N08", :name=>"New-York Historical Society", :baseurl=>"https://www.flickr.com/photos/n-yhs/", :homeurl=>"http://nyhistory.org/"}
+      {:id=>3, :set_id=>"72157656753591086", :owner_id=>"49212622@N08", :name=>"New-York Historical Society", :baseurl=>"https://www.flickr.com/photos/n-yhs/", :homeurl=>"http://nyhistory.org/"},
+      {:id=>4, :set_id=>"72157668179459936", :owner_id=>"49212622@N08", :name=>"The U.S. National Archives", :baseurl=>"https://www.flickr.com/photos/usnationalarchives/", :homeurl=>"http://www.archives.gov/research/"}
     ]
   end
 
