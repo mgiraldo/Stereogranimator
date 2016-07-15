@@ -32,7 +32,7 @@ class Image < ActiveRecord::Base
       {:id=>3, :set_id=>"72157656753591086", :owner_id=>"49212622@N08", :name=>"New-York Historical Society", :baseurl=>"https://www.flickr.com/photos/n-yhs/", :homeurl=>"http://nyhistory.org/"},
       {:id=>4, :set_id=>"72157668179459936", :owner_id=>"35740357@N03", :name=>"The U.S. National Archives", :baseurl=>"https://www.flickr.com/photos/usnationalarchives/", :homeurl=>"http://www.archives.gov/"},
       {:id=>5, :set_id=>"72157670190996085", :owner_id=>"36038586@N04", :name=>"DC Public Library", :baseurl=>"https://www.flickr.com/photos/dcplcommons/", :homeurl=>"http://digdc.dclibrary.org/"},
-      {:id=>6, :set_id=>"72157669989752660", :owner_id=>"33923764@N05", :name=>"Lehigh University Libraries", :baseurl=>"https://www.flickr.com/photos/33923764@N05/", :homeurl=>"http://library.lehigh.edu/collections/special_collections/"}
+      {:id=>6, :set_id=>"72157670368585022", :owner_id=>"143267113@N08", :name=>"Lehigh University Libraries", :baseurl=>"https://www.flickr.com/photos/143267113@N08/", :homeurl=>"http://library.lehigh.edu/collections/special_collections/"}
     ]
   end
 
