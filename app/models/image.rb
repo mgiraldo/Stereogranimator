@@ -33,7 +33,8 @@ class Image < ActiveRecord::Base
       {:id=>4, :set_id=>"72157668179459936", :owner_id=>"35740357@N03", :name=>"The U.S. National Archives", :baseurl=>"https://www.flickr.com/photos/usnationalarchives/", :homeurl=>"http://www.archives.gov/"},
       {:id=>5, :set_id=>"72157670190996085", :owner_id=>"36038586@N04", :name=>"DC Public Library", :baseurl=>"https://www.flickr.com/photos/dcplcommons/", :homeurl=>"http://digdc.dclibrary.org/"},
       {:id=>6, :set_id=>"72157670368585022", :owner_id=>"143267113@N08", :name=>"Lehigh University", :baseurl=>"https://www.flickr.com/photos/143267113@N08/", :homeurl=>"http://library.lehigh.edu/collections/special_collections/"},
-      {:id=>7, :set_id=>"72157671356764974", :owner_id=>"114839158@N08", :name=>"Fondazione del Monte di Bologna e Ravenna", :baseurl=>"https://www.flickr.com/photos/114839158@N08/", :homeurl=>"http://fondazionedelmonte.it/"}
+      {:id=>7, :set_id=>"72157671356764974", :owner_id=>"114839158@N08", :name=>"Fondazione del Monte di Bologna e Ravenna", :baseurl=>"https://www.flickr.com/photos/114839158@N08/", :homeurl=>"http://fondazionedelmonte.it/"},
+      {:id=>8, :set_id=>"72157680643552385", :owner_id=>"30835311@N07", :name=>"National Galleries of Scotland", :baseurl=>"https://www.flickr.com/photos/nationalgalleries/", :homeurl=>"https://www.nationalgalleries.org/"}
     ]
   end
 
