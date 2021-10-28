@@ -4,6 +4,8 @@ ruby '2.7.4'
 
 gem 'rails', '~> 5.2.6'
 
+gem 'sprockets', '~> 3.7.2'
+
 ## dependabot stuff
 gem "json", ">= 2.3.0"
 ## end dependabot stuff
@@ -25,7 +27,7 @@ gem 'kaminari'
 
 gem 'flickraw', '0.9.8'
 
-gem 'sass'
+gem 'sassc'
 gem 'sass-rails'
 gem 'coffee-rails'
 gem 'uglifier', '>= 1.0.3'

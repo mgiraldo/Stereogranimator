@@ -223,7 +223,7 @@ a:hover {
 }
 
 #mainContent {
-  background: $backimage repeat-x;/*asset-url('12_col.gif', image);*/
+  background: $backimage repeat-x;/*asset-url('12_col.gif');*/
   .showGrid {
     background: $gridimage;
   }
