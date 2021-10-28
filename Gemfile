@@ -14,7 +14,7 @@ gem 'authlogic'
 
 gem 'pg'
 
-gem "rmagick", :require => 'RMagick'
+gem "rmagick", :require => 'rmagick'
 
 gem 'actionpack-page_caching'
 gem 'actionpack-action_caching'
