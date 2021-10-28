@@ -1,3 +1,5 @@
+require 'open-uri'
+
 class ImagesController < ApplicationController
   # GET /getimagedata/digitalid
   def getimagedata
