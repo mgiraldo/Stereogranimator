@@ -3,9 +3,11 @@ class ImagesController < ApplicationController
   def getimagedata
     url = params[:url]
     # remove the https (flickr doesnt like heroku in https)
-    url.gsub!(/https:/, 'http:') if ENV['RAILS_ENV'] == 'production'
+    # url.gsub!(/https:/, 'http:') if ENV['RAILS_ENV'] == 'production'
     puts(url)
-    im = Magick::Image.read(url).first
+    urlim = URI.open(url)
+    im = Magick::ImageList.new
+    im.from_blob(urlim.read).first
     im.background_color = "none"
     # test for width (for HQ images)
     if (im.columns > 800)
