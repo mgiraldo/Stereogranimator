@@ -8,6 +8,7 @@ gem 'sprockets', '~> 3.7.2'
 
 ## dependabot stuff
 gem "json", ">= 2.3.0"
+gem "nokogiri", ">= 1.12.5"
 ## end dependabot stuff
 
 gem 'authlogic'
