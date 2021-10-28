@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 
-ruby '2.1.5'
+ruby '2.7.4'
 
-gem 'rails', '3.2.11'
+gem 'rails', '~> 5.2.6'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -11,13 +11,16 @@ gem 'authlogic'
 
 gem 'pg'
 
-gem 'json', '~> 1.8'
+gem 'json'
 
-gem "rmagick", '~> 2.13.2', :require => 'RMagick'
+gem "rmagick", :require => 'RMagick'
 
-gem 'aws-sdk'
+gem 'aws-sdk-v1'
 
-gem 'curb', '~> 0.7.15' #, :git => 'https://github.com/taf2/curb'
+gem 'actionpack-page_caching'
+gem 'actionpack-action_caching'
+
+# gem 'curb', '~> 0.7.15' #, :git => 'https://github.com/taf2/curb'
 
 # gem 'feedzirra', :git => 'https://github.com/pauldix/feedzirra.git'
 
@@ -25,16 +28,12 @@ gem 'kaminari'
 
 gem 'flickraw', '0.9.8'
 
-# Gems used only for assets and not required
-# in production environments by default.
-group :assets do
-  gem 'sass', '~> 3.4.5'
-  gem 'sass-rails',   '~> 3.2.6'
-  gem 'coffee-rails', '~> 3.2.1'
-  gem 'uglifier', '>= 1.0.3'
-end
+gem 'sass'
+gem 'sass-rails'
+gem 'coffee-rails'
+gem 'uglifier', '>= 1.0.3'
 
-gem 'jquery-rails'
+gem 'jquery-rails', '4.4.0'
 
 gem 'mail'
 

@@ -28,7 +28,7 @@ $choosebackground: rgba(0, 0, 0, 0.5);
 $basicborder: solid 1px $maincolor;
 
 // sprite url
-$bodyimage: asset-url('bodybackground.png', image);
-$backimage: asset-url('background.png', image);
-$sprites: asset-url('sprites.png', image);
-$gridimage: asset-url('12_col.gif', image);
+$bodyimage: asset-url('bodybackground.png');
+$backimage: asset-url('background.png');
+$sprites: asset-url('sprites.png');
+$gridimage: asset-url('12_col.gif');

@@ -1,4 +1,4 @@
-class CreateAnimations < ActiveRecord::Migration
+class CreateAnimations < ActiveRecord::Migration[4.2]
   def change
     create_table :animations do |t|
       t.string :creator

@@ -1,12 +1,12 @@
 <div id="footer">
 	<div class="container_12">
 		<p class="grid_12">
-		<%= link_to "Privacy Policy", "http://www.nypl.org/help/about-nypl/legal-notices/privacy-policy", :onclick=>"recordOutboundLink(this, 'Outbound Links', 'Privacy Policy');return false;" %> • 
-		<%= link_to "Rules and Regulations", "http://www.nypl.org/help/about-nypl/legal-notices/rules-and-regulations", :onclick=>"recordOutboundLink(this, 'Outbound Links', 'Rules and Regulations');return false;" %> • 
-		<%= link_to "Policy on Patron-Generated Web Content", "http://www.nypl.org/policy-patron-generated-web-content", :onclick=>"recordOutboundLink(this, 'Outbound Links', 'Patron-Generated Content');return false;" %> • 
-		<%= link_to "Website Terms and Conditions", "http://www.nypl.org/help/about-nypl/legal-notices/website-terms-and-conditions", :onclick=>"recordOutboundLink(this, 'Outbound Links', 'Terms and Conditions');return false;" %>
+		<%= link_to "Privacy Policy", "http://www.nypl.org/help/about-nypl/legal-notices/privacy-policy" %> • 
+		<%= link_to "Rules and Regulations", "http://www.nypl.org/help/about-nypl/legal-notices/rules-and-regulations" %> • 
+		<%= link_to "Policy on Patron-Generated Web Content", "http://www.nypl.org/policy-patron-generated-web-content" %> • 
+		<%= link_to "Website Terms and Conditions", "http://www.nypl.org/help/about-nypl/legal-notices/website-terms-and-conditions" %>
 		</p>
-		<p class="grid_12">A project of <%= link_to "NYPL Labs", "http://www.nypl.org/collections/labs", :onclick=>"recordOutboundLink(this, 'Outbound Links', 'NYPL Labs Site');return false;" %><br />With generous support from The Robert W. Wilson Charitable Trust<br /><%= link_to "Follow this project on Twitter! (@nypl_stereo)", "https://twitter.com/nypl_stereo", :onclick=>"recordOutboundLink(this, 'Outbound Links', 'Labs Twitter');return false;" %><br />
+		<p class="grid_12">A project of <%= link_to "NYPL Labs", "http://www.nypl.org/collections/labs" %><br />With generous support from The Robert W. Wilson Charitable Trust<br /><%= link_to "Follow this project on Twitter! (@nypl_stereo)", "https://twitter.com/nypl_stereo" %><br />
 		© 2011&mdash;<%= Date.today.year %> The New York Public Library</p>
 <%
 
@@ -25,22 +25,13 @@ redditurl = "http://www.reddit.com/submit?url=#{url}"
 					
 		<p class="grid_12">
 			Please help the library by sharing this site!<br />
-			<%= link_to "Twitter", twitterurl, {:onclick=>"recordOutboundLink(this, 'Outbound Links', 'Twitter');return false;",:class => "shTwitter", :title => "Share on Twitter"} %>
-			<%= link_to "Facebook", facebookurl, {:onclick=>"recordOutboundLink(this, 'Outbound Links', 'Facebook');return false;",:class => "shFacebook", :title => "Share on Facebook"} %>
-			<%= link_to "Tumblr", tumblrurl, {:onclick=>"recordOutboundLink(this, 'Outbound Links', 'Tumblr');return false;",:class => "shTumblr", :title => "Share on Tumblr"} %>
-			<%= link_to "Google+", googleurl, {:onclick=>"recordOutboundLink(this, 'Outbound Links', 'Google+');return false;",:class => "shPlus", :title => "Share on Google+"} %>
-			<%= link_to "Reddit", redditurl, {:onclick=>"recordOutboundLink(this, 'Outbound Links', 'Reddit');return false;",:class => "shReddit", :title => "Share on Reddit"} %>
+			<%= link_to "Twitter", twitterurl, {:class => "shTwitter", :title => "Share on Twitter"} %>
+			<%= link_to "Facebook", facebookurl, {:class => "shFacebook", :title => "Share on Facebook"} %>
+			<%= link_to "Tumblr", tumblrurl, {:class => "shTumblr", :title => "Share on Tumblr"} %>
+			<%= link_to "Google+", googleurl, {:class => "shPlus", :title => "Share on Google+"} %>
+			<%= link_to "Reddit", redditurl, {:class => "shReddit", :title => "Share on Reddit"} %>
 		</p>
 	</div>
 </div>
-<script type="text/javascript">
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-1420324-101']);
-  _gaq.push(['_trackPageview']);
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-</script>
+
 

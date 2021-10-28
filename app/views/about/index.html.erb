@@ -56,11 +56,8 @@
 		<div class="stats container_12">
 			<div class="grid_2">
 				<p><span class="big"><%= number_with_delimiter @collectioncount %></span>
-					<br /><%= link_to "collections", about_collection_url %>
-					<br /><%= link_to (image_tag "ext0_big.png"), "http://www.nypl.org", :title=>"New York Public Library" %>
-					<% Image.flickr_sets.each do |set| %>
-						<%= link_to (image_tag "ext#{set[:id]}_big.png"), "#{set[:homeurl]}", {:onclick=>"recordOutboundLink(this, 'Outbound Links', 'External Collection');return false;",:title=>"#{set[:name]}"} %>
-					<% end %>
+					<br />collections
+					<br /><%= link_to (image_tag "ext0_big.png"), "http://www.nypl.org", :title=>"New York Public Library" %> <%= link_to (image_tag "ext1_big.png"), "http://www.bpl.org", {:title=>"Boston Public Library"} %>
 				</p>
 			</div>
 			<div class="grid_2">
@@ -80,13 +77,12 @@
 		<div class="clear"></div>
 		<div class="container_12">
 			<h1 class="news grid_3"><span class="visuallyhidden">IN THE NEWS</span></h1>
-			<div class="homeNews">
-			<%= link_to (image_tag "n-atlantic.png", :class=>"grid_2"), "http://www.theatlantic.com/technology/archive/2012/01/the-new-york-public-librarys-animated-gif-maker/252070/", :onclick=>"recordOutboundLink(this, 'Outbound Links', 'News');return false;" %>
-			<%= link_to (image_tag "n-cnet.png", :class=>"grid_2"), "http://news.cnet.com/8301-17938_105-57367237-1/vintage-3d-wiggle-gifs-respun-with-librarys-cool-tool/", :onclick=>"recordOutboundLink(this, 'Outbound Links', 'News');return false;" %>
-			<%= link_to (image_tag "n-artinfo.png", :class=>"grid_2"), "http://blogs.artinfo.com/artintheair/2012/01/26/new-york-public-library-turns-its-19th-century-photo-collection-into-3d-animated-gifs/", :onclick=>"recordOutboundLink(this, 'Outbound Links', 'News');return false;" %>
-			<%= link_to (image_tag "n-creators.png", :class=>"grid_2"), "http://www.thecreatorsproject.com/blog/nypl-lets-you-make-gifs-from-turn-of-the-century-stereographs", :onclick=>"recordOutboundLink(this, 'Outbound Links', 'News');return false;" %>
-			<%= link_to (image_tag "n-nyt.png", :class=>"grid_2"), "http://artsbeat.blogs.nytimes.com/2012/01/26/3-d-it-yourself-thanks-to-new-library-site/", :onclick=>"recordOutboundLink(this, 'Outbound Links', 'News');return false;" %>
-			<%= link_to (image_tag "n-tpm.png", :class=>"grid_2"), "http://idealab.talkingpointsmemo.com/2012/01/new-york-public-library-launches-stereogranimator.php", :onclick=>"recordOutboundLink(this, 'Outbound Links', 'News');return false;" %>
-			</div>
+			<div class="clear"></div>
+			<%= link_to (image_tag "n-atlantic.png", :class=>"grid_2"), "http://www.theatlantic.com/technology/archive/2012/01/the-new-york-public-librarys-animated-gif-maker/252070/" %>
+			<%= link_to (image_tag "n-cnet.png", :class=>"grid_2"), "http://news.cnet.com/8301-17938_105-57367237-1/vintage-3d-wiggle-gifs-respun-with-librarys-cool-tool/" %>
+			<%= link_to (image_tag "n-artinfo.png", :class=>"grid_2"), "http://blogs.artinfo.com/artintheair/2012/01/26/new-york-public-library-turns-its-19th-century-photo-collection-into-3d-animated-gifs/" %>
+			<%= link_to (image_tag "n-creators.png", :class=>"grid_2"), "http://www.thecreatorsproject.com/blog/nypl-lets-you-make-gifs-from-turn-of-the-century-stereographs" %>
+			<%= link_to (image_tag "n-nyt.png", :class=>"grid_2"), "http://artsbeat.blogs.nytimes.com/2012/01/26/3-d-it-yourself-thanks-to-new-library-site/" %>
+			<%= link_to (image_tag "n-tpm.png", :class=>"grid_2"), "http://idealab.talkingpointsmemo.com/2012/01/new-york-public-library-launches-stereogranimator.php" %>
 		</div>
 

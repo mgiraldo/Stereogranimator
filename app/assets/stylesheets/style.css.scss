@@ -481,7 +481,7 @@ a:hover {
       box-shadow:0 0 5px #000;
     }
     .icon {
-      background-image: asset-url("ext1.png",image);
+      background-image: asset-url("ext1.png");
     }
     .over {
       background: $choosebackground;
@@ -650,7 +650,7 @@ a:hover {
     z-index: 1;
     width: 0;
     height: 0;
-    background: asset-url('instructions.png', image) no-repeat;
+    background: asset-url('instructions.png') no-repeat;
   }
   .showInstructions, .showInstructions:link {
     position: absolute;

@@ -1,7 +1,5 @@
 class AnimationsController < ApplicationController
-  before_filter :require_user, :only => [:index, :edit, :destroy]
-
-  # caches_action :choose, :expires_in => 12.hours, :cache_path => "chooser"
+  before_action :require_user, :only => [:index, :edit, :destroy]
 
   # GET /choose
   def choose
@@ -44,13 +42,13 @@ class AnimationsController < ApplicationController
   # GET /animations/1
   # GET /animations/1.json
   def show
-    @animation = Animation.find(params[:id])
+    @animation = Animation.where(params[:id])
     respond_to do |format|
       format.html { redirect_to "/view/#{@animation.id}" }
       format.json { render :json => @animation }
-      format.png { redirect_to @animation.aws_url }
-      format.jpeg { redirect_to @animation.aws_url }
-      format.gif { redirect_to @animation.aws_url }
+      format.png { redirect_to @animation.deriv_url }
+      format.jpeg { redirect_to @animation.deriv_url }
+      format.gif { redirect_to @animation.deriv_url }
     end
   end
 
@@ -250,7 +248,7 @@ The New York Public Library | 5th Ave & 42nd St. NY, NY 10018
 
   # GET /animations/1/edit
   def edit
-    @animation = Animation.find(params[:id])
+    @animation = Animation.where(params[:id])
   end
 
   # POST /animations
@@ -331,7 +329,7 @@ The New York Public Library | 5th Ave & 42nd St. NY, NY 10018
   # PUT /animations/1
   # PUT /animations/1.json
   def update
-    @animation = Animation.find(params[:id])
+    @animation = Animation.where(params[:id])
 
     respond_to do |format|
       if @animation.update_attributes(params[:animation])
@@ -347,7 +345,7 @@ The New York Public Library | 5th Ave & 42nd St. NY, NY 10018
   # DELETE /animations/1
   # DELETE /animations/1.json
   def destroy
-    @animation = Animation.find(params[:id])
+    @animation = Animation.where(params[:id])
     @animation.destroy
 
     respond_to do |format|

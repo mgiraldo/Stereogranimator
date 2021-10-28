@@ -6,7 +6,11 @@ namespace :stereo do
     Image.pushToDB
     puts "Finished!"
   end
-
+  task :restore => :environment do
+    puts "Recreating entire database"
+    Animation.recreateDB
+    puts "Finished!"
+  end
   task :revive => :environment do
     puts "Recreating entire animation dataset files"
     Animation.recreateAWS

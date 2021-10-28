@@ -8,11 +8,11 @@ class Image < ActiveRecord::Base
   end
 
   def thumb_url
-    "http://images.nypl.org/index.php?id=#{digitalid}&t=r"
+    "https://images.nypl.org/index.php?id=#{digitalid}&t=r"
   end
 
   def big_url
-    "http://images.nypl.org/index.php?id=#{digitalid}&t=w"
+    "https://images.nypl.org/index.php?id=#{digitalid}&t=w"
   end
 
   def self.galleryCollectionList
@@ -183,7 +183,7 @@ class Image < ActiveRecord::Base
   def self.pushToDB
     File.open("dennis_images.txt", 'r') {
       |f|
-      dec = ActiveSupport::JSON.decode f
+      dec = ActiveSupport::JSON.decode f.read
       dec['response']['docs'].each do |d|
         temp = Image.new(:digitalid => d['image_id'], :title => d['title'].to_s)
         if d['dc_coverage'] != nil

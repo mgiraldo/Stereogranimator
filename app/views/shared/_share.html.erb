@@ -26,12 +26,12 @@ pinteresturl = "http://pinterest.com/pin/create/button/?url=#{url}&media=#{src}&
 
 %>
 				<p>Share on:
-					<%= link_to "Twitter", twitterurl, {:onclick=>"recordOutboundLink(this, 'Outbound Links', 'Twitter');return false;",:class => "shTwitter", :title => "Share on Twitter"} %>
-					<%= link_to "Facebook", facebookurl, {:onclick=>"recordOutboundLink(this, 'Outbound Links', 'Facebook');return false;",:class => "shFacebook", :title => "Share on Facebook"} %>
-					<%= link_to "Tumblr", tumblrurl, {:onclick=>"recordOutboundLink(this, 'Outbound Links', 'Tumblr');return false;",:class => "shTumblr", :title => "Share on Tumblr"} %>
-					<%= link_to "Google+", googleurl, {:onclick=>"recordOutboundLink(this, 'Outbound Links', 'Google+');return false;",:class => "shPlus", :title => "Share on Google+"} %>
-					<%= link_to "Reddit", redditurl, {:onclick=>"recordOutboundLink(this, 'Outbound Links', 'Reddit');return false;",:class => "shReddit", :title => "Share on Reddit"} %>
-					<%= link_to "Pinterest", pinteresturl, {:onclick=>"recordOutboundLink(this, 'Outbound Links', 'Pinterest');return false;",:class => "shPinterest", :title => "Pin it!"} %>
+					<%= link_to "Twitter", twitterurl, {:class => "shTwitter", :title => "Share on Twitter"} %>
+					<%= link_to "Facebook", facebookurl, {:class => "shFacebook", :title => "Share on Facebook"} %>
+					<%= link_to "Tumblr", tumblrurl, {:class => "shTumblr", :title => "Share on Tumblr"} %>
+					<%= link_to "Google+", googleurl, {:class => "shPlus", :title => "Share on Google+"} %>
+					<%= link_to "Reddit", redditurl, {:class => "shReddit", :title => "Share on Reddit"} %>
+					<%= link_to "Pinterest", pinteresturl, {:class => "shPinterest", :title => "Pin it!"} %>
 				</p>
 
 				<p>

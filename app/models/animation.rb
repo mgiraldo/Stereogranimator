@@ -1,6 +1,8 @@
 class Animation < ActiveRecord::Base
   before_save :createImage
   before_destroy :checkImage
+  attr_accessor :skip_derivatives
+
   def checkImage
     did = self.digitalid
     xid = self.external_id
@@ -31,6 +33,7 @@ class Animation < ActiveRecord::Base
     self.save
   end
   def createImage
+    return if self.skip_derivatives
     url = self.url
     if self.external_id!=0
       external_photo = Image.flickrDataForPhoto(self.digitalid)
@@ -170,23 +173,23 @@ class Animation < ActiveRecord::Base
   end
 
   def thumb
-    "/view/" + id.to_s + (mode== "GIF" ? ".gif" : ".png") + "?n=1&m=t"
+    "/view/#{id.to_s}#{(mode=="GIF"?".gif":".png")}?n=1&m=t"
   end
-
+  
   def full
-    "/view/" + id.to_s + (mode== "GIF" ? ".gif" : ".png") + "?n=1"
+    "/view/#{id.to_s}#{(mode=="GIF"?".gif":".png")}?n=1"
   end
 
   def full_count
-    "/view/" + id.to_s + (mode== "GIF" ? ".gif" : ".png")
+    "/view/#{id.to_s}#{(mode=="GIF"?".gif":".png")}"
   end
 
-  def aws_url
-    "http://s3.amazonaws.com/stereo.nypl.org/#{filename}"
+  def deriv_url
+    "https://mauriciogiraldo.com/stereoderivs/#{filename}"
   end
-
-  def aws_thumb_url
-    "http://s3.amazonaws.com/stereo.nypl.org/t_#{filename}"
+  
+  def deriv_thumb_url
+    "https://mauriciogiraldo.com/stereoderivs/t_#{filename}"
   end
 
   def nypl_url
@@ -196,21 +199,54 @@ class Animation < ActiveRecord::Base
   def as_json(options = { })
       h = super(options)
       h[:url] = url
-      h[:aws_url]   = aws_url
-      h[:aws_thumb_url]   = aws_thumb_url
+      h[:deriv_url]   = deriv_url
+      h[:deriv_thumb_url]   = deriv_thumb_url
       h[:redirect] = "#{id}"
+      h
+  end
+
+
+
+
+  
+  
+  
+  def nypl_url
+    "http://digitalgallery.nypl.org/nypldigital/dgkeysearchdetail.cfm?imageID=#{digitalid.downcase}"
+  end
+  
+  def as_json(options = { })
+      h = super(options)
+      h[:url] = url
+      h[:deriv_url]   = deriv_url
+      h[:deriv_thumb_url]   = deriv_thumb_url
+      h[:redirect] = "/share/#{id}"
       h
   end
 
   def self.purgeBlacklisted
     # create an array with kosher images
-    white = Image.find(:all, :select=>"digitalid").map(&:digitalid)
+    white = Image.where(:all, :select=>"digitalid").map(&:digitalid)
     # select all animations not present in the images table
     black = Animation.where("digitalid NOT IN (?)", white)
     # destroy those animations
     black.destroy_all
   end
-
+  def self.recreateDB
+    animations = []
+    File.open("scrape/combined.json", 'r') {
+      |f|
+      dec = ActiveSupport::JSON.decode f.read
+      dec.each do |d|
+        a = ActiveSupport::HashWithIndifferentAccess.new(d)
+        a.except!(:url, :deriv_url, :deriv_thumb_url, :redirect)
+        puts "saving #{a[:id]}"
+        temp = Animation.new(a)
+        temp.skip_derivatives = true
+        temp.save!
+      end
+    }
+  end
   def self.recreateAWS
     #
     #
@@ -279,7 +315,5 @@ class Animation < ActiveRecord::Base
         animation.destroy
       end
     end
-    # delete if not working
-    puts "#{takedowns} files removed."
   end
 end

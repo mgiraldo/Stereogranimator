@@ -2,9 +2,9 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   helper :all
   helper_method :current_user_session, :current_user
-  before_filter :ensure_domain, :check_flickr
+  before_action :ensure_domain, :check_flickr
 
-  APP_DOMAIN = 'stereo.nypl.org'
+  APP_DOMAIN = 'stereo.mauriciogiraldo.com'
 
   def logout_flickr
     killFlickrSession()
@@ -86,8 +86,8 @@ class ApplicationController < ActionController::Base
 
   def ensure_domain
     if request.env['HTTP_HOST'] != APP_DOMAIN
-      # HTTP 301 is a permanent redirect
-      redirect_to "http://#{APP_DOMAIN}#{request.fullpath}", :status => 302 unless request.env['HTTP_HOST'] == 'stereostaging.herokuapp.com' || request.env['HTTP_HOST'] == 'stereostaging.heroku.com' || request.env['HTTP_HOST'] == 'localhost:3000' || request.env['HTTP_HOST'].include?('xip.io:3000')
+      # HTTP 301 is a "permanent" redirect
+      redirect_to "http://#{APP_DOMAIN}#{request.fullpath}", :status => 302 unless request.env['HTTP_HOST'] == 'localhost:3001' || request.env['HTTP_HOST'] == 'localhost:3000'
     end
   end
   

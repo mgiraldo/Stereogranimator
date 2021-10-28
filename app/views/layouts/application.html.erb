@@ -2,25 +2,6 @@
 <html>
 <head>
 
-<script type="text/javascript">
-  TypekitConfig = {
-    kitId: 'vvr4jfd'
-  };
-  (function() {
-    var tk = document.createElement('script');
-    tk.src = '//use.typekit.com/' + TypekitConfig.kitId + '.js';
-    tk.type = 'text/javascript';
-    tk.async = 'true';
-    tk.onload = tk.onreadystatechange = function() {
-      var rs = this.readyState;
-      if (rs && rs != 'complete' && rs != 'loaded') return;
-      try { Typekit.load(TypekitConfig); } catch (e) {}
-    };
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(tk, s);
-  })();
-</script>
-
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title><%= yield :title %>Stereogranimator</title>
 
@@ -52,11 +33,5 @@
 <%= yield %>
 	</div>
 <%= render "shared/footer" %>
-<script type="text/javascript">
-  function recordOutboundLink(link, category, action) {
-    _gat._getTrackerByName()._trackEvent(category, action);
-    setTimeout('document.location = "' + link.href + '"', 100);
-  }
-</script>
 </body>
 </html>

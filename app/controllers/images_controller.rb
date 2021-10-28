@@ -1,10 +1,9 @@
 class ImagesController < ApplicationController
   # GET /getimagedata/digitalid
   def getimagedata
-    url = params[:url]
+    url = CGI.unescape(params[:url])
     # remove the https (flickr doesnt like heroku in https)
     url = url.gsub(/https:/, 'http:')
-    puts url
     im = Magick::Image.read(url).first
     im.background_color = "none"
     # test for width (for HQ images)
@@ -23,10 +22,10 @@ class ImagesController < ApplicationController
       "height" => im.rows,
       "data" => "data:image\/jpeg;base64," + str
     }
-#    http://images.nypl.org/index.php?id="+index+"&t=w
+#    https://images.nypl.org/index.php?id="+index+"&t=w
     respond_to do |format|
-      format.html { render :json => "#{params[:callback]}(#{output.to_json});" }
-      format.jpeg { render :text => im.to_blob{self.format = "JPEG"}, :status => 200, :type => 'image/jpg' }
+      format.json { render :json => output }
+      format.jpeg { render :plain => im.to_blob{self.format = "JPEG"}, :status => 200, :type => 'image/jpg' }
     end
   end
 

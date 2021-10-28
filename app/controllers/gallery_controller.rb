@@ -43,7 +43,7 @@ class GalleryController < ApplicationController
   def view
     @animation = Animation.find(params[:id])
     count = true
-    redirect = @animation.aws_url
+    redirect = @animation.deriv_url
     # when showing the image within the site itself
     # we dont count that
     if params[:n]
@@ -57,7 +57,7 @@ class GalleryController < ApplicationController
     end
     # when showing the thumb
     if params[:m]=="t"
-      redirect = @animation.aws_thumb_url
+      redirect = @animation.deriv_thumb_url
     end
     respond_to do |format|
       format.html # view.html.erb
