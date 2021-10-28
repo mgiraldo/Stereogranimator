@@ -4,7 +4,9 @@ class ImagesController < ApplicationController
     url = params[:url]
     # remove the https (flickr doesnt like heroku in https)
     # url.gsub!(/https:/, 'http:') if ENV['RAILS_ENV'] == 'production'
+    puts("\n")
     puts(url)
+    puts("\n")
     im = Magick::Image.read(url).first
     im.background_color = "none"
     # test for width (for HQ images)
