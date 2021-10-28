@@ -1461,71 +1461,73 @@ function drawAnaglyph () {
 }
 
 function loadPhoto(str) {
-  index = str;
-  //console.log("photo");
-  img.onload = handleImageLoad;
-  img.onerror = handleImageError;
-  imgurl = "http://images.nypl.org/index.php?id="+index+"&t=w";
-  if (xid!=0) {
-    $.ajax({
-      url: "/s/v",
-      dataType: 'json',
-      data: {id:index},
-      success: function(data) {
-        if(data!=false) {
-          imgurl = data;
-          img = new Image();
-          img.src = "/getimagedata.jpeg?r="+imageRotation+"&url="+escape(imgurl);
-          getImageFromServer();
-        } else {
-          alert("Image not in allowed list. Sorry :(");
-        }
-      },
-      statusCode: {
-        404: function() {
-          alert('Not found error (404)');
-        },
-        429: function() {
-          alert('Too many requests (429)');
-        },
-        500: function() {
-          alert('Internal server error (500)');
-        }
-      }
-    });
-  } else {
-    img = new Image();
-    img.src = imgurl;
-    getImageFromServer();
-  }
+	index = str;
+	//console.log("photo");
+	img.onload = handleImageLoad;
+	img.onerror = handleImageError;
+	imgurl = "https://images.nypl.org/index.php?id="+index+"&t=w";
+	if (xid!=0) {
+		$.ajax({
+			url: "/s/v",
+			dataType: 'json',
+			data: {id:index},
+			success: function(data) {
+				if(data!=false) {
+					imgurl = data;
+					img = new Image();
+					img.src = "/getimagedata.jpeg?r="+imageRotation+"&url="+escape(imgurl);
+					getImageFromServer();
+				} else {
+					alert("Image not in allowed list. Sorry :(");
+				}
+			},
+			statusCode: {
+			  404: function() {
+				  alert('Not found error (404)');
+			  },
+			  429: function() {
+				  alert('Too many requests (429)');
+			  },
+			  500: function() {
+				  alert('Internal server error (500)');
+			  }
+			}
+		});
+	} else {
+		img = new Image();
+		img.src = imgurl;
+		getImageFromServer();
+	}
 }
 
 function getImageFromServer() {
-  var url = "/getimagedata.jpeg?r="+imageRotation+"&url="+escape(imgurl);
-  var p = document.getElementById("previewGIF");
-  p.style.background = "url('"+url+"') no-repeat -10000px -10000px";
-  // for the anaglyph
-  /**/
-  $.getImageData({
-      url: imgurl,
-      server: "/getimagedata/?r="+imageRotation+"&callback=?",
-      success: function(image){
-      //console.log(image);
-      // Set up the canvas
-      ctx3D = resultcanvas.getContext('2d');
-      ctxbase = processcanvas.getContext('2d');
-
-      // Draw the image on to the BASE canvas
-      ctxbase.drawImage(image, 0, 0, image.width, image.height);
-      handleImageLoad(image);
-      },
-      error: function(xhr, text_status){
-        alert("error loading image");
-        // Handle your error here
-        //console.log("Could not load image");
+	var url = "/getimagedata.jpeg?r="+imageRotation+"&url="+escape(imgurl);
+	var p = document.getElementById("previewGIF");
+	p.style.background = "url('"+url+"') no-repeat -10000px -10000px";
+	// for the anaglyph
+  $.ajax({
+    url: "/getimagedata.json/?r="+imageRotation+"&url="+escape(imgurl),
+    dataType: "json",
+    success: function(image){
+      var img = new Image();
+			// Set up the canvas
+			ctx3D = resultcanvas.getContext('2d');
+			ctxbase = processcanvas.getContext('2d');
+			
+			// Draw the image on to the BASE canvas
+      img.onload = function() {
+        ctxbase.drawImage(this, 0, 0, image.width, image.height);
       }
+      img.src = image.data;
+			handleImageLoad();
+		  },
+		  error: function(xhr, text_status){
+        // console.log(xhr, text_status);
+        alert("error loading image");
+		    // Handle your error here
+		    //console.log("Could not load image");
+		  }
   });
-  /**/
 }
 
 function changeSpeed(s) {
@@ -1547,93 +1549,75 @@ function changeSpeed(s) {
 }
 
 function generate() {
-  if (previewActive) {
-    //console.log("generating...");
-    document.getElementById("btnNext").disabled = true;
-    document.getElementById("btnNext").onclick = {};
-    $("#btnNext").replaceWith("<div class=\"generator\">GENERATING...</div>");
-    // send google analytics
-    _gaq.push(['_trackEvent', 'Granimations', mode, "HTML"]);
-    // post to server
-    $.ajax({
-      url: "/animations/createJson.json",
-      dataType: 'json',
-      data: {
-        x1:Math.round(sq1x-OFFSET),
-        y1:Math.round(sq1y),
-        x2:Math.round(sq2x-OFFSET),
-        y2:Math.round(sq2y),
-        height:Math.round(vsize),
-        width:Math.round(hsize),
-        delay:Math.round(speed),
-        digitalid:index,
-        rotation:imageRotation,
-        mode:mode,
-        xid:xid,
-        creator:"mga"
-          },
-      success: function(data) {
-        if (!is_publiceye) {
-          window.location.href = "/share/"+data.redirect;
-        } else {
-          window.location.href = "/share_pe/"+data.redirect;
-        }
-      },
-      statusCode: {
-        404: function() {
-          alert('Photo not found error (404)');
-        },
-        429: function() {
-          alert('Too many requests (429)');
-        },
-        500: function() {
-          alert('Internal server error (500)');
-        }
-      }
-    });
-  }
+	if (previewActive) {
+		//console.log("generating...");
+		document.getElementById("btnNext").disabled = true;
+		document.getElementById("btnNext").onclick = {};
+		$("#btnNext").replaceWith("<div class=\"generator\">GENERATING...</div>");
+		// post to server
+		$.ajax({
+			url: "/animations/createJson.json",
+			dataType: 'json',
+			data: {
+				x1:Math.round(sq1x-OFFSET),
+				y1:Math.round(sq1y),
+				x2:Math.round(sq2x-OFFSET),
+				y2:Math.round(sq2y),
+				height:Math.round(vsize),
+				width:Math.round(hsize),
+				delay:Math.round(speed),
+				digitalid:index,
+				rotation:imageRotation,
+				mode:mode,
+				xid:xid,
+				creator:"mga"
+					},
+			success: function(data) {
+				if (data.redirect) {
+					window.location.href = data.redirect;
+				} else {
+					//console.log("cannot redirect: " + data);
+				}
+			},
+			statusCode: {
+			  404: function() {
+				  alert('Photo not found error (404)');
+			  },
+			  429: function() {
+				  alert('Too many requests (429)');
+			  },
+			  500: function() {
+				  alert('Internal server error (500)');
+			  }
+			}
+		});
+	}
 }
 
 function generateFromFlash(_sq1x,_sq1y,_sq2x,_sq2y,_hsize,_vsize,_speed,_index,_mode) {
-  // send google analytics
-  _gaq.push(['_trackEvent', 'Granimations', _mode, "FLASH"]);
-  $.ajax({
-    url: "/animations/createJson/"+Math.round(_sq1x)+"/"+Math.round(_sq1y)+"/"+Math.round(_sq2x)+"/"+Math.round(_sq2y)+"/"+Math.round(_hsize)+"/"+Math.round(_vsize)+"/"+Math.round(_speed)+"/"+_index+"/"+_mode+"/mga.json?xid="+xid,
-    dataType: 'json',
-    data: null,
-    success: function(data) {
-      if (!is_publiceye) {
-        window.location.href = "/share/"+data.redirect;
-      } else {
-        window.location.href = "/share_pe/"+data.redirect;
-      }
-    },
-    statusCode: {
-      404: function() {
-        alert('Photo not found error (404)');
-      },
-      429: function() {
-        alert('Too many requests (429)');
-      },
-      500: function() {
-        alert('Internal server error (500)');
-      }
-    }
-  });
-}
-
-function escapeHtml(text) {
-  var map = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    ' ': '+',
-    '.': '',
-    "'": '&#039;'
-  };
-
-  return text.replace(/[&<>"' \.]/g, function(m) { return map[m]; });
+	$.ajax({
+		url: "/animations/createJson/"+Math.round(_sq1x)+"/"+Math.round(_sq1y)+"/"+Math.round(_sq2x)+"/"+Math.round(_sq2y)+"/"+Math.round(_hsize)+"/"+Math.round(_vsize)+"/"+Math.round(_speed)+"/"+_index+"/"+_mode+"/mga.json?xid="+xid,
+		dataType: 'json',
+		data: null,
+		success: function(data) {
+			if (data.redirect) {
+				window.location.href = data.redirect;
+			} else {
+				//console.log("cannot redirect: " + data);
+			}
+		},
+		statusCode: {
+		  404: function() {
+			  alert('Photo not found error (404)');
+		  },
+		  429: function() {
+			  alert('Too many requests (429)');
+		  },
+		  500: function() {
+			  alert('Internal server error (500)');
+		  }
+		}
+	});
 }
 
 function searchImages() {
@@ -1740,14 +1724,14 @@ function clearImages() {
   }
 }
 
-function handleImageLoad(e) {
-  imagesLoaded++;
-  // this is a hack since only should be called once
-  if (imagesLoaded==1) {
-    run();
-    addInteractivity();
-    update = true;
-  }
+function handleImageLoad() {
+	imagesLoaded++;
+	// this is a hack since only should be called once
+	if (imagesLoaded==1) {
+		run();
+		addInteractivity();
+		update = true;
+	}
 }
 
 //called if there is an error loading the image (usually due to a 404)

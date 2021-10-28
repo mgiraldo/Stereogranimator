@@ -42,7 +42,7 @@ class AnimationsController < ApplicationController
   # GET /animations/1
   # GET /animations/1.json
   def show
-    @animation = Animation.where(params[:id])
+    @animation = Animation.find(params[:id])
     respond_to do |format|
       format.html { redirect_to "/view/#{@animation.id}" }
       format.json { render :json => @animation }
@@ -248,7 +248,7 @@ The New York Public Library | 5th Ave & 42nd St. NY, NY 10018
 
   # GET /animations/1/edit
   def edit
-    @animation = Animation.where(params[:id])
+    @animation = Animation.find(params[:id])
   end
 
   # POST /animations
@@ -329,7 +329,7 @@ The New York Public Library | 5th Ave & 42nd St. NY, NY 10018
   # PUT /animations/1
   # PUT /animations/1.json
   def update
-    @animation = Animation.where(params[:id])
+    @animation = Animation.find(params[:id])
 
     respond_to do |format|
       if @animation.update_attributes(params[:animation])
@@ -345,7 +345,7 @@ The New York Public Library | 5th Ave & 42nd St. NY, NY 10018
   # DELETE /animations/1
   # DELETE /animations/1.json
   def destroy
-    @animation = Animation.where(params[:id])
+    @animation = Animation.find(params[:id])
     @animation.destroy
 
     respond_to do |format|

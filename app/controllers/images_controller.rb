@@ -2,8 +2,6 @@ class ImagesController < ApplicationController
   # GET /getimagedata/digitalid
   def getimagedata
     url = CGI.unescape(params[:url])
-    # remove the https (flickr doesnt like heroku in https)
-    url = url.gsub(/https:/, 'http:')
     im = Magick::Image.read(url).first
     im.background_color = "none"
     # test for width (for HQ images)

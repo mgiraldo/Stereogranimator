@@ -185,11 +185,11 @@ class Animation < ActiveRecord::Base
   end
 
   def deriv_url
-    "https://mauriciogiraldo.com/stereoderivs/#{filename}"
+    "http://s3.amazonaws.com/stereo.nypl.org/#{filename}" # "https://mauriciogiraldo.com/stereoderivs/#{filename}"
   end
   
   def deriv_thumb_url
-    "https://mauriciogiraldo.com/stereoderivs/t_#{filename}"
+    "http://s3.amazonaws.com/stereo.nypl.org/t_#{filename}" # "https://mauriciogiraldo.com/stereoderivs/t_#{filename}"
   end
 
   def nypl_url
