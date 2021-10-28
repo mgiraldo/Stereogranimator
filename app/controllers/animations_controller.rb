@@ -200,26 +200,6 @@ The New York Public Library | 5th Ave & 42nd St. NY, NY 10018
           body "#{html}"
         end
       end
-    elsif params[:name] =~ /^([a-zA-Z](_?[a-zA-Z0-9]+)*_?|_([a-zA-Z0-9]+_?)*)$/ || params[:name] =~ /^@([a-zA-Z](_?[a-zA-Z0-9]+)*_?|_([a-zA-Z0-9]+_?)*)$/
-      # puts "yes tweet: #{params[:name]} contains @? #{params[:name].include? '@'}"
-      username = params[:name]
-      username = "@#{username}" unless username.include?("@")
-      verified = false
-      if username != "@nypl_stereo"
-        verify_name = username[1..-1]
-        begin
-          user = $twitter_client.user(verify_name)
-          verified = true
-        rescue Twitter::Error::NotFound
-          verified = false
-        end
-      else
-        verified = true
-      end
-      update = "Check out this image: #{url}"
-      update += " by #{username}" unless username == "@nypl_stereo" || !verified
-      update += "\nCreated at @NYPL's Public Eye: 175 Years of Sharing Photography"
-      $twitter_client.update(update)
     end
 
     respond_to do |format|

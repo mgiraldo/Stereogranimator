@@ -4,18 +4,17 @@ ruby '2.7.4'
 
 gem 'rails', '~> 5.2.6'
 
-# Bundle edge Rails instead:
-# gem 'rails',     :git => 'git://github.com/rails/rails.git'
+## dependabot stuff
+gem "nokogiri", ">= 1.12.5"
+gem "json", ">= 2.3.0"
+gem "http", ">= 0.7.3"
+## end dependabot stuff
 
 gem 'authlogic'
 
 gem 'pg'
 
-gem 'json'
-
 gem "rmagick", :require => 'RMagick'
-
-gem 'aws-sdk-v1'
 
 gem 'actionpack-page_caching'
 gem 'actionpack-action_caching'
@@ -36,8 +35,6 @@ gem 'uglifier', '>= 1.0.3'
 gem 'jquery-rails', '4.4.0'
 
 gem 'mail'
-
-gem 'twitter', '~> 5.0.0'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

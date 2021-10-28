@@ -8,14 +8,14 @@ class Animation < ActiveRecord::Base
     xid = self.external_id
 
     # delete from Amazon S3
-    if self.filename != nil && self.filename != ""
-      s3 = AWS::S3.new
-      bucket = s3.buckets['stereo.nypl.org']
-      obj = bucket.objects[self.filename]
-      obj.delete()
-      obj = bucket.objects["t_" + self.filename]
-      obj.delete()
-    end
+    # if self.filename != nil && self.filename != ""
+    #   s3 = AWS::S3.new
+    #   bucket = s3.buckets['stereo.nypl.org']
+    #   obj = bucket.objects[self.filename]
+    #   obj.delete()
+    #   obj = bucket.objects["t_" + self.filename]
+    #   obj.delete()
+    # end
 
     @derivatives = Animation.where(:digitalid => did, :external_id => xid)
 
@@ -108,12 +108,12 @@ class Animation < ActiveRecord::Base
       thumb.write("#{format}:#{Rails.root}/tmp/#{thumbname}") { self.quality = 100 }
 
       # upload to Amazon S3
-      s3 = AWS::S3.new
-      bucket = s3.buckets['stereo.nypl.org']
-      obj = bucket.objects[self.filename]
-      obj.write(:file => "#{Rails.root}/tmp/#{self.filename}", :acl => :public_read, :metadata => { 'description' => URI.escape(self.metadata), 'photo_from' => 'NYPL Labs Stereogranimator' })
-      obj = bucket.objects[thumbname]
-      obj.write(:file => "#{Rails.root}/tmp/#{thumbname}", :acl => :public_read, :metadata => { 'description' => URI.escape(self.metadata), 'photo_from' => 'NYPL Labs Stereogranimator' })
+      # s3 = AWS::S3.new
+      # bucket = s3.buckets['stereo.nypl.org']
+      # obj = bucket.objects[self.filename]
+      # obj.write(:file => "#{Rails.root}/tmp/#{self.filename}", :acl => :public_read, :metadata => { 'description' => URI.escape(self.metadata), 'photo_from' => 'NYPL Labs Stereogranimator' })
+      # obj = bucket.objects[thumbname]
+      # obj.write(:file => "#{Rails.root}/tmp/#{thumbname}", :acl => :public_read, :metadata => { 'description' => URI.escape(self.metadata), 'photo_from' => 'NYPL Labs Stereogranimator' })
     end
   end
 
@@ -269,28 +269,28 @@ class Animation < ActiveRecord::Base
     totalanaf = 0
     totalanat = 0
 
-    s3 = AWS::S3.new
-    bucket = s3.buckets['stereo.nypl.org']
-    bucket.objects.each do |ob|
-      tmpurl = ob.public_url.to_s
-      if tmpurl.index("gif") != nil
-        puts "GIF"
-        countgif+=1
-        if tmpurl.index("t_") != nil
-          totalgift += ob.content_length
-        else
-          totalgiff += ob.content_length
-        end
-      else
-        puts "PNG/JPEG"
-        countana+=1
-        if tmpurl.index("t_") != nil
-          totalanat += ob.content_length
-        else
-          totalanaf += ob.content_length
-        end
-      end
-    end
+    # s3 = AWS::S3.new
+    # bucket = s3.buckets['stereo.nypl.org']
+    # bucket.objects.each do |ob|
+    #   tmpurl = ob.public_url.to_s
+    #   if tmpurl.index("gif") != nil
+    #     puts "GIF"
+    #     countgif+=1
+    #     if tmpurl.index("t_") != nil
+    #       totalgift += ob.content_length
+    #     else
+    #       totalgiff += ob.content_length
+    #     end
+    #   else
+    #     puts "PNG/JPEG"
+    #     countana+=1
+    #     if tmpurl.index("t_") != nil
+    #       totalanat += ob.content_length
+    #     else
+    #       totalanaf += ob.content_length
+    #     end
+    #   end
+    # end
     if countgif > 0
       puts "Average GIF big size: #{(totalgiff/countgif).round.to_s}"
       puts "Average GIF thumb size: #{(totalgift/countgif).round.to_s}"
