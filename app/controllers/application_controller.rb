@@ -87,10 +87,10 @@ class ApplicationController < ActionController::Base
   def ensure_domain
     if request.env['HTTP_HOST'] != APP_DOMAIN
       # HTTP 301 is a "permanent" redirect
-      redirect_to "http://#{APP_DOMAIN}#{request.fullpath}", :status => 302 unless request.env['HTTP_HOST'] == 'localhost:3001' || request.env['HTTP_HOST'] == 'localhost:3000'
+      redirect_to "http://#{APP_DOMAIN}#{request.fullpath}", :status => 302 unless request.env['HTTP_HOST'] == 'localhost:3001' || request.env['HTTP_HOST'] == 'localhost:3000' || request.env['HTTP_HOST'] == 'stereomga.herokuapp.com'
     end
   end
-  
+
   private
     def current_user_session
       return @current_user_session if defined?(@current_user_session)
