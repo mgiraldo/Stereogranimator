@@ -5,9 +5,7 @@ ruby '2.7.4'
 gem 'rails', '~> 5.2.6'
 
 ## dependabot stuff
-gem "nokogiri", ">= 1.12.5"
 gem "json", ">= 2.3.0"
-gem "http", ">= 0.7.3"
 ## end dependabot stuff
 
 gem 'authlogic'

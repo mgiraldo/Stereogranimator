@@ -1,5 +1,5 @@
 			<div class="detail grid_5">
-				<%= image_tag(@animation.full,{:alt=>@animation.metadata}) %>
+				<%= image_tag(@animation.full, {:alt=>@animation.metadata}) %>
 				<div class="stats">
 					<p>
 						<em><%= @animation.metadata %></em><br />
@@ -8,7 +8,6 @@
 						This is an <%= @animation.mode == "GIF" ? "Animated GIF" : "Anaglyph" %> (<%= @animation.mode == "GIF" ? (link_to "what is that?", :controller=>"about", :action=>"animatedgif") : (link_to "what is that?", :controller=>"about", :action=>"anaglyph") %>)<br />
 						Created <%= time_ago_in_words(@animation.created_at) %> ago<br />
 						<%= pluralize(number_with_delimiter(@animation.views), "view") %>
-			<% end %>
 					</p>
 				</div>
 			</div>

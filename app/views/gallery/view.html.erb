@@ -13,12 +13,12 @@ embed_url = url_for(:controller=>"gallery",:action=>"view",:id=>@animation.id,:o
 <meta property="og:image" content="<%= "#{request.protocol}#{request.host_with_port}#{@animation.full_count}" %>" />
 <link rel="image_src" href="<%= "#{request.protocol}#{request.host_with_port}#{@animation.full_count}" %>" />
 
-<meta name="twitter:card" content="photo">
-<meta name="twitter:url" content="<%= embed_url %>">
-<meta name="twitter:title" content="<%= "#{@strtype} in the NYPL Labs Stereogranimator" %>">
-<meta name="twitter:description" content="<%= @animation.metadata %>">
-<meta name="twitter:image" content="<%= embed_img_src %>">
-<meta name="twitter:creator" content="@nypl_stereo">
+<meta name="twitter:card" content="photo" />
+<meta name="twitter:url" content="<%= embed_url %>" />
+<meta name="twitter:title" content="<%= "#{@strtype} in the NYPL Labs Stereogranimator" %>" />
+<meta name="twitter:description" content="<%= @animation.metadata %>" />
+<meta name="twitter:image" content="<%= embed_img_src %>" />
+<meta name="twitter:creator" content="@nypl_stereo" />
 <% end %>
 <% content_for :title do %><%= "#{@strtype} : " %>Gallery : <% end %>
 		<div class="container_12">
