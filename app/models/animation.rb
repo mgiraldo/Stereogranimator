@@ -185,36 +185,17 @@ class Animation < ActiveRecord::Base
   end
 
   def deriv_url
-    "http://s3.amazonaws.com/stereo.nypl.org/#{filename}" # "https://mauriciogiraldo.com/stereoderivs/#{filename}"
+    "https://mauriciogiraldo.com/stereoderivs/#{filename}"
   end
   
   def deriv_thumb_url
-    "http://s3.amazonaws.com/stereo.nypl.org/t_#{filename}" # "https://mauriciogiraldo.com/stereoderivs/t_#{filename}"
+    "https://mauriciogiraldo.com/stereoderivs/t_#{filename}"
   end
 
   def nypl_url
     "http://digitalcollections.nypl.org/items/image_id/#{digitalid.downcase}"
   end
 
-  def as_json(options = { })
-      h = super(options)
-      h[:url] = url
-      h[:deriv_url]   = deriv_url
-      h[:deriv_thumb_url]   = deriv_thumb_url
-      h[:redirect] = "#{id}"
-      h
-  end
-
-
-
-
-  
-  
-  
-  def nypl_url
-    "http://digitalgallery.nypl.org/nypldigital/dgkeysearchdetail.cfm?imageID=#{digitalid.downcase}"
-  end
-  
   def as_json(options = { })
       h = super(options)
       h[:url] = url
@@ -232,6 +213,7 @@ class Animation < ActiveRecord::Base
     # destroy those animations
     black.destroy_all
   end
+
   def self.recreateDB
     animations = []
     File.open("scrape/combined.json", 'r') {
@@ -247,6 +229,7 @@ class Animation < ActiveRecord::Base
       end
     }
   end
+
   def self.recreateAWS
     #
     #
