@@ -1620,6 +1620,10 @@ function generateFromFlash(_sq1x,_sq1y,_sq2x,_sq2y,_hsize,_vsize,_speed,_index,_
 	});
 }
 
+function escapeHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
 function searchImages() {
   // if ($("#search .query").val()!="") {
     // post to server
