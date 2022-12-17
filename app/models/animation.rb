@@ -9,7 +9,7 @@ class Animation < ActiveRecord::Base
 
     # delete from Amazon S3
     # if self.filename != nil && self.filename != ""
-    #   s3 = AWS::S3.new
+    #   s3 = Aws::S3::Client.new
     #   bucket = s3.buckets['stereo.nypl.org']
     #   obj = bucket.objects[self.filename]
     #   obj.delete()
@@ -48,6 +48,8 @@ class Animation < ActiveRecord::Base
       # first get each frame
       # remove the https (flickr doesnt like heroku in https)
       url = url.gsub(/https:/, 'http:')
+      url = url.gsub(/http:\/\/images.nypl.org/, 'https://images.nypl.org')
+
       im = Magick::Image.read(url).first
 
       if (im.columns > 800)
@@ -100,7 +102,7 @@ class Animation < ActiveRecord::Base
         thumb = final.resize_to_fill(140,140)
       end
 
-      format = self.mode=="GIF"?"gif":"png"
+      format = self.mode == "GIF" ? "gif" : "png"
       # gotta packet the file
       final.write("#{format}:#{Rails.root}/tmp/#{self.filename}") { self.quality = 100 }
       # and the thumb
@@ -108,9 +110,33 @@ class Animation < ActiveRecord::Base
       thumb.write("#{format}:#{Rails.root}/tmp/#{thumbname}") { self.quality = 100 }
 
       # upload to Amazon S3
-      # s3 = AWS::S3.new
-      # bucket = s3.buckets['stereo.nypl.org']
-      # obj = bucket.objects[self.filename]
+      s3 = Aws::S3::Client.new(
+        access_key_id: ENV['S3_KEY'],
+        secret_access_key: ENV['S3_SECRET'],
+        region: 'us-west-001',
+        endpoint: 'https://s3.us-west-001.backblazeb2.com'
+      )
+
+      mime_type = self.mode == "GIF" ? "image/gif" : "image/png"
+
+      File.open("#{Rails.root}/tmp/#{self.filename}", "rb") do |file|
+        s3.put_object(
+          bucket: 'stereoderivs',
+          key: 'stereoderivs/' + self.filename,
+          body: file,
+          content_type: mime_type
+        )
+      end
+
+      File.open("#{Rails.root}/tmp/#{thumbname}", "rb") do |file|
+        s3.put_object(
+          bucket: 'stereoderivs',
+          key: 'stereoderivs/' + thumbname,
+          body: file,
+          content_type: mime_type
+        )
+      end
+
       # obj.write(:file => "#{Rails.root}/tmp/#{self.filename}", :acl => :public_read, :metadata => { 'description' => URI.escape(self.metadata), 'photo_from' => 'NYPL Labs Stereogranimator' })
       # obj = bucket.objects[thumbname]
       # obj.write(:file => "#{Rails.root}/tmp/#{thumbname}", :acl => :public_read, :metadata => { 'description' => URI.escape(self.metadata), 'photo_from' => 'NYPL Labs Stereogranimator' })
@@ -252,7 +278,7 @@ class Animation < ActiveRecord::Base
     totalanaf = 0
     totalanat = 0
 
-    # s3 = AWS::S3.new
+    # s3 = Aws::S3::Client.new
     # bucket = s3.buckets['stereo.nypl.org']
     # bucket.objects.each do |ob|
     #   tmpurl = ob.public_url.to_s

@@ -2,6 +2,8 @@ source 'https://rubygems.org'
 
 ruby '2.7.4'
 
+gem 'dotenv-rails', groups: [:development, :test]
+
 gem 'rails', '~> 5.2.6'
 
 gem 'sprockets', '~> 3.7.2'
@@ -16,6 +18,8 @@ gem 'authlogic'
 gem 'pg'
 
 gem "rmagick", :require => 'rmagick'
+
+gem 'aws-sdk-s3'
 
 gem 'actionpack-page_caching'
 gem 'actionpack-action_caching'

@@ -31,7 +31,7 @@ namespace :stereo do
     # puts "Assembling image list"
     # awsfiles = Animation.select('filename').where(:creator => "siege").map(&:filename)
     # puts "Commit to AWS"
-    # s3 = AWS::S3.new
+    # s3 = Aws::S3::Client.new
     # bucket = s3.buckets['stereo.nypl.org']
     # awsfiles.each do |f|
       # if f != nil && f != ""
