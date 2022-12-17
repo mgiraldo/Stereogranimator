@@ -48,7 +48,7 @@ class Animation < ActiveRecord::Base
       # first get each frame
       # remove the https (flickr doesnt like heroku in https)
       url = url.gsub(/https:/, 'http:')
-      url = url.gsub(/http:\/\/images.nypl.org/, 'https://images.nypl.org')
+      # url = url.gsub(/http:\/\/images.nypl.org/, 'https://images.nypl.org')
 
       im = Magick::Image.read(url).first
 
