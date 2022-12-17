@@ -1,3 +1,4 @@
 <policymap>
-  <policy domain="delegate" rights="read" pattern="HTTPS" />
+  <policy domain="coder" rights="read|write" pattern="HTTPS" />
+  <policy domain="delegate" rights="read|write" pattern="HTTPS" />
 </policymap>
