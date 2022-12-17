@@ -50,7 +50,9 @@ class Animation < ActiveRecord::Base
       url = url.gsub(/https:/, 'http:')
       url = url.gsub(/http:\/\/images.nypl.org/, 'https://images.nypl.org')
 
-      im = Magick::Image.read(url).first
+      urlim = URI.open(url)
+      im = Magick::ImageList.new
+      im.from_blob(urlim.read).first
 
       if (im.columns > 800)
         im = im.resize_to_fit(800)
