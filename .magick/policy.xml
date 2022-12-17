@@ -1,6 +1,6 @@
 <policymap>
-  <policy domain="coder" rights="read" pattern="EPHEMERAL" />
-  <policy domain="coder" rights="read" pattern="HTTPS" />
-  <policy domain="coder" rights="read" pattern="MVG" />
-  <policy domain="coder" rights="read" pattern="MSL" />
+  <policy domain="coder" rights="read | write" pattern="EPHEMERAL" />
+  <policy domain="coder" rights="read | write" pattern="HTTPS" />
+  <policy domain="coder" rights="read | write" pattern="MVG" />
+  <policy domain="coder" rights="read | write" pattern="MSL" />
 </policymap>
